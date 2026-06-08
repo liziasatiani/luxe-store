@@ -1,0 +1,279 @@
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { CreditCard, Truck, Lock, User, LogIn } from "lucide-react";
+import { Container, Input, Divider } from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { useCartStore } from "@/store";
+import { formatPrice, isValidEmail } from "@/lib/utils";
+import toast from "react-hot-toast";
+
+interface Address {
+  id: string; label: string; firstName: string; lastName: string;
+  line1: string; city: string; state: string; postalCode: string; country: string;
+}
+
+type CheckoutMode = "choose" | "guest" | "login";
+
+export default function CheckoutPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const { items, subtotal, discount, shipping, tax, total, coupon, clearCart } = useCartStore();
+  const [mode, setMode] = useState<CheckoutMode>("choose");
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
+  const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY">("CASH_ON_DELIVERY");
+  const [notes, setNotes] = useState("");
+  const [placing, setPlacing] = useState(false);
+  const [guest, setGuest] = useState({
+    firstName: "", lastName: "", email: "", phone: "",
+    line1: "", line2: "", city: "", state: "", postalCode: "", country: "US",
+  });
+  const [guestErrors, setGuestErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (items.length === 0) {
+      router.push("/cart");
+    }
+  }, [items.length, router]);
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      setMode("login");
+      fetch("/api/account/addresses").then(r => r.json()).then(d => {
+        const addrs = d.data?.addresses ?? [];
+        setAddresses(addrs);
+        if (addrs[0]) setSelectedAddress(addrs[0].id);
+      });
+    }
+  }, [session]);
+
+  if (items.length === 0) return null;
+
+  const validateGuest = () => {
+    const errors: Record<string, string> = {};
+    if (!guest.firstName) errors.firstName = "Required";
+    if (!guest.lastName) errors.lastName = "Required";
+    if (!guest.email) errors.email = "Required";
+    else if (!isValidEmail(guest.email)) errors.email = "Invalid email";
+    if (!guest.line1) errors.line1 = "Required";
+    if (!guest.city) errors.city = "Required";
+    if (!guest.state) errors.state = "Required";
+    if (!guest.postalCode) errors.postalCode = "Required";
+    setGuestErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const placeOrder = async () => {
+    if (mode === "guest" && !validateGuest()) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    if (mode === "login" && !selectedAddress) {
+      toast.error("Please select a shipping address");
+      return;
+    }
+    setPlacing(true);
+    try {
+      const body = mode === "guest"
+        ? {
+            guest: true,
+            guestInfo: guest,
+            paymentMethod,
+            couponCode: coupon?.code,
+            notes,
+            shippingSnapshot: {
+              shippingName: `${guest.firstName} ${guest.lastName}`,
+              shippingLine1: guest.line1,
+              shippingLine2: guest.line2,
+              shippingCity: guest.city,
+              shippingState: guest.state,
+              shippingPostal: guest.postalCode,
+              shippingCountry: guest.country,
+              shippingPhone: guest.phone,
+            },
+            cartItems: items.map(i => ({
+              productId: i.productId,
+              quantity: i.quantity,
+              unitPrice: Number(i.variant?.price ?? i.product.price),
+              productName: i.product.name,
+              productImage: i.product.images[0]?.url ?? null,
+            })),
+          }
+        : { addressId: selectedAddress, paymentMethod, couponCode: coupon?.code, notes };
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      clearCart();
+      const guestEmail = mode === "guest" ? guest.email : undefined;
+      router.push(`/checkout/success?orderId=${data.data.order.id}${guestEmail ? `&email=${encodeURIComponent(guestEmail)}` : ""}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to place order");
+    } finally {
+      setPlacing(false);
+    }
+  };
+
+  const setG = (k: string, v: string) => {
+    setGuest(g => ({ ...g, [k]: v }));
+    if (guestErrors[k]) setGuestErrors(e => ({ ...e, [k]: "" }));
+  };
+
+  // Choose mode for non-logged-in users
+  if (!session && mode === "choose") {
+    return (
+      <Container className="py-16 max-w-lg">
+        <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-8 text-center">Checkout</h1>
+        <div className="space-y-4">
+          <button onClick={() => setMode("guest")}
+            className="w-full p-6 rounded-2xl border-2 border-surface-200 dark:border-surface-700 hover:border-brand-500 transition-all text-left group">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center">
+                <User size={22} className="text-brand-500" />
+              </div>
+              <div>
+                <p className="font-semibold text-surface-900 dark:text-white group-hover:text-brand-500 transition-colors">Continue as Guest</p>
+                <p className="text-sm text-surface-500">No account needed — just fill in your details</p>
+              </div>
+            </div>
+          </button>
+          <div className="relative"><Divider label="or" /></div>
+          <button onClick={() => router.push("/login?redirect=/checkout")}
+            className="w-full p-6 rounded-2xl border-2 border-surface-200 dark:border-surface-700 hover:border-brand-500 transition-all text-left group">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center">
+                <LogIn size={22} className="text-surface-600 dark:text-surface-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-surface-900 dark:text-white group-hover:text-brand-500 transition-colors">Sign In</p>
+                <p className="text-sm text-surface-500">Sign in for faster checkout and order tracking</p>
+              </div>
+            </div>
+          </button>
+          <p className="text-center text-sm text-surface-400">
+            Don't have an account?{" "}
+            <Link href="/register?redirect=/checkout" className="text-brand-500 hover:text-brand-600 font-medium">Create one</Link>
+          </p>
+        </div>
+      </Container>
+    );
+  }
+
+  return (
+    <Container className="py-12 max-w-5xl">
+      <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-10">Checkout</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+        <div className="lg:col-span-3 space-y-8">
+          {mode === "guest" && (
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <User size={20} className="text-brand-500" />
+                  <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Your Details</h2>
+                </div>
+                <button onClick={() => setMode("choose")} className="text-sm text-brand-500 hover:text-brand-600">← Back</button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Input label="First Name *" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
+                <Input label="Last Name *" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
+                <div className="col-span-2"><Input label="Email Address *" type="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} /></div>
+                <div className="col-span-2"><Input label="Phone Number" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" /></div>
+              </div>
+              <div className="pt-2">
+                <h3 className="font-medium text-surface-900 dark:text-white mb-3 flex items-center gap-2">
+                  <Truck size={18} className="text-brand-500" /> Shipping Address
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2"><Input label="Address *" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} /></div>
+                  <div className="col-span-2"><Input label="Apartment, suite, etc." value={guest.line2} onChange={e => setG("line2", e.target.value)} /></div>
+                  <Input label="City *" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
+                  <Input label="State *" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
+                  <Input label="Postal Code *" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
+                  <Input label="Country" value={guest.country} onChange={e => setG("country", e.target.value)} />
+                </div>
+              </div>
+            </section>
+          )}
+
+          {mode === "login" && (
+            <section className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Truck size={20} className="text-brand-500" />
+                <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Shipping Address</h2>
+              </div>
+              {addresses.length > 0 ? (
+                <div className="space-y-3">
+                  {addresses.map(addr => (
+                    <label key={addr.id} className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${selectedAddress === addr.id ? "border-brand-500 bg-brand-50 dark:bg-brand-900/10" : "border-surface-200 dark:border-surface-700"}`}>
+                      <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1 text-brand-500" />
+                      <div>
+                        <p className="font-medium text-sm text-surface-900 dark:text-white">{addr.label} — {addr.firstName} {addr.lastName}</p>
+                        <p className="text-sm text-surface-500">{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
+                      </div>
+                    </label>
+                  ))}
+                  <Link href="/account/addresses?redirect=/checkout" className="text-sm text-brand-500 hover:text-brand-600">+ Add new address</Link>
+                </div>
+              ) : (
+                <div className="p-4 rounded-2xl border border-dashed border-surface-200 dark:border-surface-700 text-center">
+                  <p className="text-surface-500 text-sm mb-3">No saved addresses</p>
+                  <Link href="/account/addresses?redirect=/checkout" className="text-brand-500 text-sm font-medium">+ Add address</Link>
+                </div>
+              )}
+            </section>
+          )}
+
+          <section className="space-y-4">
+            <div className="flex items-center gap-2">
+              <CreditCard size={20} className="text-brand-500" />
+              <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Payment</h2>
+            </div>
+            <label className="flex items-center gap-3 p-4 rounded-2xl border border-brand-500 bg-brand-50 dark:bg-brand-900/10 cursor-pointer">
+              <input type="radio" checked readOnly className="text-brand-500" />
+              <Truck size={18} />
+              <span className="font-medium text-sm">Cash on Delivery</span>
+            </label>
+          </section>
+
+          <Input label="Order notes (optional)" placeholder="Any special instructions…" value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+
+        <div className="lg:col-span-2">
+          <div className="sticky top-24 rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 p-6 space-y-4">
+            <h2 className="font-semibold text-surface-900 dark:text-white">Order Summary</h2>
+            <div className="space-y-2 max-h-60 overflow-y-auto">
+              {items.map(item => (
+                <div key={item.id} className="flex justify-between text-sm">
+                  <span className="text-surface-600 dark:text-surface-400 line-clamp-1 flex-1 mr-2">{item.product.name} x{item.quantity}</span>
+                  <span className="font-medium shrink-0">{formatPrice(Number(item.product.price) * item.quantity)}</span>
+                </div>
+              ))}
+            </div>
+            <Divider />
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between"><span className="text-surface-500">Subtotal</span><span>{formatPrice(subtotal())}</span></div>
+              {discount() > 0 && <div className="flex justify-between text-green-600"><span>Discount</span><span>-{formatPrice(discount())}</span></div>}
+              <div className="flex justify-between"><span className="text-surface-500">Shipping</span><span>{shipping() === 0 ? "FREE" : formatPrice(shipping())}</span></div>
+              <div className="flex justify-between"><span className="text-surface-500">Tax</span><span>{formatPrice(tax())}</span></div>
+            </div>
+            <Divider />
+            <div className="flex justify-between font-semibold text-lg">
+              <span>Total</span><span>{formatPrice(total())}</span>
+            </div>
+            <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
+              Place Order
+            </Button>
+            <p className="text-xs text-center text-surface-400">By placing your order you agree to our Terms of Service.</p>
+          </div>
+        </div>
+      </div>
+    </Container>
+  );
+}

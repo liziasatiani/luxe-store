@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  ::selection {
+    background-color: rgba(196, 130, 31, 0.2);
+    color: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d5d0c8;
+    border-radius: 999px;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #353129;
+  }
+}
+
+@layer components {
+  .btn-gold {
+    @apply bg-gradient-gold text-white font-medium shadow-glow-gold hover:shadow-luxury-md active:scale-[0.98] transition-all;
+  }
+
+  .card-luxury {
+    @apply bg-white dark:bg-surface-800 rounded-2xl border border-surface-100 dark:border-surface-700 shadow-luxury;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-24;
+  }
+
+  .text-gradient-gold {
+    @apply text-transparent bg-clip-text bg-gradient-gold;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .text-balance { text-wrap: balance; }
+
+  .glass {
+    @apply bg-white/80 dark:bg-surface-900/80 backdrop-blur-md;
+  }
+}
