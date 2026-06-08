@@ -40,8 +40,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-surface-900 focus:rounded-xl focus:shadow-luxury-md focus:outline-none">
+                Skip to content
+              </a>
               <Navbar />
-              <main className="min-h-screen">{children}</main>
+              <main id="main-content" className="min-h-screen">{children}</main>
               <Footer />
               <SearchModal />
               <CartDrawer />

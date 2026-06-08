@@ -1,5 +1,6 @@
 "use client";
 import { forwardRef } from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
@@ -42,35 +43,34 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       children,
       className,
-      asChild: _asChild,
+      asChild,
       ...props
     },
     ref
-  ) => (
-    <button
-      ref={ref}
-      disabled={disabled || loading}
-      className={cn(
-        "inline-flex items-center justify-center font-medium transition-all duration-200",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
-        "disabled:opacity-50 disabled:cursor-not-allowed",
-        "active:scale-[0.98]",
-        variants[variant],
-        sizes[size],
-        fullWidth && "w-full",
-        className
-      )}
-      {...props}
-    >
-      {loading ? (
-        <Loader2 className="animate-spin" size={16} />
-      ) : (
-        leftIcon
-      )}
-      {children}
-      {!loading && rightIcon}
-    </button>
-  )
+  ) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        ref={ref as React.Ref<HTMLButtonElement>}
+        disabled={!asChild ? (disabled || loading) : undefined}
+        className={cn(
+          "inline-flex items-center justify-center font-medium transition-all duration-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
+          "disabled:opacity-50 disabled:cursor-not-allowed",
+          "active:scale-[0.98]",
+          variants[variant],
+          sizes[size],
+          fullWidth && "w-full",
+          className
+        )}
+        {...props}
+      >
+        {loading ? <Loader2 className="animate-spin" size={16} /> : leftIcon}
+        {children}
+        {!loading && rightIcon}
+      </Comp>
+    );
+  }
 );
 Button.displayName = "Button";
 

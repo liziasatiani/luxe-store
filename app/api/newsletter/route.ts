@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { newsletterSchema } from "@/lib/validations";
+import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
+  const rl = rateLimit(`newsletter:${getIP(req)}`, 3, 60 * 1000);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const body = await req.json();
     const parsed = newsletterSchema.safeParse(body);

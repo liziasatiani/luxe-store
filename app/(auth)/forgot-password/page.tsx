@@ -14,11 +14,18 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async () => {
     if (!email) return;
     setLoading(true);
-    // In production: call /api/auth/forgot-password to send reset email
-    await new Promise(r => setTimeout(r, 1000));
-    setSent(true);
-    setLoading(false);
-    toast.success("Reset link sent!");
+    try {
+      await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setSent(true);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+
+export const revalidate = 3600;
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";

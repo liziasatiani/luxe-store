@@ -82,9 +82,9 @@ export function getProductImageUrl(
   images: Array<{ url: string; isPrimary?: boolean }> | undefined
 ): string {
   if (!images || images.length === 0)
-    return "https://via.placeholder.com/600x600?text=No+Image";
+    return "/placeholder.jpg";
   const primary = images.find((i) => i.isPrimary);
-  return primary?.url ?? images[0]?.url ?? "https://via.placeholder.com/600x600?text=No+Image";
+  return primary?.url ?? images[0]?.url ?? "/placeholder.jpg";
 }
 
 export function debounce<T extends (...args: unknown[]) => unknown>(

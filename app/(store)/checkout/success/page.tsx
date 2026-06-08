@@ -29,11 +29,11 @@ export default async function SuccessPage({ searchParams }: Props) {
   const session = await auth();
   let order: SerializedOrder | null = null;
 
-  if (orderId && session?.user?.id) {
-    const found = await prisma.order.findFirst({
-      where: { id: orderId, userId: session.user.id },
-      include: { items: true },
-    });
+  if (orderId) {
+    const userId = session?.user?.id;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: any = userId ? { id: orderId, userId } : { id: orderId, userId: null };
+    const found = await prisma.order.findFirst({ where, include: { items: true } });
     if (found) order = serializeDecimal(found) as SerializedOrder;
   }
 

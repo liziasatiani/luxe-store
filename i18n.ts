@@ -7,9 +7,9 @@ export const LOCALE_COOKIE = "luxe-locale";
 
 export const localeNames: Record<Locale, string> = {
   en: "English",
-  fr: "Francais",
-  es: "Espanol",
-  ka: "Georgian",
+  fr: "Français",
+  es: "Español",
+  ka: "ქართული",
 };
 
 export const localeFlags: Record<Locale, string> = {

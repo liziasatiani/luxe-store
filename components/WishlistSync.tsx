@@ -12,26 +12,24 @@ export function WishlistSync() {
     if (status !== "authenticated" || synced.current) return;
     synced.current = true;
 
-    const localIds = [...new Set(ids)];
+    const snapshot = [...new Set(ids)];
 
     fetch("/api/wishlist/sync", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ids: localIds }),
+      body: JSON.stringify({ ids: snapshot }),
     })
       .then(r => r.json())
       .then(d => {
         if (!d.success) return;
         const mergedIds: string[] = d.data.ids;
-        // Add any DB-only IDs into the local store
-        const localSet = new Set(ids);
+        const localSet = new Set(snapshot);
         for (const id of mergedIds) {
           if (!localSet.has(id)) toggle(id);
         }
       })
       .catch(() => {});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [status]); // ids intentionally excluded — snapshot captures value at auth time
 
   return null;
 }

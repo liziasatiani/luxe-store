@@ -5,6 +5,18 @@ import { serializeDecimal, generateOrderNumber, calcShipping, calcTax, isValidEm
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 import { sendOrderConfirmation } from "@/lib/email";
 
+const SHIPPING_FIELDS = [
+  "shippingFirstName", "shippingLastName", "shippingLine1", "shippingLine2",
+  "shippingCity", "shippingState", "shippingPostalCode", "shippingCountry", "shippingPhone",
+] as const;
+
+function pickShippingFields(snapshot: Record<string, unknown> | null | undefined) {
+  if (!snapshot) return {};
+  return Object.fromEntries(
+    SHIPPING_FIELDS.filter(k => k in snapshot).map(k => [k, snapshot[k]])
+  );
+}
+
 export async function GET(req: NextRequest) {
   try {
     const session = await auth();
@@ -80,36 +92,35 @@ export async function POST(req: NextRequest) {
       const total = subtotal - discountAmount + shippingAmount + taxAmount;
 
       const order = await prisma.$transaction(async (tx) => {
-        const newOrder = await tx.order.create({
-          data: {
-            orderNumber: generateOrderNumber(),
-            guestEmail: guestInfo.email,
-            guestName: `${guestInfo.firstName} ${guestInfo.lastName}`,
-            guestPhone: guestInfo.phone ?? null,
-            paymentMethod,
-            couponId: coupon?.id ?? null,
-            couponCode: coupon?.code ?? null,
-            notes: notes ?? null,
-            subtotal, discountAmount, shippingAmount, taxAmount, total,
-            ...(guestShippingSnapshot ?? {}),
-            items: {
-              create: guestCartItems.map((i: { productId: string; quantity: number; productName?: string; productImage?: string }) => {
-                const product = products.find((p: { id: string; name: string; price: unknown; sku: string; images: { url: string }[] }) => p.id === i.productId);
-                const unitPrice = Number(product?.price ?? 0);
-                return {
-                  productId: i.productId,
-                  quantity: i.quantity,
-                  unitPrice,
-                  totalPrice: unitPrice * i.quantity,
-                  productName: i.productName ?? product?.name ?? "",
-                  productImage: i.productImage ?? product?.images[0]?.url ?? null,
-                  productSku: product?.sku ?? "",
-                };
-              }),
-            },
+        const orderData = {
+          orderNumber: generateOrderNumber(),
+          guestEmail: guestInfo.email,
+          guestName: `${guestInfo.firstName} ${guestInfo.lastName}`,
+          guestPhone: guestInfo.phone ?? null,
+          paymentMethod,
+          couponId: coupon?.id ?? null,
+          couponCode: coupon?.code ?? null,
+          notes: notes ?? null,
+          subtotal, discountAmount, shippingAmount, taxAmount, total,
+          ...pickShippingFields(guestShippingSnapshot),
+          items: {
+            create: guestCartItems.map((i: { productId: string; quantity: number; productName?: string; productImage?: string }) => {
+              const product = products.find((p: { id: string; name: string; price: unknown; sku: string; images: { url: string }[] }) => p.id === i.productId);
+              const unitPrice = Number(product?.price ?? 0);
+              return {
+                productId: i.productId,
+                quantity: i.quantity,
+                unitPrice,
+                totalPrice: unitPrice * i.quantity,
+                productName: i.productName ?? product?.name ?? "",
+                productImage: i.productImage ?? product?.images[0]?.url ?? null,
+                productSku: product?.sku ?? "",
+              };
+            }),
           },
-          include: { items: true },
-        });
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const newOrder = await tx.order.create({ data: orderData as any, include: { items: true } });
 
         for (const item of guestCartItems) {
           const product = products.find((p: { id: string; trackStock: boolean; stock: number }) => p.id === item.productId);
@@ -134,12 +145,13 @@ export async function POST(req: NextRequest) {
         return newOrder;
       });
 
+      const orderWithItems = order as typeof order & { items: { productName: string; quantity: number; unitPrice: unknown; totalPrice: unknown }[] };
       void sendOrderConfirmation({
         orderNumber: order.orderNumber,
         orderId: order.id,
         recipientName: `${guestInfo.firstName} ${guestInfo.lastName}`,
         recipientEmail: guestInfo.email,
-        items: order.items.map(i => ({
+        items: orderWithItems.items.map(i => ({
           productName: i.productName,
           quantity: i.quantity,
           unitPrice: Number(i.unitPrice),
