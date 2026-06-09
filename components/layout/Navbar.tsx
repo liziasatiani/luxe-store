@@ -57,45 +57,32 @@ export function Navbar() {
 
   return (
     <>
-      <header className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-white/95 dark:bg-surface-950/95 backdrop-blur-md shadow-lg border-b border-surface-100/80 dark:border-surface-800/80"
-          : "bg-transparent"
-      )}>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b border-black/10 dark:border-white/10 transition-colors duration-300">
+        {/* Announcement bar */}
+        <div className="bg-black dark:bg-white text-white dark:text-black text-center py-2 text-[10px] tracking-[0.18em] uppercase font-medium">
+          New arrivals dropping five days a week
+        </div>
         <Container>
-          <div className="flex items-center h-16 md:h-20 gap-6">
-            <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeMobileMenu}>
-              <span className="font-display text-2xl tracking-tight text-surface-900 dark:text-white">
-                Luxe<span className="text-brand-500">.</span>
-              </span>
-            </Link>
-
-            <nav className="hidden lg:flex items-center gap-1 flex-1">
-              {NAV_LINKS.map((link) => (
+          <div className="grid grid-cols-3 items-center h-14 md:h-16">
+            {/* Left nav */}
+            <nav className="hidden lg:flex items-center gap-6">
+              {NAV_LINKS.slice(0, 3).map((link) => (
                 <div key={link.href} className="relative"
                   onMouseEnter={() => link.children?.length ? setMegaMenu(link.href) : undefined}
                   onMouseLeave={() => setMegaMenu(null)}>
-                  <Link href={link.href} className={cn(
-                    "flex items-center gap-1 px-4 h-10 rounded-xl text-sm font-medium transition-colors",
-                    "text-surface-700 hover:text-surface-900 hover:bg-surface-50",
-                    "dark:text-surface-300 dark:hover:text-white dark:hover:bg-surface-800"
-                  )}>
+                  <Link href={link.href} className="text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity">
                     {link.label}
-                    {link.children?.length > 0 && (
-                      <ChevronDown size={14} className={cn("transition-transform", megaMenu === link.href && "rotate-180")} />
-                    )}
                   </Link>
                   <AnimatePresence>
                     {megaMenu === link.href && link.children?.length > 0 && (
                       <motion.div
-                        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+                        initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 mt-1 w-52 bg-white dark:bg-surface-900 rounded-2xl shadow-xl border border-surface-100 dark:border-surface-800 py-2 z-50"
+                        className="absolute top-full left-0 mt-3 w-44 bg-white dark:bg-black border border-black/10 dark:border-white/10 py-2 z-50"
                       >
                         {link.children.map((child) => (
                           <Link key={child.href} href={child.href}
-                            className="block px-4 py-2.5 text-sm text-surface-700 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+                            className="block px-4 py-2 text-[11px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
                             onClick={() => setMegaMenu(null)}>
                             {child.label}
                           </Link>
@@ -107,37 +94,49 @@ export function Navbar() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-1 ml-auto">
+            {/* Centre logo */}
+            <Link href="/" className="flex justify-center" onClick={closeMobileMenu}>
+              <span className="font-display text-xl md:text-2xl tracking-[0.14em] uppercase text-black dark:text-white">
+                Luxe
+              </span>
+            </Link>
+
+            {/* Right icons */}
+            <div className="flex items-center gap-3 justify-end">
+              <div className="hidden lg:flex items-center gap-5 mr-2">
+                {NAV_LINKS.slice(3).map((link) => (
+                  <Link key={link.href} href={link.href} className="text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
               {mounted && <LanguageSelector />}
 
-              <button onClick={openSearch}
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
-                <Search size={20} />
+              <button onClick={openSearch} className="p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+                <Search size={18} />
               </button>
 
               {mounted && (
-                <button onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
-                  {resolvedTheme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                <button onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} className="p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+                  {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
               )}
 
-              <Link href="/wishlist"
-                className="relative w-10 h-10 rounded-xl flex items-center justify-center text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
-                <Heart size={20} />
+              <Link href="/wishlist" className="relative p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+                <Heart size={18} />
                 {mounted && wishlistIds.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-brand-500 text-white text-xs flex items-center justify-center font-bold">
-                    {wishlistIds.length > 99 ? "99+" : wishlistIds.length}
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-black dark:bg-white text-white dark:text-black text-[9px] flex items-center justify-center font-bold">
+                    {wishlistIds.length > 9 ? "9+" : wishlistIds.length}
                   </span>
                 )}
               </Link>
 
-              <Link href="/cart"
-                className="relative w-10 h-10 rounded-xl flex items-center justify-center text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
-                <ShoppingBag size={20} />
+              <Link href="/cart" className="relative p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+                <ShoppingBag size={18} />
                 {mounted && count > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-brand-500 text-white text-xs flex items-center justify-center font-bold">
-                    {count > 99 ? "99+" : count}
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-black dark:bg-white text-white dark:text-black text-[9px] flex items-center justify-center font-bold">
+                    {count > 9 ? "9+" : count}
                   </span>
                 )}
               </Link>
@@ -145,14 +144,13 @@ export function Navbar() {
               {mounted && (user ? (
                 <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
               ) : (
-                <Link href="/login"
-                  className="hidden md:flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-medium bg-surface-900 text-white dark:bg-white dark:text-surface-900 hover:opacity-90 transition-opacity">
+                <Link href="/login" className="hidden md:block text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity">
                   {t("signIn")}
                 </Link>
               ))}
 
               <button onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
-                className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
+                className="lg:hidden p-1 text-black dark:text-white">
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
@@ -165,40 +163,40 @@ export function Navbar() {
           <motion.div
             initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 30 }}
-            className="fixed inset-0 z-40 bg-white dark:bg-surface-950 pt-20 overflow-y-auto lg:hidden">
-            <Container className="py-6 space-y-2">
+            className="fixed inset-0 z-40 bg-white dark:bg-black pt-[104px] overflow-y-auto lg:hidden">
+            <Container className="py-4">
               {NAV_LINKS.map((link) => (
-                <div key={link.href}>
+                <div key={link.href} className="border-b border-black/8 dark:border-white/8">
                   <Link href={link.href} onClick={closeMobileMenu}
-                    className="flex items-center h-12 px-4 text-lg font-medium text-surface-900 dark:text-white hover:text-brand-500 transition-colors">
+                    className="flex items-center h-12 text-[13px] tracking-[0.1em] uppercase font-medium text-black dark:text-white">
                     {link.label}
                   </Link>
                   {link.children?.map((child) => (
                     <Link key={child.href} href={child.href} onClick={closeMobileMenu}
-                      className="flex items-center h-10 pl-8 text-sm text-surface-500 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white transition-colors">
+                      className="flex items-center h-10 pl-4 text-[11px] tracking-[0.06em] uppercase text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors">
                       {child.label}
                     </Link>
                   ))}
                 </div>
               ))}
-              <div className="pt-6 border-t border-surface-100 dark:border-surface-800 space-y-2">
+              <div className="pt-6 space-y-1">
                 {user ? (
                   <>
-                    <Link href="/account" onClick={closeMobileMenu} className="flex items-center gap-3 h-12 px-4 text-surface-700 dark:text-surface-300">
-                      <User size={18} /> {t("myAccount")}
+                    <Link href="/account" onClick={closeMobileMenu} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60">
+                      <User size={16} /> {t("myAccount")}
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin" onClick={closeMobileMenu} className="flex items-center gap-3 h-12 px-4 text-surface-700 dark:text-surface-300">
-                        <LayoutDashboard size={18} /> {t("adminPanel")}
+                      <Link href="/admin" onClick={closeMobileMenu} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60">
+                        <LayoutDashboard size={16} /> {t("adminPanel")}
                       </Link>
                     )}
-                    <button onClick={() => { signOut(); closeMobileMenu(); }} className="flex items-center gap-3 h-12 px-4 text-red-500 w-full">
-                      <LogOut size={18} /> Sign Out
+                    <button onClick={() => { signOut(); closeMobileMenu(); }} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-red-500 w-full">
+                      <LogOut size={16} /> {t("signOut")}
                     </button>
                   </>
                 ) : (
                   <Link href="/login" onClick={closeMobileMenu}
-                    className="flex items-center justify-center h-12 px-4 bg-surface-900 dark:bg-white text-white dark:text-surface-900 rounded-xl font-medium">
+                    className="flex items-center justify-center h-11 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium">
                     {t("signIn")}
                   </Link>
                 )}
@@ -208,7 +206,7 @@ export function Navbar() {
         )}
       </AnimatePresence>
 
-      <div className="h-16 md:h-20" />
+      <div className="h-[104px] md:h-[112px]" />
     </>
   );
 }
@@ -220,23 +218,21 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
 
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen(o => !o)}
-        className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden border-2 border-transparent hover:border-brand-500 transition-all">
+      <button onClick={() => setOpen(o => !o)} className="p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
         {user.image ? (
-          <Image src={user.image} alt={user.name ?? ""} width={40} height={40} className="rounded-xl object-cover" />
+          <Image src={user.image} alt={user.name ?? ""} width={24} height={24} className="rounded-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center">
-            <User size={18} className="text-brand-600 dark:text-brand-400" />
-          </div>
+          <User size={18} />
         )}
       </button>
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
-            className="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-surface-900 rounded-2xl shadow-xl border border-surface-100 dark:border-surface-800 py-2 z-50">
-            <div className="px-4 py-2 border-b border-surface-100 dark:border-surface-800 mb-1">
-              <p className="text-sm font-medium text-surface-900 dark:text-white truncate">{user.name}</p>
+            initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute right-0 top-full mt-3 w-48 bg-white dark:bg-black border border-black/10 dark:border-white/10 py-1 z-50">
+            <div className="px-4 py-2.5 border-b border-black/8 dark:border-white/8">
+              <p className="text-[11px] tracking-[0.08em] uppercase text-black/50 dark:text-white/50 truncate">{user.name}</p>
             </div>
             {[
               { href: "/account",        icon: User,    label: t("myAccount") },
@@ -244,21 +240,21 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
               { href: "/wishlist",       icon: Heart,   label: t("wishlist")  },
             ].map((item) => (
               <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors">
-                <item.icon size={16} />
+                className="flex items-center gap-3 px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
+                <item.icon size={14} />
                 {item.label}
               </Link>
             ))}
             {isAdmin && (
               <Link href="/admin" onClick={() => setOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-brand-600 dark:text-brand-400 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors">
-                <LayoutDashboard size={16} /> {t("adminPanel")}
+                className="flex items-center gap-3 px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
+                <LayoutDashboard size={14} /> {t("adminPanel")}
               </Link>
             )}
-            <div className="border-t border-surface-100 dark:border-surface-800 mt-1 pt-1">
+            <div className="border-t border-black/8 dark:border-white/8 mt-1 pt-1">
               <button onClick={() => { signOut({ callbackUrl: "/" }); setOpen(false); }}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 w-full transition-colors">
-                <LogOut size={16} /> {t("signOut")}
+                className="flex items-center gap-3 px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase text-red-600 w-full hover:opacity-70 transition-opacity">
+                <LogOut size={14} /> {t("signOut")}
               </button>
             </div>
           </motion.div>
