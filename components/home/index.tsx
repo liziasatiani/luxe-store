@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
@@ -13,6 +14,7 @@ import type { ProductCard as ProductCardType } from "@/types";
 
 // ─── Categories Section ───────────────────────────────────────
 export function CategoriesSection({ categories }: { categories: Array<{ name: string; slug: string; image: string | null; _count?: { products: number } }> }) {
+  const t = useTranslations("home.categories");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -27,7 +29,7 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
   return (
     <section ref={ref} className="py-24 bg-surface-50/50 dark:bg-surface-900/30">
       <Container>
-        <SectionHeader title="Shop by Category" subtitle="From skincare rituals to cutting-edge tech" />
+        <SectionHeader title={t("title")} subtitle={t("subtitle")} />
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((cat, i) => (
             <motion.div
@@ -60,6 +62,7 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
 
 // ─── Featured Products Section ────────────────────────────────
 export function FeaturedProductsSection() {
+  const t = useTranslations("home.featured");
   const [products, setProducts] = useState<ProductCardType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -74,9 +77,9 @@ export function FeaturedProductsSection() {
     <section className="py-24">
       <Container>
         <div className="flex items-end justify-between mb-10">
-          <SectionHeader title="Featured" subtitle="Handpicked by our editors" align="left" className="mb-0" />
+          <SectionHeader title={t("title")} subtitle={t("subtitle")} align="left" className="mb-0" />
           <Link href="/featured" className="hidden sm:flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-600 font-medium">
-            View all <ArrowRight size={14} />
+            {t("viewAll")} <ArrowRight size={14} />
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
@@ -106,6 +109,7 @@ function getOrInitSaleEnd(): Date {
 }
 
 export function FlashSaleSection() {
+  const t = useTranslations("home.flashSale");
   const [products, setProducts] = useState<ProductCardType[]>([]);
   const saleEndRef = useRef<Date | null>(null);
   if (!saleEndRef.current) saleEndRef.current = getOrInitSaleEnd();
@@ -127,13 +131,13 @@ export function FlashSaleSection() {
               <Zap size={20} className="text-white" />
             </div>
             <div>
-              <h2 className="font-display text-3xl text-white">Flash Sale</h2>
-              <p className="text-sm text-surface-400">Limited time offers</p>
+              <h2 className="font-display text-3xl text-white">{t("title")}</h2>
+              <p className="text-sm text-surface-400">{t("subtitle")}</p>
             </div>
           </div>
           {/* Countdown */}
           <div className="flex items-center gap-3">
-            {[{ v: h, l: "HRS" }, { v: m, l: "MIN" }, { v: s, l: "SEC" }].map(({ v, l }) => (
+            {[{ v: h, l: t("hrs") }, { v: m, l: t("min") }, { v: s, l: t("sec") }].map(({ v, l }) => (
               <div key={l} className="flex flex-col items-center">
                 <div className="w-14 h-14 rounded-xl bg-surface-800 flex items-center justify-center">
                   <span className="font-display text-2xl text-white tabular-nums">
@@ -160,6 +164,7 @@ export function FlashSaleSection() {
 
 // ─── Best Sellers Section ─────────────────────────────────────
 export function BestSellersSection() {
+  const t = useTranslations("pages.bestSellers");
   const [products, setProducts] = useState<ProductCardType[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"all" | "beauty" | "tech">("all");
@@ -179,19 +184,19 @@ export function BestSellersSection() {
     <section className="py-24">
       <Container>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
-          <SectionHeader title="Best Sellers" align="left" className="mb-0" />
+          <SectionHeader title={t("title")} align="left" className="mb-0" />
           <div className="flex gap-1 p-1 rounded-xl bg-surface-100 dark:bg-surface-800">
-            {(["all", "beauty", "tech"] as const).map(t => (
+            {(["all", "beauty", "tech"] as const).map(tabKey => (
               <button
-                key={t}
-                onClick={() => { setTab(t); fetchByTab(t); }}
+                key={tabKey}
+                onClick={() => { setTab(tabKey); fetchByTab(tabKey); }}
                 className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
-                  tab === t
+                  tab === tabKey
                     ? "bg-white dark:bg-surface-900 text-surface-900 dark:text-white shadow-luxury"
                     : "text-surface-500 hover:text-surface-700 dark:hover:text-surface-300"
                 }`}
               >
-                {t}
+                {tabKey}
               </button>
             ))}
           </div>
@@ -209,10 +214,11 @@ export function BestSellersSection() {
 
 // ─── Brands Section ───────────────────────────────────────────
 export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: string; logo: string | null }> }) {
+  const t = useTranslations("home.brands");
   return (
     <section className="py-20 border-y border-surface-100 dark:border-surface-800">
       <Container>
-        <SectionHeader title="Our Brands" subtitle="Curated from the world's finest houses" />
+        <SectionHeader title={t("title")} subtitle={t("subtitle")} />
         <div className="flex flex-wrap items-center justify-center gap-4">
           {brands.map((brand) => (
             <Link
@@ -232,18 +238,20 @@ export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: 
 }
 
 // ─── Testimonials Section ─────────────────────────────────────
+// Testimonials are placeholder content — replace with real verified reviews before launch.
 const TESTIMONIALS = [
-  { name: "Sarah M.",   role: "Beauty Enthusiast",   rating: 5, text: "The La Mer cream I ordered arrived beautifully packaged. Authentic product, fast shipping. This is now my go-to luxury beauty destination." },
-  { name: "James K.",   role: "Tech Professional",    rating: 5, text: "Ordered the Sony WH-1000XM5 headphones — best price I found anywhere. Delivered in 2 days. Excellent customer service." },
-  { name: "Priya L.",   role: "Skincare Aficionado",  rating: 5, text: "I've purchased from Luxe Store three times now. Charlotte Tilbury, Tatcha, Drunk Elephant — all authentic. The experience is unmatched." },
-  { name: "Marcus T.",  role: "Gadget Reviewer",      rating: 5, text: "The Apple AirPods Pro came sealed, original, and at a great price. Packaging was impeccable. Highly recommend." },
+  { name: "Customer",  role: "Verified Buyer", rating: 5, text: "Beautiful packaging, fast delivery, and exactly as described. My go-to for luxury beauty and tech." },
+  { name: "Customer",  role: "Verified Buyer", rating: 5, text: "Great prices on authentic products. Customer service responded within hours. Will definitely shop again." },
+  { name: "Customer",  role: "Verified Buyer", rating: 5, text: "Fast shipping and the product arrived in perfect condition. Highly recommend Luxe Store." },
+  { name: "Customer",  role: "Verified Buyer", rating: 5, text: "Authentic products, competitive prices, and seamless checkout. Exactly what I was looking for." },
 ];
 
 export function TestimonialsSection() {
+  const t = useTranslations("home.testimonials");
   return (
     <section className="py-24 bg-surface-50 dark:bg-surface-900/30">
       <Container>
-        <SectionHeader title="What Our Clients Say" subtitle="Over 50,000 satisfied customers worldwide" />
+        <SectionHeader title={t("title")} subtitle={t("subtitle")} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
@@ -277,9 +285,9 @@ export function TestimonialsSection() {
 
 // ─── Newsletter Section ───────────────────────────────────────
 export function NewsletterSection() {
+  const t = useTranslations("home.newsletter");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
   const [emailError, setEmailError] = useState("");
 
   const handleSubmit = async () => {
@@ -310,17 +318,17 @@ export function NewsletterSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <Badge variant="gold" size="md" className="mb-6">Exclusive Offers</Badge>
+          <Badge variant="gold" size="md" className="mb-6">{t("badge")}</Badge>
           <h2 className="font-display text-4xl md:text-5xl text-white mb-4">
-            Join the Inner Circle
+            {t("title")}
           </h2>
           <p className="text-surface-400 text-lg max-w-md mx-auto mb-10">
-            Be first to know about new arrivals, exclusive deals, and beauty secrets.
+            {t("subtitle")}
           </p>
 
           {status === "success" ? (
             <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-500/20 border border-green-500/30 text-green-400">
-              ✓ You're in! Welcome to Luxe Store.
+              ✓ {t("success")}
             </div>
           ) : (
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -329,7 +337,7 @@ export function NewsletterSection() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && handleSubmit()}
-                placeholder="Enter your email address"
+                placeholder={t("placeholder")}
                 aria-invalid={!!emailError}
                 className="flex-1 h-12 px-5 rounded-xl bg-surface-800 border border-surface-700 text-white placeholder:text-surface-500 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
               />
@@ -339,13 +347,13 @@ export function NewsletterSection() {
                 loading={status === "loading"}
                 className="h-12 px-8 shrink-0"
               >
-                Subscribe
+                {t("subscribe")}
               </Button>
             </div>
           )}
-          {status === "error" && <p className="text-error text-sm mt-2">Something went wrong. Try again.</p>}
+          {status === "error" && <p className="text-error text-sm mt-2">{t("error")}</p>}
           {emailError && <p className="text-xs text-red-400 mt-2">{emailError}</p>}
-          <p className="text-xs text-surface-600 mt-4">No spam, ever. Unsubscribe anytime.</p>
+          <p className="text-xs text-surface-600 mt-4">{t("noSpam")}</p>
         </motion.div>
       </Container>
     </section>
@@ -354,6 +362,8 @@ export function NewsletterSection() {
 
 // ─── New Arrivals ─────────────────────────────────────────────
 export function NewArrivalsSection() {
+  const t = useTranslations("pages.newArrivals");
+  const tCommon = useTranslations("common");
   const [products, setProducts] = useState<ProductCardType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -368,9 +378,9 @@ export function NewArrivalsSection() {
     <section className="py-24 bg-surface-50 dark:bg-surface-900/20">
       <Container>
         <div className="flex items-end justify-between mb-10">
-          <SectionHeader title="New Arrivals" subtitle="Fresh drops, just in" align="left" className="mb-0" />
+          <SectionHeader title={t("title")} subtitle={t("subtitle")} align="left" className="mb-0" />
           <Link href="/new" className="hidden sm:flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-600 font-medium">
-            See all <ArrowRight size={14} />
+            {tCommon("seeAll")} <ArrowRight size={14} />
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">

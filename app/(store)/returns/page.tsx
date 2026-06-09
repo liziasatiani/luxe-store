@@ -22,7 +22,7 @@ export default async function ReturnsPage() {
           { title: "Return Policy Overview", content: "We offer 30-day hassle-free returns on all products. Items must be unused and in original packaging." },
           { title: "Eligible Items for Return", content: "Items must be:\n• Unused and in the same condition as received\n• In original packaging with all tags attached\n• For beauty products: unopened and sealed" },
           { title: "Non-Returnable Items", content: "• Opened beauty products\n• Personalized items\n• Digital downloads\n• Final Sale items\n• Gift cards" },
-          { title: "How to Return", content: "1. Go to 'My Orders' in your account\n2. Select the order and click 'Request Return'\n3. Print the prepaid return label\n4. Drop off at the courier\n\nOr email returns@luxestore.com" },
+          { title: "How to Return", content: "Email returns@luxestore.com with your order number and the item(s) you'd like to return. We'll reply within 24 hours with a prepaid return label.\n\nOnce we receive the item, your refund is processed within 3–5 business days." },
           { title: "Refund Processing", content: "Refunds are processed within 3–5 business days and appear on your payment method within 5–10 business days." },
           { title: "Damaged Items", content: "Contact us within 7 days of delivery with photos. We will arrange a free replacement or full refund." },
         ].map(s => (

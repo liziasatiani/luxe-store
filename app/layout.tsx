@@ -10,6 +10,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SearchModal } from "@/components/search/SearchModal";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { WishlistSync } from "@/components/WishlistSync";
+import { CookieConsent } from "@/components/CookieConsent";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <CartDrawer />
               <WishlistSync />
               <Toaster position="bottom-right" />
+              <CookieConsent />
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>
