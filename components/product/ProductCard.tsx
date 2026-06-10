@@ -52,7 +52,7 @@ export function ProductCard({ product, index = 0, variant = "default", darkBg = 
   if (variant === "horizontal") {
     return (
       <Link href={`/products/${product.slug}`} className="group flex gap-4 p-4 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors">
-        <div className="relative w-20 h-20 shrink-0 bg-surface-100 dark:bg-surface-800 overflow-hidden">
+        <div className="relative w-20 h-20 shrink-0 bg-black/5 dark:bg-white/5 overflow-hidden">
           <Image src={imageUrl} alt={product.name} fill className="object-cover" sizes="80px" />
         </div>
         <div className="flex-1 min-w-0 py-1">
