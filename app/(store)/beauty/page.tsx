@@ -16,22 +16,20 @@ export default async function BeautyPage() {
 
   return (
     <>
-      {/* Hero */}
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
+      <div className="border-b border-black/8 dark:border-white/8 py-16">
         <Container className="text-center">
-          <p className="text-brand-500 text-sm font-medium uppercase tracking-widest mb-3">Collection</p>
-          <h1 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white mb-4">Beauty</h1>
-          <p className="text-surface-500 max-w-md mx-auto">Luxury skincare, makeup, and fragrance from the world's most coveted brands.</p>
+          <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">Collection</p>
+          <h1 className="font-display text-5xl md:text-6xl text-black dark:text-white font-light mb-4">Beauty</h1>
+          <p className="text-sm text-black/40 dark:text-white/40 max-w-md mx-auto">Luxury skincare, makeup, and fragrance from the world&apos;s most coveted brands.</p>
         </Container>
       </div>
 
       <Container className="py-12">
-        {/* Subcategory pills */}
-        <div className="flex flex-wrap gap-3 mb-10">
-          <Link href="/beauty" className="px-5 py-2.5 rounded-full bg-surface-900 dark:bg-white text-white dark:text-surface-900 text-sm font-medium">All Beauty</Link>
+        <div className="flex flex-wrap gap-2 mb-10">
+          <Link href="/beauty" className="h-9 px-5 flex items-center bg-black dark:bg-white text-white dark:text-black text-[10px] tracking-[0.12em] uppercase font-medium">All Beauty</Link>
           {subcategories.map(sc => (
-            <Link key={sc.slug} href={`/beauty/${sc.slug}`} className="px-5 py-2.5 rounded-full border border-surface-200 dark:border-surface-700 text-sm font-medium text-surface-700 dark:text-surface-300 hover:border-brand-500 hover:text-brand-500 transition-colors">
-              {sc.name} <span className="text-surface-400 ml-1">({sc._count.products})</span>
+            <Link key={sc.slug} href={`/beauty/${sc.slug}`} className="h-9 px-5 flex items-center border border-black/15 dark:border-white/15 text-[10px] tracking-[0.12em] uppercase text-black/60 dark:text-white/60 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-colors">
+              {sc.name} <span className="text-black/30 dark:text-white/30 ml-1.5">({sc._count.products})</span>
             </Link>
           ))}
         </div>
