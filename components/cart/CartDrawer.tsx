@@ -8,7 +8,7 @@ import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, subtotal, discount, shipping, total, coupon } = useCartStore();
+  const { items, isOpen, closeCart, removeItem, updateQuantity, discount, shipping, total, coupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
 
   return (

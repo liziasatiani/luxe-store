@@ -29,6 +29,7 @@ export function WishlistSync() {
         }
       })
       .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]); // ids intentionally excluded — snapshot captures value at auth time
 
   return null;

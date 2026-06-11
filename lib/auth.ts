@@ -4,7 +4,11 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { normalizeEmail } from "@/lib/utils";
 import type { NextAuthConfig } from "next-auth";
+
+/** bcrypt hash of a value no user can supply; used only to equalise timing. */
+const DUMMY_HASH = "$2a$12$C6UzMDM.H6dfI/f/IKcEe.aQjKk8pQ5HrhTiWnJ5Vd1LhoAxKPWTm";
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
@@ -25,20 +29,20 @@ export const authConfig: NextAuthConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (typeof credentials?.email !== "string" || typeof credentials?.password !== "string") {
+          return null;
+        }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email: normalizeEmail(credentials.email) },
         });
 
-        if (!user || !user.passwordHash) return null;
-        if (!user.isActive) return null;
+        // Compare against a dummy hash when the account is missing or has no
+        // password so the response time does not reveal which emails exist.
+        const hash = user?.passwordHash ?? DUMMY_HASH;
+        const valid = await bcrypt.compare(credentials.password, hash);
 
-        const valid = await bcrypt.compare(
-          credentials.password as string,
-          user.passwordHash
-        );
-        if (!valid) return null;
+        if (!user || !user.passwordHash || !user.isActive || !valid) return null;
 
         return {
           id: user.id,

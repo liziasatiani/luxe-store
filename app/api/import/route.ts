@@ -101,6 +101,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ success: true, data: { jobs } });
   } catch (err) {
+    console.error("[import/GET]", err);
     return NextResponse.json({ success: false, error: "Failed" }, { status: 500 });
   }
 }

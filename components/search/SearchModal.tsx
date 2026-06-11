@@ -26,7 +26,8 @@ export function SearchModal() {
       if (e.key === "Escape") closeSearch();
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        searchOpen ? closeSearch() : useUIStore.getState().openSearch();
+        if (searchOpen) closeSearch();
+        else useUIStore.getState().openSearch();
       }
     };
     document.addEventListener("keydown", handler);

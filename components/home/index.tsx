@@ -164,16 +164,23 @@ export function BestSellersSection() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"all" | "beauty" | "tech">("all");
 
-  const fetchByTab = (key: typeof tab) => {
+  // Keyed on `tab` so switching tabs aborts the in-flight request; without this
+  // a slow earlier response could land after a newer one and show wrong data.
+  useEffect(() => {
+    const ctrl = new AbortController();
     setLoading(true);
-    const param = key === "all" ? "" : `&category=${key}`;
-    fetch(`/api/products?bestSeller=true&limit=8${param}`)
+    const param = tab === "all" ? "" : `&category=${tab}`;
+    fetch(`/api/products?bestSeller=true&limit=8${param}`, { signal: ctrl.signal })
       .then(r => r.json())
-      .then(d => setProducts(d.data?.products ?? []))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => { fetchByTab("all"); }, []);
+      .then(d => {
+        setProducts(d.data?.products ?? []);
+        setLoading(false);
+      })
+      .catch(err => {
+        if (err?.name !== "AbortError") setLoading(false);
+      });
+    return () => ctrl.abort();
+  }, [tab]);
 
   return (
     <section className="py-20 border-b border-black/8 dark:border-white/8">
@@ -184,7 +191,7 @@ export function BestSellersSection() {
             {(["all", "beauty", "tech"] as const).map(key => (
               <button
                 key={key}
-                onClick={() => { setTab(key); fetchByTab(key); }}
+                onClick={() => setTab(key)}
                 className={`h-9 px-5 text-[10px] tracking-[0.1em] uppercase font-medium transition-colors capitalize ${
                   tab === key
                     ? "bg-black dark:bg-white text-white dark:text-black"

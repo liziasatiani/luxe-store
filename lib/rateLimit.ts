@@ -2,6 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 
 const store = new Map<string, { count: number; resetAt: number }>();
 
+/**
+ * Hard ceiling on tracked keys. Without it the map grows once per unique IP and
+ * never shrinks, which is a memory leak an attacker can drive by spoofing
+ * `x-forwarded-for`.
+ *
+ * NOTE: this limiter is per-process and therefore only correct on a single
+ * instance. Behind multiple serverless instances or replicas it degrades to
+ * `limit * instanceCount`. Move to Redis/Upstash before horizontal scaling.
+ */
+const MAX_KEYS = 10_000;
+
+function evictExpired(now: number): void {
+  for (const [k, v] of store) {
+    if (now > v.resetAt) store.delete(k);
+  }
+  // Still over budget after dropping expired entries: drop oldest insertions.
+  if (store.size >= MAX_KEYS) {
+    const excess = store.size - MAX_KEYS + 1;
+    let i = 0;
+    for (const k of store.keys()) {
+      if (i++ >= excess) break;
+      store.delete(k);
+    }
+  }
+}
+
 interface RateLimitResult {
   allowed: boolean;
   remaining: number;
@@ -12,6 +38,7 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
   const now = Date.now();
   const entry = store.get(key);
   if (!entry || now > entry.resetAt) {
+    if (store.size >= MAX_KEYS) evictExpired(now);
     store.set(key, { count: 1, resetAt: now + windowMs });
     return { allowed: true, remaining: limit - 1, resetAt: now + windowMs };
   }

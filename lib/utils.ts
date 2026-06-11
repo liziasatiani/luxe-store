@@ -73,10 +73,6 @@ export function generateOrderNumber(): string {
   return `LXS-${timestamp}-${random}`;
 }
 
-export function truncate(str: string, len = 100): string {
-  if (str.length <= len) return str;
-  return str.slice(0, len).trimEnd() + "…";
-}
 
 export function getProductImageUrl(
   images: Array<{ url: string; isPrimary?: boolean }> | undefined
@@ -87,22 +83,7 @@ export function getProductImageUrl(
   return primary?.url ?? images[0]?.url ?? "/placeholder.jpg";
 }
 
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  delay = 300
-): (...args: Parameters<T>) => void {
-  let timer: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
 
-export function chunk<T>(arr: T[], size: number): T[][] {
-  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
-  );
-}
 
 export function calcShipping(subtotal: number): number {
   const FREE_THRESHOLD = 75;
@@ -118,19 +99,43 @@ export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export function randomId(len = 8): string {
-  return Math.random().toString(36).substring(2, 2 + len);
-}
 
+/**
+ * Recursively converts Prisma `Decimal` values to plain numbers so results can
+ * cross the server/client boundary.
+ *
+ * Anything that is not a plain object or array is returned untouched. This
+ * matters for `Date`: it is an object with no own enumerable properties, so
+ * naively spreading it through `Object.entries` collapses it to `{}` and
+ * destroys every timestamp in the payload.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function serializeDecimal(obj: any): any {
   if (obj === null || obj === undefined) return obj;
-  if (typeof obj === "object" && "toNumber" in obj) return obj.toNumber();
+  if (typeof obj !== "object") return obj;
   if (Array.isArray(obj)) return obj.map(serializeDecimal);
-  if (typeof obj === "object") {
-    return Object.fromEntries(
-      Object.entries(obj).map(([k, v]) => [k, serializeDecimal(v)])
-    );
-  }
-  return obj;
+  if (obj instanceof Date) return obj;
+  if (typeof obj.toNumber === "function") return obj.toNumber();
+  // Only walk plain objects; leave class instances (Buffer, Map, …) intact.
+  const proto = Object.getPrototypeOf(obj);
+  if (proto !== Object.prototype && proto !== null) return obj;
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [k, serializeDecimal(v)])
+  );
+}
+
+/** Parses a positive integer query param, falling back when absent or invalid. */
+export function parseIntParam(
+  raw: string | null,
+  fallback: number,
+  { min = 1, max = Number.MAX_SAFE_INTEGER }: { min?: number; max?: number } = {}
+): number {
+  const n = Number.parseInt(raw ?? "", 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
+/** Canonical form used for storing and looking up email addresses. */
+export function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
 }
