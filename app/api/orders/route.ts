@@ -9,7 +9,7 @@ import { createOrderSchema, type CartLineInput } from "@/lib/validations";
 
 const LOW_STOCK_AT = 5;
 
-class OutOfStockError extends Error {}
+class OrderConflictError extends Error {}
 
 function stockStatusFor(remaining: number) {
   if (remaining <= 0) return "OUT_OF_STOCK" as const;
@@ -236,13 +236,22 @@ export async function POST(req: NextRequest) {
           },
         });
         if (updated.count === 0) {
-          throw new OutOfStockError(
+          throw new OrderConflictError(
             `${product.name} is no longer available in the requested quantity`
           );
         }
+        // `product.stock` is the snapshot read before the transaction, so
+        // deriving the status from it writes a stale value whenever a
+        // concurrent order also moved stock — the conditional updateMany above
+        // guards the decrement but not this follow-up write. Read the real
+        // post-decrement figure instead.
+        const fresh = await tx.product.findUnique({
+          where: { id: line.productId },
+          select: { stock: true },
+        });
         await tx.product.update({
           where: { id: line.productId },
-          data: { stockStatus: stockStatusFor(product.stock - line.quantity) },
+          data: { stockStatus: stockStatusFor(fresh?.stock ?? 0) },
         });
       }
 
@@ -251,10 +260,22 @@ export async function POST(req: NextRequest) {
       }
 
       if (coupon) {
-        await tx.coupon.update({
-          where: { id: coupon.id },
+        // `resolveCoupon` checks usageCount against usageLimit outside the
+        // transaction, so N concurrent orders all read the same pre-increment
+        // count and every one of them passes — a limited coupon could be
+        // redeemed an unbounded number of times. Re-assert the ceiling as a
+        // conditional write; 0 rows means the limit was taken in the interim
+        // and the whole order rolls back.
+        const claimed = await tx.coupon.updateMany({
+          where: {
+            id: coupon.id,
+            ...(coupon.usageLimit !== null && { usageCount: { lt: coupon.usageLimit } }),
+          },
           data: { usageCount: { increment: 1 } },
         });
+        if (claimed.count === 0) {
+          throw new OrderConflictError("This coupon has just reached its usage limit");
+        }
         if (userId) {
           await tx.couponUsage.create({
             data: { couponId: coupon.id, userId, orderId: newOrder.id },
@@ -306,7 +327,7 @@ export async function POST(req: NextRequest) {
       message: "Order placed successfully",
     });
   } catch (err) {
-    if (err instanceof OutOfStockError) {
+    if (err instanceof OrderConflictError) {
       return NextResponse.json({ success: false, error: err.message }, { status: 409 });
     }
     console.error("[orders/POST]", err);

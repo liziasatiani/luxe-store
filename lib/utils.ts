@@ -135,6 +135,25 @@ export function parseIntParam(
   return Math.min(max, Math.max(min, n));
 }
 
+/**
+ * Serialises a value for embedding in a `<script>` tag via
+ * `dangerouslySetInnerHTML`.
+ *
+ * `JSON.stringify` does not escape `<`, so a product name containing
+ * `</script><script>…` breaks out of a JSON-LD block and executes. Product
+ * names are writable through the admin CSV import, which makes this a stored
+ * XSS path rather than a theoretical one. U+2028/U+2029 are also escaped: they
+ * are valid in JSON but are line terminators in JavaScript source.
+ */
+export function jsonLdSafe(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
 /** Canonical form used for storing and looking up email addresses. */
 export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
