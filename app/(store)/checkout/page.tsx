@@ -190,22 +190,22 @@ export default function CheckoutPage() {
                 <button onClick={() => setMode("choose")} className="text-sm text-brand-500 hover:text-brand-600">← Back</button>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <Input label="First Name *" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
-                <Input label="Last Name *" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
-                <div className="col-span-2"><Input label="Email Address *" type="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} /></div>
-                <div className="col-span-2"><Input label="Phone Number" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" /></div>
+                <Input id="guest-firstName" label="First Name *" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
+                <Input id="guest-lastName" label="Last Name *" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
+                <div className="col-span-2"><Input id="guest-email" label="Email Address *" type="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} /></div>
+                <div className="col-span-2"><Input id="guest-phone" label="Phone Number" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" /></div>
               </div>
               <div className="pt-2">
                 <h3 className="font-medium text-surface-900 dark:text-white mb-3 flex items-center gap-2">
                   <Truck size={18} className="text-brand-500" /> Shipping Address
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2"><Input label="Address *" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} /></div>
-                  <div className="col-span-2"><Input label="Apartment, suite, etc." value={guest.line2} onChange={e => setG("line2", e.target.value)} /></div>
-                  <Input label="City *" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
-                  <Input label="State *" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
-                  <Input label="Postal Code *" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
-                  <Input label="Country" value={guest.country} onChange={e => setG("country", e.target.value)} />
+                  <div className="col-span-2"><Input id="guest-line1" label="Address *" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} /></div>
+                  <div className="col-span-2"><Input id="guest-line2" label="Apartment, suite, etc." value={guest.line2} onChange={e => setG("line2", e.target.value)} /></div>
+                  <Input id="guest-city" label="City *" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
+                  <Input id="guest-state" label="State *" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
+                  <Input id="guest-postalCode" label="Postal Code *" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
+                  <Input id="guest-country" label="Country" value={guest.country} onChange={e => setG("country", e.target.value)} />
                 </div>
               </div>
             </section>
@@ -251,7 +251,7 @@ export default function CheckoutPage() {
             </label>
           </section>
 
-          <Input label="Order notes (optional)" placeholder="Any special instructions…" value={notes} onChange={e => setNotes(e.target.value)} />
+          <Input id="order-notes" label="Order notes (optional)" placeholder="Any special instructions…" value={notes} onChange={e => setNotes(e.target.value)} />
         </div>
 
         <div className="lg:col-span-2">

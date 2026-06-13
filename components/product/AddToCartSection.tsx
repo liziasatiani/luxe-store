@@ -101,13 +101,15 @@ export function AddToCartSection({ product }: Props) {
         <div className="flex items-center w-fit border border-black/15 dark:border-white/15">
           <button
             onClick={() => setQty(q => Math.max(1, q - 1))}
-            className="w-10 h-10 flex items-center justify-center text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            aria-label="Decrease quantity"
+            className="w-11 h-11 flex items-center justify-center text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           >−</button>
-          <span className="w-12 text-center text-sm text-black dark:text-white border-x border-black/15 dark:border-white/15">{qty}</span>
+          <span className="w-12 text-center text-sm text-black dark:text-white border-x border-black/15 dark:border-white/15" aria-live="polite" aria-atomic="true">{qty}</span>
           <button
             onClick={() => setQty(q => Math.min(product.stock, q + 1))}
             disabled={qty >= product.stock}
-            className="w-10 h-10 flex items-center justify-center text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors disabled:opacity-40"
+            aria-label="Increase quantity"
+            className="w-11 h-11 flex items-center justify-center text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors disabled:opacity-40"
           >+</button>
         </div>
       </div>

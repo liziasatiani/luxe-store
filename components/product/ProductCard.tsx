@@ -96,16 +96,21 @@ export function ProductCard({ product, index = 0, variant = "default", darkBg = 
 
             {/* Action icons */}
             <div className="absolute top-3 right-3 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <button onClick={handleWishlist}
-                className={cn("w-8 h-8 flex items-center justify-center transition-colors",
+              <button
+                onClick={handleWishlist}
+                aria-label={isWishlisted ? t("wishlisted") : t("addToWishlist")}
+                className={cn("w-11 h-11 flex items-center justify-center transition-colors",
                   isWishlisted
                     ? "bg-red-600 text-white"
                     : "bg-white dark:bg-black text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
                 )}>
                 <Heart size={14} fill={isWishlisted ? "currentColor" : "none"} />
               </button>
-              <button onClick={handleAddToCart} disabled={product.stockStatus === "OUT_OF_STOCK"}
-                className="w-8 h-8 bg-white dark:bg-black flex items-center justify-center text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40">
+              <button
+                onClick={handleAddToCart}
+                disabled={product.stockStatus === "OUT_OF_STOCK"}
+                aria-label={t("addToCart")}
+                className="w-11 h-11 bg-white dark:bg-black flex items-center justify-center text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40">
                 <ShoppingBag size={14} />
               </button>
             </div>
@@ -120,7 +125,8 @@ export function ProductCard({ product, index = 0, variant = "default", darkBg = 
             {/* Quick view bar */}
             <button
               onClick={(e) => { e.preventDefault(); setQuickViewSlug(product.slug); }}
-              className="absolute bottom-0 left-0 right-0 h-10 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300 flex items-center justify-center gap-1.5 bg-black/90 text-white text-[10px] tracking-[0.12em] uppercase"
+              aria-label={t("quickView")}
+              className="absolute bottom-0 left-0 right-0 h-11 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300 flex items-center justify-center gap-1.5 bg-black/90 text-white text-[10px] tracking-[0.12em] uppercase"
             >
               <Eye size={12} /> {t("quickView")}
             </button>
