@@ -45,8 +45,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             </motion.div>
           </AnimatePresence>
 
-          {/* Zoom icon */}
-          <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/80 dark:bg-surface-900/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-luxury">
+          {/* Zoom icon — always visible on mobile (no hover), hover-revealed on desktop */}
+          <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/80 dark:bg-surface-900/80 backdrop-blur-sm flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shadow-luxury">
             <ZoomIn size={18} className="text-surface-700 dark:text-surface-300" />
           </div>
 

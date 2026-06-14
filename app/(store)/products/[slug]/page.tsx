@@ -10,6 +10,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { AddToCartSection } from "@/components/product/AddToCartSection";
 import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { Badge, RatingStars, Container } from "@/components/ui";
+import { TrustBar } from "@/components/ui/TrustBar";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -96,6 +97,7 @@ export default async function ProductPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildProductSchema({ ...p, brand: p.brand })) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildBreadcrumbSchema(breadcrumbs)) }} />
 
+      <TrustBar />
       <Container className="py-8">
         <Breadcrumbs items={breadcrumbs} />
 
