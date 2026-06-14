@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   // recipient name, street address, postal code, order contents). It had no
   // throttle at all, so `orderNumber` + `email` pairs could be guessed at line
   // speed. The previous audit edited this file and left that untouched.
-  const rl = rateLimit(`track:${getIP(req)}`, 10, 60 * 1000);
+  const rl = await rateLimit(`track:${getIP(req)}`, 10, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {

@@ -3,7 +3,7 @@ import { contactSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`contact:${getIP(req)}`, 5, 60 * 1000);
+  const rl = await rateLimit(`contact:${getIP(req)}`, 5, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {

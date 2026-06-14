@@ -4,7 +4,7 @@ import { forgotPasswordSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`forgot-password:${getIP(req)}`, 3, 15 * 60 * 1000);
+  const rl = await rateLimit(`forgot-password:${getIP(req)}`, 3, 15 * 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {

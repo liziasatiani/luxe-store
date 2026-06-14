@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`orders:${getIP(req)}`, 10, 60 * 1000);
+  const rl = await rateLimit(`orders:${getIP(req)}`, 10, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
@@ -95,23 +95,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    // BLOCKED BY SCHEMA: `Order.userId` is non-nullable and the guest columns
-    // (guestEmail/guestName/guestPhone) were mistakenly added to the `Account`
-    // model rather than `Order`. Persisting a guest order therefore throws a
-    // Prisma validation error, which the previous code masked with `as any` and
-    // surfaced as an opaque 500. Fail loudly and early instead.
-    // To enable: make `Order.userId` optional, move the three guest columns onto
-    // `Order`, migrate, then delete this block.
-    if (input.guest) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Guest checkout is temporarily unavailable. Please sign in to complete your order.",
-        },
-        { status: 503 }
-      );
-    }
-    const isGuest = false;
+    const isGuest = input.guest === true;
 
     // ─── Resolve products and derive prices server-side ──────────────────
     const lines = dedupeLines(input.cartItems);
@@ -167,35 +151,71 @@ export async function POST(req: NextRequest) {
     const totals = calcOrderTotals(subtotal, coupon, discountAmount);
 
     // ─── Shipping snapshot ───────────────────────────────────────────────
-    // Scoped by userId: looking the address up by id alone let any signed-in
-    // user snapshot another customer's address onto their own order.
-    const addr = await prisma.address.findFirst({
-      where: { id: input.addressId, userId: userId! },
-    });
-    if (!addr) {
-      return NextResponse.json(
-        { success: false, error: "Shipping address not found" },
-        { status: 400 }
-      );
-    }
-    const shipping = {
-      shippingName: `${addr.firstName} ${addr.lastName}`,
-      shippingLine1: addr.line1,
-      shippingLine2: addr.line2,
-      shippingCity: addr.city,
-      shippingState: addr.state,
-      shippingPostal: addr.postalCode,
-      shippingCountry: addr.country,
-      shippingPhone: addr.phone,
+    let shipping: {
+      shippingName: string | null;
+      shippingLine1: string | null;
+      shippingLine2?: string | null;
+      shippingCity: string | null;
+      shippingState: string | null;
+      shippingPostal: string | null;
+      shippingCountry: string;
+      shippingPhone?: string | null;
     };
+
+    if (isGuest) {
+      // Guest supplies the shipping snapshot directly — no DB address record.
+      const snap = (input as Extract<typeof input, { guest: true }>).shippingSnapshot;
+      shipping = {
+        shippingName: snap.shippingName,
+        shippingLine1: snap.shippingLine1,
+        shippingLine2: snap.shippingLine2 ?? null,
+        shippingCity: snap.shippingCity,
+        shippingState: snap.shippingState,
+        shippingPostal: snap.shippingPostal,
+        shippingCountry: snap.shippingCountry,
+        shippingPhone: snap.shippingPhone ?? null,
+      };
+    } else {
+      // Scoped by userId: looking the address up by id alone let any signed-in
+      // user snapshot another customer's address onto their own order.
+      const addr = await prisma.address.findFirst({
+        where: {
+          id: (input as Extract<typeof input, { guest: false }>).addressId,
+          userId: userId!,
+        },
+      });
+      if (!addr) {
+        return NextResponse.json(
+          { success: false, error: "Shipping address not found" },
+          { status: 400 }
+        );
+      }
+      shipping = {
+        shippingName: `${addr.firstName} ${addr.lastName}`,
+        shippingLine1: addr.line1,
+        shippingLine2: addr.line2,
+        shippingCity: addr.city,
+        shippingState: addr.state,
+        shippingPostal: addr.postalCode,
+        shippingCountry: addr.country,
+        shippingPhone: addr.phone,
+      };
+    }
 
     // ─── Persist ─────────────────────────────────────────────────────────
     const order = await prisma.$transaction(async (tx) => {
+      const guestInfo = isGuest
+        ? (input as Extract<typeof input, { guest: true }>).guestInfo
+        : null;
+
       const newOrder = await tx.order.create({
         data: {
           orderNumber: generateOrderNumber(),
-          userId: userId!,
-          addressId: input.addressId,
+          userId: userId ?? null,
+          guestEmail: guestInfo ? guestInfo.email : null,
+          guestName: guestInfo ? `${guestInfo.firstName} ${guestInfo.lastName}` : null,
+          guestPhone: guestInfo?.phone ?? null,
+          addressId: isGuest ? null : (input as Extract<typeof input, { guest: false }>).addressId,
           paymentMethod: input.paymentMethod,
           couponId: coupon?.id ?? null,
           couponCode: coupon?.code ?? null,
@@ -255,7 +275,8 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      if (userId) {
+      // Guest cart lives in client-side state only — no DB record to clear.
+      if (!isGuest && userId) {
         await tx.cartItem.deleteMany({ where: { userId } });
       }
 
@@ -287,9 +308,14 @@ export async function POST(req: NextRequest) {
     });
 
     // ─── Confirmation email (never blocks or fails the order) ────────────
-    const recipient = await prisma.user
-      .findUnique({ where: { id: userId! }, select: { name: true, email: true } })
-      .then((u) => (u?.email ? { name: u.name ?? "Customer", email: u.email } : null));
+    const recipient = isGuest
+      ? (() => {
+          const gi = (input as Extract<typeof input, { guest: true }>).guestInfo;
+          return { name: `${gi.firstName} ${gi.lastName}`, email: gi.email };
+        })()
+      : await prisma.user
+          .findUnique({ where: { id: userId! }, select: { name: true, email: true } })
+          .then((u) => (u?.email ? { name: u.name ?? "Customer", email: u.email } : null));
 
     if (recipient) {
       void Promise.resolve(

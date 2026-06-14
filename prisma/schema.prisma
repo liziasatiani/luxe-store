@@ -107,9 +107,6 @@ model User {
 model Account {
   id                String  @id @default(cuid())
   userId            String?
-  guestEmail        String?
-  guestName         String?
-  guestPhone        String?
   type              String
   provider          String
   providerAccountId String
@@ -483,7 +480,10 @@ model CouponUsage {
 model Order {
   id              String        @id @default(cuid())
   orderNumber     String        @unique
-  userId          String
+  userId          String?
+  guestEmail      String?
+  guestName       String?
+  guestPhone      String?
   addressId       String?
   status          OrderStatus   @default(PENDING)
   paymentStatus   PaymentStatus @default(PENDING)
@@ -523,7 +523,7 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user    User      @relation(fields: [userId], references: [id])
+  user    User?     @relation(fields: [userId], references: [id])
   address Address?  @relation(fields: [addressId], references: [id])
   coupon  Coupon?   @relation(fields: [couponId], references: [id])
   items   OrderItem[]
