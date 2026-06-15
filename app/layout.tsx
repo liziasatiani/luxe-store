@@ -12,6 +12,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
 import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
+import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -46,8 +47,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 Skip to content
               </a>
               <Navbar />
-              <main id="main-content" className="min-h-screen">{children}</main>
+              <main id="main-content" className="min-h-screen pb-14 md:pb-0">{children}</main>
               <Footer />
+              <BottomTabBar />
               <SearchModal />
               <CartDrawer />
               <WishlistSync />

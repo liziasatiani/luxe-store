@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ZoomIn, ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -13,18 +13,31 @@ interface ProductGalleryProps {
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   const active = images[activeIdx];
 
   const prev = () => setActiveIdx((i) => (i - 1 + images.length) % images.length);
   const next = () => setActiveIdx((i) => (i + 1) % images.length);
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > 40) delta < 0 ? next() : prev();
+    touchStartX.current = null;
+  };
+
   return (
     <>
       <div className="space-y-4">
         {/* Main image */}
         <div className="relative aspect-square rounded-3xl overflow-hidden bg-surface-50 dark:bg-surface-800 group cursor-zoom-in"
-          onClick={() => setLightboxOpen(true)}>
+          onClick={() => setLightboxOpen(true)}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIdx}
