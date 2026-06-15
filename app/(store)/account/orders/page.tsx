@@ -5,6 +5,7 @@ import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { Package, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui";
+import { ReorderButton } from "@/components/account/ReorderButton";
 
 const STATUS_BADGE: Record<string, { label: string; variant: "success" | "warning" | "error" | "default" | "gold" }> = {
   PENDING:    { label: "Pending",    variant: "warning" },
@@ -65,7 +66,10 @@ export default async function OrdersPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-surface-500">{order.items.length} item{order.items.length !== 1 ? "s" : ""}</p>
-                  <p className="font-semibold text-surface-900 dark:text-white">{formatPrice(order.total)}</p>
+                  <div className="flex items-center gap-3">
+                    <p className="font-semibold text-surface-900 dark:text-white">{formatPrice(order.total)}</p>
+                    <ReorderButton orderId={order.id} />
+                  </div>
                 </div>
               </Link>
             );

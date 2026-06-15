@@ -43,18 +43,18 @@ export function BottomTabBar() {
                   strokeWidth={isActive ? 2 : 1.5}
                   className={cn(
                     "transition-colors",
-                    isActive ? "text-black dark:text-white" : "text-black/35 dark:text-white/35"
+                    isActive ? "text-black dark:text-white" : "text-black/55 dark:text-white/55"
                   )}
                 />
                 {isCart && cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] bg-black dark:bg-white text-white dark:text-black text-[8px] font-medium rounded-full flex items-center justify-center px-0.5">
+                  <span aria-live="polite" className="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] bg-black dark:bg-white text-white dark:text-black text-[8px] font-medium rounded-full flex items-center justify-center px-0.5">
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
               </span>
               <span className={cn(
                 "text-[9px] tracking-[0.06em] uppercase transition-colors",
-                isActive ? "text-black dark:text-white" : "text-black/35 dark:text-white/35"
+                isActive ? "text-black dark:text-white" : "text-black/55 dark:text-white/55"
               )}>
                 {label}
               </span>

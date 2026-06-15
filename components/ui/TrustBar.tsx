@@ -13,7 +13,7 @@ export function TrustBar() {
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
         {SIGNALS.map(({ icon: Icon, text }) => (
           <div key={text} className="flex items-center gap-2">
-            <Icon size={14} className="text-black/40 dark:text-white/40 shrink-0" />
+            <Icon size={14} className="text-black/60 dark:text-white/60 shrink-0" />
             <span className="text-[11px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60 whitespace-nowrap">{text}</span>
           </div>
         ))}
