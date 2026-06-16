@@ -10,7 +10,7 @@ export function getStripe(): Stripe {
   if (!_stripe) {
     _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
       apiVersion: "2024-06-20",
-      appInfo: { name: "Luxe Store", version: "1.0.0" },
+      appInfo: { name: "Everything Street", version: "1.0.0" },
     });
   }
   return _stripe;

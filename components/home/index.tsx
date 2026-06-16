@@ -241,7 +241,7 @@ export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: 
 const TESTIMONIALS = [
   { name: "Customer", role: "Verified Buyer", rating: 5, text: "Beautiful packaging, fast delivery, and exactly as described. My go-to for luxury beauty and tech." },
   { name: "Customer", role: "Verified Buyer", rating: 5, text: "Great prices on authentic products. Customer service responded within hours. Will definitely shop again." },
-  { name: "Customer", role: "Verified Buyer", rating: 5, text: "Fast shipping and the product arrived in perfect condition. Highly recommend Luxe Store." },
+  { name: "Customer", role: "Verified Buyer", rating: 5, text: "Fast shipping and the product arrived in perfect condition. Highly recommend Everything Street." },
   { name: "Customer", role: "Verified Buyer", rating: 5, text: "Authentic products, competitive prices, and seamless checkout. Exactly what I was looking for." },
 ];
 

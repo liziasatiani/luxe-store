@@ -83,7 +83,7 @@ export async function Footer() {
 
       <Container className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-[11px] tracking-[0.06em] text-white/25">
-          © {new Date().getFullYear()} Luxe Store. {t("allRights")}
+          © {new Date().getFullYear()} Everything Street. {t("allRights")}
         </p>
         <div className="flex items-center gap-3">
           {["VISA", "MC", "AMEX", "PAYPAL"].map((p) => (

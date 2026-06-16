@@ -68,7 +68,7 @@ function pickImg(arr: string[], i: number) {
 // ─── Main ─────────────────────────────────────────────────────
 
 async function main() {
-  console.log("🌱  Seeding Luxe Store database…");
+  console.log("🌱  Seeding Everything Street database…");
 
   // ── 1. Admin User ─────────────────────────────────────────
   const adminPassword = await bcrypt.hash("Admin@123456", 12);
@@ -814,7 +814,7 @@ async function main() {
 
   // ── 7. Site Settings ───────────────────────────────────────
   const settings = [
-    { key: "site_name",               value: "Luxe Store",              type: "string"  },
+    { key: "site_name",               value: "Everything Street",              type: "string"  },
     { key: "site_tagline",            value: "Luxury Beauty & Tech",    type: "string"  },
     { key: "currency",                value: "USD",                     type: "string"  },
     { key: "currency_symbol",         value: "$",                       type: "string"  },
@@ -825,7 +825,7 @@ async function main() {
     { key: "maintenance_mode",        value: "false",                   type: "boolean" },
     { key: "allow_guest_checkout",    value: "true",                    type: "boolean" },
     { key: "review_auto_approve",     value: "false",                   type: "boolean" },
-    { key: "meta_title",              value: "Luxe Store | Premium Beauty & Tech", type: "string" },
+    { key: "meta_title",              value: "Everything Street | Premium Beauty & Tech", type: "string" },
     { key: "meta_description",        value: "Shop luxury beauty, skincare, cosmetics and premium tech. Free shipping on orders over $75.", type: "string" },
     { key: "contact_email",           value: "hello@luxestore.com",     type: "string"  },
     { key: "contact_phone",           value: "+1 (555) 000-0000",       type: "string"  },

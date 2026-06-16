@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({ title: "About Us", description: "Learn about Luxe Store — your destination for luxury beauty and premium tech." });
+export const metadata = buildMetadata({ title: "About Us", description: "Learn about Everything Street — your destination for luxury beauty and premium tech." });
 
 export default function AboutPage() {
   return (
@@ -12,7 +12,7 @@ export default function AboutPage() {
           <p className="text-brand-400 text-sm font-medium uppercase tracking-widest mb-4">Our Story</p>
           <h1 className="font-display text-5xl md:text-6xl mb-6">Luxury, Curated for You</h1>
           <p className="text-surface-400 text-lg leading-relaxed">
-            Luxe Store was born from a simple belief: everyone deserves access to the world's finest beauty and technology, with the trust and service they deserve.
+            Everything Street was born from a simple belief: everyone deserves access to the world's finest beauty and technology, with the trust and service they deserve.
           </p>
         </Container>
       </div>

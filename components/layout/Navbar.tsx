@@ -94,8 +94,8 @@ export function Navbar() {
 
             {/* Centre logo */}
             <Link href="/" className="flex justify-center" onClick={closeMobileMenu}>
-              <span className="font-display text-xl md:text-2xl tracking-[0.14em] uppercase text-black dark:text-white">
-                Luxe
+              <span className="font-display text-sm md:text-base tracking-[0.08em] uppercase text-black dark:text-white whitespace-nowrap">
+                Everything Street
               </span>
             </Link>
 

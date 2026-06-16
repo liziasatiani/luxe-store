@@ -18,7 +18,7 @@ const FAQS = [
   {
     category: "Products & Authenticity",
     items: [
-      { q: "Are all products authentic?", a: "100% yes. Every product at Luxe Store is sourced directly from authorized brand distributors. We have strict verification processes and zero-tolerance for counterfeits." },
+      { q: "Are all products authentic?", a: "100% yes. Every product at Everything Street is sourced directly from authorized brand distributors. We have strict verification processes and zero-tolerance for counterfeits." },
       { q: "Where do you source your products?", a: "We partner directly with official brand distributors and authorized retailers in the US, Europe, and Asia. Every brand on our platform has been vetted and approved." },
       { q: "What if I receive a damaged product?", a: "Contact us within 7 days of delivery and we'll arrange a full replacement or refund immediately. We'll also cover return shipping costs for damaged items." },
     ],
@@ -80,7 +80,7 @@ export default function FAQPage() {
       <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
         <Container className="text-center">
           <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">Frequently Asked Questions</h1>
-          <p className="text-surface-500 max-w-md mx-auto">Everything you need to know about Luxe Store.</p>
+          <p className="text-surface-500 max-w-md mx-auto">Everything you need to know about Everything Street.</p>
         </Container>
       </div>
 

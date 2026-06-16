@@ -27,7 +27,7 @@ export default function PrivacyPage() {
       </div>
       <Container className="py-16 max-w-3xl space-y-8">
         <p className="text-surface-600 dark:text-surface-400 leading-relaxed">
-          At Luxe Store, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase.
+          At Everything Street, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase.
         </p>
         {SECTIONS.map(s => (
           <div key={s.title}>

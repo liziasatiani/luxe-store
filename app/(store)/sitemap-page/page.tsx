@@ -73,7 +73,7 @@ export default function SitemapPage() {
       <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
         <Container className="text-center">
           <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">Sitemap</h1>
-          <p className="text-surface-500">Find everything on Luxe Store</p>
+          <p className="text-surface-500">Find everything on Everything Street</p>
         </Container>
       </div>
       <Container className="py-16">
