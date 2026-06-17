@@ -1,5 +1,8 @@
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
 import { NextResponse } from "next/server";
+
+const { auth } = NextAuth(authConfig);
 
 const PROTECTED = ["/account"];
 const ADMIN_ONLY = ["/admin"];
@@ -8,8 +11,6 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const session = req.auth;
 
-  // Only same-origin paths are ever placed in `redirect`, and it is encoded so
-  // a crafted path cannot inject extra query parameters.
   const loginUrl = (p: string) =>
     new URL(`/login?redirect=${encodeURIComponent(p)}`, req.url);
 
