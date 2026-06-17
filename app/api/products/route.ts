@@ -109,18 +109,21 @@ export async function GET(req: NextRequest) {
       prisma.product.count({ where }),
     ]);
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        products: serializeDecimal(products),
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-        hasNext: skip + limit < total,
-        hasPrev: page > 1,
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          products: serializeDecimal(products),
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit),
+          hasNext: skip + limit < total,
+          hasPrev: page > 1,
+        },
       },
-    });
+      { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } }
+    );
   } catch (err) {
     console.error("[products/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch products" }, { status: 500 });

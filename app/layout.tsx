@@ -13,6 +13,7 @@ import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
 import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
+import { PWAInit } from "@/components/PWAInit";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -31,6 +32,8 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   ...buildMetadata(),
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  manifest: "/manifest.json",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Everything Street" },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -56,6 +59,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Toaster position="bottom-right" />
               <CookieConsent />
               <ExitIntentCapture />
+              <PWAInit />
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>

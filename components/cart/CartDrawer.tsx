@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, ArrowRight, Tag, Check } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import FocusTrap from "focus-trap-react";
 import { useCartStore } from "@/store";
 import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -70,12 +71,16 @@ export function CartDrawer() {
             onClick={closeCart}
           />
 
+          <FocusTrap active={isOpen} focusTrapOptions={{ escapeDeactivates: false, allowOutsideClick: true, initialFocus: false }}>
           <motion.div
             key="drawer"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 32, stiffness: 300 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Shopping cart"
             className="fixed top-0 right-0 h-full w-full max-w-sm z-50 flex flex-col bg-white dark:bg-surface-950 shadow-2xl"
           >
             {/* Header */}
@@ -266,6 +271,7 @@ export function CartDrawer() {
               </div>
             )}
           </motion.div>
+          </FocusTrap>
         </>
       )}
     </AnimatePresence>

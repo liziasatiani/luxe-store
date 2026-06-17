@@ -15,6 +15,7 @@ interface QuickViewProps {
   onClose: () => void;
 }
 
+// Product type is intentionally loose to avoid coupling to Prisma output shape
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyProduct = any;
 
@@ -69,6 +70,9 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Quick view"
             className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-900 rounded-2xl shadow-2xl"
             onClick={e => e.stopPropagation()}
           >

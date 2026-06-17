@@ -2,8 +2,9 @@
 import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import FocusTrap from "focus-trap-react";
 
-const STORAGE_KEY = "luxe-exit-intent-dismissed";
+const STORAGE_KEY = "everything-street-exit-intent-dismissed";
 const COOLDOWN_DAYS = 7;
 
 export function ExitIntentCapture() {
@@ -64,11 +65,15 @@ export function ExitIntentCapture() {
           className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60"
           onClick={dismiss}
         >
+          <FocusTrap active={visible} focusTrapOptions={{ escapeDeactivates: false, allowOutsideClick: true }}>
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Special offer"
             className="relative bg-white dark:bg-black border border-black/10 dark:border-white/10 max-w-sm w-full p-8"
             onClick={(e) => e.stopPropagation()}
           >
@@ -115,6 +120,7 @@ export function ExitIntentCapture() {
               </>
             )}
           </motion.div>
+          </FocusTrap>
         </motion.div>
       )}
     </AnimatePresence>
