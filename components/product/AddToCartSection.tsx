@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Heart, Share2, ShoppingBag, Zap } from "lucide-react";
+import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
 import { useCartStore, useWishlistStore } from "@/store";
 import { cn, formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -153,6 +153,20 @@ export function AddToCartSection({ product }: Props) {
           <Zap size={16} />
           Buy Now
         </button>
+      </div>
+
+      {/* Inline trust signals */}
+      <div className="flex flex-col gap-1.5 pt-1">
+        {[
+          { icon: Truck,      text: "Free shipping on orders over $150" },
+          { icon: RotateCcw,  text: "30-day free returns" },
+          { icon: Shield,     text: "100% authentic — guaranteed" },
+        ].map(({ icon: Icon, text }) => (
+          <div key={text} className="flex items-center gap-2">
+            <Icon size={13} className="text-black/40 dark:text-white/40 shrink-0" />
+            <span className="text-[11px] text-black/50 dark:text-white/50">{text}</span>
+          </div>
+        ))}
       </div>
 
       {/* Sticky mobile add-to-cart bar — visible only when main buttons scroll off screen */}
