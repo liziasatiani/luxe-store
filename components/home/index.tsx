@@ -158,15 +158,17 @@ export function FlashSaleSection() {
 }
 
 // ─── Best Sellers Section ─────────────────────────────────────
-export function BestSellersSection() {
+export function BestSellersSection({ initialProducts = [] }: { initialProducts?: ProductCardType[] }) {
   const t = useTranslations("pages.bestSellers");
-  const [products, setProducts] = useState<ProductCardType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<ProductCardType[]>(initialProducts);
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<"all" | "beauty" | "tech">("all");
 
-  // Keyed on `tab` so switching tabs aborts the in-flight request; without this
-  // a slow earlier response could land after a newer one and show wrong data.
   useEffect(() => {
+    if (tab === "all" && initialProducts.length > 0) {
+      setProducts(initialProducts);
+      return;
+    }
     const ctrl = new AbortController();
     setLoading(true);
     const param = tab === "all" ? "" : `&category=${tab}`;
@@ -180,7 +182,7 @@ export function BestSellersSection() {
         if (err?.name !== "AbortError") setLoading(false);
       });
     return () => ctrl.abort();
-  }, [tab]);
+  }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section className="py-20 border-b border-black/8 dark:border-white/8">
