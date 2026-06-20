@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { Container } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { buildMetadata } from "@/lib/seo";

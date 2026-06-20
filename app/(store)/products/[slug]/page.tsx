@@ -9,6 +9,8 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts, RelatedProductsSkeleton } from "@/components/product/RelatedProducts";
 import { AddToCartSection } from "@/components/product/AddToCartSection";
 import { ReviewsSection } from "@/components/product/ReviewsSection";
+import { RecentlyViewed } from "@/components/product/RecentlyViewed";
+import { TrackView } from "@/components/product/TrackView";
 import { Badge, RatingStars, Container } from "@/components/ui";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
@@ -173,6 +175,9 @@ export default async function ProductPage({ params }: Props) {
           <RelatedProducts productId={p.id} categoryId={p.categoryId} price={Number(p.price)} />
         </Suspense>
       </Container>
+
+      <TrackView product={p} />
+      <RecentlyViewed currentProductId={p.id} />
     </>
   );
 }

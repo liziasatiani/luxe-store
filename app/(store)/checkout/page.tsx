@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { CreditCard, Truck, Lock, User, LogIn } from "lucide-react";
+import { CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check } from "lucide-react";
 import { Container, Input, Divider } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
@@ -16,15 +16,22 @@ interface Address {
 }
 
 type CheckoutMode = "choose" | "guest" | "login";
+type Step = 1 | 2;
+
+function AddressSummary({ addresses, selectedId }: { addresses: Address[]; selectedId: string }) {
+  const a = addresses.find(x => x.id === selectedId);
+  if (!a) return null;
+  return <p className="text-sm text-black dark:text-white">{a.firstName} {a.lastName} · {a.line1}, {a.city}, {a.state}</p>;
+}
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const { items, subtotal, discount, shipping, tax, total, coupon, clearCart } = useCartStore();
   const [mode, setMode] = useState<CheckoutMode>("choose");
+  const [step, setStep] = useState<Step>(1);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string>("");
-  const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY">("CASH_ON_DELIVERY");
   const [notes, setNotes] = useState("");
   const [placing, setPlacing] = useState(false);
   const [guest, setGuest] = useState({
@@ -32,15 +39,10 @@ export default function CheckoutPage() {
     line1: "", line2: "", city: "", state: "", postalCode: "", country: "US",
   });
   const [guestErrors, setGuestErrors] = useState<Record<string, string>>({});
-
-  // Set once the order is placed, so clearing the cart does not trip the
-  // "empty cart" redirect below and bounce the user away from the success page.
   const placedRef = useRef(false);
 
   useEffect(() => {
-    if (items.length === 0 && !placedRef.current) {
-      router.push("/cart");
-    }
+    if (items.length === 0 && !placedRef.current) router.push("/cart");
   }, [items.length, router]);
 
   useEffect(() => {
@@ -56,7 +58,16 @@ export default function CheckoutPage() {
 
   if (items.length === 0 && !placedRef.current) return null;
 
-  const validateGuest = () => {
+  const setG = (k: string, v: string) => {
+    setGuest(g => ({ ...g, [k]: v }));
+    if (guestErrors[k]) setGuestErrors(e => ({ ...e, [k]: "" }));
+  };
+
+  const validateStep1 = () => {
+    if (mode === "login") {
+      if (!selectedAddress) { toast.error("Please select a shipping address"); return false; }
+      return true;
+    }
     const errors: Record<string, string> = {};
     if (!guest.firstName) errors.firstName = "Required";
     if (!guest.lastName) errors.lastName = "Required";
@@ -67,39 +78,23 @@ export default function CheckoutPage() {
     if (!guest.state) errors.state = "Required";
     if (!guest.postalCode) errors.postalCode = "Required";
     setGuestErrors(errors);
-    return Object.keys(errors).length === 0;
+    if (Object.keys(errors).length > 0) { toast.error("Please fill in all required fields"); return false; }
+    return true;
   };
 
   const placeOrder = async () => {
-    if (mode === "guest" && !validateGuest()) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-    if (mode === "login" && !selectedAddress) {
-      toast.error("Please select a shipping address");
-      return;
-    }
     setPlacing(true);
     try {
-      // The cart lives in localStorage, so every order — guest or signed-in —
-      // must carry its line items. Only ids and quantities are sent; the server
-      // re-derives all prices.
       const cartItems = items.map(i => ({
         productId: i.productId,
         variantId: i.variantId ?? null,
         quantity: i.quantity,
       }));
-
       const body = mode === "guest"
         ? {
             guest: true as const,
-            guestInfo: {
-              firstName: guest.firstName,
-              lastName: guest.lastName,
-              email: guest.email,
-              phone: guest.phone,
-            },
-            paymentMethod,
+            guestInfo: { firstName: guest.firstName, lastName: guest.lastName, email: guest.email, phone: guest.phone },
+            paymentMethod: "CASH_ON_DELIVERY",
             couponCode: coupon?.code,
             notes,
             shippingSnapshot: {
@@ -117,7 +112,7 @@ export default function CheckoutPage() {
         : {
             guest: false as const,
             addressId: selectedAddress,
-            paymentMethod,
+            paymentMethod: "CASH_ON_DELIVERY",
             couponCode: coupon?.code,
             notes,
             cartItems,
@@ -141,20 +136,15 @@ export default function CheckoutPage() {
     }
   };
 
-  const setG = (k: string, v: string) => {
-    setGuest(g => ({ ...g, [k]: v }));
-    if (guestErrors[k]) setGuestErrors(e => ({ ...e, [k]: "" }));
-  };
-
+  // Mode selection screen
   if (!session && mode === "choose") {
     return (
       <Container className="py-16 max-w-lg">
         <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-2 text-center">Checkout</h1>
         <p className="text-center text-sm text-surface-400 mb-10">How would you like to continue?</p>
         <div className="space-y-3">
-          {/* Guest first — primary path per Baymard */}
           <button onClick={() => setMode("guest")}
-            className="w-full p-6 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-left group">
+            className="w-full p-6 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-left">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full border border-white/20 dark:border-black/20 flex items-center justify-center">
                 <User size={18} />
@@ -165,15 +155,13 @@ export default function CheckoutPage() {
               </div>
             </div>
           </button>
-
           <div className="flex items-center gap-4 py-1">
             <div className="flex-1 h-px bg-surface-200 dark:bg-surface-700" />
             <span className="text-[11px] tracking-[0.1em] uppercase text-surface-400">or</span>
             <div className="flex-1 h-px bg-surface-200 dark:bg-surface-700" />
           </div>
-
           <button onClick={() => router.push("/login?redirect=/checkout")}
-            className="w-full p-6 border border-surface-200 dark:border-surface-700 hover:border-black dark:hover:border-white transition-colors text-left group">
+            className="w-full p-6 border border-surface-200 dark:border-surface-700 hover:border-black dark:hover:border-white transition-colors text-left">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 flex items-center justify-center text-surface-500 dark:text-surface-400">
                 <LogIn size={18} />
@@ -184,7 +172,6 @@ export default function CheckoutPage() {
               </div>
             </div>
           </button>
-
           <p className="text-center text-xs text-surface-400 pt-2">
             New here?{" "}
             <Link href="/register?redirect=/checkout" className="underline hover:text-surface-900 dark:hover:text-white transition-colors">Create an account</Link>
@@ -194,135 +181,202 @@ export default function CheckoutPage() {
     );
   }
 
-  const progressStep = placing ? 2 : 1;
-  const steps = ["Details", "Payment", "Confirm"];
+  const stepLabels = ["Shipping", "Payment"];
 
   return (
     <Container className="py-12 max-w-5xl">
-      {/* Progress indicator */}
-      <div className="flex items-center justify-center gap-0 mb-10">
-        {steps.map((label, i) => {
-          const done = i < progressStep;
-          const active = i === progressStep;
+      {/* Step indicator */}
+      <div className="flex items-center justify-center gap-0 mb-12">
+        {stepLabels.map((label, i) => {
+          const idx = i + 1;
+          const done = idx < step;
+          const active = idx === step;
           return (
             <div key={label} className="flex items-center">
-              <div className="flex flex-col items-center gap-1.5">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-medium transition-colors ${done ? "bg-black dark:bg-white text-white dark:text-black" : active ? "border-2 border-black dark:border-white text-black dark:text-white" : "border border-surface-300 dark:border-surface-600 text-surface-400"}`}>
-                  {done ? "✓" : i + 1}
+              <button
+                onClick={() => done ? setStep(idx as Step) : undefined}
+                disabled={!done}
+                className="flex flex-col items-center gap-1.5 disabled:cursor-default"
+              >
+                <div className={`w-8 h-8 flex items-center justify-center text-[11px] font-medium transition-colors
+                  ${done ? "bg-black dark:bg-white text-white dark:text-black cursor-pointer" :
+                    active ? "border-2 border-black dark:border-white text-black dark:text-white" :
+                    "border border-black/20 dark:border-white/20 text-black/30 dark:text-white/30"}`}>
+                  {done ? <Check size={14} /> : idx}
                 </div>
-                <span className={`text-[10px] tracking-[0.1em] uppercase ${active ? "text-black dark:text-white" : "text-surface-400"}`}>{label}</span>
-              </div>
-              {i < steps.length - 1 && (
-                <div className={`w-16 sm:w-24 h-px mx-3 mb-5 ${done ? "bg-black dark:bg-white" : "bg-surface-200 dark:bg-surface-700"}`} />
+                <span className={`text-[10px] tracking-[0.12em] uppercase font-medium
+                  ${active ? "text-black dark:text-white" : done ? "text-black/60 dark:text-white/60" : "text-black/30 dark:text-white/30"}`}>
+                  {label}
+                </span>
+              </button>
+              {i < stepLabels.length - 1 && (
+                <div className={`w-20 sm:w-32 h-px mx-4 mb-5 transition-colors ${done ? "bg-black dark:bg-white" : "bg-black/15 dark:bg-white/15"}`} />
               )}
             </div>
           );
         })}
       </div>
 
-      <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-10">Checkout</h1>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-        <div className="lg:col-span-3 space-y-8">
-          {mode === "guest" && (
-            <section className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <User size={20} className="text-brand-500" />
-                  <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Your Details</h2>
-                </div>
-                <button onClick={() => setMode("choose")} className="text-sm text-brand-500 hover:text-brand-600">← Back</button>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Input id="guest-firstName" label="First Name *" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
-                <Input id="guest-lastName" label="Last Name *" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
-                <div className="col-span-2"><Input id="guest-email" label="Email Address *" type="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} /></div>
-                <div className="col-span-2"><Input id="guest-phone" label="Phone Number" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" /></div>
-              </div>
-              <div className="pt-2">
-                <h3 className="font-medium text-surface-900 dark:text-white mb-3 flex items-center gap-2">
-                  <Truck size={18} className="text-brand-500" /> Shipping Address
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2"><Input id="guest-line1" label="Address *" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} /></div>
-                  <div className="col-span-2"><Input id="guest-line2" label="Apartment, suite, etc." value={guest.line2} onChange={e => setG("line2", e.target.value)} /></div>
-                  <Input id="guest-city" label="City *" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
-                  <Input id="guest-state" label="State *" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
-                  <Input id="guest-postalCode" label="Postal Code *" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
-                  <Input id="guest-country" label="Country" value={guest.country} onChange={e => setG("country", e.target.value)} />
-                </div>
-              </div>
-            </section>
-          )}
+        <div className="lg:col-span-3">
+          {/* ── Step 1: Shipping ── */}
+          {step === 1 && (
+            <div className="space-y-8">
+              <h2 className="font-display text-2xl text-black dark:text-white">Shipping Information</h2>
 
-          {mode === "login" && (
-            <section className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Truck size={20} className="text-brand-500" />
-                <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Shipping Address</h2>
-              </div>
-              {addresses.length > 0 ? (
-                <div className="space-y-3">
-                  {addresses.map(addr => (
-                    <label key={addr.id} className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${selectedAddress === addr.id ? "border-brand-500 bg-brand-50 dark:bg-brand-900/10" : "border-surface-200 dark:border-surface-700"}`}>
-                      <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1 text-brand-500" />
-                      <div>
-                        <p className="font-medium text-sm text-surface-900 dark:text-white">{addr.label} — {addr.firstName} {addr.lastName}</p>
-                        <p className="text-sm text-surface-500">{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
-                      </div>
-                    </label>
-                  ))}
-                  <Link href="/account/addresses?redirect=/checkout" className="text-sm text-brand-500 hover:text-brand-600">+ Add new address</Link>
-                </div>
-              ) : (
-                <div className="p-4 rounded-2xl border border-dashed border-surface-200 dark:border-surface-700 text-center">
-                  <p className="text-surface-500 text-sm mb-3">No saved addresses</p>
-                  <Link href="/account/addresses?redirect=/checkout" className="text-brand-500 text-sm font-medium">+ Add address</Link>
+              {mode === "guest" && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Contact</p>
+                    <button onClick={() => setMode("choose")} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Change</button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Input id="firstName" label="First Name *" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
+                    <Input id="lastName" label="Last Name *" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
+                    <div className="col-span-2">
+                      <Input id="email" label="Email *" type="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
+                    </div>
+                    <div className="col-span-2">
+                      <Input id="phone" label="Phone" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" />
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 pt-2">Address</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="col-span-2">
+                      <Input id="line1" label="Street Address *" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
+                    </div>
+                    <div className="col-span-2">
+                      <Input id="line2" label="Apt, suite, etc." value={guest.line2} onChange={e => setG("line2", e.target.value)} />
+                    </div>
+                    <Input id="city" label="City *" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
+                    <Input id="state" label="State *" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
+                    <Input id="postalCode" label="Postal Code *" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
+                    <Input id="country" label="Country" value={guest.country} onChange={e => setG("country", e.target.value)} />
+                  </div>
                 </div>
               )}
-            </section>
+
+              {mode === "login" && (
+                <div className="space-y-3">
+                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Saved Addresses</p>
+                  {addresses.length > 0 ? (
+                    <>
+                      {addresses.map(addr => (
+                        <label key={addr.id} className={`flex items-start gap-3 p-4 border cursor-pointer transition-colors ${selectedAddress === addr.id ? "border-black dark:border-white bg-black/[0.03] dark:bg-white/[0.03]" : "border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"}`}>
+                          <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1" />
+                          <div>
+                            <p className="text-sm font-medium text-black dark:text-white">{addr.label} — {addr.firstName} {addr.lastName}</p>
+                            <p className="text-sm text-black/50 dark:text-white/50 mt-0.5">{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
+                          </div>
+                        </label>
+                      ))}
+                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">+ Add new address</Link>
+                    </>
+                  ) : (
+                    <div className="p-6 border border-dashed border-black/15 dark:border-white/15 text-center">
+                      <p className="text-sm text-black/40 dark:text-white/40 mb-3">No saved addresses</p>
+                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.1em] uppercase text-black dark:text-white underline">Add address</Link>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <button
+                onClick={() => { if (validateStep1()) setStep(2); }}
+                className="w-full h-12 flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.16em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
+              >
+                Continue to Payment <ChevronRight size={14} />
+              </button>
+            </div>
           )}
 
-          <section className="space-y-4">
-            <div className="flex items-center gap-2">
-              <CreditCard size={20} className="text-brand-500" />
-              <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Payment</h2>
-            </div>
-            <label className="flex items-center gap-3 p-4 rounded-2xl border border-brand-500 bg-brand-50 dark:bg-brand-900/10 cursor-pointer">
-              <input type="radio" checked readOnly className="text-brand-500" />
-              <Truck size={18} />
-              <span className="font-medium text-sm">Cash on Delivery</span>
-            </label>
-          </section>
+          {/* ── Step 2: Payment ── */}
+          {step === 2 && (
+            <div className="space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-2xl text-black dark:text-white">Payment</h2>
+                <button onClick={() => setStep(1)} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Edit shipping</button>
+              </div>
 
-          <Input id="order-notes" label="Order notes (optional)" placeholder="Any special instructions…" value={notes} onChange={e => setNotes(e.target.value)} />
+              {/* Shipping summary */}
+              <div className="p-4 border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
+                <div className="flex items-center gap-2 mb-1">
+                  <Truck size={14} className="text-black/40 dark:text-white/40" />
+                  <p className="text-[10px] tracking-[0.14em] uppercase text-black/40 dark:text-white/40">Shipping to</p>
+                </div>
+                {mode === "guest" ? (
+                  <p className="text-sm text-black dark:text-white">{guest.firstName} {guest.lastName} · {guest.line1}, {guest.city}, {guest.state} {guest.postalCode}</p>
+                ) : (
+                  <AddressSummary addresses={addresses} selectedId={selectedAddress} />
+                )}
+              </div>
+
+              {/* Payment method */}
+              <div className="space-y-3">
+                <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Payment Method</p>
+                <div className="flex items-center gap-3 p-4 border border-black dark:border-white bg-black/[0.02] dark:bg-white/[0.02]">
+                  <input type="radio" checked readOnly />
+                  <CreditCard size={16} className="text-black/60 dark:text-white/60" />
+                  <span className="text-sm text-black dark:text-white font-medium">Cash on Delivery</span>
+                  <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">Pay when received</span>
+                </div>
+              </div>
+
+              <Input id="notes" label="Order notes (optional)" placeholder="Any special instructions…" value={notes} onChange={e => setNotes(e.target.value)} />
+
+              <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
+                Place Order · {formatPrice(total())}
+              </Button>
+              <p className="text-[11px] text-center text-black/30 dark:text-white/30">By placing your order you agree to our Terms of Service.</p>
+            </div>
+          )}
         </div>
 
+        {/* Order summary sidebar */}
         <div className="lg:col-span-2">
-          <div className="sticky top-24 rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 p-6 space-y-4">
-            <h2 className="font-semibold text-surface-900 dark:text-white">Order Summary</h2>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
+          <div className="sticky top-24 border border-black/10 dark:border-white/10 p-6 space-y-4">
+            <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Order Summary</p>
+            <div className="space-y-3 max-h-52 overflow-y-auto">
               {items.map(item => (
-                <div key={item.id} className="flex justify-between text-sm">
-                  <span className="text-surface-600 dark:text-surface-400 line-clamp-1 flex-1 mr-2">{item.product.name} x{item.quantity}</span>
-                  <span className="font-medium shrink-0">{formatPrice(Number(item.product.price) * item.quantity)}</span>
+                <div key={item.id} className="flex justify-between text-sm gap-3">
+                  <span className="text-black/60 dark:text-white/60 line-clamp-2 flex-1">{item.product.name} × {item.quantity}</span>
+                  <span className="font-medium shrink-0 text-black dark:text-white">{formatPrice(Number(item.product.price) * item.quantity)}</span>
                 </div>
               ))}
             </div>
             <Divider />
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-surface-500">Subtotal</span><span>{formatPrice(subtotal())}</span></div>
-              {discount() > 0 && <div className="flex justify-between text-green-600"><span>Discount</span><span>-{formatPrice(discount())}</span></div>}
-              <div className="flex justify-between"><span className="text-surface-500">Shipping</span><span>{shipping() === 0 ? "FREE" : formatPrice(shipping())}</span></div>
-              <div className="flex justify-between"><span className="text-surface-500">Tax</span><span>{formatPrice(tax())}</span></div>
+              <div className="flex justify-between text-black/60 dark:text-white/60">
+                <span>Subtotal</span><span className="text-black dark:text-white">{formatPrice(subtotal())}</span>
+              </div>
+              {discount() > 0 && (
+                <div className="flex justify-between text-green-600">
+                  <span>Discount ({coupon?.code})</span><span>−{formatPrice(discount())}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-black/60 dark:text-white/60">
+                <span>Shipping</span><span className="text-black dark:text-white">{shipping() === 0 ? "FREE" : formatPrice(shipping())}</span>
+              </div>
+              <div className="flex justify-between text-black/60 dark:text-white/60">
+                <span>Tax</span><span className="text-black dark:text-white">{formatPrice(tax())}</span>
+              </div>
             </div>
             <Divider />
-            <div className="flex justify-between font-semibold text-lg">
+            <div className="flex justify-between font-medium text-lg text-black dark:text-white">
               <span>Total</span><span>{formatPrice(total())}</span>
             </div>
-            <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
-              Place Order
-            </Button>
-            <p className="text-xs text-center text-surface-400">By placing your order you agree to our Terms of Service.</p>
+            <div className="flex flex-col gap-1.5 pt-1">
+              {[
+                { icon: Lock, text: "Secure checkout" },
+                { icon: Truck, text: "Free shipping over $150" },
+              ].map(({ icon: Icon, text }) => (
+                <div key={text} className="flex items-center gap-2">
+                  <Icon size={12} className="text-black/30 dark:text-white/30 shrink-0" />
+                  <span className="text-[11px] text-black/40 dark:text-white/40">{text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
