@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Cormorant_Garamond, Lora } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
@@ -23,9 +23,19 @@ const inter = Inter({
   display: "swap",
 });
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const lora = Lora({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-lora",
   display: "swap",
 });
 
@@ -42,13 +52,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${lora.variable}`}>
       <head>
         <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
       </head>
-      <body className="bg-white dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
+      <body className="bg-surface-50 dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
