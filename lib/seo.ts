@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://luxestore.com";
-const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Luxe Store";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://everythingstreet.com";
+const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Everything Street";
 
 interface SeoProps {
   title?: string;
