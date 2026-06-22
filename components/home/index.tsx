@@ -16,13 +16,15 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-20 border-b border-black/8 dark:border-white/8">
+    <section ref={ref} className="py-20 border-b border-surface-200 dark:border-white/8">
       <Container>
-        <div className="flex items-baseline justify-between mb-10">
-          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-light">{t("title")}</h2>
-          <p className="text-[11px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40">{t("subtitle")}</p>
+        <div className="mb-12">
+          <div className="flex items-end justify-between pb-5 border-b border-surface-200 dark:border-white/10">
+            <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-light leading-none tracking-tight">{t("title")}</h2>
+            <p className="text-[10px] tracking-[0.22em] uppercase text-surface-400 dark:text-white/40 mb-1">{t("subtitle")}</p>
+          </div>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 divide-x divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 divide-x divide-surface-200 dark:divide-white/8 border border-surface-200 dark:border-white/8">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.slug}
@@ -32,13 +34,13 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
             >
               <Link
                 href={`/${cat.slug}`}
-                className="group flex flex-col items-center justify-center gap-2 py-8 px-4 hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-colors text-center"
+                className="group flex flex-col items-center justify-center gap-2 py-8 px-4 hover:bg-brand-50 dark:hover:bg-white/[0.03] transition-colors text-center"
               >
-                <p className="text-[11px] tracking-[0.1em] uppercase font-medium text-black dark:text-white group-hover:opacity-60 transition-opacity">
+                <p className="text-[11px] tracking-[0.14em] uppercase font-medium text-surface-700 dark:text-white group-hover:text-brand-600 dark:group-hover:opacity-60 transition-colors">
                   {cat.name}
                 </p>
                 {cat._count && (
-                  <p className="text-[10px] text-black/30 dark:text-white/30">{cat._count.products}</p>
+                  <p className="text-[10px] text-surface-400 dark:text-white/30">{cat._count.products}</p>
                 )}
               </Link>
             </motion.div>
@@ -54,16 +56,18 @@ function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
   title: string; subtitle?: string; viewAllHref?: string; viewAllLabel?: string;
 }) {
   return (
-    <div className="flex items-baseline justify-between mb-10">
-      <div>
-        <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-light">{title}</h2>
-        {subtitle && <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-1">{subtitle}</p>}
+    <div className="mb-12">
+      <div className="flex items-end justify-between pb-5 border-b border-surface-200 dark:border-white/10">
+        <div>
+          <p className="text-[10px] tracking-[0.22em] uppercase text-brand-500 mb-3">{subtitle}</p>
+          <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-light leading-none tracking-tight">{title}</h2>
+        </div>
+        {viewAllHref && (
+          <Link href={viewAllHref} className="hidden sm:flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-surface-400 dark:text-white/50 hover:text-brand-500 transition-colors mb-1">
+            {viewAllLabel ?? "View All"} <ArrowRight size={10} />
+          </Link>
+        )}
       </div>
-      {viewAllHref && (
-        <Link href={viewAllHref} className="hidden sm:flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
-          {viewAllLabel ?? "View All"} <ArrowRight size={12} />
-        </Link>
-      )}
     </div>
   );
 }
@@ -82,10 +86,10 @@ export function FeaturedProductsSection() {
   }, []);
 
   return (
-    <section className="py-20 border-b border-black/8 dark:border-white/8">
+    <section className="py-20 border-b border-surface-200 dark:border-white/8">
       <Container>
         <EditorialHeader title={t("title")} subtitle={t("subtitle")} viewAllHref="/featured" viewAllLabel={t("viewAll")} />
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-surface-200 dark:divide-white/8 border border-surface-200 dark:border-white/8">
           {loading
             ? Array.from({ length: 8 }).map((_, i) => <ProductCardSkeleton key={i} />)
             : products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)

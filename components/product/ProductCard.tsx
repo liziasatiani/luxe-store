@@ -71,7 +71,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, delay: index * 0.04 }}
-        className={cn("group", darkBg ? "bg-black" : "bg-white dark:bg-black")}
+        className={cn("group", darkBg ? "bg-black" : "bg-surface-50 dark:bg-black border border-surface-200 dark:border-white/8")}
       >
         <Link href={`/products/${product.slug}`} className="block">
           {/* Image */}
@@ -80,7 +80,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               src={imageUrl} alt={product.name} fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               priority={priority}
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 group-hover:scale-105 img-plate"
             />
 
             {/* Badges */}
