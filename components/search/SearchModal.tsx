@@ -136,7 +136,7 @@ export function SearchModal() {
 }
 
 function SearchResultItem({ product, onClose }: { product: ProductCard; onClose: () => void }) {
-  const img = getProductImageUrl(product.images);
+  const img = getProductImageUrl(product.images, 200, 75);
   return (
     <Link
       href={`/products/${product.slug}`}

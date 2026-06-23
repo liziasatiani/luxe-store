@@ -188,8 +188,11 @@ export function ProductGrid({
             {Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-black/40 dark:text-white/40">No products found.</p>
+          <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+            <SlidersHorizontal size={56} strokeWidth={1} className="text-black/10 dark:text-white/10 mb-8" />
+            <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">No results</p>
+            <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">Nothing matches</h3>
+            <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">Try adjusting your filters or search terms to find what you&apos;re looking for.</p>
           </div>
         ) : (
           <>

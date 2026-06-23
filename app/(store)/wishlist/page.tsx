@@ -59,9 +59,10 @@ export default function WishlistPage() {
 
       {uniqueIds.length === 0 ? (
         <EmptyState
-          icon={<Heart size={64} />}
-          title="Your wishlist is empty"
-          description="Tap the heart icon on any product to save it here. No account needed!"
+          icon={<Heart size={56} strokeWidth={1} />}
+          eyebrow="Wishlist"
+          title="Nothing saved yet"
+          description="Tap the heart on any product to save it here. No account needed."
           action={
             <Button variant="gold" size="lg" asChild>
               <Link href="/">Start Shopping</Link>

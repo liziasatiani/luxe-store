@@ -88,6 +88,16 @@ export function getProductImageUrl(
     const sep = url.includes("?") ? "&" : "?";
     return `${url}${sep}width=${width}&quality=${quality}&format=webp`;
   }
+  // Apply Unsplash image optimisation params (WebP + resize + quality)
+  // Only add params not already present to avoid duplicates in stored URLs
+  if (url.includes("unsplash.com")) {
+    const parsed = new URL(url);
+    if (!parsed.searchParams.has("w")) parsed.searchParams.set("w", String(width));
+    if (!parsed.searchParams.has("q")) parsed.searchParams.set("q", String(quality));
+    if (!parsed.searchParams.has("auto")) parsed.searchParams.set("auto", "format");
+    if (!parsed.searchParams.has("fit")) parsed.searchParams.set("fit", "crop");
+    return parsed.toString();
+  }
   return url;
 }
 

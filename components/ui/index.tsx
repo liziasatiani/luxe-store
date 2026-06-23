@@ -98,23 +98,30 @@ export function SectionHeader({
 // ─── Empty State ─────────────────────────────────────────────
 export function EmptyState({
   icon,
+  eyebrow,
   title,
   description,
   action,
 }: {
   icon?: React.ReactNode;
+  eyebrow?: string;
   title: string;
   description?: string;
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-      {icon && <div className="mb-4 text-surface-300 dark:text-surface-600">{icon}</div>}
-      <h3 className="text-xl font-semibold text-surface-800 dark:text-surface-200">{title}</h3>
-      {description && (
-        <p className="mt-2 text-surface-500 max-w-sm">{description}</p>
+    <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+      {icon && (
+        <div className="mb-8 text-black/10 dark:text-white/10">{icon}</div>
       )}
-      {action && <div className="mt-6">{action}</div>}
+      {eyebrow && (
+        <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">{eyebrow}</p>
+      )}
+      <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">{title}</h3>
+      {description && (
+        <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">{description}</p>
+      )}
+      {action && <div className="mt-8">{action}</div>}
     </div>
   );
 }
