@@ -15,7 +15,7 @@ export function HeroSection() {
         fill
         priority
         fetchPriority="high"
-        className="object-cover object-center opacity-30"
+        className="object-cover object-center opacity-50"
         sizes="100vw"
       />
       {/* Dark overlay for text legibility */}

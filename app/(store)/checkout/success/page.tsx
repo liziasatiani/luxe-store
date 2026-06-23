@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Package, ArrowRight, CheckCircle, UserPlus } from "lucide-react";
 import { Container } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal, formatPrice } from "@/lib/utils";
+import { serializeDecimal, formatPrice, getProductImageUrl } from "@/lib/utils";
 import { auth } from "@/lib/auth";
 
 interface OrderItem {
@@ -36,6 +37,13 @@ export default async function SuccessPage({ searchParams }: Props) {
     const found = await prisma.order.findFirst({ where, include: { items: true } });
     if (found) order = serializeDecimal(found) as SerializedOrder;
   }
+
+  const upsellProducts = await prisma.product.findMany({
+    where: { isActive: true, isBestSeller: true },
+    select: { id: true, name: true, slug: true, price: true, comparePrice: true, images: { select: { url: true, isPrimary: true } }, brand: { select: { name: true } } },
+    orderBy: { ratingAvg: "desc" },
+    take: 4,
+  }).then(rows => rows.map(r => serializeDecimal(r)));
 
   return (
     <Container className="py-20 max-w-lg text-center">
@@ -93,6 +101,38 @@ export default async function SuccessPage({ searchParams }: Props) {
                 <Link href={`/register?orderId=${order.id}`}>Create Account</Link>
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Post-purchase upsell */}
+      {upsellProducts.length > 0 && (
+        <div className="mt-16 text-left border-t border-surface-100 dark:border-surface-800 pt-12">
+          <div className="flex items-baseline justify-between mb-8">
+            <div>
+              <p className="text-[10px] tracking-[0.22em] uppercase text-brand-500 mb-2">Complete Your Collection</p>
+              <h2 className="font-display text-2xl text-surface-900 dark:text-white uppercase tracking-[0.04em]">You May Also Like</h2>
+            </div>
+            <Link href="/best" className="hidden sm:flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
+              View All <ArrowRight size={12} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {upsellProducts.map((p) => {
+              const img = getProductImageUrl((p as { images?: { url: string; isPrimary?: boolean }[] }).images ?? []);
+              const price = formatPrice(Number((p as { price: number }).price));
+              return (
+                <Link key={(p as { id: string }).id} href={`/products/${(p as { slug: string }).slug}`} className="group block">
+                  <div className="relative aspect-square bg-surface-50 dark:bg-surface-800 overflow-hidden mb-3">
+                    {img && (
+                      <Image src={img} alt={(p as { name: string }).name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="200px" />
+                    )}
+                  </div>
+                  <p className="text-[10px] tracking-[0.1em] uppercase text-surface-400 mb-1">{(p as { brand?: { name: string } }).brand?.name}</p>
+                  <p className="text-sm text-surface-900 dark:text-white leading-snug mb-1 line-clamp-2">{(p as { name: string }).name}</p>
+                  <p className="text-sm font-medium text-surface-900 dark:text-white">{price}</p>
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

@@ -20,7 +20,7 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
       <Container>
         <div className="mb-12">
           <div className="flex items-end justify-between pb-5 border-b border-surface-200 dark:border-white/10">
-            <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-light leading-none tracking-tight">{t("title")}</h2>
+            <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-normal leading-none uppercase tracking-[0.02em]">{t("title")}</h2>
             <p className="text-[10px] tracking-[0.22em] uppercase text-surface-400 dark:text-white/40 mb-1">{t("subtitle")}</p>
           </div>
         </div>
@@ -60,7 +60,7 @@ function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
       <div className="flex items-end justify-between pb-5 border-b border-surface-200 dark:border-white/10">
         <div>
           <p className="text-[10px] tracking-[0.22em] uppercase text-brand-500 mb-3">{subtitle}</p>
-          <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-light leading-none tracking-tight">{title}</h2>
+          <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-normal leading-none uppercase tracking-[0.02em]">{title}</h2>
         </div>
         {viewAllHref && (
           <Link href={viewAllHref} className="hidden sm:flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-surface-400 dark:text-white/50 hover:text-brand-500 transition-colors mb-1">
@@ -133,7 +133,7 @@ export function FlashSaleSection() {
       <Container>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
           <div>
-            <h2 className="font-display text-2xl md:text-3xl text-white font-light">{t("title")}</h2>
+            <h2 className="font-display text-2xl md:text-3xl text-white font-normal uppercase tracking-[0.04em]">{t("title")}</h2>
             <p className="text-[11px] tracking-[0.08em] uppercase text-white/40 mt-1">{t("subtitle")}</p>
           </div>
           <div className="flex items-center gap-4">
@@ -192,7 +192,7 @@ export function BestSellersSection({ initialProducts = [] }: { initialProducts?:
     <section className="py-20 border-b border-black/8 dark:border-white/8">
       <Container>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
-          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-light">{t("title")}</h2>
+          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{t("title")}</h2>
           <div className="flex items-center gap-0 border border-black/12 dark:border-white/12">
             {(["all", "beauty", "tech"] as const).map(key => (
               <button
@@ -257,7 +257,7 @@ export function TestimonialsSection() {
     <section className="py-20 border-b border-black/8 dark:border-white/8">
       <Container>
         <div className="text-center mb-12">
-          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-light">{t("title")}</h2>
+          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{t("title")}</h2>
           <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-2">{t("subtitle")}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
@@ -326,7 +326,7 @@ export function NewsletterSection() {
           className="text-center max-w-lg mx-auto"
         >
           <p className="text-[10px] tracking-[0.28em] uppercase text-white/30 mb-6">{t("badge")}</p>
-          <h2 className="font-display text-3xl md:text-4xl text-white font-light mb-4">{t("title")}</h2>
+          <h2 className="font-display text-3xl md:text-4xl text-white font-normal uppercase tracking-[0.04em] mb-4">{t("title")}</h2>
           <p className="text-sm text-white/40 mb-10 leading-relaxed">{t("subtitle")}</p>
 
           {status === "success" ? (
