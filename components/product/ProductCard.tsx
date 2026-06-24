@@ -145,7 +145,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
             {product.brand && (
               <p className={cn("text-[10px] tracking-[0.14em] uppercase", textMuted)}>{product.brand.name}</p>
             )}
-            <h3 className={cn("text-sm leading-snug line-clamp-2", textMain)}>
+            <h3 className={cn("font-serif text-sm leading-snug line-clamp-2", textMain)}>
               {product.name}
             </h3>
             <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={11} />

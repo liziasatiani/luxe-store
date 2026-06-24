@@ -40,7 +40,7 @@ export function HeroSection() {
         >
           {t("title")}
           <br />
-          <span className="italic text-brand-300">{t("titleGold")}</span>
+          <span className="font-serif italic font-normal text-brand-300">{t("titleGold")}</span>
         </motion.h1>
 
         <motion.p
