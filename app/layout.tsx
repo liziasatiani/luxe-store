@@ -14,6 +14,7 @@ import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { PWAInit } from "@/components/PWAInit";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -75,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Toaster position="bottom-right" />
               <CookieConsent />
               <PWAInit />
+              <ScrollToTop />
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>
