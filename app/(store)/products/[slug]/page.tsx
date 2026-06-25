@@ -12,6 +12,7 @@ import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
 import { TrackView } from "@/components/product/TrackView";
 import { Badge, RatingStars, Container } from "@/components/ui";
+import { Truck, RotateCcw, ShieldCheck, Lock } from "lucide-react";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import Link from "next/link";
@@ -92,7 +93,7 @@ export default async function ProductPage({ params }: Props) {
               {discount > 0 && <Badge variant="error">-{discount}% Off</Badge>}
             </div>
 
-            <h1 className="font-display text-3xl md:text-4xl text-surface-900 dark:text-white leading-tight">{p.name}</h1>
+            <h1 className="font-display text-3xl md:text-4xl text-black dark:text-white leading-tight">{p.name}</h1>
 
             <div className="flex items-center gap-3">
               <RatingStars rating={Number(p.ratingAvg)} count={p.ratingCount} size={16} />
@@ -150,15 +151,16 @@ export default async function ProductPage({ params }: Props) {
             )}
           </div>
           <div>
-            <div className="rounded-2xl border border-surface-100 dark:border-surface-800 p-5 space-y-3">
+            <div className="border border-black/8 dark:border-white/8 p-5 space-y-4">
               {[
-                { icon: "🚚", label: "Free shipping on orders over $75" },
-                { icon: "↩️", label: "30-day hassle-free returns" },
-                { icon: "✓",  label: "100% authentic products" },
-                { icon: "🔒", label: "Secure checkout" },
+                { icon: <Truck size={15} />, label: "Free shipping on orders over $75" },
+                { icon: <RotateCcw size={15} />, label: "30-day hassle-free returns" },
+                { icon: <ShieldCheck size={15} />, label: "100% authentic products" },
+                { icon: <Lock size={15} />, label: "Secure checkout" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3 text-sm text-surface-600 dark:text-surface-400">
-                  <span>{item.icon}</span>{item.label}
+                <div key={item.label} className="flex items-center gap-3 text-sm text-black/50 dark:text-white/50">
+                  <span className="shrink-0 text-black/30 dark:text-white/30">{item.icon}</span>
+                  {item.label}
                 </div>
               ))}
             </div>

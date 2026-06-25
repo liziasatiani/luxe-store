@@ -15,6 +15,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { PWAInit } from "@/components/PWAInit";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { MotionProvider } from "@/components/ui/MotionProvider";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -62,6 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <MotionProvider>
               <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-surface-900 focus:rounded-xl focus:shadow-luxury-md focus:outline-none">
                 Skip to content
               </a>
@@ -77,6 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <CookieConsent />
               <PWAInit />
               <ScrollToTop />
+              </MotionProvider>
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>
