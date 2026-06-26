@@ -106,7 +106,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             </motion.div>
           </AnimatePresence>
 
-          <div className="absolute top-3 right-3 w-9 h-9 bg-white/80 dark:bg-black/60 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+          <div className="absolute top-3 right-3 w-11 h-11 bg-white/80 dark:bg-black/60 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
             <ZoomIn size={15} className="text-black dark:text-white" />
           </div>
 
@@ -115,14 +115,14 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               <button
                 onClick={(e) => { e.stopPropagation(); prev(); }}
                 aria-label="Previous image"
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/90 dark:bg-black/80 flex items-center justify-center text-black dark:text-white shadow-luxury opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 dark:bg-black/80 flex items-center justify-center text-black dark:text-white shadow-luxury opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <ChevronLeft size={16} />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); next(); }}
                 aria-label="Next image"
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/90 dark:bg-black/80 flex items-center justify-center text-black dark:text-white shadow-luxury opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 dark:bg-black/80 flex items-center justify-center text-black dark:text-white shadow-luxury opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <ChevronRight size={16} />
               </button>
@@ -180,7 +180,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                   ref={closeBtn}
                   onClick={close}
                   aria-label="Close gallery"
-                  className="w-9 h-9 flex items-center justify-center text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40"
+                  className="w-11 h-11 flex items-center justify-center text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40"
                 >
                   <X size={18} />
                 </button>
