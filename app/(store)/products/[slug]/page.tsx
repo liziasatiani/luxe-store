@@ -14,6 +14,7 @@ import { TrackView } from "@/components/product/TrackView";
 import { Badge, RatingStars, Container } from "@/components/ui";
 import { Truck, RotateCcw, ShieldCheck, Lock } from "lucide-react";
 import { TrustBar } from "@/components/ui/TrustBar";
+import { PressBar } from "@/components/home/PressBar";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -71,10 +72,11 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildProductSchema({ ...p, brand: p.brand })) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildProductSchema({ ...p, brand: p.brand, reviews: p.reviews })) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildBreadcrumbSchema(breadcrumbs)) }} />
 
       <TrustBar />
+      <PressBar />
       <Container className="py-8">
         <Breadcrumbs items={breadcrumbs} />
 
@@ -153,14 +155,17 @@ export default async function ProductPage({ params }: Props) {
           <div>
             <div className="border border-black/8 dark:border-white/8 p-5 space-y-4">
               {[
-                { icon: <Truck size={15} />, label: "Free shipping on orders over $75" },
-                { icon: <RotateCcw size={15} />, label: "30-day hassle-free returns" },
-                { icon: <ShieldCheck size={15} />, label: "100% authentic products" },
-                { icon: <Lock size={15} />, label: "Secure checkout" },
+                { icon: <Truck size={15} />, label: "Free shipping on orders over $75", href: "/shipping" },
+                { icon: <RotateCcw size={15} />, label: "30-day hassle-free returns", href: "/returns" },
+                { icon: <ShieldCheck size={15} />, label: "100% authentic products", href: null },
+                { icon: <Lock size={15} />, label: "256-bit SSL secure checkout", href: null },
               ].map((item) => (
                 <div key={item.label} className="flex items-center gap-3 text-sm text-black/50 dark:text-white/50">
                   <span className="shrink-0 text-black/30 dark:text-white/30">{item.icon}</span>
-                  {item.label}
+                  {item.href
+                    ? <Link href={item.href} className="hover:text-black dark:hover:text-white transition-colors">{item.label}</Link>
+                    : item.label
+                  }
                 </div>
               ))}
             </div>

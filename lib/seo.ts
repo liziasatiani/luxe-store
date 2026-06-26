@@ -49,6 +49,34 @@ export function buildMetadata({
   };
 }
 
+export function buildOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${BASE_URL}/#organization`,
+        name: SITE_NAME,
+        url: BASE_URL,
+        logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+        sameAs: [],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${BASE_URL}/#website`,
+        url: BASE_URL,
+        name: SITE_NAME,
+        publisher: { "@id": `${BASE_URL}/#organization` },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${BASE_URL}/search?q={search_term_string}` },
+          "query-input": "required name=search_term_string",
+        },
+      },
+    ],
+  };
+}
+
 export function buildProductSchema(product: {
   name: string;
   description?: string | null;
@@ -60,6 +88,7 @@ export function buildProductSchema(product: {
   ratingCount: number;
   stock: number;
   sku: string;
+  reviews?: Array<{ rating: number; comment: string | null; createdAt: string | Date; user?: { name: string | null } | null }>;
 }) {
   return {
     "@context": "https://schema.org",
@@ -94,6 +123,13 @@ export function buildProductSchema(product: {
             worstRating: 1,
           }
         : undefined,
+    review: product.reviews?.slice(0, 5).map((r) => ({
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
+      author: { "@type": "Person", name: r.user?.name ?? "Verified Buyer" },
+      reviewBody: r.comment ?? "",
+      datePublished: new Date(r.createdAt).toISOString().split("T")[0],
+    })),
   };
 }
 
@@ -112,21 +148,3 @@ export function buildBreadcrumbSchema(
   };
 }
 
-export function buildOrganizationSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: BASE_URL,
-    logo: `${BASE_URL}/logo.png`,
-    sameAs: [
-      process.env.NEXT_PUBLIC_INSTAGRAM_URL,
-      process.env.NEXT_PUBLIC_FACEBOOK_URL,
-    ].filter(Boolean),
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "customer service",
-      email: "hello@luxestore.com",
-    },
-  };
-}
