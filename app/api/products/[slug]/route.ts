@@ -59,7 +59,7 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: { product: serializeDecimal(product), related: serializeDecimal(related) },
-    });
+    }, { headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" } });
   } catch (err) {
     console.error("[product/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch product" }, { status: 500 });

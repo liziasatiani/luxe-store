@@ -18,7 +18,9 @@ export async function GET(req: NextRequest) {
       take: limit,
     });
 
-    return NextResponse.json({ success: true, data: { brands } });
+    return NextResponse.json({ success: true, data: { brands } }, {
+      headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
+    });
   } catch (err) {
     console.error("[brands/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch brands" }, { status: 500 });
