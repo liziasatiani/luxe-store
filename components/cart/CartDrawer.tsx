@@ -13,6 +13,10 @@ import type { ProductCard } from "@/types";
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon, setCoupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
+  const FREE_THRESHOLD = 75;
+  const subtotalValue = items.reduce((s, i) => s + Number(i.variant?.price ?? i.product.price) * i.quantity, 0);
+  const amountToFreeShip = Math.max(0, FREE_THRESHOLD - subtotalValue);
+  const freeShipProgress = Math.min(100, (subtotalValue / FREE_THRESHOLD) * 100);
   const [suggestions, setSuggestions] = useState<ProductCard[]>([]);
   const [couponInput, setCouponInput] = useState("");
   const [couponError, setCouponError] = useState("");
@@ -101,6 +105,29 @@ export function CartDrawer() {
                 <X size={18} />
               </button>
             </div>
+
+            {/* Free shipping progress */}
+            {items.length > 0 && (
+              <div className="px-5 py-3 border-b border-surface-100 dark:border-surface-800">
+                {amountToFreeShip === 0 ? (
+                  <p className="text-[10px] tracking-[0.12em] uppercase text-green-600 dark:text-green-400 font-medium text-center">
+                    ✓ You&apos;ve unlocked free shipping
+                  </p>
+                ) : (
+                  <p className="text-[10px] tracking-[0.08em] uppercase text-black/50 dark:text-white/50 mb-2">
+                    Add <span className="text-black dark:text-white font-semibold">{formatPrice(amountToFreeShip)}</span> more for free shipping
+                  </p>
+                )}
+                <div className="h-px bg-surface-100 dark:bg-surface-800 overflow-hidden">
+                  <motion.div
+                    className="h-full bg-black dark:bg-white"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${freeShipProgress}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Items */}
             <div className="flex-1 overflow-y-auto">
