@@ -1,67 +1,82 @@
 import { Container } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
+import { ShieldCheck, Globe, Lock } from "lucide-react";
 
-export const metadata = buildMetadata({ title: "About Us", description: "Learn about Everything Street — your destination for luxury beauty and premium tech." });
+export const metadata = buildMetadata({ title: "About Us", description: "Everything Street — where luxury beauty and premium technology share the same address." });
 
 export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <div className="bg-surface-950 text-white py-24">
+      <div className="bg-black text-white py-28">
         <Container className="text-center max-w-3xl">
-          <p className="text-brand-400 text-sm font-medium uppercase tracking-widest mb-4">Our Story</p>
-          <h1 className="font-display text-5xl md:text-6xl mb-6">Luxury, Curated for You</h1>
-          <p className="text-surface-400 text-lg leading-relaxed">
-            Everything Street was born from a simple belief: everyone deserves access to the world's finest beauty and technology, with the trust and service they deserve.
+          <p className="text-[10px] tracking-[0.24em] uppercase text-white/40 mb-6">Our Story</p>
+          <h1 className="font-display text-5xl md:text-6xl font-normal mb-8 leading-tight">Two worlds,<br />one address.</h1>
+          <p className="text-white/50 text-lg leading-relaxed max-w-xl mx-auto">
+            Everything Street was built on a single conviction: that great skincare and great technology deserve the same standard of curation, sourcing, and trust.
           </p>
         </Container>
       </div>
 
-      <Container className="py-20 max-w-4xl">
-        {/* Mission */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20">
+      <Container className="py-24 max-w-4xl">
+        {/* Mission / Promise */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
           <div>
-            <h2 className="font-display text-3xl text-surface-900 dark:text-white mb-4">Our Mission</h2>
-            <p className="text-surface-600 dark:text-surface-400 leading-relaxed">
-              We curate and deliver authentic luxury beauty and premium tech products, sourced directly from authorized distributors. Every product is verified, every brand is approved, and every experience is crafted with care.
+            <p className="text-[10px] tracking-[0.2em] uppercase text-black/30 dark:text-white/30 mb-4">Mission</p>
+            <h2 className="font-display text-2xl text-black dark:text-white font-normal mb-4">Authentic, always.</h2>
+            <p className="text-black/50 dark:text-white/50 leading-relaxed">
+              We source directly from authorized distributors for every brand we carry — La Mer, Charlotte Tilbury, Sony, Dyson, and beyond. No grey-market supply chains. No ambiguity about provenance. Every product on this site is the same product sold in the brand's own boutique.
             </p>
           </div>
           <div>
-            <h2 className="font-display text-3xl text-surface-900 dark:text-white mb-4">Our Promise</h2>
-            <p className="text-surface-600 dark:text-surface-400 leading-relaxed">
-              100% authentic products. Secure transactions. Fast, reliable shipping. And a customer service team that genuinely cares. We stand behind every product we sell, every single time.
+            <p className="text-[10px] tracking-[0.2em] uppercase text-black/30 dark:text-white/30 mb-4">Promise</p>
+            <h2 className="font-display text-2xl text-black dark:text-white font-normal mb-4">Service you can feel.</h2>
+            <p className="text-black/50 dark:text-white/50 leading-relaxed">
+              Luxury is not just the product — it's the experience around it. Secure checkout, transparent tracking, 30-day returns, and a customer team that responds in hours, not days. We treat every order as if it were our own.
             </p>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-12 border-y border-surface-100 dark:border-surface-800 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-black/8 dark:border-white/8 mb-24">
           {[
-            { value: "186+",  label: "Curated Products" },
-            { value: "31",    label: "Luxury Brands"    },
-            { value: "50K+",  label: "Happy Customers"  },
-            { value: "4.9★",  label: "Average Rating"   },
-          ].map(s => (
-            <div key={s.label} className="text-center">
-              <p className="font-display text-4xl text-surface-900 dark:text-white">{s.value}</p>
-              <p className="text-sm text-surface-500 mt-1">{s.label}</p>
+            { value: "186+", label: "Curated Products" },
+            { value: "31",   label: "Luxury Brands"   },
+            { value: "50K+", label: "Customers Served" },
+            { value: "4.9",  label: "Average Rating"   },
+          ].map((s, i) => (
+            <div key={s.label} className={`text-center py-10 px-6 ${i < 3 ? "border-r border-black/8 dark:border-white/8" : ""}`}>
+              <p className="font-display text-4xl text-black dark:text-white font-normal">{s.value}</p>
+              <p className="text-[10px] tracking-[0.12em] uppercase text-black/30 dark:text-white/30 mt-2">{s.label}</p>
             </div>
           ))}
         </div>
 
         {/* Values */}
         <div>
-          <h2 className="font-display text-3xl text-surface-900 dark:text-white mb-8 text-center">What We Stand For</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-black/30 dark:text-white/30 text-center mb-12">What We Stand For</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-black/8 dark:border-white/8">
             {[
-              { icon: "✓", title: "Authenticity", desc: "Every product is sourced from authorized partners. Zero counterfeits, zero compromises." },
-              { icon: "🔒", title: "Trust & Security", desc: "Bank-grade encryption on every transaction. Your data and money are always safe." },
-              { icon: "🌍", title: "Global Access", desc: "Luxury should know no borders. We ship to over 50 countries worldwide." },
-            ].map(v => (
-              <div key={v.title} className="p-6 rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900">
-                <span className="text-3xl">{v.icon}</span>
-                <h3 className="font-semibold text-surface-900 dark:text-white mt-3 mb-2">{v.title}</h3>
-                <p className="text-sm text-surface-500 leading-relaxed">{v.desc}</p>
+              {
+                icon: <ShieldCheck size={20} strokeWidth={1.5} />,
+                title: "Authenticity",
+                desc: "Every product is sourced from authorized partners. Counterfeits are not a risk we accept or a shortcut we take.",
+              },
+              {
+                icon: <Lock size={20} strokeWidth={1.5} />,
+                title: "Security",
+                desc: "256-bit SSL on every transaction. Your payment details and personal data are protected at every step.",
+              },
+              {
+                icon: <Globe size={20} strokeWidth={1.5} />,
+                title: "Global Reach",
+                desc: "Luxury without borders. We ship to over 50 countries — same quality, same care, wherever you are.",
+              },
+            ].map((v, i) => (
+              <div key={v.title} className={`p-10 ${i < 2 ? "border-r border-black/8 dark:border-white/8" : ""}`}>
+                <span className="text-black/30 dark:text-white/30">{v.icon}</span>
+                <h3 className="font-display text-lg text-black dark:text-white font-normal mt-5 mb-3">{v.title}</h3>
+                <p className="text-sm text-black/40 dark:text-white/40 leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
