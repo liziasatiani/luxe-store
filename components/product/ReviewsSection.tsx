@@ -29,7 +29,12 @@ interface Props {
 
 export function ReviewsSection({ productId, initialReviews, avgRating, reviewCount }: Props) {
   const { data: session } = useSession();
-  const [reviews] = useState(initialReviews);
+  const [sort, setSort] = useState<"newest" | "highest" | "lowest">("newest");
+  const reviews = [...initialReviews].sort((a, b) => {
+    if (sort === "highest") return b.rating - a.rating;
+    if (sort === "lowest") return a.rating - b.rating;
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
   const [showForm, setShowForm] = useState(false);
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
@@ -66,13 +71,26 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
         <h2 className="font-display text-2xl text-black dark:text-white font-light">
           Customer Reviews ({reviewCount})
         </h2>
-        <Button onClick={() => setShowForm((f) => !f)} variant="outline" size="sm" className="!rounded-none border-black/20 dark:border-white/20 text-[10px] tracking-[0.1em] uppercase">
-          {showForm ? "Cancel" : "Write a Review"}
-        </Button>
+        <div className="flex items-center gap-3">
+          {reviews.length > 1 && (
+            <select
+              value={sort}
+              onChange={e => setSort(e.target.value as typeof sort)}
+              className="h-8 pl-3 pr-7 border border-black/15 dark:border-white/15 bg-transparent text-[10px] tracking-[0.08em] uppercase text-black dark:text-white focus:outline-none appearance-none cursor-pointer"
+            >
+              <option value="newest">Newest</option>
+              <option value="highest">Highest rated</option>
+              <option value="lowest">Lowest rated</option>
+            </select>
+          )}
+          <Button onClick={() => setShowForm((f) => !f)} variant="outline" size="sm" className="!rounded-none border-black/20 dark:border-white/20 text-[10px] tracking-[0.1em] uppercase">
+            {showForm ? "Cancel" : "Write a Review"}
+          </Button>
+        </div>
       </div>
 
       {/* Summary */}
