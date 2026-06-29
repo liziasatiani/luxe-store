@@ -360,6 +360,82 @@ export function NewsletterSection() {
   );
 }
 
+// ─── The Edit ────────────────────────────────────────────────
+export function TheEditSection() {
+  const [products, setProducts] = useState<ProductCardType[]>([]);
+
+  useEffect(() => {
+    fetch("/api/products?featured=true&limit=3&sort=best-selling")
+      .then(r => r.json())
+      .then(d => setProducts(d.data?.products ?? []));
+  }, []);
+
+  if (products.length === 0) return null;
+
+  return (
+    <section className="py-20 bg-black border-b border-white/8">
+      <Container>
+        <div className="flex items-end justify-between pb-5 border-b border-white/10 mb-12">
+          <div>
+            <p className="text-[10px] tracking-[0.28em] uppercase text-white/30 mb-3">Editor&apos;s selection</p>
+            <h2 className="font-display text-5xl md:text-6xl text-white font-normal leading-none uppercase tracking-[0.02em]">The Edit</h2>
+          </div>
+          <Link href="/featured" className="hidden sm:flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-white/40 hover:text-white transition-colors mb-1">
+            View all <ArrowRight size={10} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-x divide-y divide-white/8 border border-white/8">
+          {products.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <ProductCard product={p} index={i} darkBg />
+            </motion.div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// ─── Homepage Recently Viewed ─────────────────────────────────
+export function HomepageRecentlyViewed() {
+  const [items, setItems] = useState<ProductCardType[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      const raw = localStorage.getItem("recently-viewed-store");
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      const stored: ProductCardType[] = parsed?.state?.items ?? [];
+      setItems(stored.slice(0, 4));
+    } catch { /* ignore */ }
+  }, []);
+
+  if (!mounted || items.length < 2) return null;
+
+  return (
+    <section className="py-20 border-b border-black/8 dark:border-white/8">
+      <Container>
+        <div className="mb-12">
+          <div className="flex items-end justify-between pb-5 border-b border-black/10 dark:border-white/10">
+            <h2 className="font-display text-5xl md:text-6xl text-black dark:text-white font-normal leading-none uppercase tracking-[0.02em]">Recently Viewed</h2>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+          {items.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 // ─── New Arrivals ─────────────────────────────────────────────
 export function NewArrivalsSection() {
   const t = useTranslations("pages.newArrivals");

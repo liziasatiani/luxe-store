@@ -21,6 +21,15 @@ interface Props {
   };
 }
 
+function getDeliveryEstimate(): string {
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun, 6=Sat
+  const daysToAdd = day === 0 ? 2 : day === 5 ? 3 : day === 6 ? 2 : 2;
+  const d = new Date(now);
+  d.setDate(d.getDate() + daysToAdd);
+  return d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+}
+
 export function AddToCartSection({ product }: Props) {
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
@@ -196,7 +205,7 @@ export function AddToCartSection({ product }: Props) {
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
         {[
-          { icon: Truck,      text: "Free shipping on orders over $150" },
+          { icon: Truck,      text: `Free shipping on orders over $150 — get it by ${getDeliveryEstimate()}` },
           { icon: RotateCcw,  text: "30-day free returns" },
           { icon: Shield,     text: "100% authentic — guaranteed" },
         ].map(({ icon: Icon, text }) => (
