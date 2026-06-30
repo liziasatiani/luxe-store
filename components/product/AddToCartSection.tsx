@@ -5,6 +5,7 @@ import { useCartStore, useWishlistStore } from "@/store";
 import { cn, formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { ProductCard } from "@/types";
 
 interface Variant {
@@ -206,12 +207,16 @@ export function AddToCartSection({ product }: Props) {
       <div className="flex flex-col gap-1.5 pt-1">
         {[
           { icon: Truck,      text: `Free shipping on orders over $150 — get it by ${getDeliveryEstimate()}` },
-          { icon: RotateCcw,  text: "30-day free returns" },
+          { icon: RotateCcw,  text: "30-day free returns", href: "/returns" },
           { icon: Shield,     text: "100% authentic — guaranteed" },
-        ].map(({ icon: Icon, text }) => (
+        ].map(({ icon: Icon, text, href }) => (
           <div key={text} className="flex items-center gap-2">
             <Icon size={13} className="text-black/40 dark:text-white/40 shrink-0" />
-            <span className="text-[11px] text-black/50 dark:text-white/50">{text}</span>
+            {href ? (
+              <Link href={href} className="text-[11px] text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white underline-offset-2 hover:underline transition-colors">{text}</Link>
+            ) : (
+              <span className="text-[11px] text-black/50 dark:text-white/50">{text}</span>
+            )}
           </div>
         ))}
       </div>

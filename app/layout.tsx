@@ -28,14 +28,14 @@ const inter = Inter({
 
 const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   variable: "--font-cinzel",
   display: "swap",
 });
 
 const lora = Lora({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400"],
   style: ["normal", "italic"],
   variable: "--font-lora",
   display: "swap",
