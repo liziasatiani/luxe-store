@@ -75,13 +75,15 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
       >
         <Link href={`/products/${product.slug}`} className="block">
           {/* Image */}
-          <div className="relative overflow-hidden aspect-[3/4]">
+          <div className="relative overflow-hidden aspect-[3/4] bg-stone-100 dark:bg-zinc-900">
             <Image
               src={imageUrl} alt={product.name} fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               priority={priority}
               className="object-cover transition-transform duration-700 group-hover:scale-105 img-plate"
             />
+            {/* Depth gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
 
             {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-1">
@@ -141,22 +143,22 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
           </div>
 
           {/* Info */}
-          <div className="px-4 py-4 space-y-1">
+          <div className="px-4 pt-3 pb-5">
             {product.brand && (
-              <p className={cn("text-[10px] tracking-[0.14em] uppercase", textMuted)}>{product.brand.name}</p>
+              <p className={cn("text-[10px] tracking-[0.14em] uppercase mb-1.5", textMuted)}>{product.brand.name}</p>
             )}
-            <h3 className={cn("font-serif text-sm leading-snug line-clamp-2", textMain)}>
+            <h3 className={cn("font-serif text-sm leading-snug line-clamp-2 mb-2", textMain)}>
               {product.name}
             </h3>
             <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={11} />
-            <div className="flex items-center gap-2 pt-1">
+            <div className="flex items-center gap-2 mt-2.5">
               <span className={cn("text-sm font-medium", textMain)}>{formatPrice(price)}</span>
               {comparePrice && comparePrice > price && (
                 <span className={cn("text-xs line-through", textMuted)}>{formatPrice(comparePrice)}</span>
               )}
             </div>
             {product.stockStatus === "LOW_STOCK" && (
-              <p className="text-[10px] tracking-[0.08em] uppercase text-red-500">{t("lowStock")}</p>
+              <p className="text-[10px] tracking-[0.08em] uppercase text-red-500 mt-1">{t("lowStock")}</p>
             )}
           </div>
         </Link>

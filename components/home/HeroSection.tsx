@@ -10,7 +10,7 @@ export function HeroSection() {
     <section className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
       {/* Editorial hero image */}
       <Image
-        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&q=75&auto=format"
+        src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format"
         alt="Luxury fashion editorial"
         fill
         priority
