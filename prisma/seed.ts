@@ -73,10 +73,10 @@ async function main() {
   // ── 1. Admin User ─────────────────────────────────────────
   const adminPassword = await bcrypt.hash("Admin@123456", 12);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@luxestore.com" },
+    where: { email: "admin@everythingstreet.com" },
     update: {},
     create: {
-      email: "admin@luxestore.com",
+      email: "admin@everythingstreet.com",
       name: "Store Admin",
       role: Role.SUPER_ADMIN,
       passwordHash: adminPassword,
@@ -88,10 +88,10 @@ async function main() {
   // Demo customer
   const customerPassword = await bcrypt.hash("Demo@123456", 12);
   await prisma.user.upsert({
-    where: { email: "demo@luxestore.com" },
+    where: { email: "demo@everythingstreet.com" },
     update: {},
     create: {
-      email: "demo@luxestore.com",
+      email: "demo@everythingstreet.com",
       name: "Demo Customer",
       role: Role.USER,
       passwordHash: customerPassword,
@@ -827,7 +827,7 @@ async function main() {
     { key: "review_auto_approve",     value: "false",                   type: "boolean" },
     { key: "meta_title",              value: "Everything Street | Premium Beauty & Tech", type: "string" },
     { key: "meta_description",        value: "Shop luxury beauty, skincare, cosmetics and premium tech. Free shipping on orders over $75.", type: "string" },
-    { key: "contact_email",           value: "hello@luxestore.com",     type: "string"  },
+    { key: "contact_email",           value: "hello@everythingstreet.com",     type: "string"  },
     { key: "contact_phone",           value: "+1 (555) 000-0000",       type: "string"  },
   ];
 

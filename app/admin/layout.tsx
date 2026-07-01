@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <aside className="w-60 shrink-0 bg-surface-950 text-white flex flex-col">
         <div className="px-5 py-6 border-b border-surface-800">
           <Link href="/" className="font-display text-xl text-white">
-            Luxe<span className="text-brand-400">.</span>
+            Everything Street
             <span className="text-xs text-surface-400 ml-2">Admin</span>
           </Link>
         </div>

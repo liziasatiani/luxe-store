@@ -31,7 +31,10 @@ export async function GET(req: NextRequest) {
     const order = await prisma.order.findFirst({
       where: {
         orderNumber: orderNumberClean,
-        user: { email: { equals: emailClean, mode: "insensitive" } },
+        OR: [
+          { user: { email: { equals: emailClean, mode: "insensitive" } } },
+          { guestEmail: { equals: emailClean, mode: "insensitive" } },
+        ],
       },
       include: {
         items: { select: { productName: true, quantity: true, totalPrice: true } },

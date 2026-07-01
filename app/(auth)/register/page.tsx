@@ -40,7 +40,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Luxe<span className="text-brand-500">.</span></Link>
+          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Everything Street</Link>
           <h1 className="font-display text-3xl text-surface-900 dark:text-white mt-6 mb-2">{t("title")}</h1>
           <p className="text-surface-500">{t("subtitle")}</p>
         </div>

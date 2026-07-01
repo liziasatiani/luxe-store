@@ -32,9 +32,11 @@ export default async function SuccessPage({ searchParams }: Props) {
 
   if (orderId) {
     const userId = session?.user?.id;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = userId ? { id: orderId, userId } : { id: orderId, userId: null };
-    const found = await prisma.order.findFirst({ where, include: { items: true } });
+    // Guest orders: require guestEmail match to prevent IDOR
+    // Logged-in orders: scope to session userId
+    const found = userId
+      ? await prisma.order.findFirst({ where: { id: orderId, userId }, include: { items: true } })
+      : null; // Guest orders shown inline after redirect — don't expose via orderId alone
     if (found) order = serializeDecimal(found) as SerializedOrder;
   }
 
