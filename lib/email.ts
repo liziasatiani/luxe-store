@@ -194,3 +194,105 @@ export async function sendOrderConfirmation(data: OrderEmailData): Promise<void>
     console.error(`[email] Failed to send order confirmation for ${data.orderNumber}:`, error);
   }
 }
+
+// ─── ABANDONED CART ──────────────────────────────────────────
+
+interface AbandonedCartEmailData {
+  email: string;
+  name: string;
+  items: Array<{ name: string; price: number; quantity: number; image?: string }>;
+}
+
+function buildAbandonedCartEmail({ name, items }: AbandonedCartEmailData): string {
+  const itemRows = items
+    .slice(0, 5)
+    .map(
+      (item) => `
+    <tr>
+      <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;color:#374151;">
+        ${item.name}${item.quantity > 1 ? ` ×${item.quantity}` : ""}
+      </td>
+      <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;color:#111827;text-align:right;font-variant-numeric:tabular-nums;">
+        $${(item.price * item.quantity).toFixed(2)}
+      </td>
+    </tr>`
+    )
+    .join("");
+
+  const cartUrl = `${APP_URL}/cart`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>You left something behind</title>
+</head>
+<body style="margin:0;padding:0;background:#F9FAFB;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F9FAFB;padding:40px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+          <tr>
+            <td style="background:#111827;border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
+              <p style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">
+                Everything Street<span style="color:#D4A84B;">.</span>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#ffffff;padding:40px;border-left:1px solid #E5E7EB;border-right:1px solid #E5E7EB;">
+              <p style="margin:0 0 6px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9CA3AF;">You left something behind</p>
+              <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#111827;letter-spacing:-0.5px;">
+                Still thinking it over, ${name.split(" ")[0]}?
+              </h1>
+              <p style="margin:0 0 32px;font-size:15px;color:#6B7280;line-height:1.6;">
+                Your cart is saved and waiting for you. These items are still available, but they won't be forever.
+              </p>
+              <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#6B7280;">Items in your cart</h2>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+                <tbody>${itemRows}</tbody>
+              </table>
+              <div style="text-align:center;margin-top:8px;">
+                <a href="${cartUrl}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 40px;border-radius:8px;letter-spacing:0.02em;">
+                  Return to Cart
+                </a>
+              </div>
+              <p style="margin:28px 0 0;font-size:13px;color:#9CA3AF;text-align:center;line-height:1.6;">
+                Free shipping on orders over $150 · 30-day free returns · 100% authentic
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 12px 12px;padding:24px 40px;text-align:center;">
+              <p style="margin:0 0 4px;font-size:12px;color:#9CA3AF;">
+                You received this because you started a checkout at <a href="${APP_URL}" style="color:#6B7280;">everythingstreet.com</a>.
+              </p>
+              <p style="margin:0;font-size:12px;color:#D1D5DB;">© ${new Date().getFullYear()} Everything Street. All rights reserved.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Promise<void> {
+  if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === "[YOUR-RESEND-API-KEY]") {
+    console.log(`[email] RESEND_API_KEY not configured — skipping abandoned cart email for ${data.email}`);
+    return;
+  }
+
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: data.email,
+    subject: "You left something behind — your cart is waiting",
+    html: buildAbandonedCartEmail(data),
+  });
+
+  if (error) {
+    console.error(`[email] Failed to send abandoned cart email to ${data.email}:`, error);
+  }
+}

@@ -314,7 +314,25 @@ export default function CheckoutPage() {
               )}
 
               <button
-                onClick={() => { if (validateStep1()) setStep(2); }}
+                onClick={async () => {
+                  if (!validateStep1()) return;
+                  setStep(2);
+                  // Save cart for abandoned cart recovery
+                  const email = mode === "guest" ? guest.email : session?.user?.email;
+                  const name = mode === "guest" ? `${guest.firstName} ${guest.lastName}`.trim() : session?.user?.name ?? undefined;
+                  if (email) {
+                    const cartSnapshot = items.map(i => ({
+                      name: i.product.name,
+                      price: Number(i.product.price),
+                      quantity: i.quantity,
+                    }));
+                    fetch("/api/checkout/save-cart", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email, name, cartItems: cartSnapshot }),
+                    }).catch(() => {});
+                  }
+                }}
                 className="w-full h-12 flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.16em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
               >
                 Continue to Payment <ChevronRight size={14} />

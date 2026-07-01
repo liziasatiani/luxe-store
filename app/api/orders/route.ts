@@ -317,6 +317,14 @@ export async function POST(req: NextRequest) {
           .findUnique({ where: { id: userId! }, select: { name: true, email: true } })
           .then((u) => (u?.email ? { name: u.name ?? "Customer", email: u.email } : null));
 
+    // Mark any abandoned cart for this email as ordered
+    if (recipient) {
+      void prisma.abandonedCart.updateMany({
+        where: { email: recipient.email, orderedAt: null },
+        data: { orderedAt: new Date() },
+      }).catch(() => {});
+    }
+
     if (recipient) {
       void Promise.resolve(
         sendOrderConfirmation({

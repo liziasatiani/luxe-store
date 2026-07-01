@@ -642,6 +642,22 @@ model FlashSale {
   @@map("flash_sales")
 }
 
+// ─── ABANDONED CART ──────────────────────────────────────────
+
+model AbandonedCart {
+  id         String    @id @default(cuid())
+  email      String
+  name       String?
+  cartData   Json
+  notifiedAt DateTime?
+  orderedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("abandoned_carts")
+}
+
 // ─── ANALYTICS EVENTS ────────────────────────────────────────
 
 model AnalyticsEvent {
