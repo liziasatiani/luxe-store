@@ -1,7 +1,11 @@
 import { Container } from "@/components/ui";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({ title: "Privacy Policy" });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Privacy Policy", locale });
+}
 
 const SECTIONS = [
   { title: "1. Information We Collect", content: "We collect information you provide directly to us, such as when you create an account, place an order, or contact us:\n\n• Personal identification (name, email, phone number, shipping address)\n• Payment information (processed securely by Stripe — we do not store card details)\n• Order history and preferences\n• Communications you send us\n\nWe also automatically collect certain usage data when you visit our website, including IP address, browser type, pages visited, and time spent on pages." },

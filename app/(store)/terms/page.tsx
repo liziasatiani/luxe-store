@@ -1,7 +1,11 @@
 import { Container } from "@/components/ui";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({ title: "Terms of Service" });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Terms of Service", locale });
+}
 
 const SECTIONS = [
   { title: "1. Acceptance of Terms", content: "By accessing and using the Everything Street website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services." },

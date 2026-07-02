@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
 import { serializeDecimal, formatPrice, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
+import { getLocale } from "next-intl/server";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts, RelatedProductsSkeleton } from "@/components/product/RelatedProducts";
@@ -29,10 +30,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     include: { images: { take: 1 }, brand: true, category: true },
   });
   if (!product) return {};
+  const locale = await getLocale();
   return buildMetadata({
     title: product.name,
     description: product.shortDescription ?? product.description ?? undefined,
     image: product.images[0]?.url,
+    locale,
   });
 }
 

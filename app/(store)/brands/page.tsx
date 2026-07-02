@@ -1,10 +1,14 @@
 export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
 import { Container, SectionHeader } from "@/components/ui";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata = buildMetadata({ title: "Brands", description: "Explore all luxury beauty and premium tech brands at Everything Street." });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Brands", description: "Explore all luxury beauty and premium tech brands at Everything Street.", locale });
+}
 
 export default async function BrandsPage() {
   const brands = await prisma.brand.findMany({

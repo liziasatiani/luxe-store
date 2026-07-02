@@ -1,10 +1,14 @@
 export const revalidate = 3600;
 import { Container } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import { Tag } from "lucide-react";
 
-export const metadata = buildMetadata({ title: "Deals & Sales", description: "Shop the best deals on luxury beauty and premium tech. Limited time offers updated daily." });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Deals & Sales", description: "Shop the best deals on luxury beauty and premium tech. Limited time offers updated daily.", locale });
+}
 
 export default function DealsPage() {
   return (

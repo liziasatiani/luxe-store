@@ -6,6 +6,7 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
 import { SubcategoryNav } from "@/components/ui/SubcategoryNav";
 import { TrustBar } from "@/components/ui/TrustBar";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -15,7 +16,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const cat = await prisma.category.findUnique({ where: { slug }, include: { parent: true } });
   if (!cat) return {};
-  return buildMetadata({ title: cat.name, description: cat.description ?? undefined });
+  const locale = await getLocale();
+  return buildMetadata({ title: cat.name, description: cat.description ?? undefined, locale });
 }
 
 export default async function BeautySubcategoryPage({ params }: Props) {
