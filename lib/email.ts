@@ -259,7 +259,7 @@ function buildAbandonedCartEmail({ name, items }: AbandonedCartEmailData): strin
                 </a>
               </div>
               <p style="margin:28px 0 0;font-size:13px;color:#9CA3AF;text-align:center;line-height:1.6;">
-                Free shipping on orders over $150 · 30-day free returns · 100% authentic
+                Free shipping on orders over $75 · 30-day free returns · 100% authentic
               </p>
             </td>
           </tr>
