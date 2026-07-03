@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Package, ArrowRight, CheckCircle, UserPlus } from "lucide-react";
 import { Container } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
+
+export const metadata: Metadata = { title: "Order Confirmed", robots: { index: false, follow: false } };
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, getProductImageUrl } from "@/lib/utils";
 import { auth } from "@/lib/auth";

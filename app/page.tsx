@@ -28,6 +28,7 @@ export default async function HomePage() {
       where: { parentId: { not: null }, isActive: true },
       select: {
         name: true, slug: true, image: true,
+        parent: { select: { slug: true } },
         _count: { select: { products: { where: { isActive: true } } } },
       },
       orderBy: { sortOrder: "asc" },
