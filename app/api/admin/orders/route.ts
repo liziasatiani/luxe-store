@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
+
+const ORDER_STATUSES = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
+
+const orderUpdateSchema = z.object({
+  id: z.string().min(1),
+  status: z.enum(ORDER_STATUSES),
+  trackingNumber: z.string().max(200).optional(),
+  trackingUrl: z.string().url("Invalid tracking URL").max(500).optional(),
+});
 
 async function requireAdmin() {
   const session = await auth();
@@ -18,8 +28,9 @@ export async function GET(req: NextRequest) {
     const status = req.nextUrl.searchParams.get("status") ?? "";
     const search = req.nextUrl.searchParams.get("search") ?? "";
 
+    const validStatus = ORDER_STATUSES.includes(status as typeof ORDER_STATUSES[number]) ? status as typeof ORDER_STATUSES[number] : undefined;
     const where = {
-      ...(status && { status: status as never }),
+      ...(validStatus && { status: validStatus }),
       ...(search && {
         OR: [
           { orderNumber: { contains: search, mode: "insensitive" as const } },
@@ -52,7 +63,10 @@ export async function PUT(req: NextRequest) {
   try {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const { id, status, trackingNumber, trackingUrl } = await req.json();
+    const body = await req.json();
+    const parsed = orderUpdateSchema.safeParse(body);
+    if (!parsed.success) return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+    const { id, status, trackingNumber, trackingUrl } = parsed.data;
 
     const updateData: Record<string, unknown> = { status };
     if (trackingNumber) updateData.trackingNumber = trackingNumber;

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { forgotPasswordSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 export async function POST(req: NextRequest) {
   const rl = await rateLimit(`forgot-password:${getIP(req)}`, 3, 15 * 60 * 1000);
@@ -26,11 +26,12 @@ export async function POST(req: NextRequest) {
     // Invalidate any existing tokens for this email then create a fresh one
     await prisma.passwordResetToken.deleteMany({ where: { email } });
 
-    const token = crypto.randomBytes(32).toString("hex");
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(rawToken).digest("hex");
     const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
-    await prisma.passwordResetToken.create({ data: { email, token, expires } });
+    await prisma.passwordResetToken.create({ data: { email, token: hashedToken, expires } });
 
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/reset-password?token=${token}`;
+    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/reset-password?token=${rawToken}`;
 
     if (process.env.RESEND_API_KEY && !process.env.RESEND_API_KEY.startsWith("[")) {
       const { Resend } = await import("resend");
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
 <p>If you didn't request this, you can safely ignore this email.</p>`,
       });
     } else {
-      console.log(`[forgot-password] Reset URL for ${email}: ${resetUrl}`);
+      console.log("[forgot-password] Reset email not sent — RESEND_API_KEY not configured");
     }
 
     return NextResponse.json({ success: true });

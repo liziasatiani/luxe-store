@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { resetPasswordSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
@@ -21,7 +22,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    const record = await prisma.passwordResetToken.findUnique({ where: { token } });
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const record = await prisma.passwordResetToken.findUnique({ where: { token: hashedToken } });
 
     if (!record || record.expires < new Date()) {
       return NextResponse.json({ success: false, error: "Reset link is invalid or has expired" }, { status: 400 });
@@ -31,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.$transaction([
       prisma.user.update({ where: { email: record.email }, data: { passwordHash } }),
-      prisma.passwordResetToken.delete({ where: { token } }),
+      prisma.passwordResetToken.delete({ where: { token: hashedToken } }),
     ]);
 
     return NextResponse.json({ success: true, message: "Password updated. You can now log in." });

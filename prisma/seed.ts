@@ -71,7 +71,8 @@ async function main() {
   console.log("🌱  Seeding Everything Street database…");
 
   // ── 1. Admin User ─────────────────────────────────────────
-  const adminPassword = await bcrypt.hash("Admin@123456", 12);
+  const adminPw = process.env.SEED_ADMIN_PASSWORD ?? "Admin@123456";
+  const adminPassword = await bcrypt.hash(adminPw, 12);
   const admin = await prisma.user.upsert({
     where: { email: "admin@everythingstreet.com" },
     update: {},
@@ -86,7 +87,8 @@ async function main() {
   console.log("✓  Admin user:", admin.email);
 
   // Demo customer
-  const customerPassword = await bcrypt.hash("Demo@123456", 12);
+  const demoPw = process.env.SEED_DEMO_PASSWORD ?? "Demo@123456";
+  const customerPassword = await bcrypt.hash(demoPw, 12);
   await prisma.user.upsert({
     where: { email: "demo@everythingstreet.com" },
     update: {},

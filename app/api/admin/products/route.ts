@@ -87,10 +87,14 @@ export async function PUT(req: NextRequest) {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { id, images = [], specifications = [], ...data } = body;
+    const { id, images = [], specifications = [], ...rest } = body;
     if (!id) return NextResponse.json({ success: false, error: "Product ID required" }, { status: 400 });
 
-    const stockStatus = data.stock === 0 ? "OUT_OF_STOCK" : data.stock <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK";
+    const parsed = productSchema.partial().safeParse(rest);
+    if (!parsed.success) return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+    const data = parsed.data;
+
+    const stockStatus = (data.stock ?? 0) === 0 ? "OUT_OF_STOCK" : (data.stock ?? 0) <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK";
 
     const product = await prisma.product.update({
       where: { id },
