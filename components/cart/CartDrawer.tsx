@@ -5,12 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, ArrowRight, Tag, Check } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import FocusTrap from "focus-trap-react";
+import { useTranslations } from "next-intl";
 import { useCartStore } from "@/store";
 import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import type { ProductCard } from "@/types";
 
 export function CartDrawer() {
+  const t = useTranslations("cart");
   const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon, setCoupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
   const touchStartX = useRef(0);
@@ -36,7 +38,7 @@ export function CartDrawer() {
       });
       const data = await res.json();
       if (!res.ok || !data.data?.coupon) {
-        setCouponError(data.error ?? "Invalid coupon code");
+        setCouponError(data.error ?? t("invalidCoupon"));
       } else {
         setCoupon(data.data.coupon);
         setCouponInput("");
@@ -95,9 +97,9 @@ export function CartDrawer() {
               <div className="flex items-center gap-2">
                 <ShoppingBag size={20} className="text-surface-700 dark:text-surface-300" />
                 <span className="font-semibold text-surface-900 dark:text-white">
-                  Cart
+                  {t("title")}
                   {count > 0 && (
-                    <span className="ml-2 text-sm font-normal text-surface-400">({count} {count === 1 ? "item" : "items"})</span>
+                    <span className="ml-2 text-sm font-normal text-surface-400">({count} {count === 1 ? t("item") : t("items")})</span>
                   )}
                 </span>
               </div>
@@ -137,10 +139,10 @@ export function CartDrawer() {
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full gap-4 px-6 text-center">
                   <ShoppingBag size={48} className="text-surface-200 dark:text-surface-700" />
-                  <p className="font-medium text-surface-700 dark:text-surface-300">Your cart is empty</p>
-                  <p className="text-sm text-surface-400">Add something from the store to get started.</p>
+                  <p className="font-medium text-surface-700 dark:text-surface-300">{t("empty")}</p>
+                  <p className="text-sm text-surface-400">{t("emptyDesc")}</p>
                   <Button variant="gold" size="sm" onClick={closeCart} asChild>
-                    <Link href="/">Browse Products</Link>
+                    <Link href="/">{t("continueShopping")}</Link>
                   </Button>
                 </div>
               ) : (
@@ -259,7 +261,7 @@ export function CartDrawer() {
                           value={couponInput}
                           onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
                           onKeyDown={e => e.key === "Enter" && handleApplyCoupon()}
-                          placeholder="Coupon code"
+                          placeholder={t("coupon")}
                           className="w-full pl-7 pr-2 h-8 text-[11px] tracking-[0.06em] uppercase border border-surface-200 dark:border-surface-700 bg-transparent text-black dark:text-white placeholder-black/35 dark:placeholder-white/35 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                         />
                       </div>
@@ -268,7 +270,7 @@ export function CartDrawer() {
                         disabled={couponLoading || !couponInput.trim()}
                         className="h-8 px-3 border border-black dark:border-white text-black dark:text-white text-[9px] tracking-[0.1em] uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40"
                       >
-                        {couponLoading ? "…" : "Apply"}
+                        {couponLoading ? "…" : t("apply")}
                       </button>
                     </div>
                     {couponError && <p className="text-[10px] text-red-500 mt-1">{couponError}</p>}
@@ -276,20 +278,20 @@ export function CartDrawer() {
                 )}
                 {coupon && (
                   <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
-                    <span>Coupon savings</span>
+                    <span>{t("discount")}</span>
                     <span>−{formatPrice(discount())}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-sm text-surface-500 dark:text-surface-400">
-                  <span>Shipping</span>
-                  <span>{shipping() === 0 ? <span className="text-green-600 dark:text-green-400 font-medium">FREE</span> : formatPrice(shipping())}</span>
+                  <span>{t("shipping")}</span>
+                  <span>{shipping() === 0 ? <span className="text-green-600 dark:text-green-400 font-medium">{t("free")}</span> : formatPrice(shipping())}</span>
                 </div>
                 <div className="flex justify-between font-semibold text-base text-surface-900 dark:text-white pt-1 border-t border-surface-100 dark:border-surface-800">
-                  <span>Total</span>
+                  <span>{t("total")}</span>
                   <span>{formatPrice(total())}</span>
                 </div>
                 <Button variant="gold" size="lg" fullWidth rightIcon={<ArrowRight size={16} />} asChild>
-                  <Link href="/checkout" onClick={closeCart}>Checkout</Link>
+                  <Link href="/checkout" onClick={closeCart}>{t("checkout")}</Link>
                 </Button>
                 <Link
                   href="/cart"

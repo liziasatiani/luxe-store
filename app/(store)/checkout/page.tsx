@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
 import { formatPrice, isValidEmail } from "@/lib/utils";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 interface Address {
   id: string; label: string; firstName: string; lastName: string;
@@ -25,6 +26,7 @@ function AddressSummary({ addresses, selectedId }: { addresses: Address[]; selec
 }
 
 export default function CheckoutPage() {
+  const t = useTranslations("checkout");
   const router = useRouter();
   const { data: session } = useSession();
   const { items, subtotal, discount, shipping, tax, total, coupon, clearCart } = useCartStore();
@@ -141,7 +143,7 @@ export default function CheckoutPage() {
   if (!session && mode === "choose") {
     return (
       <Container className="py-16 max-w-lg">
-        <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-2 text-center">Checkout</h1>
+        <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-2 text-center">{t("title")}</h1>
         <p className="text-center text-sm text-surface-400 mb-10">How would you like to continue?</p>
         <div className="space-y-3">
           <button onClick={() => setMode("guest")}
@@ -151,7 +153,7 @@ export default function CheckoutPage() {
                 <User size={18} />
               </div>
               <div>
-                <p className="font-medium text-[13px] tracking-[0.06em] uppercase">Continue as Guest</p>
+                <p className="font-medium text-[13px] tracking-[0.06em] uppercase">{t("continueAsGuest")}</p>
                 <p className="text-[12px] text-white/60 dark:text-black/60 mt-0.5">No account required · Fast checkout</p>
               </div>
             </div>
@@ -168,7 +170,7 @@ export default function CheckoutPage() {
                 <LogIn size={18} />
               </div>
               <div>
-                <p className="text-[13px] tracking-[0.06em] uppercase font-medium text-surface-900 dark:text-white">Sign In</p>
+                <p className="text-[13px] tracking-[0.06em] uppercase font-medium text-surface-900 dark:text-white">{t("signIn")}</p>
                 <p className="text-[12px] text-surface-400 mt-0.5">Faster checkout · Order tracking · Saved addresses</p>
               </div>
             </div>
@@ -182,7 +184,7 @@ export default function CheckoutPage() {
     );
   }
 
-  const stepLabels = ["Shipping", "Payment"];
+  const stepLabels = [t("shippingAddress"), t("payment")];
 
   return (
     <Container className="py-12 max-w-5xl">
@@ -262,28 +264,28 @@ export default function CheckoutPage() {
                     <button onClick={() => setMode("choose")} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Change</button>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <Input id="firstName" label="First Name *" autoComplete="given-name" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
-                    <Input id="lastName" label="Last Name *" autoComplete="family-name" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
+                    <Input id="firstName" label={t("firstName")} autoComplete="given-name" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
+                    <Input id="lastName" label={t("lastName")} autoComplete="family-name" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
                     <div className="col-span-2">
-                      <Input id="email" label="Email *" type="email" autoComplete="email" inputMode="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
+                      <Input id="email" label={t("email")} type="email" autoComplete="email" inputMode="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
                     </div>
                     <div className="col-span-2">
-                      <Input id="phone" label="Phone" autoComplete="tel" inputMode="tel" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" />
+                      <Input id="phone" label={t("phone")} autoComplete="tel" inputMode="tel" value={guest.phone} onChange={e => setG("phone", e.target.value)} />
                     </div>
                   </div>
 
-                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 pt-2">Address</p>
+                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 pt-2">{t("address")}</p>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="col-span-2">
-                      <Input id="line1" label="Street Address *" autoComplete="address-line1" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
+                      <Input id="line1" label={t("address")} autoComplete="address-line1" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
                     </div>
                     <div className="col-span-2">
-                      <Input id="line2" label="Apt, suite, etc." autoComplete="address-line2" value={guest.line2} onChange={e => setG("line2", e.target.value)} />
+                      <Input id="line2" label={t("apartment")} autoComplete="address-line2" value={guest.line2} onChange={e => setG("line2", e.target.value)} />
                     </div>
-                    <Input id="city" label="City *" autoComplete="address-level2" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
-                    <Input id="state" label="State *" autoComplete="address-level1" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
-                    <Input id="postalCode" label="Postal Code *" autoComplete="postal-code" inputMode="numeric" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
-                    <Input id="country" label="Country" autoComplete="country-name" value={guest.country} onChange={e => setG("country", e.target.value)} />
+                    <Input id="city" label={t("city")} autoComplete="address-level2" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
+                    <Input id="state" label={t("state")} autoComplete="address-level1" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
+                    <Input id="postalCode" label={t("postalCode")} autoComplete="postal-code" inputMode="numeric" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
+                    <Input id="country" label={t("country")} autoComplete="country-name" value={guest.country} onChange={e => setG("country", e.target.value)} />
                   </div>
                 </div>
               )}
@@ -302,12 +304,12 @@ export default function CheckoutPage() {
                           </div>
                         </label>
                       ))}
-                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">+ Add new address</Link>
+                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">{t("addNewAddress")}</Link>
                     </>
                   ) : (
                     <div className="p-6 border border-dashed border-black/15 dark:border-white/15 text-center">
-                      <p className="text-sm text-black/40 dark:text-white/40 mb-3">No saved addresses</p>
-                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.1em] uppercase text-black dark:text-white underline">Add address</Link>
+                      <p className="text-sm text-black/40 dark:text-white/40 mb-3">{t("noAddresses")}</p>
+                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.1em] uppercase text-black dark:text-white underline">{t("addAddress")}</Link>
                     </div>
                   )}
                 </div>
@@ -335,7 +337,7 @@ export default function CheckoutPage() {
                 }}
                 className="w-full h-12 flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.16em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
               >
-                Continue to Payment <ChevronRight size={14} />
+                {t("payment")} <ChevronRight size={14} />
               </button>
             </div>
           )}
@@ -344,7 +346,7 @@ export default function CheckoutPage() {
           {step === 2 && (
             <div className="space-y-8">
               <div className="flex items-center justify-between">
-                <h2 className="font-display text-2xl text-black dark:text-white">Payment</h2>
+                <h2 className="font-display text-2xl text-black dark:text-white">{t("payment")}</h2>
                 <button onClick={() => setStep(1)} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Edit shipping</button>
               </div>
 
@@ -367,17 +369,17 @@ export default function CheckoutPage() {
                 <div className="flex items-center gap-3 p-4 border border-black dark:border-white bg-black/[0.02] dark:bg-white/[0.02]">
                   <input type="radio" checked readOnly />
                   <CreditCard size={16} className="text-black/60 dark:text-white/60" />
-                  <span className="text-sm text-black dark:text-white font-medium">Cash on Delivery</span>
+                  <span className="text-sm text-black dark:text-white font-medium">{t("cashOnDelivery")}</span>
                   <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">Pay when received</span>
                 </div>
               </div>
 
-              <Input id="notes" label="Order notes (optional)" placeholder="Any special instructions…" value={notes} onChange={e => setNotes(e.target.value)} />
+              <Input id="notes" label={t("orderNotes")} value={notes} onChange={e => setNotes(e.target.value)} />
 
               <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
-                Place Order · {formatPrice(total())}
+                {t("placeOrder")} · {formatPrice(total())}
               </Button>
-              <p className="text-[11px] text-center text-black/30 dark:text-white/30">By placing your order you agree to our Terms of Service.</p>
+              <p className="text-[11px] text-center text-black/30 dark:text-white/30">{t("termsNotice")}</p>
             </div>
           )}
         </div>
@@ -385,7 +387,7 @@ export default function CheckoutPage() {
         {/* Order summary sidebar */}
         <div className="lg:col-span-2">
           <div className="sticky top-24 border border-black/10 dark:border-white/10 p-6 space-y-4">
-            <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Order Summary</p>
+            <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("orderSummary")}</p>
             <div className="space-y-3 max-h-52 overflow-y-auto">
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm gap-3">

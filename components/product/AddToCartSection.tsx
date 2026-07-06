@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
 import { cn, formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -32,6 +33,7 @@ function getDeliveryEstimate(): string {
 }
 
 export function AddToCartSection({ product }: Props) {
+  const t = useTranslations("product");
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [stickyVisible, setStickyVisible] = useState(false);
@@ -46,8 +48,8 @@ export function AddToCartSection({ product }: Props) {
     e.preventDefault();
     if (!notifyEmail.trim()) return;
     setNotifySent(true);
-    toast.success("We'll notify you when this item is back in stock.");
-  }, [notifyEmail]);
+    toast.success(t("outOfStock"));
+  }, [notifyEmail, t]);
   const buttonsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -161,7 +163,7 @@ export function AddToCartSection({ product }: Props) {
           className="flex-1 h-12 flex items-center justify-center gap-2 border border-black dark:border-white text-black dark:text-white text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40"
         >
           <ShoppingBag size={16} />
-          {outOfStock ? "Out of Stock" : "Add to Cart"}
+          {outOfStock ? t("outOfStock") : t("addToCart")}
         </button>
         <button
           onClick={handleBuyNow}
@@ -236,7 +238,7 @@ export function AddToCartSection({ product }: Props) {
             className="h-11 px-5 flex items-center gap-2 border border-black dark:border-white text-black dark:text-white text-[10px] tracking-[0.14em] uppercase font-medium disabled:opacity-40"
           >
             <ShoppingBag size={14} />
-            {outOfStock ? "Out of Stock" : "Add to Cart"}
+            {outOfStock ? t("outOfStock") : t("addToCart")}
           </button>
           <button
             onClick={handleBuyNow}
@@ -250,14 +252,14 @@ export function AddToCartSection({ product }: Props) {
 
       <div className="flex items-center gap-3 pt-2">
         <button
-          onClick={() => { toggle(product.id); toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist"); }}
+          onClick={() => { toggle(product.id); toast.success(isWishlisted ? t("removed") : t("addToWishlist")); }}
           className={cn(
             "flex items-center gap-2 text-sm transition-colors",
             isWishlisted ? "text-red-500" : "text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white"
           )}
         >
           <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} />
-          {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+          {isWishlisted ? t("wishlisted") : t("addToWishlist")}
         </button>
         <span className="text-black/20 dark:text-white/20">|</span>
         <button onClick={handleShare} className="flex items-center gap-2 text-sm text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">

@@ -56,7 +56,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     if (touchStartX.current === null) return;
     const dx = e.changedTouches[0].clientX - touchStartX.current;
     const dy = Math.abs(e.changedTouches[0].clientY - (touchStartY.current ?? 0));
-    if (Math.abs(dx) > 40 && dy < 60) dx < 0 ? next() : prev();
+    if (Math.abs(dx) > 40 && dy < 60) { if (dx < 0) next(); else prev(); }
     touchStartX.current = null;
     touchStartY.current = null;
   };
@@ -71,7 +71,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     const dx = e.changedTouches[0].clientX - lbTouchStartX.current;
     const dy = e.changedTouches[0].clientY - lbTouchStartY.current;
     if (dy > 80 && Math.abs(dx) < 60) { close(); }
-    else if (Math.abs(dx) > 40 && Math.abs(dy) < 60) { dx < 0 ? next() : prev(); }
+    else if (Math.abs(dx) > 40 && Math.abs(dy) < 60) { if (dx < 0) next(); else prev(); }
     lbTouchStartX.current = null;
     lbTouchStartY.current = null;
   };
