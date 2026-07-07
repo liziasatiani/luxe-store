@@ -2,6 +2,8 @@ import { Container } from "@/components/ui";
 import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata() {
   const locale = await getLocale();
   return buildMetadata({ title: "Privacy Policy", locale });

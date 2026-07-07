@@ -1,19 +1,22 @@
 export function PressBar() {
-  const outlets = ["Vogue", "Elle", "Forbes", "Allure", "Harper's Bazaar", "WWD", "Refinery29"];
+  const signals = [
+    "Free 30-Day Returns",
+    "100% Authentic",
+    "Secure Checkout",
+    "Free Shipping Over $75",
+    "Authorized Distributors Only",
+    "Customer Support 7 Days",
+  ];
   return (
     <div className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black py-4 overflow-hidden">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-8 sm:gap-12 overflow-x-auto no-scrollbar">
-          <span className="text-[9px] tracking-[0.22em] uppercase text-black/55 dark:text-white/55 whitespace-nowrap shrink-0">
-            As seen in
-          </span>
-          {outlets.map((name) => (
+        <div className="flex items-center gap-10 overflow-x-auto no-scrollbar">
+          {signals.map((text) => (
             <span
-              key={name}
-              className="text-[13px] font-light tracking-[0.1em] text-black/50 dark:text-white/50 whitespace-nowrap shrink-0 hover:text-black/75 dark:hover:text-white/75 transition-colors"
-              style={{ fontVariant: "small-caps" }}
+              key={text}
+              className="text-[10px] tracking-[0.14em] uppercase text-black/45 dark:text-white/45 whitespace-nowrap shrink-0"
             >
-              {name}
+              · {text}
             </span>
           ))}
         </div>
