@@ -27,20 +27,25 @@ function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
 
 export async function FeaturedProductsSection() {
   const t = await getTranslations("home.featured");
-  const rows = await prisma.product.findMany({
-    where: { isActive: true, isFeatured: true },
-    select: {
-      id: true, name: true, slug: true, price: true, comparePrice: true,
-      stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-      isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-      images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-      brand: { select: { name: true, slug: true } },
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy: [{ salesCount: "desc" }, { createdAt: "desc" }],
-    take: 8,
-  });
-  const products = serializeDecimal(rows) as ProductCardType[];
+  let products: ProductCardType[] = [];
+  try {
+    const rows = await prisma.product.findMany({
+      where: { isActive: true, isFeatured: true },
+      select: {
+        id: true, name: true, slug: true, price: true, comparePrice: true,
+        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
+        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
+        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
+        brand: { select: { name: true, slug: true } },
+        category: { select: { name: true, slug: true } },
+      },
+      orderBy: [{ salesCount: "desc" }, { createdAt: "desc" }],
+      take: 8,
+    });
+    products = serializeDecimal(rows) as ProductCardType[];
+  } catch {
+    return null;
+  }
 
   return (
     <section className="py-20 border-b border-black/8 dark:border-white/8">
@@ -57,20 +62,25 @@ export async function FeaturedProductsSection() {
 export async function NewArrivalsSection() {
   const t = await getTranslations("pages.newArrivals");
   const tCommon = await getTranslations("common");
-  const rows = await prisma.product.findMany({
-    where: { isActive: true, isNewArrival: true },
-    select: {
-      id: true, name: true, slug: true, price: true, comparePrice: true,
-      stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-      isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-      images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-      brand: { select: { name: true, slug: true } },
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 8,
-  });
-  const products = serializeDecimal(rows) as ProductCardType[];
+  let products: ProductCardType[] = [];
+  try {
+    const rows = await prisma.product.findMany({
+      where: { isActive: true, isNewArrival: true },
+      select: {
+        id: true, name: true, slug: true, price: true, comparePrice: true,
+        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
+        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
+        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
+        brand: { select: { name: true, slug: true } },
+        category: { select: { name: true, slug: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 8,
+    });
+    products = serializeDecimal(rows) as ProductCardType[];
+  } catch {
+    return null;
+  }
 
   return (
     <section className="py-20 border-b border-black/8 dark:border-white/8">
@@ -86,22 +96,25 @@ export async function NewArrivalsSection() {
 
 export async function BestSellersSectionServer() {
   const t = await getTranslations("pages.bestSellers");
-  const rows = await prisma.product.findMany({
-    where: { isActive: true, isBestSeller: true },
-    select: {
-      id: true, name: true, slug: true, price: true, comparePrice: true,
-      stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-      isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-      images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-      brand: { select: { name: true, slug: true } },
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy: [{ ratingAvg: "desc" }, { salesCount: "desc" }],
-    take: 8,
-  });
-  const initialProducts = serializeDecimal(rows) as ProductCardType[];
-
-  return { title: t("title"), initialProducts };
+  try {
+    const rows = await prisma.product.findMany({
+      where: { isActive: true, isBestSeller: true },
+      select: {
+        id: true, name: true, slug: true, price: true, comparePrice: true,
+        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
+        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
+        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
+        brand: { select: { name: true, slug: true } },
+        category: { select: { name: true, slug: true } },
+      },
+      orderBy: [{ ratingAvg: "desc" }, { salesCount: "desc" }],
+      take: 8,
+    });
+    const initialProducts = serializeDecimal(rows) as ProductCardType[];
+    return { title: t("title"), initialProducts };
+  } catch {
+    return { title: t("title"), initialProducts: [] };
+  }
 }
 
 export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
