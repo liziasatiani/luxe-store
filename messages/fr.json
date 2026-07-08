@@ -34,7 +34,7 @@
       }
     },
     "categories": {
-      "title": "Acheter par catégorie",
+      "title": "Explorer par catégorie",
       "subtitle": "Des rituels de soin à la tech de pointe"
     },
     "featured": {
@@ -60,7 +60,7 @@
     "newsletter": {
       "badge": "Offres exclusives",
       "title": "Rejoignez le cercle privé",
-      "subtitle": "Soyez le premier à connaître les nouveautés, les offres exclusives et les secrets beauté.",
+      "subtitle": "Découvrez en avant-première les nouveautés, les offres exclusives et les secrets beauté.",
       "placeholder": "Entrez votre adresse email",
       "subscribe": "S'abonner",
       "noSpam": "Pas de spam. Désabonnez-vous à tout moment.",
@@ -110,7 +110,7 @@
     "secureCheckout": "Paiement sécurisé"
   },
   "checkout": {
-    "title": "Caisse",
+    "title": "Ma commande",
     "continueAsGuest": "Continuer en tant qu'invité",
     "guestSubtitle": "Pas besoin de compte — remplissez simplement vos coordonnées",
     "signIn": "Se connecter",
@@ -162,7 +162,7 @@
   },
   "auth": {
     "login": {
-      "title": "Heureux de vous revoir",
+      "title": "Ravi de vous retrouver",
       "subtitle": "Connectez-vous à votre compte Everything Street",
       "email": "Adresse email",
       "password": "Mot de passe",
@@ -172,7 +172,7 @@
       "createAccount": "Créer un compte",
       "orContinueWith": "ou continuer avec",
       "continueWithGoogle": "Continuer avec Google",
-      "invalidCredentials": "Email ou mot de passe invalide",
+      "invalidCredentials": "Email ou mot de passe incorrect",
       "welcomeBack": "Ravi de vous retrouver !"
     },
     "register": {
@@ -243,7 +243,7 @@
     },
     "brands": {
       "title": "Nos Marques",
-      "subtitle": "Achetez vos marques de luxe préférées.",
+      "subtitle": "Découvrez vos maisons de luxe préférées.",
       "products": "produits"
     },
     "search": {
@@ -278,7 +278,7 @@
       "phone": "Téléphone",
       "address": "Adresse",
       "openInMaps": "Ouvrir dans Google Maps →",
-      "chatWithUs": "Chattez avec nous",
+      "chatWithUs": "Discutez avec nous",
       "businessHours": "Heures d'ouverture",
       "monFri": "Lundi – Vendredi",
       "saturday": "Samedi",

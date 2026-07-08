@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
         from: process.env.EMAIL_FROM ?? "Everything Street <noreply@everythingstreet.com>",
-        to: process.env.CONTACT_EMAIL ?? "hello@everythingstreet.com",
+        to: process.env.CONTACT_EMAIL ?? "hello@everythingstreet.ge",
         replyTo: email,
         subject: `[Contact] ${subject}`,
         text: `From: ${name} <${email}>\n\n${message}`,

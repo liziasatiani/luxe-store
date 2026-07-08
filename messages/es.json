@@ -8,7 +8,7 @@
   },
   "nav": {
     "beauty": "Belleza",
-    "tech": "Tecnología",
+    "tech": "Tech",
     "brands": "Marcas",
     "deals": "Ofertas",
     "new": "Novedades",
@@ -25,7 +25,7 @@
       "badge": "Tech & Belleza, Una Calle",
       "title": "Dos mundos,",
       "titleGold": "una calle.",
-      "subtitle": "Everything Street fusiona tecnología de vanguardia con belleza de excepción — seleccionadas, probadas y entregadas juntas.",
+      "subtitle": "Everything Street reúne tecnología pensada y belleza cuidada — seleccionadas, probadas y entregadas juntas.",
       "shopBeauty": "Comprar Belleza",
       "exploreTech": "Explorar Tech",
       "stats": {
@@ -60,7 +60,7 @@
     "newsletter": {
       "badge": "Ofertas exclusivas",
       "title": "Únete al círculo selecto",
-      "subtitle": "Sé el primero en conocer las novedades, ofertas exclusivas y secretos de belleza.",
+      "subtitle": "Descubre antes que nadie las novedades, ofertas exclusivas y secretos de belleza.",
       "placeholder": "Introduce tu correo electrónico",
       "subscribe": "Suscribirse",
       "noSpam": "Sin spam. Cancela cuando quieras.",
@@ -110,7 +110,7 @@
     "secureCheckout": "Pago seguro"
   },
   "checkout": {
-    "title": "Pago",
+    "title": "Mi pedido",
     "continueAsGuest": "Continuar como invitado",
     "guestSubtitle": "Sin necesidad de cuenta — solo rellena tus datos",
     "signIn": "Iniciar sesión",
@@ -205,7 +205,7 @@
     "noAccount": "¿No tienes cuenta?",
     "createOne": "Crear una",
     "beauty": "Belleza",
-    "tech": "Tecnología",
+    "tech": "Tech",
     "brands": "Marcas",
     "deals": "Ofertas",
     "newArrivals": "Novedades",
@@ -265,7 +265,7 @@
       "subtitle": "Introduce tu número de pedido y email.",
       "orderNumber": "Número de pedido",
       "email": "Correo electrónico",
-      "track": "Rastrear",
+      "track": "Consultar",
       "notFound": "Pedido no encontrado. Comprueba tus datos.",
       "itemsOrdered": "Artículos pedidos",
       "shippingTo": "Envío a"

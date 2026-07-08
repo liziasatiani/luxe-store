@@ -44,9 +44,9 @@ export async function Footer() {
             <p className="text-sm text-white/40 leading-relaxed max-w-xs mb-6">
               Considered technology. Considered beauty. Curated, tested, and delivered together.
             </p>
-            <a href="mailto:hello@everythingstreet.com" className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors mb-6">
+            <a href="mailto:hello@everythingstreet.ge" className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors mb-6">
               <Mail size={14} />
-              hello@everythingstreet.com
+              hello@everythingstreet.ge
             </a>
             <div className="flex items-center gap-3">
               {instagram && (
