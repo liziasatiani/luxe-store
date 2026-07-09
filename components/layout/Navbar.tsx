@@ -11,6 +11,7 @@ import { useClickOutside } from "@/hooks";
 import { useCartStore, useUIStore, useWishlistStore } from "@/store";
 import { Container } from "@/components/ui";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
+import { CurrencySelector } from "@/components/layout/CurrencySelector";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -129,6 +130,7 @@ export function Navbar() {
             {/* Right icons */}
             <div className="flex items-center gap-1 ml-auto flex-1 justify-end">
               <div className="hidden lg:block">
+                {mounted && <CurrencySelector />}
                 {mounted && <LanguageSelector />}
               </div>
 

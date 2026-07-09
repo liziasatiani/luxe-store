@@ -7,7 +7,8 @@ import { CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown 
 import { Container, Input, Divider } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
-import { formatPrice, isValidEmail } from "@/lib/utils";
+import { isValidEmail } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
@@ -30,6 +31,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const { items, subtotal, discount, shipping, tax, total, coupon, clearCart } = useCartStore();
+  const { format } = useCurrency();
   const [mode, setMode] = useState<CheckoutMode>("choose");
   const [step, setStep] = useState<Step>(1);
   const [summaryOpen, setSummaryOpen] = useState(false);
@@ -227,7 +229,7 @@ export default function CheckoutPage() {
           className="w-full flex items-center justify-between px-4 py-3 text-sm text-black dark:text-white"
         >
           <span className="text-[10px] tracking-[0.14em] uppercase text-black/50 dark:text-white/50">
-            {summaryOpen ? "Hide order summary" : `Show order summary · ${formatPrice(total())}`}
+            {summaryOpen ? "Hide order summary" : `Show order summary · ${format(total())}`}
           </span>
           <ChevronDown size={14} className={`text-black/40 dark:text-white/40 transition-transform ${summaryOpen ? "rotate-180" : ""}`} />
         </button>
@@ -237,14 +239,14 @@ export default function CheckoutPage() {
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm gap-3">
                   <span className="text-black/60 dark:text-white/60 line-clamp-1 flex-1">{item.product.name} × {item.quantity}</span>
-                  <span className="font-medium shrink-0 text-black dark:text-white">{formatPrice(Number(item.product.price) * item.quantity)}</span>
+                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.product.price) * item.quantity)}</span>
                 </div>
               ))}
             </div>
             <div className="border-t border-black/8 dark:border-white/8 pt-3 space-y-1.5 text-sm">
-              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Subtotal</span><span>{formatPrice(subtotal())}</span></div>
-              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Shipping</span><span>{shipping() === 0 ? "FREE" : formatPrice(shipping())}</span></div>
-              <div className="flex justify-between font-medium text-black dark:text-white pt-1"><span>Total</span><span>{formatPrice(total())}</span></div>
+              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Subtotal</span><span>{format(subtotal())}</span></div>
+              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Shipping</span><span>{shipping() === 0 ? "FREE" : format(shipping())}</span></div>
+              <div className="flex justify-between font-medium text-black dark:text-white pt-1"><span>Total</span><span>{format(total())}</span></div>
             </div>
           </div>
         )}
@@ -377,7 +379,7 @@ export default function CheckoutPage() {
               <Input id="notes" label={t("orderNotes")} value={notes} onChange={e => setNotes(e.target.value)} />
 
               <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
-                {t("placeOrder")} · {formatPrice(total())}
+                {t("placeOrder")} · {format(total())}
               </Button>
               <p className="text-[11px] text-center text-black/30 dark:text-white/30">{t("termsNotice")}</p>
             </div>
@@ -392,35 +394,35 @@ export default function CheckoutPage() {
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm gap-3">
                   <span className="text-black/60 dark:text-white/60 line-clamp-2 flex-1">{item.product.name} × {item.quantity}</span>
-                  <span className="font-medium shrink-0 text-black dark:text-white">{formatPrice(Number(item.product.price) * item.quantity)}</span>
+                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.product.price) * item.quantity)}</span>
                 </div>
               ))}
             </div>
             <Divider />
             <div className="space-y-2 text-sm">
               <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>Subtotal</span><span className="text-black dark:text-white">{formatPrice(subtotal())}</span>
+                <span>Subtotal</span><span className="text-black dark:text-white">{format(subtotal())}</span>
               </div>
               {discount() > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Discount ({coupon?.code})</span><span>−{formatPrice(discount())}</span>
+                  <span>Discount ({coupon?.code})</span><span>−{format(discount())}</span>
                 </div>
               )}
               <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>Shipping</span><span className="text-black dark:text-white">{shipping() === 0 ? "FREE" : formatPrice(shipping())}</span>
+                <span>Shipping</span><span className="text-black dark:text-white">{shipping() === 0 ? "FREE" : format(shipping())}</span>
               </div>
               <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>Tax</span><span className="text-black dark:text-white">{formatPrice(tax())}</span>
+                <span>Tax</span><span className="text-black dark:text-white">{format(tax())}</span>
               </div>
             </div>
             <Divider />
             <div className="flex justify-between font-medium text-lg text-black dark:text-white">
-              <span>Total</span><span>{formatPrice(total())}</span>
+              <span>Total</span><span>{format(total())}</span>
             </div>
             <div className="flex flex-col gap-1.5 pt-1">
               {[
                 { icon: Lock, text: "256-bit SSL encryption" },
-                { icon: Truck, text: "Free shipping over $75" },
+                { icon: Truck, text: "Free shipping over ₾200" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2">
                   <Icon size={12} className="text-black/30 dark:text-white/30 shrink-0" />

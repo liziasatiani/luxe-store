@@ -7,7 +7,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { RatingStars } from "@/components/ui";
 import { useCartStore, useWishlistStore } from "@/store";
-import { formatPrice, formatDiscount, getProductImageUrl, cn } from "@/lib/utils";
+import { formatDiscount, getProductImageUrl, cn } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import type { ProductCard as ProductCardType } from "@/types";
 import { QuickView } from "./QuickView";
@@ -29,6 +30,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
   useEffect(() => { setMounted(true); }, []);
   const isWishlisted = has(product.id);
   const imageUrl = getProductImageUrl(product.images);
+  const { format } = useCurrency();
   const price = Number(product.price);
   const comparePrice = product.comparePrice ? Number(product.comparePrice) : null;
   const discount = comparePrice ? formatDiscount(comparePrice, price) : 0;
@@ -59,7 +61,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         <div className="flex-1 min-w-0 py-1">
           <p className={cn("text-[10px] tracking-[0.1em] uppercase mb-1", textMuted)}>{product.brand?.name}</p>
           <p className={cn("text-sm line-clamp-2 leading-snug", textMain)}>{product.name}</p>
-          <p className={cn("text-sm font-medium mt-2", textMain)}>{formatPrice(price)}</p>
+          <p className={cn("text-sm font-medium mt-2", textMain)}>{format(price)}</p>
         </div>
       </Link>
     );
@@ -152,9 +154,9 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
             </h3>
             <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={11} />
             <div className="flex items-center gap-2 mt-2.5">
-              <span className={cn("text-sm font-medium", textMain)}>{formatPrice(price)}</span>
+              <span className={cn("text-sm font-medium", textMain)}>{format(price)}</span>
               {comparePrice && comparePrice > price && (
-                <span className={cn("text-xs line-through", textMuted)}>{formatPrice(comparePrice)}</span>
+                <span className={cn("text-xs line-through", textMuted)}>{format(comparePrice)}</span>
               )}
             </div>
             {product.stockStatus === "LOW_STOCK" && (

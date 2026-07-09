@@ -297,3 +297,5 @@ export function Checkbox({ label, className, id, ...props }: CheckboxProps) {
     </label>
   );
 }
+
+export { Price } from "./Price";

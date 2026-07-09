@@ -2,7 +2,7 @@
 import { Shield, Truck, RotateCcw } from "lucide-react";
 
 const SIGNALS = [
-  { icon: Truck, text: "Free shipping over $75" },
+  { icon: Truck, text: "Free shipping over ₾200" },
   { icon: Shield, text: "100% authentic guaranteed" },
   { icon: RotateCcw, text: "30-day free returns" },
 ];

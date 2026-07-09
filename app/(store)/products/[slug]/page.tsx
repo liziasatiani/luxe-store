@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
-import { serializeDecimal, formatPrice, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
+import { serializeDecimal, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
+import { Price } from "@/components/ui";
 import { getLocale } from "next-intl/server";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";
@@ -106,9 +107,9 @@ export default async function ProductPage({ params }: Props) {
             </div>
 
             <div className="flex items-baseline gap-3">
-              <span className="font-display text-4xl text-surface-900 dark:text-white">{formatPrice(Number(p.price))}</span>
+              <Price amount={Number(p.price)} className="font-display text-4xl text-surface-900 dark:text-white" />
               {p.comparePrice && Number(p.comparePrice) > Number(p.price) && (
-                <span className="text-xl text-surface-400 line-through">{formatPrice(Number(p.comparePrice))}</span>
+                <Price amount={Number(p.comparePrice)} className="text-xl text-surface-400 line-through" />
               )}
             </div>
 
@@ -158,7 +159,7 @@ export default async function ProductPage({ params }: Props) {
           <div>
             <div className="border border-black/8 dark:border-white/8 p-5 space-y-4">
               {[
-                { icon: <Truck size={15} />, label: "Free shipping on orders over $75", href: "/shipping" },
+                { icon: <Truck size={15} />, label: "Free shipping on orders over ₾200", href: "/shipping" },
                 { icon: <RotateCcw size={15} />, label: "30-day hassle-free returns", href: "/returns" },
                 { icon: <ShieldCheck size={15} />, label: "100% authentic products", href: null },
                 { icon: <Lock size={15} />, label: "256-bit SSL secure checkout", href: null },

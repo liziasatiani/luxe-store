@@ -7,12 +7,14 @@ import { useState, useEffect, useRef } from "react";
 import FocusTrap from "focus-trap-react";
 import { useTranslations } from "next-intl";
 import { useCartStore } from "@/store";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { getProductImageUrl } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import { Button } from "@/components/ui/Button";
 import type { ProductCard } from "@/types";
 
 export function CartDrawer() {
   const t = useTranslations("cart");
+  const { format } = useCurrency();
   const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon, setCoupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
   const touchStartX = useRef(0);
@@ -120,7 +122,7 @@ export function CartDrawer() {
                   </p>
                 ) : (
                   <p className="text-[10px] tracking-[0.08em] uppercase text-black/50 dark:text-white/50 mb-2">
-                    Add <span className="text-black dark:text-white font-semibold">{formatPrice(amountToFreeShip)}</span> more for free shipping
+                    Add <span className="text-black dark:text-white font-semibold">{format(amountToFreeShip)}</span> more for free shipping
                   </p>
                 )}
                 <div className="h-px bg-surface-100 dark:bg-surface-800 overflow-hidden">
@@ -188,7 +190,7 @@ export function CartDrawer() {
                                 >+</button>
                               </div>
                               <span className="text-sm font-semibold text-surface-900 dark:text-white">
-                                {formatPrice(price * item.quantity)}
+                                {format(price * item.quantity)}
                               </span>
                             </div>
                           </div>
@@ -220,7 +222,7 @@ export function CartDrawer() {
                         </Link>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-medium text-black dark:text-white line-clamp-1">{p.name}</p>
-                          <p className="text-xs text-black/40 dark:text-white/40">{formatPrice(Number(p.price))}</p>
+                          <p className="text-xs text-black/40 dark:text-white/40">{format(Number(p.price))}</p>
                         </div>
                         <button
                           onClick={() => { addItem(p); }}
@@ -245,7 +247,7 @@ export function CartDrawer() {
                     <span className="flex items-center gap-1.5 text-green-700 dark:text-green-400">
                       <Check size={12} />
                       <span className="font-mono font-bold">{coupon.code}</span>
-                      <span className="text-green-600 dark:text-green-500">−{formatPrice(discount())}</span>
+                      <span className="text-green-600 dark:text-green-500">−{format(discount())}</span>
                     </span>
                     <button onClick={() => setCoupon(null)} className="text-green-600 dark:text-green-400 hover:text-red-500 transition-colors">
                       <X size={13} />
@@ -279,16 +281,16 @@ export function CartDrawer() {
                 {coupon && (
                   <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
                     <span>{t("discount")}</span>
-                    <span>−{formatPrice(discount())}</span>
+                    <span>−{format(discount())}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-sm text-surface-500 dark:text-surface-400">
                   <span>{t("shipping")}</span>
-                  <span>{shipping() === 0 ? <span className="text-green-600 dark:text-green-400 font-medium">{t("free")}</span> : formatPrice(shipping())}</span>
+                  <span>{shipping() === 0 ? <span className="text-green-600 dark:text-green-400 font-medium">{t("free")}</span> : format(shipping())}</span>
                 </div>
                 <div className="flex justify-between font-semibold text-base text-surface-900 dark:text-white pt-1 border-t border-surface-100 dark:border-surface-800">
                   <span>{t("total")}</span>
-                  <span>{formatPrice(total())}</span>
+                  <span>{format(total())}</span>
                 </div>
                 <Button variant="gold" size="lg" fullWidth rightIcon={<ArrowRight size={16} />} asChild>
                   <Link href="/checkout" onClick={closeCart}>{t("checkout")}</Link>

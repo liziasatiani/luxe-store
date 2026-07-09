@@ -7,13 +7,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Container, Divider, Input, EmptyState } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { getProductImageUrl } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
 export default function CartPage() {
   const t = useTranslations("cart");
   const { items, removeItem, updateQuantity, coupon, setCoupon, subtotal, discount, shipping, tax, total, itemCount } = useCartStore();
+  const { format } = useCurrency();
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
 
@@ -93,7 +95,7 @@ export default function CartPage() {
                         <span className="w-10 text-center text-sm font-medium">{item.quantity}</span>
                         <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-9 h-9 flex items-center justify-center text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800">+</button>
                       </div>
-                      <span className="font-semibold text-surface-900 dark:text-white">{formatPrice(price * item.quantity)}</span>
+                      <span className="font-semibold text-surface-900 dark:text-white">{format(price * item.quantity)}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -138,23 +140,23 @@ export default function CartPage() {
             <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
                 <span className="text-surface-500">{t("subtotal")}</span>
-                <span className="font-medium">{formatPrice(subtotal())}</span>
+                <span className="font-medium">{format(subtotal())}</span>
               </div>
               {discount() > 0 && (
                 <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
                   <span>{t("discount")}</span>
-                  <span>−{formatPrice(discount())}</span>
+                  <span>−{format(discount())}</span>
                 </div>
               )}
               <div className="flex justify-between text-sm">
                 <span className="text-surface-500">{t("shipping")}</span>
                 <span className={shipping() === 0 ? "text-green-600 dark:text-green-400 font-medium" : "font-medium"}>
-                  {shipping() === 0 ? t("free") : formatPrice(shipping())}
+                  {shipping() === 0 ? t("free") : format(shipping())}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-surface-500">Tax (8.5%)</span>
-                <span className="font-medium">{formatPrice(tax())}</span>
+                <span className="font-medium">{format(tax())}</span>
               </div>
             </div>
 
@@ -162,7 +164,7 @@ export default function CartPage() {
 
             <div className="flex justify-between text-lg font-semibold">
               <span>{t("total")}</span>
-              <span className="text-surface-900 dark:text-white">{formatPrice(total())}</span>
+              <span className="text-surface-900 dark:text-white">{format(total())}</span>
             </div>
 
             <Button variant="gold" size="lg" fullWidth rightIcon={<ArrowRight size={18} />} asChild>

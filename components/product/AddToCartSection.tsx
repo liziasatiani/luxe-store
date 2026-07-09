@@ -3,7 +3,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -34,6 +35,7 @@ function getDeliveryEstimate(locale = "en"): string {
 
 export function AddToCartSection({ product }: Props) {
   const t = useTranslations("product");
+  const { format } = useCurrency();
   const locale = useLocale();
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
@@ -209,7 +211,7 @@ export function AddToCartSection({ product }: Props) {
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
         {[
-          { icon: Truck,      text: `Free shipping on orders over $75 — get it by ${getDeliveryEstimate(locale)}` },
+          { icon: Truck,      text: `Free shipping on orders over ₾200 — get it by ${getDeliveryEstimate(locale)}` },
           { icon: RotateCcw,  text: "30-day free returns", href: "/returns" },
           { icon: Shield,     text: "100% authentic — guaranteed" },
         ].map(({ icon: Icon, text, href }) => (
@@ -230,7 +232,7 @@ export function AddToCartSection({ product }: Props) {
           <div className="flex-1 min-w-0">
             <p className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 truncate">{product.name}</p>
             <p className="text-sm font-medium text-black dark:text-white">
-              {formatPrice(selectedVariant?.price ?? Number(product.price))}
+              {format(selectedVariant?.price ?? Number(product.price))}
             </p>
           </div>
           <button

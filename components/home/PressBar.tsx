@@ -3,7 +3,7 @@ export function PressBar() {
     "Free 30-Day Returns",
     "100% Authentic",
     "Secure Checkout",
-    "Free Shipping Over $75",
+    "Free Shipping Over ₾200",
     "Authorized Distributors Only",
     "Customer Support 7 Days",
   ];

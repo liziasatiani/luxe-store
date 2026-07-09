@@ -44,7 +44,7 @@ export async function resolveCoupon(
     return reject("Coupon usage limit reached");
   }
   if (coupon.minOrderAmount && subtotal < Number(coupon.minOrderAmount)) {
-    return reject(`Minimum order of $${Number(coupon.minOrderAmount).toFixed(2)} required`);
+    return reject(`Minimum order of ₾${Number(coupon.minOrderAmount).toFixed(2)} required`);
   }
 
   // Per-user limits are only enforceable for identified users. Guests are
