@@ -15,6 +15,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { PWAInit } from "@/components/PWAInit";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { SplashScreen } from "@/components/ui/SplashScreen";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { buildMetadata, buildOrganizationSchema } from "@/lib/seo";
 import { jsonLdSafe } from "@/lib/utils";
@@ -64,6 +65,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cinzel.variable} ${lora.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
+        {process.env.NEXT_PUBLIC_GA_ID && !process.env.NEXT_PUBLIC_GA_ID.startsWith("G-X") && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
+            <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');` }} />
+          </>
+        )}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="preload" as="image" href="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format" fetchPriority="high" />
         <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
@@ -90,6 +97,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <CookieConsent />
               <PWAInit />
               <ScrollToTop />
+              <SplashScreen />
               </MotionProvider>
             </ThemeProvider>
           </SessionProvider>

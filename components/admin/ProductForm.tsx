@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-import { X, Plus, Trash2 } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { X, Plus, Trash2, UploadCloud, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui";
@@ -19,6 +19,9 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
   const [categories, setCategories] = useState<Array<{ id: string; name: string; parentId: string | null }>>([]);
   const [brands, setBrands] = useState<Array<{ id: string; name: string }>>([]);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<Array<{ url: string; isPrimary: boolean }>>(
     (product?.images as Array<{ url: string; isPrimary: boolean }>) ?? [{ url: "", isPrimary: true }]
   );
@@ -53,6 +56,32 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
   }, []);
 
   const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
+
+  const uploadFiles = useCallback(async (files: FileList | File[]) => {
+    const accepted = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (!accepted.length) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      accepted.forEach((f) => fd.append("files", f));
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setImages((prev) => {
+        const filtered = prev.filter((i) => i.url);
+        const newImgs = (data.urls as string[]).map((url, idx) => ({
+          url,
+          isPrimary: filtered.length === 0 && idx === 0,
+        }));
+        return [...filtered, ...newImgs];
+      });
+      toast.success(`${data.urls.length} image${data.urls.length > 1 ? "s" : ""} uploaded`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!form.name || !form.sku || !form.price || !form.categoryId) {
@@ -183,41 +212,107 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
 
           {/* Images */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-surface-700 dark:text-surface-300">Images</p>
-              <button
-                onClick={() => setImages((i) => [...i, { url: "", isPrimary: false }])}
-                className="flex items-center gap-1 text-xs text-brand-500 hover:text-brand-600"
-              >
-                <Plus size={12} /> Add Image
-              </button>
+            <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-3">Images</p>
+
+            {/* Drop zone */}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={(e) => { e.preventDefault(); setDragOver(false); uploadFiles(e.dataTransfer.files); }}
+              onClick={() => fileInputRef.current?.click()}
+              className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl py-8 cursor-pointer transition-colors mb-4 ${
+                dragOver
+                  ? "border-brand-500 bg-brand-50 dark:bg-brand-500/10"
+                  : "border-surface-200 dark:border-surface-700 hover:border-brand-400"
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={(e) => e.target.files && uploadFiles(e.target.files)}
+              />
+              {uploading ? (
+                <>
+                  <Loader2 size={22} className="text-brand-500 animate-spin" />
+                  <p className="text-sm text-surface-500">Uploading…</p>
+                </>
+              ) : (
+                <>
+                  <UploadCloud size={22} className="text-surface-400" />
+                  <p className="text-sm text-surface-500">
+                    <span className="text-brand-500 font-medium">Click to upload</span> or drag & drop
+                  </p>
+                  <p className="text-xs text-surface-400">PNG, JPG, WEBP — multiple files supported</p>
+                </>
+              )}
             </div>
-            <div className="space-y-2">
-              {images.map((img, i) => (
-                <div key={i} className="flex gap-2 items-center">
-                  <Input
-                    placeholder="https://…"
-                    value={img.url}
-                    onChange={(e) => setImages((imgs) => imgs.map((im, j) => j === i ? { ...im, url: e.target.value } : im))}
-                    className="flex-1 h-9 text-sm"
-                  />
-                  <button
-                    onClick={() => setImages((imgs) => imgs.map((im, j) => j === i ? { ...im, isPrimary: true } : { ...im, isPrimary: false }))}
-                    className={`text-xs px-2 py-1 rounded-lg border ${img.isPrimary ? "border-brand-500 text-brand-500" : "border-surface-200 dark:border-surface-700 text-surface-400"}`}
-                  >
-                    Primary
-                  </button>
-                  {images.length > 1 && (
+
+            {/* Uploaded image list */}
+            {images.filter((i) => i.url).length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {images.filter((i) => i.url).map((img, i) => (
+                  <div key={i} className="relative group rounded-xl overflow-hidden border border-surface-200 dark:border-surface-700 aspect-square">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img.url} alt="" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                      <button
+                        onClick={() => setImages((imgs) => imgs.map((im, j) => j === i ? { ...im, isPrimary: true } : { ...im, isPrimary: false }))}
+                        className="text-[10px] px-2 py-1 bg-white/90 text-black rounded font-medium"
+                      >
+                        {img.isPrimary ? "✓ Primary" : "Set Primary"}
+                      </button>
+                      <button
+                        onClick={() => setImages((imgs) => imgs.filter((_, j) => j !== i))}
+                        className="p-1 bg-red-500 text-white rounded"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                    {img.isPrimary && (
+                      <span className="absolute top-1.5 left-1.5 text-[10px] bg-brand-500 text-white px-1.5 py-0.5 rounded font-medium">
+                        Primary
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Manual URL fallback */}
+            <button
+              onClick={() => setImages((i) => [...i, { url: "", isPrimary: i.filter(x => x.url).length === 0 }])}
+              className="flex items-center gap-1 text-xs text-surface-400 hover:text-brand-500 mt-3 transition-colors"
+            >
+              <Plus size={11} /> Add image by URL instead
+            </button>
+            {images.some((i) => !i.url.startsWith("http") || i.url === "") && images.some((i) => i.url === "") && (
+              <div className="space-y-2 mt-2">
+                {images.filter((i) => i.url === "").map((img, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <Input
+                      placeholder="https://…"
+                      value={img.url}
+                      onChange={(e) => {
+                        const allImgs = [...images];
+                        const emptyIdxs = allImgs.map((im, j) => im.url === "" ? j : -1).filter(j => j >= 0);
+                        allImgs[emptyIdxs[i]] = { ...allImgs[emptyIdxs[i]], url: e.target.value };
+                        setImages(allImgs);
+                      }}
+                      className="flex-1 h-9 text-sm"
+                    />
                     <button
-                      onClick={() => setImages((imgs) => imgs.filter((_, j) => j !== i))}
+                      onClick={() => setImages((imgs) => imgs.filter((im) => im !== img))}
                       className="text-surface-400 hover:text-red-500"
                     >
                       <Trash2 size={14} />
                     </button>
-                  )}
-                </div>
-              ))}
-            </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Specs */}

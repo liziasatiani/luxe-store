@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { forgotPasswordSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
+import { sendPasswordResetEmail } from "@/lib/email";
 import crypto from "node:crypto";
 
 export async function POST(req: NextRequest) {
@@ -33,22 +34,11 @@ export async function POST(req: NextRequest) {
 
     const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/reset-password?token=${rawToken}`;
 
-    if (process.env.RESEND_API_KEY && !process.env.RESEND_API_KEY.startsWith("[")) {
-      const { Resend } = await import("resend");
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      const from = process.env.EMAIL_FROM ?? "Everything Street <noreply@everythingstreet.com>";
-      await resend.emails.send({
-        from,
-        to: email,
-        subject: "Reset your Everything Street password",
-        html: `<p>Hi ${user.name ?? "there"},</p>
-<p>Click the link below to reset your password. This link expires in 1 hour.</p>
-<p><a href="${resetUrl}">${resetUrl}</a></p>
-<p>If you didn't request this, you can safely ignore this email.</p>`,
-      });
-    } else {
-      console.log("[forgot-password] Reset email not sent — RESEND_API_KEY not configured");
-    }
+    await sendPasswordResetEmail({
+      name: user.name ?? "there",
+      email,
+      resetUrl,
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {

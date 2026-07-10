@@ -2,8 +2,10 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function HeroSection() {
+  const t = useTranslations("hero");
   return (
     <section className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
       <Image
@@ -24,7 +26,7 @@ export function HeroSection() {
           transition={{ duration: 0.5 }}
           className="text-[10px] tracking-[0.28em] uppercase text-white/60 mb-8"
         >
-          Tech &amp; Beauty, One Street
+          {t("tagline")}
         </motion.p>
 
         <motion.h1
@@ -34,9 +36,9 @@ export function HeroSection() {
           className="font-display font-light text-white leading-[0.95] tracking-tight mb-8"
           style={{ fontSize: "clamp(3rem, 9vw, 7rem)" }}
         >
-          Two worlds,
+          {t("headline1")}
           <br />
-          <span className="font-serif italic font-normal text-brand-300">one street.</span>
+          <span className="font-serif italic font-normal text-brand-300">{t("headline2")}</span>
         </motion.h1>
 
         <motion.p
@@ -45,7 +47,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-sm md:text-base text-white/65 max-w-md mx-auto leading-relaxed mb-12 tracking-wide"
         >
-          Everything Street pairs considered technology with considered beauty — curated, tested, and delivered together.
+          {t("description")}
         </motion.p>
 
         <motion.div
@@ -56,11 +58,11 @@ export function HeroSection() {
         >
           <Link href="/tech"
             className="inline-flex items-center h-12 px-8 bg-white text-black text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/90 transition-colors">
-            Shop Tech
+            {t("shopTech")}
           </Link>
           <Link href="/beauty"
             className="inline-flex items-center h-12 px-8 border border-white/30 text-white text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/5 transition-colors">
-            Shop Beauty
+            {t("shopBeauty")}
           </Link>
         </motion.div>
 
@@ -71,8 +73,8 @@ export function HeroSection() {
           className="flex justify-center gap-12 mt-20 border-t border-white/8 pt-10"
         >
           {[
-            { value: "230+", label: "Products" },
-            { value: "148",  label: "Brands"   },
+            { value: "230+", label: t("statsProducts") },
+            { value: "148",  label: t("statsBrands")   },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="font-display text-2xl md:text-3xl text-white font-light">{stat.value}</p>

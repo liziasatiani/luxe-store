@@ -18,7 +18,8 @@
     "orders": "Commandes",
     "wishlist": "Favoris",
     "adminPanel": "Panneau admin",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "announcement": "Nouvelles arrivées cinq jours par semaine"
   },
   "home": {
     "hero": {
@@ -475,5 +476,15 @@
     "sku": "Réf.",
     "addedToCart": "Ajouté au panier",
     "removedFromWishlist": "Retiré des favoris"
+  },
+  "hero": {
+    "tagline": "Tech & Beauté, Une Rue",
+    "headline1": "Deux mondes,",
+    "headline2": "une rue.",
+    "description": "Everything Street associe technologie réfléchie et beauté réfléchie — sélectionnée, testée et livrée ensemble.",
+    "shopTech": "Acheter Tech",
+    "shopBeauty": "Acheter Beauté",
+    "statsProducts": "Produits",
+    "statsBrands": "Marques"
   }
 }
