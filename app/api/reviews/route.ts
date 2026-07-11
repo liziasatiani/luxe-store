@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     const hasPurchased = await prisma.orderItem.findFirst({
       where: {
         productId,
-        order: { userId: session.user.id, status: { in: ["DELIVERED", "CONFIRMED"] } },
+        order: { userId: session.user.id, status: "DELIVERED" },
       },
     });
 

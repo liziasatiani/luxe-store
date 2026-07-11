@@ -1,14 +1,16 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { Heart } from "lucide-react";
-import { Container, EmptyState, Spinner } from "@/components/ui";
+import { Container, EmptyState } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
 import { useWishlistStore } from "@/store";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import type { ProductCard as ProductCardType } from "@/types";
 
 export default function WishlistPage() {
+  const t = useTranslations("wishlist");
   const { ids, clear } = useWishlistStore();
   const [products, setProducts] = useState<ProductCardType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -47,12 +49,12 @@ export default function WishlistPage() {
     <Container className="py-12">
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-display text-4xl text-surface-900 dark:text-white">
-          My Wishlist{" "}
+          {t("title")}{" "}
           <span className="text-surface-400 text-2xl font-normal">({uniqueIds.length})</span>
         </h1>
         {uniqueIds.length > 0 && (
           <button onClick={clear} className="text-sm text-surface-400 hover:text-red-500 transition-colors">
-            Clear all
+            {t("clearAll")}
           </button>
         )}
       </div>
@@ -60,9 +62,9 @@ export default function WishlistPage() {
       {uniqueIds.length === 0 ? (
         <EmptyState
           icon={<Heart size={56} strokeWidth={1} />}
-          eyebrow="Wishlist"
-          title="Nothing saved yet"
-          description="Tap the heart on any product to save it here. No account needed."
+          eyebrow={t("title")}
+          title={t("nothingSaved")}
+          description={t("nothingSavedDesc")}
           action={
             <Button variant="gold" size="lg" asChild>
               <Link href="/">Start Shopping</Link>
@@ -74,10 +76,17 @@ export default function WishlistPage() {
           {uniqueIds.map(id => <ProductCardSkeleton key={id} />)}
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-16">
-          <Spinner size={28} className="mx-auto mb-4" />
-          <p className="text-surface-400 text-sm">Loading your wishlist...</p>
-        </div>
+        <EmptyState
+          icon={<Heart size={56} strokeWidth={1} />}
+          eyebrow={t("title")}
+          title={t("nothingFound")}
+          description={t("nothingFoundDesc")}
+          action={
+            <Button variant="gold" size="lg" asChild>
+              <Link href="/">Continue Shopping</Link>
+            </Button>
+          }
+        />
       ) : (
         <>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">

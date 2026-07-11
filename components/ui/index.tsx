@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
-// ─── Badge ────────────────────────────────────────────────────
 interface BadgeProps {
   children: React.ReactNode;
   variant?: "default" | "gold" | "success" | "warning" | "error" | "outline";
@@ -26,19 +25,16 @@ export function Badge({ children, variant = "default", size = "sm", className }:
   );
 }
 
-// ─── Spinner ─────────────────────────────────────────────────
 export function Spinner({ size = 20, className }: { size?: number; className?: string }) {
   return <Loader2 size={size} className={cn("animate-spin text-brand-500", className)} />;
 }
 
-// ─── Skeleton ────────────────────────────────────────────────
 export function Skeleton({ className }: { className?: string }) {
   return (
     <div className={cn("animate-pulse rounded-xl bg-surface-100 dark:bg-surface-800", className)} />
   );
 }
 
-// ─── Container ────────────────────────────────────────────────
 export function Container({
   children,
   className,
@@ -55,7 +51,6 @@ export function Container({
   );
 }
 
-// ─── Divider ─────────────────────────────────────────────────
 export function Divider({ className, label }: { className?: string; label?: string }) {
   if (label) {
     return (
@@ -69,7 +64,6 @@ export function Divider({ className, label }: { className?: string; label?: stri
   return <div className={cn("h-px w-full bg-surface-200 dark:bg-surface-700", className)} />;
 }
 
-// ─── Section Header ───────────────────────────────────────────
 export function SectionHeader({
   title,
   subtitle,
@@ -95,7 +89,6 @@ export function SectionHeader({
   );
 }
 
-// ─── Empty State ─────────────────────────────────────────────
 export function EmptyState({
   icon,
   eyebrow,
@@ -126,7 +119,6 @@ export function EmptyState({
   );
 }
 
-// ─── Rating Stars ─────────────────────────────────────────────
 export function RatingStars({
   rating,
   count,
@@ -163,7 +155,6 @@ export function RatingStars({
   );
 }
 
-// ─── Input ────────────────────────────────────────────────────
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
@@ -211,7 +202,6 @@ export function Input({ label, error, leftIcon, rightIcon, className, id, ...pro
   );
 }
 
-// ─── Select ───────────────────────────────────────────────────
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
@@ -246,7 +236,6 @@ export function Select({ label, error, options, className, id, ...props }: Selec
   );
 }
 
-// ─── Textarea ────────────────────────────────────────────────
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
@@ -276,7 +265,6 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
   );
 }
 
-// ─── Checkbox ────────────────────────────────────────────────
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }

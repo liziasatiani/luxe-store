@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
 import type { StockStatus } from "@prisma/client";
 
-// ─── Types ────────────────────────────────────────────────────
 export interface ImportRow {
   name: string;
   brand?: string;
@@ -34,7 +33,6 @@ export interface ImportResult {
   errors: Array<{ row: number; error: string }>;
 }
 
-// ─── Parsers ─────────────────────────────────────────────────
 export function parseCSV(text: string): ImportRow[] {
   const result = Papa.parse<Record<string, string>>(text, {
     header: true,
@@ -95,7 +93,6 @@ function normalizeRow(r: Record<string, unknown>): ImportRow {
   };
 }
 
-// ─── Importer ─────────────────────────────────────────────────
 export async function importProducts(
   rows: ImportRow[],
   jobId?: string
@@ -232,7 +229,6 @@ export async function importProducts(
   return result;
 }
 
-// ─── Template generators ──────────────────────────────────────
 export function generateCSVTemplate(): string {
   const headers = [
     "name","brand","category","subcategory","description","price",

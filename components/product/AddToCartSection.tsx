@@ -1,9 +1,9 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
-import { cn } from "@/lib/utils";
+import { cn, FREE_SHIPPING_THRESHOLD, GEL_RATE } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -45,14 +45,6 @@ export function AddToCartSection({ product }: Props) {
   const router = useRouter();
   const isWishlisted = has(product.id);
   const outOfStock = product.stockStatus === "OUT_OF_STOCK";
-  const [notifyEmail, setNotifyEmail] = useState("");
-  const [notifySent, setNotifySent] = useState(false);
-  const handleNotify = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (!notifyEmail.trim()) return;
-    setNotifySent(true);
-    toast.success(t("outOfStock"));
-  }, [notifyEmail, t]);
   const buttonsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -96,11 +88,15 @@ export function AddToCartSection({ product }: Props) {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
-      await navigator.share({ title: product.name, url: window.location.href });
-    } else {
-      await navigator.clipboard.writeText(window.location.href);
-      toast.success("Link copied to clipboard");
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: product.name, url: window.location.href });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Link copied to clipboard");
+      }
+    } catch {
+      // User cancelled share or clipboard unavailable
     }
   };
 
@@ -178,42 +174,18 @@ export function AddToCartSection({ product }: Props) {
         </button>
       </div>
 
-      {/* Back-in-stock notification */}
       {outOfStock && (
-        <div className="border border-black/10 dark:border-white/10 p-4">
-          {notifySent ? (
-            <p className="text-[11px] tracking-[0.08em] text-green-600 dark:text-green-400 text-center">✓ You&apos;re on the list — we&apos;ll email you when it&apos;s back.</p>
-          ) : (
-            <form onSubmit={handleNotify} className="space-y-2">
-              <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50">Notify me when available</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  value={notifyEmail}
-                  onChange={e => setNotifyEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  inputMode="email"
-                  autoComplete="email"
-                  className="flex-1 h-9 px-3 text-[11px] border border-surface-200 dark:border-surface-700 bg-transparent text-black dark:text-white placeholder-black/30 dark:placeholder-white/30 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
-                />
-                <button
-                  type="submit"
-                  className="h-9 px-4 border border-black dark:border-white text-black dark:text-white text-[9px] tracking-[0.1em] uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
-                >
-                  Notify
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+        <p className="text-[11px] tracking-[0.08em] text-black/50 dark:text-white/50 border border-black/10 dark:border-white/10 p-4 text-center">
+          This item is currently out of stock. Check back soon or contact us for availability.
+        </p>
       )}
 
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
         {[
-          { icon: Truck,      text: `Free shipping on orders over ₾200 — get it by ${getDeliveryEstimate(locale)}` },
-          { icon: RotateCcw,  text: "30-day free returns", href: "/returns" },
-          { icon: Shield,     text: "100% authentic — guaranteed" },
+          { icon: Truck,      text: `Free shipping over ₾${Math.ceil(FREE_SHIPPING_THRESHOLD * GEL_RATE)} — get it by ${getDeliveryEstimate(locale)}` },
+          { icon: RotateCcw,  text: t("trustReturns"), href: "/returns" },
+          { icon: Shield,     text: t("trustAuthentic") },
         ].map(({ icon: Icon, text, href }) => (
           <div key={text} className="flex items-center gap-2">
             <Icon size={13} className="text-black/40 dark:text-white/40 shrink-0" />

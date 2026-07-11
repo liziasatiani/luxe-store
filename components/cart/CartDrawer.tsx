@@ -7,10 +7,12 @@ import { useState, useEffect, useRef } from "react";
 import FocusTrap from "focus-trap-react";
 import { useTranslations } from "next-intl";
 import { useCartStore } from "@/store";
-import { getProductImageUrl } from "@/lib/utils";
+import { getProductImageUrl, FREE_SHIPPING_THRESHOLD } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import { Button } from "@/components/ui/Button";
 import type { ProductCard } from "@/types";
+
+const SWIPE_CLOSE_THRESHOLD = 72;
 
 export function CartDrawer() {
   const t = useTranslations("cart");
@@ -18,10 +20,9 @@ export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon, setCoupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
   const touchStartX = useRef(0);
-  const FREE_THRESHOLD = 75;
   const subtotalValue = items.reduce((s, i) => s + Number(i.variant?.price ?? i.product.price) * i.quantity, 0);
-  const amountToFreeShip = Math.max(0, FREE_THRESHOLD - subtotalValue);
-  const freeShipProgress = Math.min(100, (subtotalValue / FREE_THRESHOLD) * 100);
+  const amountToFreeShip = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotalValue);
+  const freeShipProgress = Math.min(100, (subtotalValue / FREE_SHIPPING_THRESHOLD) * 100);
   const [suggestions, setSuggestions] = useState<ProductCard[]>([]);
   const [couponInput, setCouponInput] = useState("");
   const [couponError, setCouponError] = useState("");
@@ -46,7 +47,7 @@ export function CartDrawer() {
         setCouponInput("");
       }
     } catch {
-      setCouponError("Something went wrong");
+      setCouponError("Couldn't apply coupon — try again");
     } finally {
       setCouponLoading(false);
     }
@@ -57,13 +58,15 @@ export function CartDrawer() {
     const categorySlug = items[0]?.product?.category?.slug ?? "";
     const inCart = new Set(items.map(i => i.productId));
     const url = `/api/products?limit=8&category=${categorySlug}&sort=best-selling`;
-    fetch(url)
+    const ctrl = new AbortController();
+    fetch(url, { signal: ctrl.signal })
       .then(r => r.json())
       .then(d => {
         const all: ProductCard[] = d.data?.products ?? [];
         setSuggestions(all.filter(p => !inCart.has(p.id)).slice(0, 3));
       })
       .catch(() => {});
+    return () => ctrl.abort();
   }, [isOpen, items]);
 
   return (
@@ -91,10 +94,9 @@ export function CartDrawer() {
             aria-modal="true"
             aria-label="Shopping cart"
             onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
-            onTouchEnd={e => { if (e.changedTouches[0].clientX - touchStartX.current > 72) closeCart(); }}
+            onTouchEnd={e => { if (e.changedTouches[0].clientX - touchStartX.current > SWIPE_CLOSE_THRESHOLD) closeCart(); }}
             className="fixed top-0 right-0 h-full w-full max-w-sm z-50 flex flex-col bg-white dark:bg-surface-950 shadow-2xl"
           >
-            {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-surface-100 dark:border-surface-800">
               <div className="flex items-center gap-2">
                 <ShoppingBag size={20} className="text-surface-700 dark:text-surface-300" />
@@ -112,8 +114,6 @@ export function CartDrawer() {
                 <X size={18} />
               </button>
             </div>
-
-            {/* Free shipping progress */}
             {items.length > 0 && (
               <div className="px-5 py-3 border-b border-surface-100 dark:border-surface-800">
                 {amountToFreeShip === 0 ? (
@@ -135,8 +135,6 @@ export function CartDrawer() {
                 </div>
               </div>
             )}
-
-            {/* Items */}
             <div className="flex-1 overflow-y-auto">
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full gap-4 px-6 text-center">
@@ -207,8 +205,6 @@ export function CartDrawer() {
                 </ul>
               )}
             </div>
-
-            {/* Cross-sell */}
             {items.length > 0 && suggestions.length > 0 && (
               <div className="border-t border-surface-100 dark:border-surface-800 px-5 py-4">
                 <p className="text-[9px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 mb-3">You might also like</p>
@@ -237,11 +233,8 @@ export function CartDrawer() {
                 </div>
               </div>
             )}
-
-            {/* Footer */}
             {items.length > 0 && (
               <div className="border-t border-surface-100 dark:border-surface-800 px-5 py-4 space-y-3">
-                {/* Coupon field */}
                 {coupon ? (
                   <div className="flex items-center justify-between text-sm bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded px-3 py-2">
                     <span className="flex items-center gap-1.5 text-green-700 dark:text-green-400">
@@ -263,6 +256,7 @@ export function CartDrawer() {
                           value={couponInput}
                           onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
                           onKeyDown={e => e.key === "Enter" && handleApplyCoupon()}
+                          aria-label="Coupon code"
                           placeholder={t("coupon")}
                           className="w-full pl-7 pr-2 h-8 text-[11px] tracking-[0.06em] uppercase border border-surface-200 dark:border-surface-700 bg-transparent text-black dark:text-white placeholder-black/35 dark:placeholder-white/35 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                         />
@@ -300,7 +294,7 @@ export function CartDrawer() {
                   onClick={closeCart}
                   className="block text-center text-sm text-surface-500 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
                 >
-                  View full cart
+                  {t("viewFullCart")}
                 </Link>
               </div>
             )}

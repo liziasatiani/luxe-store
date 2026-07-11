@@ -26,7 +26,7 @@
       "badge": "Tech & Beauté, une rue",
       "title": "Deux mondes,",
       "titleGold": "une rue.",
-      "subtitle": "Everything Street marie technologie pointue et beauté étudiée — soigneusement sélectionnées, testées et livrées ensemble.",
+      "subtitle": "Everything Street marie technologie pointue et beauté soignée — soigneusement sélectionnées, testées et livrées ensemble.",
       "shopBeauty": "Découvrir la Beauté",
       "exploreTech": "Explorer la Tech",
       "stats": {
@@ -88,12 +88,14 @@
     "youMayAlsoLike": "Vous aimerez aussi",
     "viewFullDetails": "Voir les détails complets",
     "qty": "Qté",
-    "removed": "Supprimé"
+    "removed": "Supprimé",
+    "trustReturns": "Retours gratuits sous 30 jours",
+    "trustAuthentic": "100% authentique — garanti"
   },
   "cart": {
     "title": "Panier",
     "empty": "Votre panier est vide",
-    "emptyDesc": "Votre panier est encore vide.",
+    "emptyDesc": "Il semblerait que vous n'ayez encore rien ajouté.",
     "continueShopping": "Continuer les achats",
     "subtotal": "Sous-total",
     "shipping": "Livraison",
@@ -108,10 +110,14 @@
     "discount": "Remise",
     "couponApplied": "Code promo appliqué !",
     "invalidCoupon": "Code promo invalide",
-    "secureCheckout": "Paiement sécurisé"
+    "secureCheckout": "Paiement sécurisé",
+    "viewFullCart": "Voir le panier complet",
+    "trustSecure": "Paiement sécurisé",
+    "trustReturns": "Retours 30 jours",
+    "trustAuthentic": "100% authentique"
   },
   "checkout": {
-    "title": "Ma commande",
+    "title": "Passer commande",
     "continueAsGuest": "Continuer en tant qu'invité",
     "guestSubtitle": "Pas besoin de compte — remplissez simplement vos coordonnées",
     "signIn": "Se connecter",
@@ -136,10 +142,15 @@
     "orderNotes": "Notes de commande (facultatif)",
     "shippingAddress": "Adresse de livraison",
     "orderSummary": "Récapitulatif",
-    "addNewAddress": "+ Ajouter une adresse",
+    "addNewAddress": "+ Ajouter une nouvelle adresse",
     "noAddresses": "Pas d'adresses sauvegardées",
     "addAddress": "+ Ajouter une adresse",
-    "termsNotice": "En passant votre commande, vous acceptez nos Conditions d'utilisation."
+    "termsNotice": "En passant votre commande, vous acceptez nos Conditions d'utilisation.",
+    "showSummary": "Afficher le résumé",
+    "hideSummary": "Masquer le résumé",
+    "savedAddresses": "Adresses enregistrées",
+    "shippingInfo": "Informations de livraison",
+    "paymentMethod": "Mode de paiement"
   },
   "orderSuccess": {
     "title": "Commande confirmée !",
@@ -299,7 +310,7 @@
       "title": "Questions fréquentes",
       "subtitle": "Tout ce que vous devez savoir sur Everything Street.",
       "stillHaveQuestions": "Vous avez encore des questions ?",
-      "supportHours": "Notre équipe est disponible du lundi au samedi, de 9h à 18h (EST).",
+      "supportHours": "Notre équipe est disponible du lundi au samedi, de 9h à 18h (GET).",
       "contactSupport": "Contacter le support",
       "categories": [
         {
@@ -370,7 +381,7 @@
             },
             {
               "q": "Proposez-vous des cartes-cadeaux ?",
-              "a": "Nous ne proposons pas de cartes-cadeaux pour l'instant, mais nous offrons des codes promo. Utilisez le code WELCOME15 pour 15 % de réduction sur votre première commande."
+              "a": "Nous ne proposons pas de cartes-cadeaux pour l'instant, mais les nouveaux clients reçoivent un code de bienvenue pour 15 % de réduction sur leur première commande."
             }
           ]
         },
@@ -463,7 +474,7 @@
     "brand": "Marque",
     "availability": "Disponibilité",
     "inStockOnly": "En stock uniquement",
-    "onSale": "En promotion",
+    "onSale": "En solde",
     "clearAll": "Tout effacer",
     "filters": "Filtres",
     "apply": "Appliquer",
@@ -482,9 +493,35 @@
     "headline1": "Deux mondes,",
     "headline2": "une rue.",
     "description": "Everything Street associe technologie réfléchie et beauté réfléchie — sélectionnée, testée et livrée ensemble.",
-    "shopTech": "Acheter Tech",
-    "shopBeauty": "Acheter Beauté",
+    "shopTech": "Explorer la Tech",
+    "shopBeauty": "Découvrir la Beauté",
     "statsProducts": "Produits",
     "statsBrands": "Marques"
+  },
+  "wishlist": {
+    "title": "Ma liste de souhaits",
+    "clearAll": "Tout effacer",
+    "nothingSaved": "Rien de sauvegardé",
+    "nothingSavedDesc": "Appuyez sur le cœur pour sauvegarder des produits. Aucun compte requis.",
+    "nothingFound": "Rien trouvé",
+    "nothingFoundDesc": "Certains articles sauvegardés peuvent ne plus être disponibles."
+  },
+  "filters": {
+    "title": "Filtres",
+    "clearAll": "Tout effacer",
+    "priceRange": "Fourchette de prix",
+    "brand": "Marque",
+    "availability": "Disponibilité",
+    "inStockOnly": "En stock uniquement",
+    "deals": "Promotions",
+    "onSale": "En solde",
+    "sort": "Trier",
+    "products": "produits",
+    "loading": "Chargement…",
+    "noResults": "Aucun résultat",
+    "nothingMatches": "Aucune correspondance",
+    "nothingMatchesDesc": "Essayez d'ajuster vos filtres ou termes de recherche.",
+    "loadMore": "Charger plus",
+    "filters": "Filtres"
   }
 }

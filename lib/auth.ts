@@ -11,19 +11,10 @@ import type { NextAuthConfig } from "next-auth";
 /** bcrypt hash of a value no user can supply; used only to equalise timing. */
 const DUMMY_HASH = "$2a$12$C6UzMDM.H6dfI/f/IKcEe.aQjKk8pQ5HrhTiWnJ5Vd1LhoAxKPWTm";
 
-/**
- * Password guessing was completely unthrottled: `/api/auth/[...nextauth]` is
- * excluded from the middleware matcher and never called `rateLimit`, so the
- * credentials provider accepted unlimited attempts. Constant-time comparison
- * (added by the previous audit) is meaningless while an attacker can simply try
- * every password.
- *
- * Keyed by the submitted email rather than by IP: `getIP` reads the
- * client-controlled `x-forwarded-for` header, so an IP key is trivially evaded
- * by rotating that header. The account is the thing worth protecting.
- */
+// Rate-limit by email; IP keys are trivially evaded via x-forwarded-for.
 const LOGIN_ATTEMPTS = 10;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const JWT_RECHECK_MS = 60 * 1000;
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
@@ -84,13 +75,8 @@ export const authConfig: NextAuthConfig = {
         token.checkedAt = Date.now();
       }
 
-      // Re-verify the account is still active at most every 5 minutes.
-      // JWT sessions are stateless, so a deactivated user would otherwise remain
-      // valid until the token expires. The check is throttled to avoid a DB
-      // round-trip on every single request.
-      const RECHECK_MS = 5 * 60 * 1000;
       const checkedAt = token.checkedAt as number | undefined;
-      if (token.id && (!checkedAt || Date.now() - checkedAt > RECHECK_MS)) {
+      if (token.id && (!checkedAt || Date.now() - checkedAt > JWT_RECHECK_MS)) {
         const fresh = await prisma.user.findUnique({
           where: { id: token.id as string },
           select: { isActive: true, role: true },
@@ -103,8 +89,6 @@ export const authConfig: NextAuthConfig = {
       return token;
     },
     async session({ session, token }) {
-      // Deactivated users get a session with no user object, which causes
-      // client-side auth hooks to treat them as signed out.
       if (!token.isActive) {
         return { ...session, user: null as unknown as typeof session.user };
       }

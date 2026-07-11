@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Luxury Tech & Beauty | Everything Street",
+  description: "Everything Street — where premium technology meets curated beauty. Discover luxury brands, exclusive products, and same-day delivery.",
+};
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 import { HeroSection } from "@/components/home/HeroSection";

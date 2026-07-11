@@ -65,7 +65,7 @@
       "placeholder": "Introduce tu correo electrónico",
       "subscribe": "Suscribirse",
       "noSpam": "Sin spam. Cancela cuando quieras.",
-      "success": "¡Ya eres miembro! Bienvenido a Everything Street.",
+      "success": "¡Ya eres parte de Everything Street!",
       "invalidEmail": "Por favor introduce un correo electrónico válido",
       "error": "Algo salió mal. Inténtalo de nuevo."
     }
@@ -73,7 +73,7 @@
   "product": {
     "addToCart": "Añadir al carrito",
     "buyNow": "Comprar ahora",
-    "outOfStock": "Sin stock",
+    "outOfStock": "Agotado",
     "lowStock": "¡Solo quedan pocos!",
     "quickView": "Vista rápida",
     "addToWishlist": "Añadir a favoritos",
@@ -88,7 +88,9 @@
     "youMayAlsoLike": "También te puede gustar",
     "viewFullDetails": "Ver detalles completos",
     "qty": "Cant.",
-    "removed": "Eliminado"
+    "removed": "Eliminado",
+    "trustReturns": "Devoluciones gratuitas 30 días",
+    "trustAuthentic": "100% auténtico — garantizado"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -108,10 +110,14 @@
     "discount": "Descuento",
     "couponApplied": "¡Cupón aplicado!",
     "invalidCoupon": "Código de cupón inválido",
-    "secureCheckout": "Pago seguro"
+    "secureCheckout": "Pago seguro",
+    "viewFullCart": "Ver carrito completo",
+    "trustSecure": "Pago seguro",
+    "trustReturns": "Devoluciones 30 días",
+    "trustAuthentic": "100% auténtico"
   },
   "checkout": {
-    "title": "Mi pedido",
+    "title": "Finalizar pedido",
     "continueAsGuest": "Continuar como invitado",
     "guestSubtitle": "Sin necesidad de cuenta — solo rellena tus datos",
     "signIn": "Iniciar sesión",
@@ -136,10 +142,15 @@
     "orderNotes": "Notas del pedido (opcional)",
     "shippingAddress": "Dirección de envío",
     "orderSummary": "Resumen del pedido",
-    "addNewAddress": "+ Añadir dirección",
+    "addNewAddress": "+ Añadir nueva dirección",
     "noAddresses": "Sin direcciones guardadas",
     "addAddress": "+ Añadir dirección",
-    "termsNotice": "Al realizar tu pedido, aceptas nuestros Términos de Servicio."
+    "termsNotice": "Al realizar tu pedido, aceptas nuestros Términos de Servicio.",
+    "showSummary": "Mostrar resumen",
+    "hideSummary": "Ocultar resumen",
+    "savedAddresses": "Direcciones guardadas",
+    "shippingInfo": "Información de envío",
+    "paymentMethod": "Método de pago"
   },
   "orderSuccess": {
     "title": "¡Pedido confirmado!",
@@ -174,7 +185,7 @@
       "orContinueWith": "o continúa con",
       "continueWithGoogle": "Continuar con Google",
       "invalidCredentials": "Correo electrónico o contraseña incorrectos",
-      "welcomeBack": "¡Bienvenido de nuevo!"
+      "welcomeBack": "¡De nuevo por aquí!"
     },
     "register": {
       "title": "Crear cuenta",
@@ -299,7 +310,7 @@
       "title": "Preguntas frecuentes",
       "subtitle": "Todo lo que necesitas saber sobre Everything Street.",
       "stillHaveQuestions": "¿Aún tienes preguntas?",
-      "supportHours": "Nuestro equipo está disponible de lunes a sábado, de 9:00 a 18:00 EST.",
+      "supportHours": "Nuestro equipo está disponible de lunes a sábado, de 9:00 a 18:00 GET.",
       "contactSupport": "Contactar soporte",
       "categories": [
         {
@@ -370,7 +381,7 @@
             },
             {
               "q": "¿Ofrecen tarjetas regalo?",
-              "a": "Actualmente no ofrecemos tarjetas regalo, pero sí códigos promocionales. Usa el código WELCOME15 para un 15 % de descuento en tu primer pedido."
+              "a": "Actualmente no ofrecemos tarjetas regalo, pero los nuevos clientes reciben un código de bienvenida con un 15 % de descuento en su primer pedido."
             }
           ]
         },
@@ -446,7 +457,7 @@
     "noProducts": "No se encontraron productos.",
     "required": "Obligatorio",
     "inStock": "En stock",
-    "outOfStock": "Sin stock",
+    "outOfStock": "Agotado",
     "lowStock": "¡Solo quedan pocos!",
     "new": "Nuevo",
     "sale": "Oferta",
@@ -481,10 +492,36 @@
     "tagline": "Tech & Belleza, Una Calle",
     "headline1": "Dos mundos,",
     "headline2": "una calle.",
-    "description": "Everything Street combina tecnología reflexiva con belleza reflexiva — seleccionada, probada y entregada juntos.",
+    "description": "Everything Street combina tecnología cuidada con belleza cuidada — seleccionadas, probadas y entregadas juntas.",
     "shopTech": "Comprar Tech",
     "shopBeauty": "Comprar Belleza",
     "statsProducts": "Productos",
     "statsBrands": "Marcas"
+  },
+  "wishlist": {
+    "title": "Mi lista de deseos",
+    "clearAll": "Borrar todo",
+    "nothingSaved": "Nada guardado aún",
+    "nothingSavedDesc": "Toca el corazón en cualquier producto para guardarlo aquí. No se necesita cuenta.",
+    "nothingFound": "Nada encontrado",
+    "nothingFoundDesc": "Algunos artículos guardados pueden ya no estar disponibles."
+  },
+  "filters": {
+    "title": "Filtros",
+    "clearAll": "Borrar todo",
+    "priceRange": "Rango de precios",
+    "brand": "Marca",
+    "availability": "Disponibilidad",
+    "inStockOnly": "Solo en stock",
+    "deals": "Ofertas",
+    "onSale": "En oferta",
+    "sort": "Ordenar",
+    "products": "productos",
+    "loading": "Cargando…",
+    "noResults": "Sin resultados",
+    "nothingMatches": "Nada coincide",
+    "nothingMatchesDesc": "Intenta ajustar tus filtros o términos de búsqueda.",
+    "loadMore": "Cargar más",
+    "filters": "Filtros"
   }
 }

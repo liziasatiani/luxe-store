@@ -4,11 +4,12 @@ import { sendAbandonedCartEmail } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
   const secret = req.headers.get("x-cron-secret");
-  if (secret !== process.env.CRON_SECRET) {
+  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+  const ABANDON_DELAY_MS = 60 * 60 * 1000;
+  const oneHourAgo = new Date(Date.now() - ABANDON_DELAY_MS);
 
   // Find carts created > 1hr ago, not yet notified, and no order placed
   const abandoned = await prisma.abandonedCart.findMany({

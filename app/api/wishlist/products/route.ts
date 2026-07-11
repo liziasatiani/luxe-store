@@ -19,6 +19,6 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json({ success: true, data: { products: serializeDecimal(products) } });
   } catch {
-    return NextResponse.json({ success: false, error: "Failed" }, { status: 500 });
+    return NextResponse.json({ success: false, error: "Failed to load wishlist products" }, { status: 500 });
   }
 }

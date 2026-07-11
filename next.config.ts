@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
       { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "via.placeholder.com" },
     ],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 86400,
@@ -34,7 +33,7 @@ const nextConfig: NextConfig = {
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://js.stripe.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://via.placeholder.com https://lh3.googleusercontent.com",
+            "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://lh3.googleusercontent.com",
             "connect-src 'self' https://*.supabase.co https://api.resend.com https://accounts.google.com https://js.stripe.com",
             "frame-src https://js.stripe.com https://accounts.google.com",
             "object-src 'none'",

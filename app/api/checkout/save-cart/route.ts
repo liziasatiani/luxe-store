@@ -28,12 +28,18 @@ export async function POST(req: NextRequest) {
 
     const { email, name, cartItems } = parsed.data;
 
-    await prisma.abandonedCart.create({
-      data: { email, name: name ?? null, cartData: cartItems },
-    });
+    const existing = await prisma.abandonedCart.findFirst({ where: { email }, select: { id: true } });
+    if (existing) {
+      await prisma.abandonedCart.update({
+        where: { id: existing.id },
+        data: { name: name ?? null, cartData: cartItems, notifiedAt: null, orderedAt: null },
+      });
+    } else {
+      await prisma.abandonedCart.create({ data: { email, name: name ?? null, cartData: cartItems } });
+    }
 
     return NextResponse.json({ ok: true });
   } catch {
-    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to save cart" }, { status: 500 });
   }
 }

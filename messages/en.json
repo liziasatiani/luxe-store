@@ -88,7 +88,9 @@
     "youMayAlsoLike": "You May Also Like",
     "viewFullDetails": "View full details",
     "qty": "Qty",
-    "removed": "Removed"
+    "removed": "Removed",
+    "trustReturns": "30-day free returns",
+    "trustAuthentic": "100% authentic — guaranteed"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -108,7 +110,11 @@
     "discount": "Discount",
     "couponApplied": "Coupon applied!",
     "invalidCoupon": "Invalid coupon code",
-    "secureCheckout": "Secure checkout"
+    "secureCheckout": "Secure checkout",
+    "viewFullCart": "View full cart",
+    "trustSecure": "Secure checkout",
+    "trustReturns": "30-day returns",
+    "trustAuthentic": "100% authentic"
   },
   "checkout": {
     "title": "Checkout",
@@ -139,7 +145,12 @@
     "addNewAddress": "+ Add new address",
     "noAddresses": "No saved addresses",
     "addAddress": "+ Add address",
-    "termsNotice": "By placing your order you agree to our Terms of Service."
+    "termsNotice": "By placing your order you agree to our Terms of Service.",
+    "showSummary": "Show order summary",
+    "hideSummary": "Hide order summary",
+    "savedAddresses": "Saved Addresses",
+    "shippingInfo": "Shipping Information",
+    "paymentMethod": "Payment Method"
   },
   "orderSuccess": {
     "title": "Order Confirmed!",
@@ -299,7 +310,7 @@
       "title": "Frequently Asked Questions",
       "subtitle": "Everything you need to know about Everything Street.",
       "stillHaveQuestions": "Still have questions?",
-      "supportHours": "Our support team is available Monday–Saturday, 9AM–6PM EST.",
+      "supportHours": "Our support team is available Monday–Saturday, 9AM–6PM GET.",
       "contactSupport": "Contact Support",
       "categories": [
         {
@@ -370,7 +381,7 @@
             },
             {
               "q": "Do you offer gift cards?",
-              "a": "We currently do not offer gift cards, but we do offer promo codes. Use code WELCOME15 for 15% off your first order."
+              "a": "We currently do not offer gift cards, but new customers receive a welcome discount code for 15% off their first order."
             }
           ]
         },
@@ -486,5 +497,31 @@
     "shopBeauty": "Shop Beauty",
     "statsProducts": "Products",
     "statsBrands": "Brands"
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "clearAll": "Clear all",
+    "nothingSaved": "Nothing saved yet",
+    "nothingSavedDesc": "Tap the heart on any product to save it here. No account needed.",
+    "nothingFound": "Nothing found",
+    "nothingFoundDesc": "Some saved items may no longer be available."
+  },
+  "filters": {
+    "title": "Filters",
+    "clearAll": "Clear all",
+    "priceRange": "Price Range",
+    "brand": "Brand",
+    "availability": "Availability",
+    "inStockOnly": "In Stock Only",
+    "deals": "Deals",
+    "onSale": "On Sale",
+    "sort": "Sort",
+    "products": "products",
+    "loading": "Loading…",
+    "noResults": "No results",
+    "nothingMatches": "Nothing matches",
+    "nothingMatchesDesc": "Try adjusting your filters or search terms to find what you're looking for.",
+    "loadMore": "Load More",
+    "filters": "Filters"
   }
 }

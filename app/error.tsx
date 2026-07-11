@@ -15,7 +15,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-5">Unexpected error</p>
             <h1 className="font-display text-3xl md:text-4xl uppercase tracking-[0.06em] text-black dark:text-white text-center">
-              Something went wrong
+              That didn't work
             </h1>
           </div>
         </div>
@@ -23,7 +23,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
         <div className="border-t border-black/8 dark:border-white/8 pt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-center sm:text-left">
             <p className="text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">
-              We encountered an unexpected error. Please try again or go back home.
+              The page hit an error we didn't expect. Try refreshing, or head back home.
             </p>
             {error.digest && (
               <p className="text-[10px] tracking-[0.08em] text-black/20 dark:text-white/20 mt-2 font-mono">

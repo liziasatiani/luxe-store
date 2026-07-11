@@ -1,6 +1,6 @@
 "use client";
 import { useCurrencyStore } from "@/store";
-import { GEL_RATE, formatPrice } from "@/lib/utils";
+import { formatPrice, formatGEL } from "@/lib/utils";
 
 export function useCurrency() {
   const { currency, setCurrency } = useCurrencyStore();
@@ -8,7 +8,7 @@ export function useCurrency() {
   function format(usdAmount: number | string | null | undefined): string {
     const num = typeof usdAmount === "string" ? parseFloat(usdAmount) : (usdAmount ?? 0);
     if (isNaN(num)) return currency === "GEL" ? "₾0.00" : "$0.00";
-    if (currency === "GEL") return "₾" + (num * GEL_RATE).toFixed(2);
+    if (currency === "GEL") return formatGEL(num);
     return formatPrice(num, "USD", "en-US");
   }
 

@@ -6,7 +6,6 @@ export function SplashScreen() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Show only once per session
     if (sessionStorage.getItem("es-splash-seen")) return;
     sessionStorage.setItem("es-splash-seen", "1");
     setVisible(true);
@@ -24,7 +23,6 @@ export function SplashScreen() {
           transition={{ duration: 0.7, ease: "easeInOut" }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
         >
-          {/* Letter-by-letter reveal */}
           <motion.span
             initial="hidden"
             animate="visible"
@@ -40,7 +38,7 @@ export function SplashScreen() {
                 }}
                 transition={{ duration: 0.4, delay: i * 0.045, ease: "easeOut" }}
               >
-                {char === " " ? " " : char}
+                {char}
               </motion.span>
             ))}
           </motion.span>

@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/adminAuth";
 import { parseCSV, parseExcel, parseJSON, importProducts, generateCSVTemplate, generateJSONTemplate } from "@/lib/import";
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth();
-    const role = (session?.user as { role?: string })?.role;
-    if (!session?.user || !["ADMIN", "SUPER_ADMIN"].includes(role ?? "")) {
+    const session = await requireAdmin();
+    if (!session) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
         fileName: file.name,
         fileType: ext ?? "csv",
         status: "PROCESSING",
-        createdBy: session.user.id,
+        createdBy: (session.user as { id?: string })?.id ?? null,
       },
     });
 
@@ -70,9 +69,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await auth();
-    const role = (session?.user as { role?: string })?.role;
-    if (!session?.user || !["ADMIN", "SUPER_ADMIN"].includes(role ?? "")) {
+    if (!await requireAdmin()) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 

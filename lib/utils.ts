@@ -13,7 +13,7 @@ export function formatPrice(
   locale = "en-US"
 ): string {
   const num = typeof amount === "string" ? parseFloat(amount) : (amount ?? 0);
-  if (isNaN(num)) return "$0.00";
+  if (isNaN(num)) return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: 2 }).format(0);
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
@@ -111,10 +111,11 @@ export function getProductImageUrl(
 
 
 
+export const FREE_SHIPPING_THRESHOLD = 75;
+const FLAT_SHIPPING_RATE = 9.99;
+
 export function calcShipping(subtotal: number): number {
-  const FREE_THRESHOLD = 75;
-  const FLAT_RATE = 9.99;
-  return subtotal >= FREE_THRESHOLD ? 0 : FLAT_RATE;
+  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_RATE;
 }
 
 export function calcTax(amount: number, rate = 0.085): number {

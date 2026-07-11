@@ -21,7 +21,7 @@ function ResetPasswordForm() {
     if (!token) router.replace("/forgot-password");
   }, [token, router]);
 
-  const handleSubmit = async () => {
+  const updatePassword = async () => {
     if (password !== confirm) { toast.error("Passwords do not match"); return; }
     if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
     setLoading(true);
@@ -35,7 +35,7 @@ function ResetPasswordForm() {
       if (!res.ok) { toast.error(data.error ?? "Failed to reset password"); return; }
       setDone(true);
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Couldn't update password — check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -73,9 +73,9 @@ function ResetPasswordForm() {
                 id="confirm" label="Confirm password" type="password"
                 autoComplete="new-password" placeholder="••••••••"
                 value={confirm} onChange={e => setConfirm(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleSubmit()}
+                onKeyDown={e => e.key === "Enter" && updatePassword()}
               />
-              <Button onClick={handleSubmit} loading={loading} variant="gold" size="lg" fullWidth>
+              <Button onClick={updatePassword} loading={loading} variant="gold" size="lg" fullWidth>
                 Update password
               </Button>
               <Link href="/login" className="flex items-center justify-center gap-2 text-sm text-surface-500 hover:text-surface-700">

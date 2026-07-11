@@ -8,6 +8,10 @@
     scroll-behavior: smooth;
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   * {
     box-sizing: border-box;
     padding: 0;
