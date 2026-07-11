@@ -145,7 +145,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               <Input label="Product Name *" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Crème de la Mer 60ml" />
             </div>
             <Input label="SKU *" value={form.sku} onChange={(e) => set("sku", e.target.value)} placeholder="SKC-0001" />
-            <Input label="Weight (g)" type="number" value={form.weight} onChange={(e) => set("weight", e.target.value)} placeholder="50" />
+            <Input label="Weight / Volume (g or ml)" type="number" value={form.weight} onChange={(e) => set("weight", e.target.value)} placeholder="50" />
           </div>
 
           {/* Description */}
