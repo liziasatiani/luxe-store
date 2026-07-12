@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+
+export const metadata: Metadata = { title: "Order Details", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
@@ -77,7 +80,11 @@ export default async function OrderDetailPage({ params }: Props) {
           </div>
           {o.trackingNumber && (
             <p className="mt-4 text-sm text-surface-500">
-              Tracking: <a href={o.trackingUrl ?? "#"} className="text-brand-500 font-mono">{o.trackingNumber}</a>
+              Tracking:{" "}
+              {o.trackingUrl
+                ? <a href={o.trackingUrl} target="_blank" rel="noopener noreferrer" className="text-brand-500 font-mono">{o.trackingNumber}</a>
+                : <span className="text-brand-500 font-mono">{o.trackingNumber}</span>
+              }
             </p>
           )}
         </div>

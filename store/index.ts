@@ -4,6 +4,12 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type { CartItem, CouponInfo, ProductCard } from "@/types";
 import { calcShipping, calcTax } from "@/lib/utils";
 
+const STORAGE_KEY_CART = "luxe-cart";
+const STORAGE_KEY_WISHLIST = "luxe-wishlist";
+const STORAGE_KEY_RECENTLY_VIEWED = "luxe-recently-viewed";
+const STORAGE_KEY_CURRENCY = "luxe-currency";
+const MAX_RECENTLY_VIEWED = 12;
+
 interface CartStore {
   items: CartItem[];
   coupon: CouponInfo | null;
@@ -118,7 +124,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: "luxe-cart",
+      name: STORAGE_KEY_CART,
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({ items: s.items, coupon: s.coupon }),
     }
@@ -145,7 +151,7 @@ export const useWishlistStore = create<WishlistStore>()(
       has: (productId) => get().ids.includes(productId),
       clear: () => set({ ids: [] }),
     }),
-    { name: "luxe-wishlist", storage: createJSONStorage(() => localStorage) }
+    { name: STORAGE_KEY_WISHLIST, storage: createJSONStorage(() => localStorage) }
   )
 );
 
@@ -159,6 +165,27 @@ interface UIStore {
   closeMobileMenu: () => void;
 }
 
+interface RecentlyViewedStore {
+  items: ProductCard[];
+  add: (product: ProductCard) => void;
+  clear: () => void;
+}
+
+export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
+  persist(
+    (set) => ({
+      items: [],
+      add: (product) =>
+        set((s) => {
+          const filtered = s.items.filter((p) => p.id !== product.id);
+          return { items: [product, ...filtered].slice(0, MAX_RECENTLY_VIEWED) };
+        }),
+      clear: () => set({ items: [] }),
+    }),
+    { name: STORAGE_KEY_RECENTLY_VIEWED, storage: createJSONStorage(() => localStorage) }
+  )
+);
+
 export const useUIStore = create<UIStore>((set) => ({
   searchOpen: false,
   mobileMenuOpen: false,
@@ -168,3 +195,18 @@ export const useUIStore = create<UIStore>((set) => ({
   openMobileMenu: () => set({ mobileMenuOpen: true }),
   closeMobileMenu: () => set({ mobileMenuOpen: false }),
 }));
+
+type Currency = "USD" | "GEL";
+interface CurrencyStore {
+  currency: Currency;
+  setCurrency: (c: Currency) => void;
+}
+export const useCurrencyStore = create<CurrencyStore>()(
+  persist(
+    (set) => ({
+      currency: "GEL",
+      setCurrency: (currency) => set({ currency }),
+    }),
+    { name: STORAGE_KEY_CURRENCY, storage: createJSONStorage(() => localStorage) }
+  )
+);

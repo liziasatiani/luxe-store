@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Input } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
@@ -12,7 +12,14 @@ export default function AccountPage() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSave = async () => {
+  useEffect(() => {
+    fetch("/api/account/profile")
+      .then(r => r.json())
+      .then(d => { if (d.data?.phone) setPhone(d.data.phone); })
+      .catch(() => {});
+  }, []);
+
+  const saveProfile = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/account/profile", {
@@ -20,11 +27,12 @@ export default function AccountPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, phone }),
       });
-      if (!res.ok) throw new Error("Failed to update");
+      const data = await res.json();
+      if (!res.ok) { toast.error(data.error ?? "Couldn't save changes"); return; }
       await update({ name });
       toast.success("Profile updated!");
     } catch {
-      toast.error("Failed to update profile");
+      toast.error("Couldn't save changes — check your connection");
     } finally {
       setLoading(false);
     }
@@ -34,13 +42,13 @@ export default function AccountPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-3xl text-surface-900 dark:text-white mb-1">My Profile</h1>
-        <p className="text-surface-500 text-sm">Manage your personal information</p>
+        <p className="text-surface-500 text-sm">Name, email, and phone number</p>
       </div>
       <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-5 max-w-lg">
         <Input id="name" label="Full Name" value={name} onChange={e => setName(e.target.value)} />
         <Input id="email" label="Email" value={session?.user?.email ?? ""} disabled className="opacity-60 cursor-not-allowed" />
         <Input id="phone" label="Phone (optional)" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 555 000 0000" />
-        <Button onClick={handleSave} loading={loading} variant="gold" leftIcon={<Save size={16} />}>Save Changes</Button>
+        <Button onClick={saveProfile} loading={loading} variant="gold" leftIcon={<Save size={16} />}>Save Changes</Button>
       </div>
     </div>
   );

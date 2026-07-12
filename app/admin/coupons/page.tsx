@@ -62,26 +62,36 @@ export default function AdminCouponsPage() {
   };
 
   const toggleActive = async (id: string, isActive: boolean) => {
-    await fetch("/api/admin/coupons", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, isActive: !isActive }),
-    });
-    fetchCoupons();
+    try {
+      const res = await fetch("/api/admin/coupons", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, isActive: !isActive }),
+      });
+      if (!res.ok) throw new Error();
+      fetchCoupons();
+    } catch {
+      toast.error("Failed to update coupon");
+    }
   };
 
   const deleteCoupon = async (id: string) => {
     if (!confirm("Delete this coupon?")) return;
-    await fetch("/api/admin/coupons", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    toast.success("Coupon deleted");
-    fetchCoupons();
+    try {
+      const res = await fetch("/api/admin/coupons", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Coupon deleted");
+      fetchCoupons();
+    } catch {
+      toast.error("Failed to delete coupon");
+    }
   };
 
-  const s = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const setField = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   return (
     <div className="space-y-6">
@@ -99,21 +109,21 @@ export default function AdminCouponsPage() {
           className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-4"
         >
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <Input label="Code" value={form.code} onChange={(e) => s("code", e.target.value.toUpperCase())} placeholder="SAVE20" />
+            <Input label="Code" value={form.code} onChange={(e) => setField("code", e.target.value.toUpperCase())} placeholder="SAVE20" />
             <div>
               <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Type</label>
-              <select value={form.type} onChange={(e) => s("type", e.target.value)} className={inputCls + " w-full"}>
+              <select value={form.type} onChange={(e) => setField("type", e.target.value)} className={inputCls + " w-full"}>
                 <option value="PERCENTAGE">Percentage</option>
                 <option value="FIXED_AMOUNT">Fixed Amount</option>
                 <option value="FREE_SHIPPING">Free Shipping</option>
               </select>
             </div>
-            <Input label="Value" type="number" value={form.value} onChange={(e) => s("value", e.target.value)} placeholder={form.type === "PERCENTAGE" ? "20" : "10.00"} />
-            <Input label="Min Order Amount" type="number" value={form.minOrderAmount} onChange={(e) => s("minOrderAmount", e.target.value)} placeholder="50.00" />
-            <Input label="Max Discount" type="number" value={form.maxDiscount} onChange={(e) => s("maxDiscount", e.target.value)} placeholder="100.00" />
-            <Input label="Usage Limit" type="number" value={form.usageLimit} onChange={(e) => s("usageLimit", e.target.value)} placeholder="1000" />
+            <Input label="Value" type="number" value={form.value} onChange={(e) => setField("value", e.target.value)} placeholder={form.type === "PERCENTAGE" ? "20" : "10.00"} />
+            <Input label="Min Order Amount" type="number" value={form.minOrderAmount} onChange={(e) => setField("minOrderAmount", e.target.value)} placeholder="50.00" />
+            <Input label="Max Discount" type="number" value={form.maxDiscount} onChange={(e) => setField("maxDiscount", e.target.value)} placeholder="100.00" />
+            <Input label="Usage Limit" type="number" value={form.usageLimit} onChange={(e) => setField("usageLimit", e.target.value)} placeholder="1000" />
           </div>
-          <Input label="Description" value={form.description} onChange={(e) => s("description", e.target.value)} placeholder="20% off all orders" />
+          <Input label="Description" value={form.description} onChange={(e) => setField("description", e.target.value)} placeholder="20% off all orders" />
           <div className="flex justify-end gap-3">
             <Button onClick={() => setFormOpen(false)} variant="outline">Cancel</Button>
             <Button onClick={handleCreate} loading={saving} variant="gold">Create Coupon</Button>
@@ -145,7 +155,7 @@ export default function AdminCouponsPage() {
                     </button>
                     {c.description && <p className="text-xs text-surface-400 mt-0.5">{c.description}</p>}
                   </td>
-                  <td className="px-4 py-3 text-sm text-surface-600 dark:text-surface-400">{c.type.replace("_", " ")}</td>
+                  <td className="px-4 py-3 text-sm text-surface-600 dark:text-surface-400">{c.type.replaceAll("_", " ")}</td>
                   <td className="px-4 py-3 text-sm font-medium">
                     {c.type === "PERCENTAGE" ? `${c.value}%` : c.type === "FIXED_AMOUNT" ? formatPrice(c.value) : "Free"}
                   </td>

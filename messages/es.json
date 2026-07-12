@@ -1,7 +1,14 @@
 {
+  "cookie": {
+    "title": "Usamos cookies",
+    "body": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra",
+    "privacy": "Política de privacidad",
+    "decline": "Rechazar",
+    "accept": "Aceptar"
+  },
   "nav": {
     "beauty": "Belleza",
-    "tech": "Tecnología",
+    "tech": "Tech",
     "brands": "Marcas",
     "deals": "Ofertas",
     "new": "Novedades",
@@ -11,21 +18,20 @@
     "orders": "Pedidos",
     "wishlist": "Favoritos",
     "adminPanel": "Panel admin",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "announcement": "Nuevas llegadas cinco días a la semana"
   },
   "home": {
     "hero": {
-      "badge": "Novedades cada semana",
-      "title": "El lujo",
-      "titleGold": "Redefinido.",
-      "subtitle": "Descubre 186 productos seleccionados en belleza de lujo y tecnología premium.",
+      "badge": "Tech & Belleza, Una Calle",
+      "title": "Dos mundos,",
+      "titleGold": "una calle.",
+      "subtitle": "Everything Street reúne tecnología pensada y belleza cuidada — seleccionadas, probadas y entregadas juntas.",
       "shopBeauty": "Comprar Belleza",
-      "exploreTech": "Explorar Tecnología",
+      "exploreTech": "Explorar Tech",
       "stats": {
         "products": "Productos seleccionados",
-        "brands": "Marcas de lujo",
-        "customers": "Clientes satisfechos",
-        "rating": "Valoración media"
+        "brands": "Marcas de lujo"
       }
     },
     "categories": {
@@ -50,16 +56,16 @@
     },
     "testimonials": {
       "title": "Lo que dicen nuestros clientes",
-      "subtitle": "Más de 50.000 clientes satisfechos"
+      "subtitle": "Opiniones verificadas de compradores reales"
     },
     "newsletter": {
       "badge": "Ofertas exclusivas",
-      "title": "Únete al círculo VIP",
-      "subtitle": "Sé el primero en conocer las novedades, ofertas exclusivas y secretos de belleza.",
+      "title": "Únete al círculo selecto",
+      "subtitle": "Descubre antes que nadie las novedades, ofertas exclusivas y secretos de belleza.",
       "placeholder": "Introduce tu correo electrónico",
       "subscribe": "Suscribirse",
       "noSpam": "Sin spam. Cancela cuando quieras.",
-      "success": "¡Ya eres miembro! Bienvenido a Luxe Store.",
+      "success": "¡Ya eres parte de Everything Street!",
       "invalidEmail": "Por favor introduce un correo electrónico válido",
       "error": "Algo salió mal. Inténtalo de nuevo."
     }
@@ -67,7 +73,7 @@
   "product": {
     "addToCart": "Añadir al carrito",
     "buyNow": "Comprar ahora",
-    "outOfStock": "Sin stock",
+    "outOfStock": "Agotado",
     "lowStock": "¡Solo quedan pocos!",
     "quickView": "Vista rápida",
     "addToWishlist": "Añadir a favoritos",
@@ -82,7 +88,9 @@
     "youMayAlsoLike": "También te puede gustar",
     "viewFullDetails": "Ver detalles completos",
     "qty": "Cant.",
-    "removed": "Eliminado"
+    "removed": "Eliminado",
+    "trustReturns": "Devoluciones gratuitas 30 días",
+    "trustAuthentic": "100% auténtico — garantizado"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -102,10 +110,14 @@
     "discount": "Descuento",
     "couponApplied": "¡Cupón aplicado!",
     "invalidCoupon": "Código de cupón inválido",
-    "secureCheckout": "Pago seguro"
+    "secureCheckout": "Pago seguro",
+    "viewFullCart": "Ver carrito completo",
+    "trustSecure": "Pago seguro",
+    "trustReturns": "Devoluciones 30 días",
+    "trustAuthentic": "100% auténtico"
   },
   "checkout": {
-    "title": "Pago",
+    "title": "Finalizar pedido",
     "continueAsGuest": "Continuar como invitado",
     "guestSubtitle": "Sin necesidad de cuenta — solo rellena tus datos",
     "signIn": "Iniciar sesión",
@@ -130,10 +142,15 @@
     "orderNotes": "Notas del pedido (opcional)",
     "shippingAddress": "Dirección de envío",
     "orderSummary": "Resumen del pedido",
-    "addNewAddress": "+ Añadir dirección",
+    "addNewAddress": "+ Añadir nueva dirección",
     "noAddresses": "Sin direcciones guardadas",
     "addAddress": "+ Añadir dirección",
-    "termsNotice": "Al realizar tu pedido, aceptas nuestros Términos de Servicio."
+    "termsNotice": "Al realizar tu pedido, aceptas nuestros Términos de Servicio.",
+    "showSummary": "Mostrar resumen",
+    "hideSummary": "Ocultar resumen",
+    "savedAddresses": "Direcciones guardadas",
+    "shippingInfo": "Información de envío",
+    "paymentMethod": "Método de pago"
   },
   "orderSuccess": {
     "title": "¡Pedido confirmado!",
@@ -158,7 +175,7 @@
   "auth": {
     "login": {
       "title": "Bienvenido de nuevo",
-      "subtitle": "Inicia sesión en tu cuenta Luxe Store",
+      "subtitle": "Inicia sesión en tu cuenta Everything Street",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "forgotPassword": "¿Olvidaste tu contraseña?",
@@ -167,8 +184,8 @@
       "createAccount": "Crear cuenta",
       "orContinueWith": "o continúa con",
       "continueWithGoogle": "Continuar con Google",
-      "invalidCredentials": "Email o contraseña inválidos",
-      "welcomeBack": "¡Bienvenido de nuevo!"
+      "invalidCredentials": "Correo electrónico o contraseña incorrectos",
+      "welcomeBack": "¡De nuevo por aquí!"
     },
     "register": {
       "title": "Crear cuenta",
@@ -200,7 +217,7 @@
     "noAccount": "¿No tienes cuenta?",
     "createOne": "Crear una",
     "beauty": "Belleza",
-    "tech": "Tecnología",
+    "tech": "Tech",
     "brands": "Marcas",
     "deals": "Ofertas",
     "newArrivals": "Novedades",
@@ -219,12 +236,12 @@
     "newArrivals": {
       "title": "Novedades",
       "subtitle": "Nuevos artículos cada semana.",
-      "badge": "Recién llegado"
+      "badge": "Recién llegados"
     },
     "bestSellers": {
       "title": "Más vendidos",
       "subtitle": "Nuestros productos más populares.",
-      "badge": "Los más amados"
+      "badge": "Los preferidos"
     },
     "featured": {
       "title": "Destacados",
@@ -253,21 +270,21 @@
     },
     "sitemap": {
       "title": "Mapa del sitio",
-      "subtitle": "Encuentra todo en Luxe Store"
+      "subtitle": "Encuentra todo en Everything Street"
     },
     "trackOrder": {
       "title": "Rastrear tu pedido",
       "subtitle": "Introduce tu número de pedido y email.",
       "orderNumber": "Número de pedido",
       "email": "Correo electrónico",
-      "track": "Rastrear",
+      "track": "Consultar",
       "notFound": "Pedido no encontrado. Comprueba tus datos.",
       "itemsOrdered": "Artículos pedidos",
       "shippingTo": "Envío a"
     },
     "contact": {
       "title": "Contáctanos",
-      "subtitle": "Estamos aquí para ayudarte.",
+      "subtitle": "Estamos aquí para ayudarte. Escríbenos y te responderemos en menos de 24 horas.",
       "getInTouch": "Ponte en contacto",
       "email": "Email",
       "phone": "Teléfono",
@@ -291,7 +308,101 @@
     },
     "faq": {
       "title": "Preguntas frecuentes",
-      "subtitle": "Todo lo que necesitas saber sobre Luxe Store."
+      "subtitle": "Todo lo que necesitas saber sobre Everything Street.",
+      "stillHaveQuestions": "¿Aún tienes preguntas?",
+      "supportHours": "Nuestro equipo está disponible de lunes a sábado, de 9:00 a 18:00 GET.",
+      "contactSupport": "Contactar soporte",
+      "categories": [
+        {
+          "title": "Pedidos y envíos",
+          "items": [
+            {
+              "q": "¿Cuánto tarda el envío?",
+              "a": "El envío estándar tarda de 3 a 5 días hábiles en EE. UU. El envío urgente (1–2 días hábiles) está disponible al tramitar el pedido. Los pedidos internacionales suelen tardar entre 7 y 14 días hábiles."
+            },
+            {
+              "q": "¿Ofrecen envío gratuito?",
+              "a": "¡Sí! Todos los pedidos superiores a 75 $ tienen envío estándar gratuito en EE. UU. Los pedidos inferiores a 75 $ tienen una tarifa plana de envío de 9,99 $."
+            },
+            {
+              "q": "¿Puedo rastrear mi pedido?",
+              "a": "Por supuesto. Una vez enviado tu pedido, recibirás un correo con un número de seguimiento. También puedes rastrearlo en tu cuenta en 'Mis pedidos'."
+            },
+            {
+              "q": "¿Envían a nivel internacional?",
+              "a": "Sí, enviamos a más de 50 países de todo el mundo. Los costes y plazos de envío varían según el destino. Pueden aplicarse aranceles e impuestos."
+            }
+          ]
+        },
+        {
+          "title": "Productos y autenticidad",
+          "items": [
+            {
+              "q": "¿Son auténticos todos los productos?",
+              "a": "100 % sí. Cada producto de Everything Street se obtiene directamente de distribuidores autorizados por la marca. Tenemos estrictos procesos de verificación y tolerancia cero con las falsificaciones."
+            },
+            {
+              "q": "¿De dónde provienen sus productos?",
+              "a": "Trabajamos directamente con distribuidores oficiales y minoristas autorizados en EE. UU., Europa y Asia. Cada marca de nuestra plataforma ha sido verificada y aprobada."
+            },
+            {
+              "q": "¿Qué pasa si recibo un producto dañado?",
+              "a": "Contáctanos en los 7 días siguientes a la entrega y organizaremos inmediatamente un reemplazo completo o un reembolso. También cubriremos los gastos de devolución de los artículos dañados."
+            }
+          ]
+        },
+        {
+          "title": "Devoluciones y reembolsos",
+          "items": [
+            {
+              "q": "¿Cuál es su política de devolución?",
+              "a": "Ofrecemos devoluciones sin complicaciones en 30 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados."
+            },
+            {
+              "q": "¿Cuánto tarda el reembolso?",
+              "a": "Una vez recibido el artículo devuelto, los reembolsos se procesan en 3–5 días hábiles y aparecen en tu método de pago original en 5–10 días hábiles."
+            },
+            {
+              "q": "¿Hay artículos que no se pueden devolver?",
+              "a": "Los productos de belleza abiertos (por razones de higiene), los artículos personalizados y las descargas digitales no pueden devolverse salvo que sean defectuosos."
+            }
+          ]
+        },
+        {
+          "title": "Pago y seguridad",
+          "items": [
+            {
+              "q": "¿Qué métodos de pago aceptan?",
+              "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) y pago contra reembolso en determinadas regiones."
+            },
+            {
+              "q": "¿Es segura mi información de pago?",
+              "a": "Sí. Todos los pagos se procesan a través de Stripe, un procesador certificado PCI-DSS Nivel 1. Nunca almacenamos los datos de tu tarjeta en nuestros servidores."
+            },
+            {
+              "q": "¿Ofrecen tarjetas regalo?",
+              "a": "Actualmente no ofrecemos tarjetas regalo, pero los nuevos clientes reciben un código de bienvenida con un 15 % de descuento en su primer pedido."
+            }
+          ]
+        },
+        {
+          "title": "Cuenta y cupones",
+          "items": [
+            {
+              "q": "¿Cómo uso un cupón?",
+              "a": "Introduce tu código de cupón en el campo 'Cupón' de la página del carrito o durante el pago. Los códigos válidos aplicarán automáticamente el descuento al total de tu pedido."
+            },
+            {
+              "q": "¿Puedo combinar varios cupones?",
+              "a": "Solo se puede aplicar un cupón por pedido. Sin embargo, los cupones se pueden combinar con precios en oferta."
+            },
+            {
+              "q": "¿Cómo cambio mi contraseña?",
+              "a": "Ve a Cuenta → Perfil y usa la opción 'Cambiar contraseña'. También puedes usar '¿Olvidaste tu contraseña?' en la página de inicio de sesión para restablecerla por correo electrónico."
+            }
+          ]
+        }
+      ]
     },
     "shipping": {
       "title": "Política de envío",
@@ -346,7 +457,7 @@
     "noProducts": "No se encontraron productos.",
     "required": "Obligatorio",
     "inStock": "En stock",
-    "outOfStock": "Sin stock",
+    "outOfStock": "Agotado",
     "lowStock": "¡Solo quedan pocos!",
     "new": "Nuevo",
     "sale": "Oferta",
@@ -376,5 +487,41 @@
     "sku": "Ref.",
     "addedToCart": "Añadido al carrito",
     "removedFromWishlist": "Eliminado de favoritos"
+  },
+  "hero": {
+    "tagline": "Tech & Belleza, Una Calle",
+    "headline1": "Dos mundos,",
+    "headline2": "una calle.",
+    "description": "Everything Street combina tecnología cuidada con belleza cuidada — seleccionadas, probadas y entregadas juntas.",
+    "shopTech": "Comprar Tech",
+    "shopBeauty": "Comprar Belleza",
+    "statsProducts": "Productos",
+    "statsBrands": "Marcas"
+  },
+  "wishlist": {
+    "title": "Mi lista de deseos",
+    "clearAll": "Borrar todo",
+    "nothingSaved": "Nada guardado aún",
+    "nothingSavedDesc": "Toca el corazón en cualquier producto para guardarlo aquí. No se necesita cuenta.",
+    "nothingFound": "Nada encontrado",
+    "nothingFoundDesc": "Algunos artículos guardados pueden ya no estar disponibles."
+  },
+  "filters": {
+    "title": "Filtros",
+    "clearAll": "Borrar todo",
+    "priceRange": "Rango de precios",
+    "brand": "Marca",
+    "availability": "Disponibilidad",
+    "inStockOnly": "Solo en stock",
+    "deals": "Ofertas",
+    "onSale": "En oferta",
+    "sort": "Ordenar",
+    "products": "productos",
+    "loading": "Cargando…",
+    "noResults": "Sin resultados",
+    "nothingMatches": "Nada coincide",
+    "nothingMatchesDesc": "Intenta ajustar tus filtros o términos de búsqueda.",
+    "loadMore": "Cargar más",
+    "filters": "Filtros"
   }
 }

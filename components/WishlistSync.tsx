@@ -28,7 +28,8 @@ export function WishlistSync() {
           if (!localSet.has(id)) toggle(id);
         }
       })
-      .catch(() => {});
+      .catch(() => { console.warn("Wishlist sync failed"); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]); // ids intentionally excluded — snapshot captures value at auth time
 
   return null;

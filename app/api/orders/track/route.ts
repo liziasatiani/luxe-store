@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal, isValidEmail } from "@/lib/utils";
+import { serializeDecimal, isValidEmail, normalizeEmail } from "@/lib/utils";
+import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function GET(req: NextRequest) {
+  // Rate-limited: prevents brute-forcing orderNumber+email pairs.
+  const rl = await rateLimit(`track:${getIP(req)}`, 10, 60 * 1000);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const orderNumber = req.nextUrl.searchParams.get("orderNumber");
     const email = req.nextUrl.searchParams.get("email");
@@ -14,11 +19,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Invalid email address" }, { status: 400 });
     }
 
-    const emailClean = email.trim().toLowerCase();
+    const emailClean = normalizeEmail(email);
     const orderNumberClean = orderNumber.trim().toUpperCase();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const order = await (prisma.order as any).findFirst({
+    // Orders are always attached to a user: `Order` has no guest columns, so the
+    // previous `guestEmail` branch referenced a column that does not exist and
+    // made every lookup throw. The `as any` cast is what hid it from the compiler.
+    const order = await prisma.order.findFirst({
       where: {
         orderNumber: orderNumberClean,
         OR: [

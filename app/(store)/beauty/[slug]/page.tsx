@@ -4,7 +4,9 @@ import { prisma } from "@/lib/prisma";
 export const revalidate = 3600;
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { SubcategoryNav } from "@/components/ui/SubcategoryNav";
+import { TrustBar } from "@/components/ui/TrustBar";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 
@@ -14,36 +16,47 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const cat = await prisma.category.findUnique({ where: { slug }, include: { parent: true } });
   if (!cat) return {};
-  return buildMetadata({ title: cat.name, description: cat.description ?? undefined });
+  const locale = await getLocale();
+  return buildMetadata({ title: cat.name, description: cat.description ?? undefined, locale });
 }
 
 export default async function BeautySubcategoryPage({ params }: Props) {
   const { slug } = await params;
 
-  const category = await prisma.category.findUnique({
-    where: { slug, isActive: true },
-    include: { parent: true, _count: { select: { products: { where: { isActive: true } } } } },
-  });
-  if (!category) notFound();
+  const [category, subcategories] = await Promise.all([
+    prisma.category.findUnique({
+      where: { slug, isActive: true },
+      include: { parent: true, _count: { select: { products: { where: { isActive: true } } } } },
+    }),
+    prisma.category.findMany({
+      where: { parent: { slug: "beauty" }, isActive: true },
+      select: { name: true, slug: true, _count: { select: { products: { where: { isActive: true } } } } },
+      orderBy: { sortOrder: "asc" },
+    }),
+  ]);
 
-  const breadcrumbs = [
-    { name: "Home", url: "/" },
-    ...(category.parent ? [{ name: category.parent.name, url: `/${category.parent.slug}` }] : []),
-    { name: category.name, url: `/${category.slug}` },
-  ];
+  if (!category) notFound();
 
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-10">
-        <Container>
-          <Breadcrumbs items={breadcrumbs} />
-          <h1 className="font-display text-4xl md:text-5xl text-surface-900 dark:text-white mt-4">{category.name}</h1>
-          <p className="text-surface-500 mt-2">{category._count.products} products</p>
+      <div className="border-b border-black/8 dark:border-white/8 py-16">
+        <Container className="text-center">
+          <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">Beauty</p>
+          <h1 className="font-display text-5xl md:text-6xl text-black dark:text-white font-light mb-4">{category.name}</h1>
+          <p className="text-sm text-black/40 dark:text-white/40 max-w-md mx-auto">{category._count.products} products</p>
         </Container>
       </div>
-      <Container className="py-10">
+
+      <Container className="py-12">
+        <SubcategoryNav
+          basePath="/beauty"
+          all={{ label: "All Beauty", href: "/beauty", active: false }}
+          subcategories={subcategories.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products }))}
+          activeSlug={slug}
+        />
         <ProductGrid filters={{ categorySlug: slug }} />
       </Container>
+      <TrustBar />
     </>
   );
 }

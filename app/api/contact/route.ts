@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
+import { sendContactAutoReply } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`contact:${getIP(req)}`, 5, 60 * 1000);
+  const rl = await rateLimit(`contact:${getIP(req)}`, 5, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
@@ -13,19 +14,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    const { name, email, subject, message } = parsed.data;
+    const { name, email, subject } = parsed.data;
 
-    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== "[YOUR-RESEND-API-KEY]") {
-      const { Resend } = await import("resend");
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: "Luxe Store <noreply@luxestore.com>",
-        to: process.env.CONTACT_EMAIL ?? "hello@luxestore.com",
-        replyTo: email,
-        subject: `[Contact] ${subject}`,
-        text: `From: ${name} <${email}>\n\n${message}`,
-      });
-    }
+    sendContactAutoReply({ name, email, subject }).catch(() => {});
 
     return NextResponse.json({ success: true, message: "Message sent! We'll reply within 24 hours." });
   } catch {

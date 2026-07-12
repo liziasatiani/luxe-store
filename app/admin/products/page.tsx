@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react";
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, AlertTriangle, Filter } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input, Badge, Spinner } from "@/components/ui";
 import { formatPrice } from "@/lib/utils";
@@ -21,8 +21,11 @@ export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [stockFilter, setStockFilter] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<Record<string, unknown> | null>(null);
   const debouncedSearch = useDebounce(search, 400);
@@ -30,16 +33,26 @@ export default function AdminProductsPage() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ page: String(page), limit: "20", ...(debouncedSearch && { search: debouncedSearch }) });
+      const params = new URLSearchParams({
+        page: String(page), limit: String(limit),
+        ...(debouncedSearch && { search: debouncedSearch }),
+        ...(category && { category }),
+        ...(stockFilter && { stock: stockFilter }),
+      });
       const res = await fetch(`/api/admin/products?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
       setProducts(data.data?.products ?? []);
       setTotal(data.data?.total ?? 0);
+    } catch {
+      setProducts([]);
+      toast.error("Failed to load products");
     } finally {
       setLoading(false);
     }
-  }, [page, debouncedSearch]);
+  }, [page, limit, debouncedSearch, category, stockFilter]);
 
+  useEffect(() => { setPage(1); }, [debouncedSearch, category, stockFilter]);
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const handleDelete = async (id: string) => {
@@ -63,11 +76,55 @@ export default function AdminProductsPage() {
         </Button>
       </div>
 
-      {/* Search */}
-      <div className="flex gap-3">
-        <div className="flex-1 max-w-sm">
-          <Input placeholder="Search by name or SKU…" value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} leftIcon={<Search size={16} />} />
+      {/* Filters */}
+      <div className="flex flex-wrap gap-3 items-center">
+        <div className="flex-1 min-w-[200px] max-w-sm">
+          <Input placeholder="Search by name or SKU…" value={search} onChange={e => setSearch(e.target.value)} leftIcon={<Search size={16} />} />
         </div>
+        <select
+          value={category}
+          onChange={e => setCategory(e.target.value)}
+          className="h-11 px-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm text-surface-700 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+        >
+          <option value="">All categories</option>
+          <optgroup label="Beauty">
+            {["skincare","makeup","hair-care","body-care","perfume","beauty-tools","mini"].map(s => (
+              <option key={s} value={s}>{s.replaceAll("-", " ")}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Tech">
+            {["headphones","cameras","tablets","gaming","wearables","smart-home","audio","accessories"].map(s => (
+              <option key={s} value={s}>{s.replaceAll("-", " ")}</option>
+            ))}
+          </optgroup>
+        </select>
+        <select
+          value={stockFilter}
+          onChange={e => setStockFilter(e.target.value)}
+          className="h-11 px-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm text-surface-700 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+        >
+          <option value="">All stock</option>
+          <option value="IN_STOCK">In stock</option>
+          <option value="LOW_STOCK">Low stock</option>
+          <option value="OUT_OF_STOCK">Out of stock</option>
+        </select>
+        <select
+          value={String(limit)}
+          onChange={e => { setLimit(Number(e.target.value)); setPage(1); }}
+          className="h-11 px-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm text-surface-700 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+        >
+          <option value="20">20 per page</option>
+          <option value="50">50 per page</option>
+          <option value="100">100 per page</option>
+        </select>
+        {(search || category || stockFilter) && (
+          <button
+            onClick={() => { setSearch(""); setCategory(""); setStockFilter(""); }}
+            className="text-xs text-surface-400 hover:text-surface-700 dark:hover:text-white flex items-center gap-1 transition-colors"
+          >
+            <Filter size={12} /> Clear filters
+          </button>
+        )}
       </div>
 
       {/* Table */}
@@ -85,6 +142,9 @@ export default function AdminProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-100 dark:divide-surface-800">
+                {!loading && products.length === 0 && (
+                  <tr><td colSpan={7} className="text-center py-12 text-surface-400 text-sm">No products found</td></tr>
+                )}
                 {products.map(product => (
                   <tr key={product.id} className="hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors">
                     <td className="px-4 py-3">
@@ -109,7 +169,7 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <Badge variant={STOCK_BADGE[product.stockStatus as keyof typeof STOCK_BADGE] ?? "default"} size="sm">
-                        {product.stockStatus.replace("_", " ")}
+                        {product.stockStatus.replaceAll("_", " ")}
                       </Badge>
                     </td>
                     <td className="px-4 py-3">
@@ -130,14 +190,14 @@ export default function AdminProductsPage() {
         )}
 
         {/* Pagination */}
-        {total > 20 && (
+        {total > limit && (
           <div className="flex items-center justify-between px-4 py-3 border-t border-surface-100 dark:border-surface-800">
-            <p className="text-xs text-surface-400">Showing {Math.min((page-1)*20+1, total)}–{Math.min(page*20, total)} of {total}</p>
+            <p className="text-xs text-surface-400">Showing {Math.min((page-1)*limit+1, total)}–{Math.min(page*limit, total)} of {total}</p>
             <div className="flex gap-2">
               <button onClick={() => setPage(p => Math.max(1, p-1))} disabled={page === 1} className="p-1.5 rounded-lg border border-surface-200 dark:border-surface-700 disabled:opacity-40">
                 <ChevronLeft size={14} />
               </button>
-              <button onClick={() => setPage(p => p+1)} disabled={page * 20 >= total} className="p-1.5 rounded-lg border border-surface-200 dark:border-surface-700 disabled:opacity-40">
+              <button onClick={() => setPage(p => p+1)} disabled={page * limit >= total} className="p-1.5 rounded-lg border border-surface-200 dark:border-surface-700 disabled:opacity-40">
                 <ChevronRight size={14} />
               </button>
             </div>

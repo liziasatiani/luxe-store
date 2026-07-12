@@ -7,7 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Badge, RatingStars, Spinner } from "@/components/ui";
 import { useCartStore, useWishlistStore } from "@/store";
-import { formatPrice, getProductImageUrl, cn } from "@/lib/utils";
+import { getProductImageUrl, cn } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
+import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
 interface QuickViewProps {
@@ -15,13 +17,23 @@ interface QuickViewProps {
   onClose: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyProduct = any;
+interface QuickViewProduct {
+  id: string; name: string; slug: string; price: number; comparePrice?: number | null;
+  stock: number; stockStatus: string; ratingAvg?: number; ratingCount?: number;
+  isBestSeller?: boolean; isNewArrival?: boolean;
+  images: Array<{ url: string; altText?: string | null }>;
+  brand?: { name: string } | null;
+  category?: { name: string } | null;
+  description?: string | null;
+  variants?: Array<{ id: string; name: string; value: string; price?: number | null; stock: number }>;
+}
 
 export function QuickView({ slug, onClose }: QuickViewProps) {
-  const [product, setProduct] = useState<AnyProduct>(null);
+  const [product, setProduct] = useState<QuickViewProduct | null>(null);
   const [loading, setLoading] = useState(false);
   const [qty, setQty] = useState(1);
+  const { format } = useCurrency();
+  const t = useTranslations("product");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
 
@@ -49,8 +61,9 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
 
   const handleAddToCart = () => {
     if (!product) return;
-    addItem(product, qty);
-    toast.success("Added to cart", { icon: "🛍️" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addItem(product as any, qty);
+    toast.success(t("addToCart"), { icon: "🛍️" });
     onClose();
   };
 
@@ -61,20 +74,27 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center sm:p-4"
           onClick={onClose}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-900 rounded-2xl shadow-2xl"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 32, stiffness: 300 }}
+            style={{ willChange: "transform" }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Quick view"
+            className="relative w-full sm:max-w-3xl sm:mx-auto max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-900 rounded-t-2xl sm:rounded-2xl shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
+            <div className="sm:hidden flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-surface-200 dark:bg-surface-700" />
+            </div>
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
+              className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
             >
               <X size={18} />
             </button>
@@ -85,7 +105,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
               </div>
             ) : product ? (
               <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="relative aspect-square rounded-tl-2xl rounded-bl-2xl overflow-hidden bg-surface-50 dark:bg-surface-800">
+                <div className="relative aspect-square sm:rounded-tl-2xl sm:rounded-bl-2xl overflow-hidden bg-surface-50 dark:bg-surface-800">
                   <Image src={img} alt={product.name} fill className="object-cover" sizes="400px" />
                   {product.isNewArrival && (
                     <div className="absolute top-3 left-3">
@@ -105,25 +125,25 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                   <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={14} />
                   <div className="flex items-baseline gap-3">
                     <span className="text-2xl font-bold text-surface-900 dark:text-white">
-                      {formatPrice(Number(product.price))}
+                      {format(Number(product.price))}
                     </span>
                     {product.comparePrice && Number(product.comparePrice) > Number(product.price) && (
                       <span className="text-base text-surface-400 line-through">
-                        {formatPrice(Number(product.comparePrice))}
+                        {format(Number(product.comparePrice))}
                       </span>
                     )}
                   </div>
-                  {product.shortDescription && (
+                  {product.description && (
                     <p className="text-sm text-surface-500 leading-relaxed">
-                      {product.shortDescription}
+                      {product.description}
                     </p>
                   )}
                   <div>
-                    <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">Qty</p>
+                    <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">{t("qty")}</p>
                     <div className="flex items-center gap-1 w-fit rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
-                      <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-9 h-9 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">−</button>
-                      <span className="w-10 text-center text-sm font-medium">{qty}</span>
-                      <button onClick={() => setQty(q => q + 1)} className="w-9 h-9 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">+</button>
+                      <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Decrease quantity" className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">−</button>
+                      <span className="w-10 text-center text-sm font-medium" aria-live="polite" aria-atomic="true">{qty}</span>
+                      <button onClick={() => setQty(q => Math.min(product.stock, q + 1))} disabled={qty >= product.stock} aria-label="Increase quantity" className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600 disabled:opacity-40">+</button>
                     </div>
                   </div>
                   <div className="flex gap-3 pt-2">
@@ -133,7 +153,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                       variant="gold" size="md" fullWidth
                       leftIcon={<ShoppingBag size={16} />}
                     >
-                      {product.stockStatus === "OUT_OF_STOCK" ? "Out of Stock" : "Add to Cart"}
+                      {product.stockStatus === "OUT_OF_STOCK" ? t("outOfStock") : t("addToCart")}
                     </Button>
                     <button
                       onClick={() => { toggle(product.id); toast.success(isWishlisted ? "Removed" : "Wishlisted"); }}
@@ -150,7 +170,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                     onClick={onClose}
                     className="flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-600 font-medium"
                   >
-                    View full details <ExternalLink size={13} />
+                    {t("viewFullDetails")} <ExternalLink size={13} />
                   </Link>
                 </div>
               </div>

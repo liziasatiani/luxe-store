@@ -42,6 +42,7 @@ export async function GET(
 
     return NextResponse.json({ success: true, data: { order: serializeDecimal(order) } });
   } catch (err) {
+    console.error("[orders/[id]/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch order" }, { status: 500 });
   }
 }

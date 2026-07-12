@@ -1,11 +1,13 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProductCard, ProductCardSkeleton } from "./ProductCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import type { ProductCard as ProductCardType, ProductFilters, SortOption } from "@/types";
 
 interface ProductGridProps {
@@ -30,9 +32,15 @@ export function ProductGrid({
   showFilters = true,
   columns = 4,
 }: ProductGridProps) {
+  const t = useTranslations("filters");
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<ProductCardType[]>(initialProducts ?? []);
   const [loading, setLoading] = useState(!initialProducts);
-  const [filters, setFilters] = useState<ProductFilters>(initialFilters ?? {});
+  const [filters, setFilters] = useState<ProductFilters>(() => {
+    const sort = searchParams.get("sort") as SortOption | null;
+    return { ...(initialFilters ?? {}), ...(sort ? { sort } : {}) };
+  });
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -69,9 +77,11 @@ export function ProductGrid({
 
   useEffect(() => {
     if (!initialProducts) fetchProducts(filters, 1);
-    fetch("/api/brands?limit=50")
-      .then((r) => r.json())
-      .then((d) => setBrands(d.data?.brands ?? []));
+    if (showFilters) {
+      fetch("/api/brands?limit=50")
+        .then((r) => r.json())
+        .then((d) => setBrands(d.data?.brands ?? []));
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -80,6 +90,11 @@ export function ProductGrid({
     setFilters(next);
     setPage(1);
     fetchProducts(next, 1);
+    if (key === "sort") {
+      const p = new URLSearchParams(searchParams.toString());
+      if (value) p.set("sort", value as string); else p.delete("sort");
+      router.replace(`?${p.toString()}`, { scroll: false });
+    }
   };
 
   const handleBrandToggle = (slug: string) => {
@@ -115,6 +130,7 @@ export function ProductGrid({
               onBrandToggle={handleBrandToggle}
               onFilterChange={handleFilterChange}
               onClear={() => { setFilters({}); fetchProducts({}, 1); }}
+              t={t}
             />
           </aside>
 
@@ -129,10 +145,10 @@ export function ProductGrid({
                 <motion.aside
                   initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
                   transition={{ type: "spring", damping: 30 }}
-                  className="fixed left-0 top-0 bottom-0 z-50 w-80 bg-white dark:bg-surface-900 overflow-y-auto p-6 lg:hidden"
+                  className="fixed left-0 top-0 bottom-0 z-50 w-80 bg-white dark:bg-black overflow-y-auto p-6 lg:hidden"
                 >
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-semibold text-lg">Filters</h3>
+                    <h3 className="font-semibold text-lg">{t("filters")}</h3>
                     <button onClick={() => setSidebarOpen(false)}><X size={20} /></button>
                   </div>
                   <FilterSidebar
@@ -141,6 +157,7 @@ export function ProductGrid({
                     onBrandToggle={handleBrandToggle}
                     onFilterChange={handleFilterChange}
                     onClear={() => { setFilters({}); setSidebarOpen(false); fetchProducts({}, 1); }}
+                    t={t}
                   />
                 </motion.aside>
               </>
@@ -155,30 +172,30 @@ export function ProductGrid({
             {showFilters && (
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden flex items-center gap-2 px-4 h-10 rounded-xl border border-surface-200 dark:border-surface-700 text-sm"
+                className="lg:hidden flex items-center gap-2 px-4 h-10 border border-black/15 dark:border-white/15 text-[11px] tracking-[0.08em] uppercase"
               >
                 <SlidersHorizontal size={16} />
-                Filters
+                {t("filters")}
               </button>
             )}
-            <p className="text-sm text-surface-500">
-              {loading ? "Loading…" : `${total.toLocaleString()} products`}
+            <p className="text-sm text-black/40 dark:text-white/40">
+              {loading ? t("loading") : `${total.toLocaleString()} ${t("products")}`}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-sm text-surface-500 hidden sm:block">Sort:</span>
+            <span className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 hidden sm:block">{t("sort")}:</span>
             <div className="relative">
               <select
                 value={filters.sort ?? "newest"}
                 onChange={(e) => handleFilterChange("sort", e.target.value as SortOption)}
-                className="h-10 pl-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 appearance-none"
+                className="h-10 pl-3 pr-8 border border-black/15 dark:border-white/15 bg-white dark:bg-black text-[11px] tracking-[0.06em] uppercase focus:outline-none appearance-none"
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
                 ))}
               </select>
-              <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-surface-400" />
+              <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-black/40 dark:text-white/40" />
             </div>
           </div>
         </div>
@@ -188,18 +205,21 @@ export function ProductGrid({
             {Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-surface-500">No products found.</p>
+          <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+            <SlidersHorizontal size={56} strokeWidth={1} className="text-black/10 dark:text-white/10 mb-8" />
+            <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">{t("noResults")}</p>
+            <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">{t("nothingMatches")}</h3>
+            <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">{t("nothingMatchesDesc")}</p>
           </div>
         ) : (
           <>
             <div className={cn("grid gap-5", gridCols[columns])}>
-              {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+              {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
             </div>
             {hasMore && (
               <div className="mt-12 text-center">
                 <Button onClick={loadMore} loading={loading} variant="outline" size="lg">
-                  Load More
+                  {t("loadMore")}
                 </Button>
               </div>
             )}
@@ -216,21 +236,23 @@ function FilterSidebar({
   onBrandToggle,
   onFilterChange,
   onClear,
+  t,
 }: {
   filters: ProductFilters;
   brands: { name: string; slug: string }[];
   onBrandToggle: (slug: string) => void;
   onFilterChange: (key: keyof ProductFilters, value: unknown) => void;
   onClear: () => void;
+  t: (key: string) => string;
 }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-surface-900 dark:text-white">Filters</h3>
-        <button onClick={onClear} className="text-xs text-brand-500 hover:underline">Clear all</button>
+        <h3 className="text-[11px] tracking-[0.14em] uppercase text-black dark:text-white font-medium">{t("title")}</h3>
+        <button onClick={onClear} className="text-[10px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">{t("clearAll")}</button>
       </div>
 
-      <FilterSection title="Price Range">
+      <FilterSection title={t("priceRange")}>
         <div className="flex items-center gap-2">
           <Input
             type="number"
@@ -239,7 +261,7 @@ function FilterSidebar({
             className="h-9 text-sm"
             onChange={(e) => onFilterChange("minPrice", e.target.value ? Number(e.target.value) : undefined)}
           />
-          <span className="text-surface-400">—</span>
+          <span className="text-black/30 dark:text-white/30">—</span>
           <Input
             type="number"
             placeholder="Max"
@@ -251,7 +273,7 @@ function FilterSidebar({
       </FilterSection>
 
       {brands.length > 0 && (
-        <FilterSection title="Brand">
+        <FilterSection title={t("brand")}>
           <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
             {brands.map((b) => (
               <label key={b.slug} className="flex items-center gap-2 cursor-pointer">
@@ -259,36 +281,36 @@ function FilterSidebar({
                   type="checkbox"
                   checked={filters.brandSlugs?.includes(b.slug) ?? false}
                   onChange={() => onBrandToggle(b.slug)}
-                  className="w-4 h-4 rounded border-surface-300 text-brand-500 focus:ring-brand-500 focus:ring-offset-0"
+                  className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0 focus:ring-offset-0"
                 />
-                <span className="text-sm text-surface-700 dark:text-surface-300">{b.name}</span>
+                <span className="text-sm text-black/70 dark:text-white/70">{b.name}</span>
               </label>
             ))}
           </div>
         </FilterSection>
       )}
 
-      <FilterSection title="Availability">
+      <FilterSection title={t("availability")}>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
             checked={filters.inStock ?? false}
             onChange={(e) => onFilterChange("inStock", e.target.checked)}
-            className="w-4 h-4 rounded border-surface-300 text-brand-500 focus:ring-brand-500"
+            className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0"
           />
-          <span className="text-sm text-surface-700 dark:text-surface-300">In Stock Only</span>
+          <span className="text-sm text-black/70 dark:text-white/70">{t("inStockOnly")}</span>
         </label>
       </FilterSection>
 
-      <FilterSection title="Deals">
+      <FilterSection title={t("deals")}>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
             checked={filters.isOnSale ?? false}
             onChange={(e) => onFilterChange("isOnSale", e.target.checked)}
-            className="w-4 h-4 rounded border-surface-300 text-brand-500 focus:ring-brand-500"
+            className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0"
           />
-          <span className="text-sm text-surface-700 dark:text-surface-300">On Sale</span>
+          <span className="text-sm text-black/70 dark:text-white/70">{t("onSale")}</span>
         </label>
       </FilterSection>
     </div>
@@ -298,13 +320,13 @@ function FilterSidebar({
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="border-b border-surface-100 dark:border-surface-800 pb-5">
+    <div className="border-b border-black/8 dark:border-white/8 pb-5">
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center justify-between w-full mb-3"
       >
-        <span className="text-sm font-medium text-surface-900 dark:text-white">{title}</span>
-        <ChevronDown size={14} className={cn("text-surface-400 transition-transform", open && "rotate-180")} />
+        <span className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white">{title}</span>
+        <ChevronDown size={12} className={cn("text-black/40 dark:text-white/40 transition-transform", open && "rotate-180")} />
       </button>
       {open && <div>{children}</div>}
     </div>

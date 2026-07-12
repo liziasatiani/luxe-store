@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Star, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
@@ -29,7 +29,12 @@ interface Props {
 
 export function ReviewsSection({ productId, initialReviews, avgRating, reviewCount }: Props) {
   const { data: session } = useSession();
-  const [reviews] = useState(initialReviews);
+  const [sort, setSort] = useState<"newest" | "highest" | "lowest">("newest");
+  const reviews = useMemo(() => [...initialReviews].sort((a, b) => {
+    if (sort === "highest") return b.rating - a.rating;
+    if (sort === "lowest") return a.rating - b.rating;
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  }), [initialReviews, sort]);
   const [showForm, setShowForm] = useState(false);
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
@@ -40,7 +45,7 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
   const distribution: Record<number, number> = {};
   reviews.forEach((r) => { distribution[r.rating] = (distribution[r.rating] ?? 0) + 1; });
 
-  const handleSubmit = async () => {
+  const submitReview = async () => {
     if (!session) { toast.error("Sign in to leave a review"); return; }
     if (body.length < 10) { toast.error("Review must be at least 10 characters"); return; }
     setSubmitting(true);
@@ -66,22 +71,33 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="font-display text-3xl text-surface-900 dark:text-white">
+      <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+        <h2 className="font-display text-2xl text-black dark:text-white font-light">
           Customer Reviews ({reviewCount})
         </h2>
-        <Button onClick={() => setShowForm((f) => !f)} variant="outline" size="sm">
-          {showForm ? "Cancel" : "Write a Review"}
-        </Button>
+        <div className="flex items-center gap-3">
+          {reviews.length > 1 && (
+            <select
+              value={sort}
+              onChange={e => setSort(e.target.value as typeof sort)}
+              className="h-8 pl-3 pr-7 border border-black/15 dark:border-white/15 bg-transparent text-[10px] tracking-[0.08em] uppercase text-black dark:text-white focus:outline-none appearance-none cursor-pointer"
+            >
+              <option value="newest">Newest</option>
+              <option value="highest">Highest rated</option>
+              <option value="lowest">Lowest rated</option>
+            </select>
+          )}
+          <Button onClick={() => setShowForm((f) => !f)} variant="outline" size="sm" className="!rounded-none border-black/20 dark:border-white/20 text-[10px] tracking-[0.1em] uppercase">
+            {showForm ? "Cancel" : "Write a Review"}
+          </Button>
+        </div>
       </div>
-
-      {/* Summary */}
       {reviewCount > 0 && (
-        <div className="flex flex-col sm:flex-row gap-8 p-6 rounded-2xl bg-surface-50 dark:bg-surface-800/50 border border-surface-100 dark:border-surface-800 mb-8">
+        <div className="flex flex-col sm:flex-row gap-8 p-6 border border-black/8 dark:border-white/8 mb-8">
           <div className="text-center">
-            <p className="font-display text-6xl text-surface-900 dark:text-white">{Number(avgRating).toFixed(1)}</p>
+            <p className="font-display text-6xl text-black dark:text-white font-light">{Number(avgRating).toFixed(1)}</p>
             <RatingStars rating={Number(avgRating)} showCount={false} size={18} />
-            <p className="text-sm text-surface-400 mt-1">{reviewCount} reviews</p>
+            <p className="text-xs text-black/40 dark:text-white/40 mt-1">{reviewCount} reviews</p>
           </div>
           <div className="flex-1 space-y-2">
             {[5, 4, 3, 2, 1].map((star) => {
@@ -89,29 +105,27 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
               const pct = reviewCount ? Math.round((count / reviewCount) * 100) : 0;
               return (
                 <div key={star} className="flex items-center gap-3">
-                  <span className="text-sm text-surface-500 w-4">{star}</span>
+                  <span className="text-xs text-black/40 dark:text-white/40 w-4">{star}</span>
                   <Star size={12} fill="#c4821f" stroke="#c4821f" />
-                  <div className="flex-1 h-2 bg-surface-200 dark:bg-surface-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-brand-500 rounded-full" style={{ width: `${pct}%` }} />
+                  <div className="flex-1 h-1 bg-black/8 dark:bg-white/8 overflow-hidden">
+                    <div className="h-full bg-black dark:bg-white" style={{ width: `${pct}%` }} />
                   </div>
-                  <span className="text-xs text-surface-400 w-8">{count}</span>
+                  <span className="text-xs text-black/40 dark:text-white/40 w-8">{count}</span>
                 </div>
               );
             })}
           </div>
         </div>
       )}
-
-      {/* Write review form */}
       {showForm && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-6 rounded-2xl border border-surface-200 dark:border-surface-700 mb-8 space-y-4"
+          className="p-6 border border-black/10 dark:border-white/10 mb-8 space-y-4"
         >
-          <h3 className="font-semibold text-surface-900 dark:text-white">Your Review</h3>
+          <h3 className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white">Your Review</h3>
           <div>
-            <p className="text-sm text-surface-600 dark:text-surface-400 mb-2">Rating</p>
+            <p className="text-[10px] tracking-[0.1em] uppercase text-black/50 dark:text-white/50 mb-2">Rating</p>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((s) => (
                 <button
@@ -131,58 +145,56 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Title (optional)</label>
+            <label className="block text-[10px] tracking-[0.1em] uppercase text-black/50 dark:text-white/50 mb-1.5">Title (optional)</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Summarize your experience"
-              className="w-full h-11 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white px-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 placeholder:text-surface-400"
+              className="w-full h-11 border border-black/15 dark:border-white/15 bg-white dark:bg-black text-black dark:text-white px-4 focus:outline-none placeholder:text-black/25 dark:placeholder:text-white/25 text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">Review *</label>
+            <label className="block text-[10px] tracking-[0.1em] uppercase text-black/50 dark:text-white/50 mb-1.5">Review *</label>
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
               placeholder="Tell others about this product…"
               rows={4}
-              className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 placeholder:text-surface-400 resize-none"
+              className="w-full border border-black/15 dark:border-white/15 bg-white dark:bg-black text-black dark:text-white p-4 focus:outline-none placeholder:text-black/25 dark:placeholder:text-white/25 resize-none text-sm"
             />
           </div>
-          <Button onClick={handleSubmit} loading={submitting} variant="gold">Submit Review</Button>
+          <Button onClick={submitReview} loading={submitting} variant="primary" className="!rounded-none text-[11px] tracking-[0.14em] uppercase">Submit Review</Button>
         </motion.div>
       )}
-
-      {/* Reviews list */}
       <div className="space-y-6">
         {reviews.length === 0 ? (
-          <p className="text-surface-400 text-center py-8">No reviews yet. Be the first!</p>
+          <p className="text-black/40 dark:text-white/40 text-center py-8">No reviews yet. Be the first!</p>
         ) : (
           reviews.map((review) => (
-            <div key={review.id} className="border-b border-surface-100 dark:border-surface-800 pb-6 last:border-0">
+            <div key={review.id} className="border-b border-black/8 dark:border-white/8 pb-6 last:border-0">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-surface-100 dark:bg-surface-700 overflow-hidden flex items-center justify-center">
+                  <div className="w-8 h-8 bg-black/5 dark:bg-white/5 overflow-hidden flex items-center justify-center shrink-0">
                     {review.user.image ? (
-                      <Image src={review.user.image} alt={review.user.name ?? ""} width={40} height={40} className="object-cover" />
+                      <Image src={review.user.image} alt={review.user.name ?? "Reviewer avatar"} width={32} height={32} className="object-cover" />
                     ) : (
-                      <span className="text-sm font-medium text-surface-500">{review.user.name?.[0] ?? "?"}</span>
+                      <span className="text-xs text-black/50 dark:text-white/50">{review.user.name?.[0] ?? "?"}</span>
                     )}
                   </div>
                   <div>
-                    <p className="font-medium text-sm text-surface-900 dark:text-white">{review.user.name}</p>
-                    <p className="text-xs text-surface-400">{formatRelativeTime(review.createdAt)}</p>
+                    <p className="text-[11px] tracking-[0.08em] uppercase text-black dark:text-white">{review.user.name}</p>
+                    <p className="text-xs text-black/40 dark:text-white/40">{formatRelativeTime(review.createdAt)}</p>
                   </div>
                 </div>
                 <RatingStars rating={review.rating} showCount={false} size={14} />
               </div>
               {review.isVerified && (
-                <div className="flex items-center gap-1.5 mt-3 text-xs text-green-600 dark:text-green-400">
-                  <CheckCircle size={12} /> Verified Purchase
+                <div className="flex items-center gap-1.5 mt-3 text-[10px] tracking-[0.08em] uppercase text-green-600 dark:text-green-400">
+                  <CheckCircle size={11} /> Verified Purchase
                 </div>
               )}
-              {review.title && <p className="font-semibold text-surface-900 dark:text-white mt-3">{review.title}</p>}
-              {review.body && <p className="text-sm text-surface-600 dark:text-surface-400 mt-2 leading-relaxed">{review.body}</p>}
+              {review.title && <p className="text-sm font-medium text-black dark:text-white mt-3">{review.title}</p>}
+              {review.body && <p className="text-sm text-black/60 dark:text-white/60 mt-2 leading-relaxed">{review.body}</p>}
             </div>
           ))
         )}

@@ -1,28 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/validations";
-import { slugify, serializeDecimal } from "@/lib/utils";
-
-async function requireAdmin() {
-  const session = await auth();
-  const role = (session?.user as { role?: string })?.role;
-  if (!["ADMIN", "SUPER_ADMIN"].includes(role ?? "")) return null;
-  return session;
-}
+import { slugify, serializeDecimal, parseIntParam } from "@/lib/utils";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET(req: NextRequest) {
   try {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1");
-    const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20");
+    const page = parseIntParam(req.nextUrl.searchParams.get("page"), 1, { min: 1 });
+    const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 20, { min: 1, max: 100 });
     const search = req.nextUrl.searchParams.get("search") ?? "";
     const category = req.nextUrl.searchParams.get("category") ?? "";
+    const stock = req.nextUrl.searchParams.get("stock") ?? "";
 
     const where = {
       ...(search && { OR: [{ name: { contains: search, mode: "insensitive" as const } }, { sku: { contains: search, mode: "insensitive" as const } }] }),
       ...(category && { category: { slug: category } }),
+      ...(stock && { stockStatus: stock as "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK" }),
     };
 
     const [products, total] = await prisma.$transaction([
@@ -87,16 +82,23 @@ export async function PUT(req: NextRequest) {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { id, images = [], specifications = [], ...data } = body;
+    const { id, images = [], specifications = [], ...rest } = body;
     if (!id) return NextResponse.json({ success: false, error: "Product ID required" }, { status: 400 });
 
-    const stockStatus = data.stock === 0 ? "OUT_OF_STOCK" : data.stock <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK";
+    const parsed = productSchema.partial().safeParse(rest);
+    if (!parsed.success) return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+    const data = parsed.data;
+
+    // Only recompute stockStatus when stock is explicitly included in the update.
+    const stockStatusUpdate = data.stock !== undefined
+      ? { stockStatus: (data.stock === 0 ? "OUT_OF_STOCK" : data.stock <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK") as "OUT_OF_STOCK" | "LOW_STOCK" | "IN_STOCK" }
+      : {};
 
     const product = await prisma.product.update({
       where: { id },
       data: {
         ...data,
-        stockStatus,
+        ...stockStatusUpdate,
         brandId: data.brandId || null,
         images: {
           deleteMany: {},

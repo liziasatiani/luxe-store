@@ -5,18 +5,26 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const GEL_RATE = 2.77; // 1 USD = 2.77 GEL
+
 export function formatPrice(
   amount: number | string | null | undefined,
   currency = "USD",
   locale = "en-US"
 ): string {
   const num = typeof amount === "string" ? parseFloat(amount) : (amount ?? 0);
-  if (isNaN(num)) return "$0.00";
+  if (isNaN(num)) return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits: 2 }).format(0);
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
     minimumFractionDigits: 2,
   }).format(num);
+}
+
+export function formatGEL(amount: number | string | null | undefined): string {
+  const num = typeof amount === "string" ? parseFloat(amount) : (amount ?? 0);
+  if (isNaN(num)) return "₾0.00";
+  return "₾" + (num * GEL_RATE).toFixed(2);
 }
 
 export function formatDiscount(original: number, sale: number): number {
@@ -73,41 +81,41 @@ export function generateOrderNumber(): string {
   return `LXS-${timestamp}-${random}`;
 }
 
-export function truncate(str: string, len = 100): string {
-  if (str.length <= len) return str;
-  return str.slice(0, len).trimEnd() + "…";
-}
 
 export function getProductImageUrl(
-  images: Array<{ url: string; isPrimary?: boolean }> | undefined
+  images: Array<{ url: string; isPrimary?: boolean }> | undefined,
+  width = 600,
+  quality = 80
 ): string {
   if (!images || images.length === 0)
-    return "/placeholder.jpg";
+    return "/placeholder.png";
   const primary = images.find((i) => i.isPrimary);
-  return primary?.url ?? images[0]?.url ?? "/placeholder.jpg";
+  const url = primary?.url ?? images[0]?.url ?? "/placeholder.png";
+  // Apply Supabase Storage image transforms for Supabase-hosted images
+  if (url.includes("supabase") && url.includes("/storage/")) {
+    const sep = url.includes("?") ? "&" : "?";
+    return `${url}${sep}width=${width}&quality=${quality}&format=webp`;
+  }
+  // Apply Unsplash image optimisation params (WebP + resize + quality)
+  // Only add params not already present to avoid duplicates in stored URLs
+  if (url.includes("unsplash.com")) {
+    const parsed = new URL(url);
+    if (!parsed.searchParams.has("w")) parsed.searchParams.set("w", String(width));
+    if (!parsed.searchParams.has("q")) parsed.searchParams.set("q", String(quality));
+    if (!parsed.searchParams.has("auto")) parsed.searchParams.set("auto", "format");
+    if (!parsed.searchParams.has("fit")) parsed.searchParams.set("fit", "crop");
+    return parsed.toString();
+  }
+  return url;
 }
 
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  delay = 300
-): (...args: Parameters<T>) => void {
-  let timer: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
-}
 
-export function chunk<T>(arr: T[], size: number): T[][] {
-  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
-  );
-}
+
+export const FREE_SHIPPING_THRESHOLD = 75;
+const FLAT_SHIPPING_RATE = 9.99;
 
 export function calcShipping(subtotal: number): number {
-  const FREE_THRESHOLD = 75;
-  const FLAT_RATE = 9.99;
-  return subtotal >= FREE_THRESHOLD ? 0 : FLAT_RATE;
+  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_RATE;
 }
 
 export function calcTax(amount: number, rate = 0.085): number {
@@ -118,19 +126,62 @@ export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export function randomId(len = 8): string {
-  return Math.random().toString(36).substring(2, 2 + len);
-}
 
+/**
+ * Recursively converts Prisma `Decimal` values to plain numbers so results can
+ * cross the server/client boundary.
+ *
+ * Anything that is not a plain object or array is returned untouched. This
+ * matters for `Date`: it is an object with no own enumerable properties, so
+ * naively spreading it through `Object.entries` collapses it to `{}` and
+ * destroys every timestamp in the payload.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function serializeDecimal(obj: any): any {
   if (obj === null || obj === undefined) return obj;
-  if (typeof obj === "object" && "toNumber" in obj) return obj.toNumber();
+  if (typeof obj !== "object") return obj;
   if (Array.isArray(obj)) return obj.map(serializeDecimal);
-  if (typeof obj === "object") {
-    return Object.fromEntries(
-      Object.entries(obj).map(([k, v]) => [k, serializeDecimal(v)])
-    );
-  }
-  return obj;
+  if (obj instanceof Date) return obj;
+  if (typeof obj.toNumber === "function") return obj.toNumber();
+  // Only walk plain objects; leave class instances (Buffer, Map, …) intact.
+  const proto = Object.getPrototypeOf(obj);
+  if (proto !== Object.prototype && proto !== null) return obj;
+  return Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [k, serializeDecimal(v)])
+  );
+}
+
+/** Parses a positive integer query param, falling back when absent or invalid. */
+export function parseIntParam(
+  raw: string | null,
+  fallback: number,
+  { min = 1, max = Number.MAX_SAFE_INTEGER }: { min?: number; max?: number } = {}
+): number {
+  const n = Number.parseInt(raw ?? "", 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
+/**
+ * Serialises a value for embedding in a `<script>` tag via
+ * `dangerouslySetInnerHTML`.
+ *
+ * `JSON.stringify` does not escape `<`, so a product name containing
+ * `</script><script>…` breaks out of a JSON-LD block and executes. Product
+ * names are writable through the admin CSV import, which makes this a stored
+ * XSS path rather than a theoretical one. U+2028/U+2029 are also escaped: they
+ * are valid in JSON but are line terminators in JavaScript source.
+ */
+export function jsonLdSafe(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+/** Canonical form used for storing and looking up email addresses. */
+export function normalizeEmail(email: string): string {
+  return email.trim().toLowerCase();
 }

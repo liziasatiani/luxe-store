@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { createCheckoutSession, STRIPE_ENABLED } from "@/lib/stripe";
-import { serializeDecimal } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
   try {

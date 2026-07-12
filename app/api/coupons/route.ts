@@ -1,58 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
+import { resolveCoupon } from "@/lib/pricing";
 
+/**
+ * Previews a coupon against a subtotal. This is advisory only — the authoritative
+ * validation runs again in `/api/orders` via the same `resolveCoupon` helper.
+ */
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`coupons:${getIP(req)}`, 20, 60 * 1000);
+  const rl = await rateLimit(`coupons:${getIP(req)}`, 20, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
     const session = await auth();
-    if (!session?.user?.id) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    const userId = session?.user?.id ?? null;
 
-    const { code, subtotal } = await req.json() as { code: string; subtotal: number };
-    if (!code) return NextResponse.json({ success: false, error: "Coupon code required" }, { status: 400 });
+    const body = await req.json().catch(() => null);
+    const code = typeof body?.code === "string" ? body.code : "";
+    const subtotal = Number(body?.subtotal);
 
-    const coupon = await prisma.coupon.findUnique({ where: { code: code.toUpperCase() } });
-
-    if (!coupon || !coupon.isActive) {
-      return NextResponse.json({ success: false, error: "Invalid or expired coupon" }, { status: 400 });
+    if (!code.trim()) {
+      return NextResponse.json({ success: false, error: "Coupon code required" }, { status: 400 });
+    }
+    if (!Number.isFinite(subtotal) || subtotal < 0) {
+      return NextResponse.json({ success: false, error: "Invalid subtotal" }, { status: 400 });
     }
 
-    const now = new Date();
-    if (coupon.startsAt && coupon.startsAt > now) {
-      return NextResponse.json({ success: false, error: "Coupon not yet active" }, { status: 400 });
-    }
-    if (coupon.expiresAt && coupon.expiresAt < now) {
-      return NextResponse.json({ success: false, error: "Coupon has expired" }, { status: 400 });
-    }
-    if (coupon.usageLimit && coupon.usageCount >= coupon.usageLimit) {
-      return NextResponse.json({ success: false, error: "Coupon usage limit reached" }, { status: 400 });
-    }
-    if (coupon.minOrderAmount && subtotal < Number(coupon.minOrderAmount)) {
-      return NextResponse.json({
-        success: false,
-        error: `Minimum order of $${coupon.minOrderAmount} required`,
-      }, { status: 400 });
-    }
-
-    // Check per-user usage
-    const userUsage = await prisma.couponUsage.count({
-      where: { couponId: coupon.id, userId: session.user.id },
-    });
-    if (userUsage >= coupon.perUserLimit) {
-      return NextResponse.json({ success: false, error: "You've already used this coupon" }, { status: 400 });
-    }
-
-    // Calculate discount
-    let discountAmount = 0;
-    if (coupon.type === "PERCENTAGE") {
-      discountAmount = (subtotal * Number(coupon.value)) / 100;
-      if (coupon.maxDiscount) discountAmount = Math.min(discountAmount, Number(coupon.maxDiscount));
-    } else if (coupon.type === "FIXED_AMOUNT") {
-      discountAmount = Math.min(Number(coupon.value), subtotal);
+    const { coupon, discountAmount, error } = await resolveCoupon(code, subtotal, userId);
+    if (error || !coupon) {
+      return NextResponse.json(
+        { success: false, error: error ?? "Invalid or expired coupon" },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json({
@@ -66,7 +46,7 @@ export async function POST(req: NextRequest) {
           maxDiscount: coupon.maxDiscount,
           description: coupon.description,
         }),
-        discountAmount: parseFloat(discountAmount.toFixed(2)),
+        discountAmount,
       },
     });
   } catch (err) {
