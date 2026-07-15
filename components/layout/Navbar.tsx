@@ -12,6 +12,7 @@ import { useCartStore, useUIStore, useWishlistStore } from "@/store";
 import { Container } from "@/components/ui";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
 import { CurrencySelector } from "@/components/layout/CurrencySelector";
+import { PressBar } from "@/components/home/PressBar";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -58,9 +59,7 @@ export function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b border-black/10 dark:border-white/10 transition-colors duration-300">
-        <div className="bg-black dark:bg-white text-white dark:text-black text-center py-2 text-[10px] tracking-[0.18em] uppercase font-medium">
-          {t("announcement")}
-        </div>
+        <PressBar />
         <Container>
           <div className="flex items-center h-14 md:h-16">
             <button
