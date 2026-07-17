@@ -7,19 +7,35 @@ export function PressBar() {
     "Authorized Distributors Only",
     "Customer Support 7 Days",
   ];
+
+  const items = [...signals, ...signals];
+
   return (
-    <div className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black py-4 overflow-hidden">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-10 overflow-x-auto no-scrollbar">
-          {signals.map((text) => (
-            <span
-              key={text}
-              className="text-[10px] tracking-[0.14em] uppercase text-black/45 dark:text-white/45 whitespace-nowrap shrink-0"
-            >
-              · {text}
-            </span>
-          ))}
-        </div>
+    <div className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black py-3 overflow-hidden">
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: marquee 28s linear infinite;
+        }
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+      <div className="marquee-track">
+        {items.map((text, i) => (
+          <span
+            key={i}
+            className="text-[10px] tracking-[0.16em] uppercase font-medium whitespace-nowrap shrink-0 px-8"
+            style={{ color: "#b68235" }}
+          >
+            ✦ {text}
+          </span>
+        ))}
       </div>
     </div>
   );
