@@ -18,6 +18,7 @@ import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { SplashScreen } from "@/components/ui/SplashScreen";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { buildMetadata, buildOrganizationSchema } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
 import { jsonLdSafe } from "@/lib/utils";
 import "./globals.css";
 
@@ -98,6 +99,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <PWAInit />
               <ScrollToTop />
               <SplashScreen />
+              <Analytics />
               </MotionProvider>
             </ThemeProvider>
           </SessionProvider>
