@@ -193,6 +193,10 @@ export function Navbar() {
                   ))}
                 </div>
               ))}
+              <div className="pt-6 pb-4 flex items-center gap-4 border-b border-black/8 dark:border-white/8">
+                {mounted && <CurrencySelector />}
+                {mounted && <LanguageSelector />}
+              </div>
               <div className="pt-6 space-y-1">
                 {user ? (
                   <>
