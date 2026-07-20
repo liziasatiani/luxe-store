@@ -1,3 +1,6 @@
+"use client";
+import { useEffect, useRef } from "react";
+
 export function PressBar() {
   const signals = [
     "Free 30-Day Returns",
@@ -8,25 +11,27 @@ export function PressBar() {
     "Customer Support 7 Days",
   ];
 
-  const items = [...signals, ...signals];
+  const items = [...signals, ...signals, ...signals];
 
   return (
-    <div className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black py-3 overflow-hidden">
+    <div
+      style={{ overflow: "hidden", position: "relative" }}
+      className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black py-3"
+    >
       <style>{`
-        @keyframes marquee {
+        @keyframes pressbar-scroll {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          100% { transform: translateX(-33.333%); }
         }
-        .marquee-track {
+        .pressbar-track {
           display: flex;
           width: max-content;
-          animation: marquee 28s linear infinite;
+          animation: pressbar-scroll 30s linear infinite;
+          will-change: transform;
         }
-        .marquee-track:hover {
-          animation-play-state: paused;
-        }
+        .pressbar-track:hover { animation-play-state: paused; }
       `}</style>
-      <div className="marquee-track">
+      <div className="pressbar-track">
         {items.map((text, i) => (
           <span
             key={i}
