@@ -179,6 +179,10 @@ export function Navbar() {
             transition={{ type: "spring", damping: 30 }}
             className="fixed inset-0 z-40 bg-white dark:bg-black pt-[104px] overflow-y-auto lg:hidden">
             <Container className="py-4">
+              <div className="pb-4 mb-2 flex items-center gap-4 border-b border-black/8 dark:border-white/8">
+                {mounted && <CurrencySelector />}
+                {mounted && <LanguageSelector />}
+              </div>
               {NAV_LINKS.map((link) => (
                 <div key={link.href} className="border-b border-black/8 dark:border-white/8">
                   <Link href={link.href} onClick={closeMobileMenu}
@@ -193,10 +197,6 @@ export function Navbar() {
                   ))}
                 </div>
               ))}
-              <div className="pt-6 pb-4 flex items-center gap-4 border-b border-black/8 dark:border-white/8">
-                {mounted && <CurrencySelector />}
-                {mounted && <LanguageSelector />}
-              </div>
               <div className="pt-6 space-y-1">
                 {user ? (
                   <>
