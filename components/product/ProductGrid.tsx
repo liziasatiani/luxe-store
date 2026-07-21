@@ -17,13 +17,13 @@ interface ProductGridProps {
   columns?: 2 | 3 | 4;
 }
 
-const SORT_OPTIONS: { label: string; value: SortOption }[] = [
-  { label: "Newest",       value: "newest"       },
-  { label: "Best Selling", value: "best-selling"  },
-  { label: "Top Rated",    value: "rating"        },
-  { label: "Price: Low",   value: "price-asc"     },
-  { label: "Price: High",  value: "price-desc"    },
-  { label: "Discount",     value: "discount"      },
+const SORT_KEYS: { key: string; value: SortOption }[] = [
+  { key: "newest",      value: "newest"       },
+  { key: "bestSelling", value: "best-selling"  },
+  { key: "topRated",    value: "rating"        },
+  { key: "priceLow",    value: "price-asc"     },
+  { key: "priceHigh",   value: "price-desc"    },
+  { key: "discount",    value: "discount"      },
 ];
 
 export function ProductGrid({
@@ -191,8 +191,8 @@ export function ProductGrid({
                 onChange={(e) => handleFilterChange("sort", e.target.value as SortOption)}
                 className="h-10 pl-3 pr-8 border border-black/15 dark:border-white/15 bg-white dark:bg-black text-[11px] tracking-[0.06em] uppercase focus:outline-none appearance-none"
               >
-                {SORT_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
+                {SORT_KEYS.map((o) => (
+                  <option key={o.value} value={o.value}>{t(o.key as Parameters<typeof t>[0])}</option>
                 ))}
               </select>
               <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-black/40 dark:text-white/40" />

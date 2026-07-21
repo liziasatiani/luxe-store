@@ -199,19 +199,9 @@ export function Navbar() {
               ))}
               <div className="pt-6 space-y-1">
                 {user ? (
-                  <>
-                    <Link href="/account" onClick={closeMobileMenu} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60">
-                      <User size={16} /> {t("myAccount")}
-                    </Link>
-                    {isAdmin && (
-                      <Link href="/admin" onClick={closeMobileMenu} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60">
-                        <LayoutDashboard size={16} /> {t("adminPanel")}
-                      </Link>
-                    )}
-                    <button onClick={() => { signOut(); closeMobileMenu(); }} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-red-500 w-full">
-                      <LogOut size={16} /> {t("signOut")}
-                    </button>
-                  </>
+                  <button onClick={() => { signOut(); closeMobileMenu(); }} className="flex items-center gap-3 h-11 text-[12px] tracking-[0.08em] uppercase text-red-500 w-full">
+                    <LogOut size={16} /> {t("signOut")}
+                  </button>
                 ) : (
                   <Link href="/login" onClick={closeMobileMenu}
                     className="flex items-center justify-center h-11 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium">

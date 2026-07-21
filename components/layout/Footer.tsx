@@ -35,8 +35,8 @@ export async function Footer() {
 
   return (
     <footer className="bg-black text-white/40">
-      <Container className="py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 border-b border-white/8 pb-16">
+      <Container className="py-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border-b border-white/8 pb-10">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
               <span className="font-display text-2xl tracking-[0.14em] uppercase text-white">Everything Street</span>
@@ -86,7 +86,7 @@ export async function Footer() {
           © {new Date().getFullYear()} Everything Street. {t("allRights")}
         </p>
         <div className="flex items-center gap-3">
-          {["VISA", "MC", "AMEX", "PAYPAL"].map((p) => (
+          {["VISA", "MC", "AMEX", "PAYPAL", "GEO CARD"].map((p) => (
             <span key={p} className="text-[10px] tracking-[0.1em] uppercase text-white/25">{p}</span>
           ))}
         </div>

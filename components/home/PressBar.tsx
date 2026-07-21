@@ -15,7 +15,7 @@ export function PressBar() {
 
   return (
     <div
-      style={{ overflow: "hidden", position: "relative" }}
+      style={{ overflow: "clip", position: "relative" }}
       className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black py-3"
     >
       <style>{`
