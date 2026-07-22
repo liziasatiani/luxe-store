@@ -4,27 +4,29 @@ import { Mail, Phone, MapPin, MessageCircle, Instagram, Facebook } from "lucide-
 import { Container, Input, Textarea } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "";
 const ADDRESS = process.env.NEXT_PUBLIC_CONTACT_ADDRESS ?? "";
 const MAPS_URL = process.env.NEXT_PUBLIC_CONTACT_MAPS_URL ?? "";
 
 export default function ContactPage() {
+  const t = useTranslations("contact");
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
   const sendMessage = async () => {
-    if (!form.name.trim()) { toast.error("Please enter your name"); return; }
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) { toast.error("Please enter a valid email address"); return; }
-    if (!form.message.trim() || form.message.trim().length < 10) { toast.error("Message must be at least 10 characters"); return; }
+    if (!form.name.trim()) { toast.error(t("errors.name")); return; }
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) { toast.error(t("errors.email")); return; }
+    if (!form.message.trim() || form.message.trim().length < 10) { toast.error(t("errors.message")); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
       if (!res.ok) throw new Error("Failed");
       setSent(true);
-      toast.success("Message sent! We'll reply within 24 hours.");
-    } catch { toast.error("Failed to send message. Try again."); }
+      toast.success(t("success"));
+    } catch { toast.error(t("errors.failed")); }
     finally { setLoading(false); }
   };
 
@@ -32,8 +34,8 @@ export default function ContactPage() {
     <>
       <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
         <Container className="text-center">
-          <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">Get In Touch</h1>
-          <p className="text-surface-500 max-w-md mx-auto">Questions about your order, a product, or anything else — we reply within 24 hours.</p>
+          <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">{t("title")}</h1>
+          <p className="text-surface-500 max-w-md mx-auto">{t("subtitle")}</p>
         </Container>
       </div>
 
@@ -41,14 +43,14 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           <div className="lg:col-span-2 space-y-8">
             <div>
-              <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-5">How to reach us</h2>
+              <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-5">{t("howToReach")}</h2>
               <div className="space-y-4">
                 <a href="mailto:hello@everythingstreet.ge" className="flex items-start gap-3 group">
                   <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center shrink-0">
                     <Mail size={18} className="text-brand-500" />
                   </div>
                   <div>
-                    <p className="text-xs text-surface-400 mb-0.5">Email</p>
+                    <p className="text-xs text-surface-400 mb-0.5">{t("email")}</p>
                     <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">hello@everythingstreet.ge</p>
                   </div>
                 </a>
@@ -59,7 +61,7 @@ export default function ContactPage() {
                       <Phone size={18} className="text-brand-500" />
                     </div>
                     <div>
-                      <p className="text-xs text-surface-400 mb-0.5">Phone</p>
+                      <p className="text-xs text-surface-400 mb-0.5">{t("phone")}</p>
                       <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">{PHONE}</p>
                     </div>
                   </a>
@@ -71,9 +73,9 @@ export default function ContactPage() {
                       <MapPin size={18} className="text-brand-500" />
                     </div>
                     <div>
-                      <p className="text-xs text-surface-400 mb-0.5">Address</p>
+                      <p className="text-xs text-surface-400 mb-0.5">{t("address")}</p>
                       <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">{ADDRESS}</p>
-                      {MAPS_URL && <p className="text-xs text-brand-400 mt-0.5">Open in Google Maps →</p>}
+                      {MAPS_URL && <p className="text-xs text-brand-400 mt-0.5">{t("openMaps")}</p>}
                     </div>
                   </a>
                 )}
@@ -81,7 +83,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Chat With Us</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-4">{t("chatWithUs")}</h3>
               <div className="space-y-2">
                 {[
                   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
@@ -104,11 +106,11 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-surface-900 dark:text-white mb-3">Business Hours</h3>
+              <h3 className="font-semibold text-surface-900 dark:text-white mb-3">{t("businessHours")}</h3>
               <div className="space-y-1.5 text-sm text-surface-500">
-                <div className="flex justify-between"><span>Monday – Friday</span><span>9AM – 6PM GET</span></div>
-                <div className="flex justify-between"><span>Saturday</span><span>10AM – 4PM GET</span></div>
-                <div className="flex justify-between"><span>Sunday</span><span>Closed</span></div>
+                <div className="flex justify-between"><span>{t("monFri")}</span><span>9AM – 6PM GET</span></div>
+                <div className="flex justify-between"><span>{t("saturday")}</span><span>10AM – 4PM GET</span></div>
+                <div className="flex justify-between"><span>{t("sunday")}</span><span>{t("closed")}</span></div>
               </div>
             </div>
           </div>
@@ -119,20 +121,20 @@ export default function ContactPage() {
                 <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4">
                   <Mail size={28} className="text-green-500" />
                 </div>
-                <h3 className="font-display text-2xl text-surface-900 dark:text-white mb-2">Message Sent!</h3>
-                <p className="text-surface-500">We'll get back to you within 24 hours.</p>
-                <button onClick={() => { setSent(false); setForm({ name: "", email: "", subject: "", message: "" }); }} className="mt-6 text-sm text-brand-500 hover:text-brand-600">Send another message</button>
+                <h3 className="font-display text-2xl text-surface-900 dark:text-white mb-2">{t("messageSent")}</h3>
+                <p className="text-surface-500">{t("sentDesc")}</p>
+                <button onClick={() => { setSent(false); setForm({ name: "", email: "", subject: "", message: "" }); }} className="mt-6 text-sm text-brand-500 hover:text-brand-600">{t("sendAnother")}</button>
               </div>
             ) : (
               <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-8 space-y-5">
-                <h2 className="font-display text-2xl text-surface-900 dark:text-white">Write to us</h2>
+                <h2 className="font-display text-2xl text-surface-900 dark:text-white">{t("writeTo")}</h2>
                 <div className="grid grid-cols-2 gap-4">
-                  <Input id="name" label="Your Name *" placeholder="Jane Smith" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
-                  <Input id="email" label="Email *" type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                  <Input id="name" label={t("yourName")} placeholder={t("namePlaceholder")} value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+                  <Input id="email" label={t("yourEmail")} type="email" placeholder="you@example.com" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
                 </div>
-                <Input id="subject" label="Subject" placeholder="Order inquiry, product question…" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} />
-                <Textarea id="message" label="Message *" placeholder="How can we help you?" rows={5} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
-                <Button onClick={sendMessage} loading={loading} variant="gold" size="lg" leftIcon={<Mail size={16} />}>Send Message</Button>
+                <Input id="subject" label={t("subject")} placeholder={t("subjectPlaceholder")} value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} />
+                <Textarea id="message" label={t("message")} placeholder={t("messagePlaceholder")} rows={5} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
+                <Button onClick={sendMessage} loading={loading} variant="gold" size="lg" leftIcon={<Mail size={16} />}>{t("sendMessage")}</Button>
               </div>
             )}
           </div>

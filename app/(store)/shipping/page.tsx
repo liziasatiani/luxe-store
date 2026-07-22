@@ -10,6 +10,19 @@ export async function generateMetadata() {
 
 export default async function ShippingPage() {
   const t = await getTranslations("pages.shipping");
+  const cards = [
+    { icon: Truck,   label: t("freeShipping"),  desc: t("freeShippingDesc") },
+    { icon: Clock,   label: t("standard"),       desc: t("standardDesc")     },
+    { icon: Package, label: t("express"),        desc: t("expressDesc")      },
+    { icon: Globe,   label: t("international"),  desc: t("internationalDesc")},
+  ];
+  const sections = [
+    { title: t("domesticTitle"),      content: t("domesticContent")      },
+    { title: t("internationalTitle"), content: t("internationalContent") },
+    { title: t("dutiesTitle"),        content: t("dutiesContent")        },
+    { title: t("trackingTitle"),      content: t("trackingContent")      },
+    { title: t("lostTitle"),          content: t("lostContent")          },
+  ];
   return (
     <>
       <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
@@ -20,12 +33,7 @@ export default async function ShippingPage() {
       </div>
       <Container className="py-16 max-w-3xl space-y-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { icon: Truck,   label: "Free Shipping",   desc: "On orders over ₾200" },
-            { icon: Clock,   label: "Standard",        desc: "3–5 business days"  },
-            { icon: Package, label: "Express",         desc: "1–2 business days"  },
-            { icon: Globe,   label: "International",   desc: "7–14 business days" },
-          ].map(item => (
+          {cards.map(item => (
             <div key={item.label} className="p-5 rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 text-center">
               <item.icon size={22} className="text-brand-500 mx-auto mb-3" />
               <p className="font-semibold text-sm text-surface-900 dark:text-white">{item.label}</p>
@@ -33,13 +41,7 @@ export default async function ShippingPage() {
             </div>
           ))}
         </div>
-        {[
-          { title: "Domestic Shipping", content: "Standard Shipping (3–5 business days): ₾15, FREE on orders over ₾200\nExpress Shipping (1–2 business days): ₾25\n\nOrders placed before 14:00 GET are processed the same day." },
-          { title: "International Shipping", content: "We ship to over 50 countries worldwide.\n\nCanada & Mexico: 5–7 business days\nEurope: 7–10 business days\nAsia & Middle East: 10–14 business days" },
-          { title: "Duties & Taxes", content: "International orders may be subject to import duties and taxes upon arrival. These charges are the responsibility of the recipient." },
-          { title: "Order Tracking", content: "Once your order ships, you'll receive a confirmation email with a tracking number. Track anytime from your account under 'My Orders'." },
-          { title: "Lost or Damaged Packages", content: "Contact us within 7 days of the expected delivery date if your package is lost or arrives damaged. We will reship or issue a full refund." },
-        ].map(section => (
+        {sections.map(section => (
           <div key={section.title}>
             <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-3">{section.title}</h2>
             <p className="text-surface-600 dark:text-surface-400 text-sm leading-relaxed whitespace-pre-line">{section.content}</p>

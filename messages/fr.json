@@ -19,7 +19,11 @@
     "wishlist": "Favoris",
     "adminPanel": "Panneau admin",
     "signOut": "Se déconnecter",
-    "announcement": "Nouvelles arrivées cinq jours par semaine"
+    "announcement": "Nouvelles arrivées cinq jours par semaine",
+    "home": "Accueil",
+    "shop": "Boutique",
+    "cart": "Panier",
+    "account": "Compte"
   },
   "home": {
     "hero": {
@@ -50,7 +54,8 @@
       "wearables": "Montres connectées",
       "smartHome": "Maison connectée",
       "audio": "Audio",
-      "accessories": "Accessoires"
+      "accessories": "Accessoires",
+      "mini": "Mini"
     },
     "featured": {
       "title": "En vedette",
@@ -104,7 +109,8 @@
     "qty": "Qté",
     "removed": "Supprimé",
     "trustReturns": "Retours gratuits sous 30 jours",
-    "trustAuthentic": "100% authentique — garanti"
+    "trustAuthentic": "100% authentique — garanti",
+    "trustShipping": "Livraison gratuite dès ₾200"
   },
   "cart": {
     "title": "Panier",
@@ -164,27 +170,111 @@
     "hideSummary": "Masquer le résumé",
     "savedAddresses": "Adresses enregistrées",
     "shippingInfo": "Informations de livraison",
-    "paymentMethod": "Mode de paiement"
+    "paymentMethod": "Mode de paiement",
+    "discount": "Réduction ({code})",
+    "total": "Total",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "free": "GRATUIT",
+    "errors": {
+      "required": "Veuillez remplir tous les champs obligatoires"
+    }
   },
   "orderSuccess": {
     "title": "Commande confirmée !",
     "subtitle": "Merci pour votre commande. Un email de confirmation vous sera envoyé.",
     "orderSummary": "Récapitulatif",
     "trackOrder": "Suivre la commande",
-    "continueShopping": "Continuer les achats"
+    "continueShopping": "Continuer les achats",
+    "total": "Total",
+    "completeCollection": "Complétez votre collection",
+    "viewAll": "Voir tout",
+    "saveHistory": "Sauvegardez votre historique",
+    "saveHistoryDesc": "Créez un compte gratuit pour suivre cette commande, recommander en un clic et accéder en avant-première aux nouveautés.",
+    "createAccount": "Créer un compte"
   },
   "account": {
     "title": "Mon compte",
-    "profile": "Profil",
+    "profile": {
+      "title": "Mon profil",
+      "subtitle": "Nom, e-mail et numéro de téléphone",
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone (facultatif)",
+      "phonePlaceholder": "+33 1 00 00 00 00",
+      "saveChanges": "Enregistrer les modifications",
+      "updated": "Profil mis à jour !",
+      "error": "Impossible d'enregistrer les modifications",
+      "connectionError": "Impossible d'enregistrer — vérifiez votre connexion"
+    },
     "orders": "Commandes",
-    "addresses": "Adresses",
+    "addresses": {
+      "title": "Adresses",
+      "subtitle": "Gérez vos adresses de livraison",
+      "add": "Ajouter une adresse",
+      "newAddress": "Nouvelle adresse",
+      "label": "Libellé",
+      "labelPlaceholder": "Domicile, Travail...",
+      "firstName": "Prénom *",
+      "lastName": "Nom *",
+      "addressLine": "Adresse *",
+      "apartment": "Appartement, suite, etc.",
+      "city": "Ville *",
+      "state": "Région *",
+      "postalCode": "Code postal *",
+      "country": "Pays",
+      "setDefault": "Définir comme adresse par défaut",
+      "save": "Enregistrer l'adresse",
+      "cancel": "Annuler",
+      "noAddresses": "Aucune adresse enregistrée.",
+      "default": "Par défaut",
+      "confirmDelete": "Supprimer cette adresse ?",
+      "saved": "Adresse enregistrée !",
+      "deleted": "Adresse supprimée",
+      "errors": {
+        "required": "Veuillez remplir tous les champs obligatoires",
+        "save": "Impossible d'enregistrer l'adresse",
+        "delete": "Impossible de supprimer l'adresse"
+      }
+    },
     "wishlist": "Favoris",
     "signOut": "Se déconnecter",
     "noOrders": "Pas encore de commandes. Commencez à acheter !",
     "orderPlaced": "Commande passée",
     "confirmed": "Confirmée",
     "shipped": "Expédiée",
-    "delivered": "Livrée"
+    "delivered": "Livrée",
+    "ordersPage": {
+      "myOrders": "Mes commandes",
+      "ordersTotal": "{count} commandes au total",
+      "orderHistory": "Historique des commandes",
+      "noOrdersTitle": "Aucune commande",
+      "noOrdersDesc": "Vos commandes terminées apparaîtront ici.",
+      "browseProducts": "Parcourir les produits"
+    },
+    "orderDetail": {
+      "placed": "Passée le {date}",
+      "tracking": "Suivi :",
+      "orderNumber": "Commande #{number}",
+      "items": "Articles",
+      "paymentSummary": "Récapitulatif du paiement",
+      "subtotal": "Sous-total",
+      "discount": "Réduction",
+      "shipping": "Livraison",
+      "tax": "Taxe",
+      "total": "Total",
+      "free": "GRATUIT",
+      "shippingAddress": "Adresse de livraison"
+    },
+    "status": {
+      "pending": "En attente",
+      "processing": "En cours",
+      "confirmed": "Confirmé",
+      "shipped": "Expédié",
+      "delivered": "Livré",
+      "cancelled": "Annulé",
+      "refunded": "Remboursé"
+    }
   },
   "auth": {
     "login": {
@@ -220,7 +310,12 @@
       "send": "Envoyer le lien",
       "back": "Retour à la connexion",
       "sent": "Lien envoyé !",
-      "sentDesc": "Vérifiez votre email pour le lien de réinitialisation."
+      "sentDesc": "Vérifiez votre email pour le lien de réinitialisation.",
+      "sentDesc2": "Consultez votre boîte de réception pour le lien de réinitialisation.",
+      "errors": {
+        "email": "Veuillez entrer une adresse e-mail valide.",
+        "failed": "Impossible d'envoyer le lien — vérifiez votre connexion et réessayez."
+      }
     }
   },
   "footer": {
@@ -244,7 +339,16 @@
     "about": "À propos",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
-    "sitemap": "Plan du site"
+    "sitemap": "Plan du site",
+    "tagline": "Technologie réfléchie. Beauté réfléchie. Sélectionné, testé et livré ensemble.",
+    "pressbar": {
+      "returns": "Retours gratuits sous 30 jours",
+      "authentic": "100% Authentique",
+      "checkout": "Paiement sécurisé",
+      "shipping": "Livraison gratuite dès ₾200",
+      "distributors": "Distributeurs agréés uniquement",
+      "support": "Support client 7 jours sur 7"
+    }
   },
   "pages": {
     "newArrivals": {
@@ -270,7 +374,11 @@
     "brands": {
       "title": "Nos Marques",
       "subtitle": "Découvrez vos maisons de luxe préférées.",
-      "products": "produits"
+      "products": "produits",
+      "allBrands": "Toutes les marques",
+      "allBrandsSubtitle": "Sélectionnés parmi les meilleures maisons",
+      "beautyBrands": "Marques beauté",
+      "techBrands": "Marques tech"
     },
     "search": {
       "title": "Rechercher",
@@ -280,7 +388,25 @@
     },
     "about": {
       "badge": "Notre histoire",
-      "title": "Le luxe, sélectionné pour vous"
+      "title": "Le luxe, sélectionné pour vous",
+      "ourStory": "Notre histoire",
+      "heroTitle": "Deux mondes,\nune adresse.",
+      "heroDesc": "Everything Street a été fondé sur une conviction : soins et technologie méritent le même niveau d'exigence.",
+      "missionLabel": "Mission",
+      "missionTitle": "Authentique, toujours.",
+      "missionDesc": "Nous nous approvisionnons directement auprès de distributeurs agréés. Pas de circuits parallèles. Pas d'ambiguïté.",
+      "promiseLabel": "Promesse",
+      "promiseTitle": "Un service que vous ressentez.",
+      "promiseDesc": "Le luxe est aussi l'expérience. Paiement sécurisé, suivi transparent, retours 30 jours, équipe réactive.",
+      "statsProducts": "Produits sélectionnés",
+      "statsBrands": "Marques de luxe",
+      "whatWeStandFor": "Nos valeurs",
+      "authenticityTitle": "Authenticité",
+      "authenticityDesc": "Chaque produit est sourcé auprès de partenaires agréés. La contrefaçon ne nous concerne pas.",
+      "securityTitle": "Sécurité",
+      "securityDesc": "SSL 256 bits sur chaque transaction. Vos données sont protégées.",
+      "globalTitle": "Portée mondiale",
+      "globalDesc": "Le luxe sans frontières. Nous livrons dans plus de 50 pays."
     },
     "sitemap": {
       "title": "Plan du site",
@@ -420,11 +546,42 @@
     },
     "shipping": {
       "title": "Politique de livraison",
-      "subtitle": "Livraison rapide et fiable."
+      "subtitle": "Livraison rapide et fiable.",
+      "freeShipping": "Livraison gratuite",
+      "freeShippingDesc": "Dès ₾200 d'achat",
+      "standard": "Standard",
+      "standardDesc": "3 à 5 jours ouvrés",
+      "express": "Express",
+      "expressDesc": "1 à 2 jours ouvrés",
+      "international": "International",
+      "internationalDesc": "7 à 14 jours ouvrés",
+      "domesticTitle": "Livraison nationale",
+      "domesticContent": "Livraison standard (3–5 jours ouvrés) : ₾15, GRATUIT dès ₾200\nLivraison express (1–2 jours ouvrés) : ₾25\n\nLes commandes avant 14h GET sont traitées le jour même.",
+      "internationalTitle": "Livraison internationale",
+      "internationalContent": "Nous livrons dans plus de 50 pays.\n\nCanada et Mexique : 5–7 jours ouvrés\nEurope : 7–10 jours ouvrés\nAsie et Moyen-Orient : 10–14 jours ouvrés",
+      "dutiesTitle": "Droits et taxes",
+      "dutiesContent": "Les commandes internationales peuvent être soumises à des droits d'importation à l'arrivée. Ces frais sont à la charge du destinataire.",
+      "trackingTitle": "Suivi de commande",
+      "trackingContent": "Dès l'expédition, vous recevrez un e-mail avec un numéro de suivi. Suivez votre commande depuis votre compte.",
+      "lostTitle": "Colis perdus ou endommagés",
+      "lostContent": "Contactez-nous dans les 7 jours si votre colis est perdu ou endommagé. Nous renvoyons ou remboursons intégralement."
     },
     "returns": {
       "title": "Retours & Remboursements",
-      "subtitle": "Retours sans tracas sous 30 jours."
+      "subtitle": "Retours sans tracas sous 30 jours.",
+      "overviewTitle": "Aperçu de la politique de retour",
+      "overviewContent": "Nous offrons des retours sans tracas de 30 jours. Les articles doivent être inutilisés.",
+      "eligibleTitle": "Articles éligibles au retour",
+      "eligibleContent": "Les articles doivent être :\n• Non utilisés\n• Dans leur emballage d'origine\n• Pour la beauté : non ouverts",
+      "nonReturnableTitle": "Articles non retournables",
+      "nonReturnableContent": "• Produits de beauté ouverts\n• Articles personnalisés\n• Téléchargements numériques\n• Vente finale\n• Cartes cadeaux",
+      "howToTitle": "Comment retourner",
+      "howToContent": "Envoyez un e-mail à returns@everythingstreet.com avec votre numéro de commande. Nous répondrons sous 24h avec une étiquette de retour.\n\nVotre remboursement est traité sous 3–5 jours ouvrés.",
+      "refundTitle": "Traitement du remboursement",
+      "refundContent": "Les remboursements sont traités sous 3–5 jours ouvrés et apparaissent sous 5–10 jours ouvrés.",
+      "damagedTitle": "Articles endommagés",
+      "damagedContent": "Contactez-nous dans les 7 jours avec des photos. Nous organiserons un remplacement ou un remboursement.",
+      "needHelp": "Besoin d'aide pour un retour ?"
     },
     "privacy": {
       "title": "Politique de confidentialité"
@@ -500,7 +657,8 @@
     "qty": "Quantité",
     "sku": "Réf.",
     "addedToCart": "Ajouté au panier",
-    "removedFromWishlist": "Retiré des favoris"
+    "removedFromWishlist": "Retiré des favoris",
+    "home": "Accueil"
   },
   "hero": {
     "tagline": "Tech & Beauté, Une Rue",
@@ -543,5 +701,110 @@
     "nothingMatchesDesc": "Essayez d'ajuster vos filtres ou termes de recherche.",
     "loadMore": "Charger plus",
     "filters": "Filtres"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Questions sur votre commande, un produit ou autre chose — nous répondons dans les 24 heures.",
+    "howToReach": "Comment nous joindre",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "openMaps": "Ouvrir dans Google Maps →",
+    "chatWithUs": "Chattez avec nous",
+    "businessHours": "Heures d'ouverture",
+    "monFri": "Lundi – Vendredi",
+    "saturday": "Samedi",
+    "sunday": "Dimanche",
+    "closed": "Fermé",
+    "writeTo": "Écrivez-nous",
+    "yourName": "Votre nom *",
+    "yourEmail": "E-mail *",
+    "subject": "Sujet",
+    "message": "Message *",
+    "namePlaceholder": "Jean Dupont",
+    "subjectPlaceholder": "Question sur commande, produit…",
+    "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+    "sendMessage": "Envoyer",
+    "messageSent": "Message envoyé !",
+    "sentDesc": "Nous vous répondrons dans les 24 heures.",
+    "sendAnother": "Envoyer un autre message",
+    "success": "Message envoyé ! Nous vous répondrons dans les 24 heures.",
+    "errors": {
+      "name": "Veuillez entrer votre nom",
+      "email": "Veuillez entrer une adresse e-mail valide",
+      "message": "Le message doit comporter au moins 10 caractères",
+      "failed": "Échec de l'envoi. Réessayez."
+    }
+  },
+  "trackOrder": {
+    "title": "Suivre votre commande",
+    "subtitle": "Entrez votre numéro de commande et votre e-mail pour suivre votre livraison.",
+    "orderNumber": "Numéro de commande",
+    "orderNumberPlaceholder": "ex. LXS-ABC123",
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "E-mail utilisé lors de la commande",
+    "trackBtn": "Suivre la commande",
+    "placed": "Passée le {date}",
+    "tracking": "Suivi :",
+    "total": "Total",
+    "itemsOrdered": "Articles commandés",
+    "shippingTo": "Livraison à",
+    "steps": {
+      "placed": "Commande passée",
+      "confirmed": "Confirmée",
+      "shipped": "Expédiée",
+      "delivered": "Livrée"
+    },
+    "errors": {
+      "orderNumber": "Veuillez entrer votre numéro de commande",
+      "email": "Veuillez entrer une adresse e-mail valide",
+      "notFound": "Commande introuvable. Vérifiez vos informations."
+    }
+  },
+  "reviews": {
+    "title": "Avis clients ({count})",
+    "noReviews": "Aucun avis pour l'instant. Soyez le premier !",
+    "writeReview": "Écrire un avis",
+    "cancel": "Annuler",
+    "sortNewest": "Les plus récents",
+    "sortHighest": "Les mieux notés",
+    "sortLowest": "Les moins bien notés",
+    "yourReview": "Votre avis",
+    "rating": "Note",
+    "titleField": "Titre (facultatif)",
+    "titlePlaceholder": "Résumez votre expérience",
+    "reviewField": "Avis *",
+    "reviewPlaceholder": "Donnez votre avis sur ce produit…",
+    "submit": "Soumettre l'avis",
+    "verified": "Achat vérifié",
+    "reviews": "avis",
+    "errors": {
+      "signIn": "Connectez-vous pour laisser un avis",
+      "minLength": "L'avis doit comporter au moins 10 caractères",
+      "failed": "Échec de l'envoi"
+    }
+  },
+  "exitIntent": {
+    "beforeYouGo": "Avant de partir",
+    "title": "Profitez de {pct} % de réduction sur votre première commande",
+    "subtitle": "Rejoignez notre liste pour un accès exclusif aux nouveautés et aux ventes privées.",
+    "placeholder": "Votre adresse e-mail",
+    "claim": "Obtenir {pct} % de réduction",
+    "subscribing": "Inscription en cours…",
+    "error": "Impossible de vous inscrire — réessayez.",
+    "yourCode": "Votre code",
+    "onList": "Vous êtes sur la liste.",
+    "useAtCheckout": "À utiliser lors du paiement",
+    "singleUse": "{pct} % de réduction sur votre première commande. Usage unique."
+  },
+  "search": {
+    "placeholder": "Rechercher produits, marques, catégories…",
+    "resultsFor": "{count} résultats pour {query}",
+    "noResults": "Aucun résultat pour {query}",
+    "tabAll": "Tout",
+    "tabBeauty": "Beauté",
+    "tabTech": "Tech",
+    "viewAll": "Voir tous les résultats",
+    "trending": "Tendances"
   }
 }

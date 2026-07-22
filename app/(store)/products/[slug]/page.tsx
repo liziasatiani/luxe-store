@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export const revalidate = 3600;
 import { serializeDecimal, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
 import { Price } from "@/components/ui";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { RelatedProducts, RelatedProductsSkeleton } from "@/components/product/RelatedProducts";
@@ -67,8 +67,11 @@ export default async function ProductPage({ params }: Props) {
   const discount = p.comparePrice ? formatDiscount(Number(p.comparePrice), Number(p.price)) : 0;
   const stockInfo = getStockLabel(p.stock);
 
+  const tProduct = await getTranslations("product");
+  const tCommon = await getTranslations("common");
+
   const breadcrumbs = [
-    { name: "Home", url: "/" },
+    { name: tCommon("home"), url: "/" },
     ...(p.category.parent ? [{ name: p.category.parent.name, url: `/${p.category.parent.slug}` }] : []),
     { name: p.category.name, url: `/${p.category.slug}` },
     { name: p.name, url: `/products/${p.slug}` },
@@ -159,9 +162,9 @@ export default async function ProductPage({ params }: Props) {
           <div>
             <div className="border border-black/8 dark:border-white/8 p-5 space-y-4">
               {[
-                { icon: <Truck size={15} />, label: "Free shipping on orders over ₾200", href: "/shipping" },
-                { icon: <RotateCcw size={15} />, label: "30-day hassle-free returns", href: "/returns" },
-                { icon: <ShieldCheck size={15} />, label: "100% authentic products", href: null },
+                { icon: <Truck size={15} />, label: tProduct("trustShipping"), href: "/shipping" },
+                { icon: <RotateCcw size={15} />, label: tProduct("trustReturns"), href: "/returns" },
+                { icon: <ShieldCheck size={15} />, label: tProduct("trustAuthentic"), href: null },
                 { icon: <Lock size={15} />, label: "256-bit SSL secure checkout", href: null },
               ].map((item) => (
                 <div key={item.label} className="flex items-center gap-3 text-sm text-black/50 dark:text-white/50">

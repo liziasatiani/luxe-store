@@ -1,14 +1,16 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 export function PressBar() {
+  const t = useTranslations("footer.pressbar");
+
   const signals = [
-    "Free 30-Day Returns",
-    "100% Authentic",
-    "Secure Checkout",
-    "Free Shipping Over ₾200",
-    "Authorized Distributors Only",
-    "Customer Support 7 Days",
+    t("returns"),
+    t("authentic"),
+    t("checkout"),
+    t("shipping"),
+    t("distributors"),
+    t("support"),
   ];
 
   const items = [...signals, ...signals, ...signals];

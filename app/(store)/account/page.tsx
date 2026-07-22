@@ -5,8 +5,10 @@ import { Input } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { Save } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 export default function AccountPage() {
+  const t = useTranslations("account.profile");
   const { data: session, update } = useSession();
   const [name, setName] = useState(session?.user?.name ?? "");
   const [phone, setPhone] = useState("");
@@ -28,11 +30,11 @@ export default function AccountPage() {
         body: JSON.stringify({ name, phone }),
       });
       const data = await res.json();
-      if (!res.ok) { toast.error(data.error ?? "Couldn't save changes"); return; }
+      if (!res.ok) { toast.error(data.error ?? t("error")); return; }
       await update({ name });
-      toast.success("Profile updated!");
+      toast.success(t("updated"));
     } catch {
-      toast.error("Couldn't save changes — check your connection");
+      toast.error(t("connectionError"));
     } finally {
       setLoading(false);
     }
@@ -41,14 +43,14 @@ export default function AccountPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl text-surface-900 dark:text-white mb-1">My Profile</h1>
-        <p className="text-surface-500 text-sm">Name, email, and phone number</p>
+        <h1 className="font-display text-3xl text-surface-900 dark:text-white mb-1">{t("title")}</h1>
+        <p className="text-surface-500 text-sm">{t("subtitle")}</p>
       </div>
       <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-5 max-w-lg">
-        <Input id="name" label="Full Name" value={name} onChange={e => setName(e.target.value)} />
-        <Input id="email" label="Email" value={session?.user?.email ?? ""} disabled className="opacity-60 cursor-not-allowed" />
-        <Input id="phone" label="Phone (optional)" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 555 000 0000" />
-        <Button onClick={saveProfile} loading={loading} variant="gold" leftIcon={<Save size={16} />}>Save Changes</Button>
+        <Input id="name" label={t("fullName")} value={name} onChange={e => setName(e.target.value)} />
+        <Input id="email" label={t("email")} value={session?.user?.email ?? ""} disabled className="opacity-60 cursor-not-allowed" />
+        <Input id="phone" label={t("phone")} value={phone} onChange={e => setPhone(e.target.value)} placeholder={t("phonePlaceholder")} />
+        <Button onClick={saveProfile} loading={loading} variant="gold" leftIcon={<Save size={16} />}>{t("saveChanges")}</Button>
       </div>
     </div>
   );

@@ -11,10 +11,12 @@ import { getProductImageUrl } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import { Spinner } from "@/components/ui";
 import type { ProductCard } from "@/types";
+import { useTranslations } from "next-intl";
 
 const TRENDING = ["La Mer cream", "Sony headphones", "Charlotte Tilbury", "AirPods Pro", "Dyson hair", "Tom Ford"] as const;
 
 export function SearchModal() {
+  const t = useTranslations("search");
   const { searchOpen, closeSearch } = useUIStore();
   const { query, setQuery, results, loading } = useSearch();
   const [activeTab, setActiveTab] = useState<"all" | "beauty" | "tech">("all");
@@ -79,7 +81,7 @@ export function SearchModal() {
                   ref={inputRef}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search products, brands, categories…"
+                  placeholder={t("placeholder")}
                   className="flex-1 text-base bg-transparent text-surface-900 dark:text-white placeholder:text-surface-400 focus:outline-none"
                 />
                 {query && (
@@ -99,8 +101,8 @@ export function SearchModal() {
               <p aria-live="polite" aria-atomic="true" className="sr-only">
                 {query && !loading
                   ? results.length > 0
-                    ? `${results.length} result${results.length === 1 ? "" : "s"} for ${query}`
-                    : `No results for ${query}`
+                    ? t("resultsFor", { count: results.length, query })
+                    : t("noResults", { query })
                   : ""}
               </p>
 
@@ -117,7 +119,7 @@ export function SearchModal() {
                           : "border-transparent text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70"
                       }`}
                     >
-                      {tab === "all" ? `All (${results.length})` : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                      {tab === "all" ? `${t("tabAll")} (${results.length})` : tab === "beauty" ? t("tabBeauty") : t("tabTech")}
                     </button>
                   ))}
                 </div>
@@ -128,7 +130,7 @@ export function SearchModal() {
                 {!query ? (
                   <div>
                     <p className="text-xs font-medium text-surface-400 uppercase tracking-wider mb-3 px-1">
-                      Trending
+                      {t("trending")}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {TRENDING.map((t) => (
@@ -157,12 +159,12 @@ export function SearchModal() {
                       onClick={closeSearch}
                       className="flex items-center justify-center gap-2 h-11 mt-2 text-sm text-brand-500 hover:text-brand-600 font-medium"
                     >
-                      View all results <ArrowRight size={14} />
+                      {t("viewAll")} <ArrowRight size={14} />
                     </Link>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-surface-400 text-sm">No results for "{query}"</p>
+                    <p className="text-surface-400 text-sm">{t("noResults", { query })}</p>
                     <p className="text-surface-300 dark:text-surface-500 text-xs mt-1">Try different keywords</p>
                   </div>
                 )}
