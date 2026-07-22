@@ -110,7 +110,11 @@
     "removed": "Eliminado",
     "trustReturns": "Devoluciones gratuitas 30 días",
     "trustAuthentic": "100% auténtico — garantizado",
-    "trustShipping": "Envío gratis en pedidos superiores a ₾200"
+    "trustShipping": "Envío gratis en pedidos superiores a ₾200",
+    "quantity": "Cantidad",
+    "selectVariant": "Seleccionar",
+    "outOfStockMsg": "Este artículo está actualmente agotado. Vuelva pronto o contáctenos para consultar disponibilidad.",
+    "deliveryBy": "entrega estimada el {date}"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -603,6 +607,16 @@
       "title": "Página no encontrada",
       "subtitle": "Esta página no existe.",
       "back": "Inicio"
+    },
+    "beauty": {
+      "collection": "Colección",
+      "all": "Toda la Belleza",
+      "desc": "Cuidado de lujo, maquillaje y fragancias de las marcas más codiciadas del mundo."
+    },
+    "tech": {
+      "collection": "Colección",
+      "all": "Toda la Tecnología",
+      "desc": "Electrónica premium y gadgets diseñados para quienes exigen lo mejor."
     }
   },
   "common": {
@@ -658,7 +672,10 @@
     "sku": "Ref.",
     "addedToCart": "Añadido al carrito",
     "removedFromWishlist": "Eliminado de favoritos",
-    "home": "Inicio"
+    "home": "Inicio",
+    "collection": "Colección",
+    "allBeauty": "Toda la Belleza",
+    "allTech": "Toda la Tecnología"
   },
   "hero": {
     "tagline": "Tech & Belleza, Una Calle",

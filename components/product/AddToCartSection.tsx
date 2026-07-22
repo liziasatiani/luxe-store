@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
-import { cn, FREE_SHIPPING_THRESHOLD, GEL_RATE } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -107,7 +107,7 @@ export function AddToCartSection({ product }: Props) {
         return (
         <div key={groupName}>
           <p id={groupId} className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">
-            {groupName}: <span className="text-black dark:text-white">{selectedVariant?.name === groupName ? selectedVariant.value : "Select"}</span>
+            {groupName}: <span className="text-black dark:text-white">{selectedVariant?.name === groupName ? selectedVariant.value : t("selectVariant")}</span>
           </p>
           <div role="radiogroup" aria-labelledby={groupId} className="flex flex-wrap gap-2">
             {variants.map((v) => (
@@ -138,7 +138,7 @@ export function AddToCartSection({ product }: Props) {
       })}
 
       <div>
-        <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">Quantity</p>
+        <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">{t("quantity")}</p>
         <div className="flex items-center w-fit border border-black/15 dark:border-white/15">
           <button
             onClick={() => setQty(q => Math.max(1, q - 1))}
@@ -170,20 +170,20 @@ export function AddToCartSection({ product }: Props) {
           className="flex-1 h-12 flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors disabled:opacity-40"
         >
           <Zap size={16} />
-          Buy Now
+          {t("buyNow")}
         </button>
       </div>
 
       {outOfStock && (
         <p className="text-[11px] tracking-[0.08em] text-black/50 dark:text-white/50 border border-black/10 dark:border-white/10 p-4 text-center">
-          This item is currently out of stock. Check back soon or contact us for availability.
+          {t("outOfStockMsg")}
         </p>
       )}
 
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
         {[
-          { icon: Truck,      text: `Free shipping over ₾${Math.ceil(FREE_SHIPPING_THRESHOLD * GEL_RATE)} — get it by ${getDeliveryEstimate(locale)}` },
+          { icon: Truck,      text: `${t("trustShipping")} — ${t("deliveryBy", { date: getDeliveryEstimate(locale) })}` },
           { icon: RotateCcw,  text: t("trustReturns"), href: "/returns" },
           { icon: Shield,     text: t("trustAuthentic") },
         ].map(({ icon: Icon, text, href }) => (
@@ -220,7 +220,7 @@ export function AddToCartSection({ product }: Props) {
             disabled={outOfStock}
             className="h-11 px-5 flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[10px] tracking-[0.14em] uppercase font-medium disabled:opacity-40"
           >
-            Buy Now
+            {t("buyNow")}
           </button>
         </div>
       )}
@@ -239,7 +239,7 @@ export function AddToCartSection({ product }: Props) {
         <span className="text-black/20 dark:text-white/20">|</span>
         <button onClick={handleShare} className="flex items-center gap-2 text-sm text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">
           <Share2 size={16} />
-          Share
+          {t("share")}
         </button>
       </div>
     </div>

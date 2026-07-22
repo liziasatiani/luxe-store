@@ -110,7 +110,11 @@
     "removed": "Supprimé",
     "trustReturns": "Retours gratuits sous 30 jours",
     "trustAuthentic": "100% authentique — garanti",
-    "trustShipping": "Livraison gratuite dès ₾200"
+    "trustShipping": "Livraison gratuite dès ₾200",
+    "quantity": "Quantité",
+    "selectVariant": "Sélectionner",
+    "outOfStockMsg": "Cet article est actuellement en rupture de stock. Revenez bientôt ou contactez-nous pour connaître la disponibilité.",
+    "deliveryBy": "livraison prévue le {date}"
   },
   "cart": {
     "title": "Panier",
@@ -603,6 +607,16 @@
       "title": "Page introuvable",
       "subtitle": "Cette page n'existe pas.",
       "back": "Accueil"
+    },
+    "beauty": {
+      "collection": "Collection",
+      "all": "Toute la Beauté",
+      "desc": "Soins de luxe, maquillage et parfums des marques les plus convoitées au monde."
+    },
+    "tech": {
+      "collection": "Collection",
+      "all": "Toute la Tech",
+      "desc": "Électronique haut de gamme et gadgets conçus pour ceux qui exigent le meilleur."
     }
   },
   "common": {
@@ -658,7 +672,10 @@
     "sku": "Réf.",
     "addedToCart": "Ajouté au panier",
     "removedFromWishlist": "Retiré des favoris",
-    "home": "Accueil"
+    "home": "Accueil",
+    "collection": "Collection",
+    "allBeauty": "Toute la Beauté",
+    "allTech": "Toute la Tech"
   },
   "hero": {
     "tagline": "Tech & Beauté, Une Rue",
