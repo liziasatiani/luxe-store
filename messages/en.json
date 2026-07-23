@@ -181,7 +181,11 @@
     "shipping": "Shipping",
     "free": "FREE",
     "errors": {
-      "required": "Please fill in all required fields"
+      "required": "Please fill in all required fields",
+      "selectAddress": "Please select a shipping address",
+      "fieldRequired": "Required",
+      "invalidEmail": "Invalid email",
+      "failedOrder": "Failed to place order"
     }
   },
   "orderSuccess": {

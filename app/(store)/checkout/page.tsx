@@ -70,18 +70,18 @@ export default function CheckoutPage() {
 
   const validateStep1 = () => {
     if (mode === "login") {
-      if (!selectedAddress) { toast.error("Please select a shipping address"); return false; }
+      if (!selectedAddress) { toast.error(t("errors.selectAddress")); return false; }
       return true;
     }
     const errors: Record<string, string> = {};
-    if (!guest.firstName) errors.firstName = "Required";
-    if (!guest.lastName) errors.lastName = "Required";
-    if (!guest.email) errors.email = "Required";
-    else if (!isValidEmail(guest.email)) errors.email = "Invalid email";
-    if (!guest.line1) errors.line1 = "Required";
-    if (!guest.city) errors.city = "Required";
-    if (!guest.state) errors.state = "Required";
-    if (!guest.postalCode) errors.postalCode = "Required";
+    if (!guest.firstName) errors.firstName = t("errors.fieldRequired");
+    if (!guest.lastName) errors.lastName = t("errors.fieldRequired");
+    if (!guest.email) errors.email = t("errors.fieldRequired");
+    else if (!isValidEmail(guest.email)) errors.email = t("errors.invalidEmail");
+    if (!guest.line1) errors.line1 = t("errors.fieldRequired");
+    if (!guest.city) errors.city = t("errors.fieldRequired");
+    if (!guest.state) errors.state = t("errors.fieldRequired");
+    if (!guest.postalCode) errors.postalCode = t("errors.fieldRequired");
     setGuestErrors(errors);
     if (Object.keys(errors).length > 0) { toast.error(t("errors.required")); return false; }
     return true;
@@ -129,13 +129,13 @@ export default function CheckoutPage() {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Failed to place order");
+      if (!res.ok) throw new Error(data.error ?? t("errors.failedOrder"));
       placedRef.current = true;
       clearCart();
       const guestEmail = mode === "guest" ? guest.email : undefined;
       router.push(`/checkout/success?orderId=${data.data.order.id}${guestEmail ? `&email=${encodeURIComponent(guestEmail)}` : ""}`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to place order");
+      toast.error(err instanceof Error ? err.message : t("errors.failedOrder"));
     } finally {
       setPlacing(false);
     }
