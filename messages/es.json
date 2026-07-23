@@ -114,7 +114,8 @@
     "quantity": "Cantidad",
     "selectVariant": "Seleccionar",
     "outOfStockMsg": "Este artículo está actualmente agotado. Vuelva pronto o contáctenos para consultar disponibilidad.",
-    "deliveryBy": "entrega estimada el {date}"
+    "deliveryBy": "entrega estimada el {date}",
+    "linkCopied": "Enlace copiado al portapapeles"
   },
   "cart": {
     "title": "Carrito de compra",

@@ -93,7 +93,7 @@ export function AddToCartSection({ product }: Props) {
         await navigator.share({ title: product.name, url: window.location.href });
       } else {
         await navigator.clipboard.writeText(window.location.href);
-        toast.success("Link copied to clipboard");
+        toast.success(t("linkCopied"));
       }
     } catch {
       // User cancelled share or clipboard unavailable
