@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
+import { ScrollReveal, StaggerReveal, staggerChild } from "@/components/ui/ScrollReveal";
 import { ArrowRight, Star } from "lucide-react";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
 import { Container } from "@/components/ui";
@@ -234,7 +235,9 @@ export function BestSellersSection({ initialProducts = [] }: { initialProducts?:
     <section className="py-20 border-b border-black/8 dark:border-white/8">
       <Container>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
+          <ScrollReveal variant="clip" className="overflow-hidden">
           <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{t("title")}</h2>
+          </ScrollReveal>
           <div className="flex items-center gap-0 border border-black/12 dark:border-white/12">
             {(["all", "beauty", "tech"] as const).map(key => (
               <button
@@ -267,18 +270,21 @@ export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: 
   return (
     <section className="py-16 border-b border-black/8 dark:border-white/8">
       <Container>
-        <p className="text-[10px] tracking-[0.22em] uppercase text-black/30 dark:text-white/30 text-center mb-8">{t("title")}</p>
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+        <ScrollReveal variant="rise" className="text-center mb-8">
+          <p className="text-[10px] tracking-[0.22em] uppercase text-black/30 dark:text-white/30">{t("title")}</p>
+        </ScrollReveal>
+        <StaggerReveal className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4" stagger={0.04} delay={0.1}>
           {brands.map((brand) => (
-            <Link
-              key={brand.slug}
-              href={`/brands/${brand.slug}`}
-              className="font-display text-lg text-black/30 dark:text-white/30 hover:text-black dark:hover:text-white transition-colors whitespace-nowrap"
-            >
-              {brand.name}
-            </Link>
+            <motion.div key={brand.slug} variants={staggerChild}>
+              <Link
+                href={`/brands/${brand.slug}`}
+                className="font-display text-lg text-black/30 dark:text-white/30 hover:text-black dark:hover:text-white transition-colors whitespace-nowrap"
+              >
+                {brand.name}
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </StaggerReveal>
       </Container>
     </section>
   );

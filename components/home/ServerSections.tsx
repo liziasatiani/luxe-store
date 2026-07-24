@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import type { ProductCard as ProductCardType } from "@/types";
 
 function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
@@ -12,14 +13,18 @@ function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
 }) {
   return (
     <div className="flex items-baseline justify-between mb-10">
-      <div>
-        <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{title}</h2>
-        {subtitle && <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-1">{subtitle}</p>}
-      </div>
+      <ScrollReveal variant="clip" className="overflow-hidden">
+        <div>
+          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{title}</h2>
+          {subtitle && <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-1">{subtitle}</p>}
+        </div>
+      </ScrollReveal>
       {viewAllHref && (
-        <Link href={viewAllHref} className="hidden sm:flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
-          {viewAllLabel ?? "View All"} <ArrowRight size={12} />
-        </Link>
+        <ScrollReveal delay={0.2} className="hidden sm:block">
+          <Link href={viewAllHref} className="flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
+            {viewAllLabel ?? "View All"} <ArrowRight size={12} />
+          </Link>
+        </ScrollReveal>
       )}
     </div>
   );

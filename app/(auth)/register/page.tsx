@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 export default function RegisterPage() {
   const router = useRouter();
   const [showPw, setShowPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const t = useTranslations("auth.register");
 
@@ -32,7 +33,7 @@ export default function RegisterPage() {
       await signIn("credentials", { email: data.email, password: data.password, redirect: false });
       router.push("/"); router.refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Registration failed");
+      toast.error(err instanceof Error ? err.message : t("failed"));
     } finally { setLoading(false); }
   };
 
@@ -51,6 +52,9 @@ export default function RegisterPage() {
             <Input id="password" label={t("password")} type={showPw ? "text" : "password"} autoComplete="new-password" placeholder="••••••••" error={errors.password?.message}
               rightIcon={<button type="button" onClick={() => setShowPw(p => !p)}>{showPw ? <EyeOff size={16} /> : <Eye size={16} />}</button>}
               {...register("password")} />
+            <Input id="confirmPassword" label={t("confirmPassword")} type={showConfirmPw ? "text" : "password"} autoComplete="new-password" placeholder="••••••••" error={errors.confirmPassword?.message}
+              rightIcon={<button type="button" onClick={() => setShowConfirmPw(p => !p)}>{showConfirmPw ? <EyeOff size={16} /> : <Eye size={16} />}</button>}
+              {...register("confirmPassword")} />
             <Button type="submit" variant="gold" size="lg" fullWidth loading={loading} leftIcon={<UserPlus size={18} />}>{t("createAccount")}</Button>
           </form>
           <Divider />

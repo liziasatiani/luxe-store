@@ -86,7 +86,9 @@
       "noSpam": "No spam, ever. Unsubscribe anytime.",
       "success": "You're in! Welcome to Everything Street.",
       "invalidEmail": "Please enter a valid email address",
-      "error": "Something went wrong. Please try again."
+      "error": "Something went wrong. Please try again.",
+      "emailRequired": "Please enter your email address",
+      "emailInvalid": "Please enter a valid email address"
     }
   },
   "product": {
@@ -310,7 +312,8 @@
       "createAccount": "Create Account",
       "hasAccount": "Already have an account?",
       "signIn": "Sign in",
-      "success": "Account created! Please sign in."
+      "success": "Account created! Please sign in.",
+      "failed": "Registration failed. Please try again."
     },
     "forgotPassword": {
       "title": "Forgot password?",

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Instagram, Facebook, Mail } from "lucide-react";
 import { Container } from "@/components/ui";
 import { getTranslations } from "next-intl/server";
+import { NewsletterForm } from "@/components/home/NewsletterForm";
 
 export async function Footer() {
   const t = await getTranslations("footer");
@@ -33,8 +34,26 @@ export async function Footer() {
   const instagram = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
   const facebook  = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 
+  const tn = await getTranslations("home.newsletter");
+
   return (
     <footer className="bg-black text-white/40">
+      {/* Newsletter band */}
+      <div className="border-b border-white/8">
+        <Container className="py-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+            <div>
+              <p className="text-[10px] tracking-[0.28em] uppercase text-white/30 mb-4">{tn("badge")}</p>
+              <h2 className="font-display text-3xl text-white font-normal mb-3">{tn("title")}</h2>
+              <p className="text-sm text-white/40 leading-relaxed max-w-sm">{tn("subtitle")}</p>
+            </div>
+            <div className="md:pt-8">
+              <NewsletterForm />
+            </div>
+          </div>
+        </Container>
+      </div>
+
       <Container className="py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 border-b border-white/8 pb-10">
           <div className="lg:col-span-2">
