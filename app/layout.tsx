@@ -10,6 +10,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SearchModal } from "@/components/search/SearchModal";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
+import { MusicPlayer } from "@/components/ui/MusicPlayer";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
@@ -93,6 +94,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <SearchModal />
               <CartDrawer />
               <ExitIntentCapture />
+              <MusicPlayer />
               <WishlistSync />
               <Toaster position="bottom-right" />
               <CookieConsent />
