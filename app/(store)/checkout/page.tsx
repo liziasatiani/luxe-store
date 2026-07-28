@@ -38,8 +38,17 @@ export default function CheckoutPage() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [notes, setNotes] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY" | "STRIPE">("CASH_ON_DELIVERY");
   const [placing, setPlacing] = useState(false);
+
+  const COD_MAX_GEL = 100;
+  const totalGEL = total() * 2.77;
+  const codAvailable = totalGEL < COD_MAX_GEL;
+  const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY" | "STRIPE">("CASH_ON_DELIVERY");
+
+  // Auto-switch to Stripe when cart exceeds COD threshold
+  useEffect(() => {
+    if (!codAvailable) setPaymentMethod("STRIPE");
+  }, [codAvailable]);
   const [guest, setGuest] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     line1: "", line2: "", city: "", state: "", postalCode: "", country: "US",
@@ -396,14 +405,28 @@ export default function CheckoutPage() {
                 {/* Cash on Delivery */}
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod("CASH_ON_DELIVERY")}
-                  className={`w-full flex items-center gap-3 p-4 border transition-colors text-left ${paymentMethod === "CASH_ON_DELIVERY" ? "border-black dark:border-white bg-black/[0.04] dark:bg-white/[0.04]" : "border-black/20 dark:border-white/20"}`}
+                  onClick={() => codAvailable && setPaymentMethod("CASH_ON_DELIVERY")}
+                  disabled={!codAvailable}
+                  className={`w-full flex items-center gap-3 p-4 border transition-colors text-left ${
+                    !codAvailable
+                      ? "border-black/10 dark:border-white/10 opacity-40 cursor-not-allowed"
+                      : paymentMethod === "CASH_ON_DELIVERY"
+                        ? "border-black dark:border-white bg-black/[0.04] dark:bg-white/[0.04]"
+                        : "border-black/20 dark:border-white/20"
+                  }`}
                 >
-                  <input type="radio" readOnly checked={paymentMethod === "CASH_ON_DELIVERY"} className="shrink-0" />
+                  <input type="radio" readOnly checked={paymentMethod === "CASH_ON_DELIVERY"} disabled={!codAvailable} className="shrink-0" />
                   <Banknote size={16} className="text-black/60 dark:text-white/60 shrink-0" />
                   <span className="text-sm text-black dark:text-white font-medium">{t("cashOnDelivery")}</span>
-                  <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">Pay when received</span>
+                  <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">
+                    {codAvailable ? "Pay when received" : `Only available under ₾${COD_MAX_GEL}`}
+                  </span>
                 </button>
+                {!codAvailable && (
+                  <p className="text-[11px] text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                    <span>⚠</span> Cash on delivery is only available for orders under ₾{COD_MAX_GEL}. Please pay by card.
+                  </p>
+                )}
               </div>
 
               <Input id="notes" label={t("orderNotes")} value={notes} onChange={e => setNotes(e.target.value)} />
