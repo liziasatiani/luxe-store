@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { parseIntParam } from "@/lib/utils";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
@@ -24,5 +25,27 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error("[brands/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch brands" }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const session = await auth();
+    if ((session?.user as { role?: string })?.role !== "ADMIN") {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    }
+    const { name } = await req.json();
+    if (!name?.trim()) {
+      return NextResponse.json({ success: false, error: "Name is required" }, { status: 400 });
+    }
+    const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const brand = await prisma.brand.create({
+      data: { name: name.trim(), slug },
+      select: { id: true, name: true, slug: true },
+    });
+    return NextResponse.json({ success: true, data: { brand } });
+  } catch (err) {
+    console.error("[brands/POST]", err);
+    return NextResponse.json({ success: false, error: "Failed to create brand" }, { status: 500 });
   }
 }
