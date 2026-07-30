@@ -1,0 +1,380 @@
+{
+  "nav": {
+    "beauty": "Belleza",
+    "tech": "Tecnología",
+    "brands": "Marcas",
+    "deals": "Ofertas",
+    "new": "Novedades",
+    "signIn": "Iniciar sesión",
+    "search": "Buscar",
+    "myAccount": "Mi cuenta",
+    "orders": "Pedidos",
+    "wishlist": "Favoritos",
+    "adminPanel": "Panel admin",
+    "signOut": "Cerrar sesión"
+  },
+  "home": {
+    "hero": {
+      "badge": "Novedades cada semana",
+      "title": "El lujo",
+      "titleGold": "Redefinido.",
+      "subtitle": "Descubre 186 productos seleccionados en belleza de lujo y tecnología premium.",
+      "shopBeauty": "Comprar Belleza",
+      "exploreTech": "Explorar Tecnología",
+      "stats": {
+        "products": "Productos seleccionados",
+        "brands": "Marcas de lujo",
+        "customers": "Clientes satisfechos",
+        "rating": "Valoración media"
+      }
+    },
+    "categories": {
+      "title": "Comprar por categoría",
+      "subtitle": "Desde rituales de cuidado hasta tecnología de vanguardia"
+    },
+    "featured": {
+      "title": "Destacados",
+      "subtitle": "Seleccionados por nuestros editores",
+      "viewAll": "Ver todo"
+    },
+    "flashSale": {
+      "title": "Venta Relámpago",
+      "subtitle": "Ofertas por tiempo limitado",
+      "hrs": "H",
+      "min": "MIN",
+      "sec": "SEG"
+    },
+    "brands": {
+      "title": "Nuestras Marcas",
+      "subtitle": "Seleccionadas de las mejores casas del mundo"
+    },
+    "testimonials": {
+      "title": "Lo que dicen nuestros clientes",
+      "subtitle": "Más de 50.000 clientes satisfechos"
+    },
+    "newsletter": {
+      "badge": "Ofertas exclusivas",
+      "title": "Únete al círculo VIP",
+      "subtitle": "Sé el primero en conocer las novedades, ofertas exclusivas y secretos de belleza.",
+      "placeholder": "Introduce tu correo electrónico",
+      "subscribe": "Suscribirse",
+      "noSpam": "Sin spam. Cancela cuando quieras.",
+      "success": "¡Ya eres miembro! Bienvenido a Luxe Store.",
+      "invalidEmail": "Por favor introduce un correo electrónico válido",
+      "error": "Algo salió mal. Inténtalo de nuevo."
+    }
+  },
+  "product": {
+    "addToCart": "Añadir al carrito",
+    "buyNow": "Comprar ahora",
+    "outOfStock": "Sin stock",
+    "lowStock": "¡Solo quedan pocos!",
+    "quickView": "Vista rápida",
+    "addToWishlist": "Añadir a favoritos",
+    "wishlisted": "En favoritos",
+    "share": "Compartir",
+    "reviews": "reseñas",
+    "inStock": "En stock",
+    "newArrival": "Novedad",
+    "bestSeller": "Más vendido",
+    "aboutProduct": "Sobre este producto",
+    "specifications": "Especificaciones",
+    "youMayAlsoLike": "También te puede gustar",
+    "viewFullDetails": "Ver detalles completos",
+    "qty": "Cant.",
+    "removed": "Eliminado"
+  },
+  "cart": {
+    "title": "Carrito de compra",
+    "empty": "Tu carrito está vacío",
+    "emptyDesc": "Aún no has añadido nada.",
+    "continueShopping": "Seguir comprando",
+    "subtotal": "Subtotal",
+    "shipping": "Envío",
+    "tax": "Impuestos",
+    "total": "Total",
+    "free": "GRATIS",
+    "checkout": "Proceder al pago",
+    "coupon": "Código de cupón",
+    "apply": "Aplicar",
+    "items": "artículos",
+    "item": "artículo",
+    "discount": "Descuento",
+    "couponApplied": "¡Cupón aplicado!",
+    "invalidCoupon": "Código de cupón inválido",
+    "secureCheckout": "Pago seguro"
+  },
+  "checkout": {
+    "title": "Pago",
+    "continueAsGuest": "Continuar como invitado",
+    "guestSubtitle": "Sin necesidad de cuenta — solo rellena tus datos",
+    "signIn": "Iniciar sesión",
+    "signInSubtitle": "Inicia sesión para un pago más rápido",
+    "createAccount": "Crear una",
+    "noAccount": "¿No tienes cuenta?",
+    "yourDetails": "Tus datos",
+    "back": "Volver",
+    "firstName": "Nombre *",
+    "lastName": "Apellidos *",
+    "email": "Correo electrónico *",
+    "phone": "Número de teléfono",
+    "address": "Dirección *",
+    "apartment": "Apartamento, suite, etc.",
+    "city": "Ciudad *",
+    "state": "Provincia *",
+    "postalCode": "Código postal *",
+    "country": "País",
+    "payment": "Pago",
+    "cashOnDelivery": "Pago contra reembolso",
+    "placeOrder": "Realizar pedido",
+    "orderNotes": "Notas del pedido (opcional)",
+    "shippingAddress": "Dirección de envío",
+    "orderSummary": "Resumen del pedido",
+    "addNewAddress": "+ Añadir dirección",
+    "noAddresses": "Sin direcciones guardadas",
+    "addAddress": "+ Añadir dirección",
+    "termsNotice": "Al realizar tu pedido, aceptas nuestros Términos de Servicio."
+  },
+  "orderSuccess": {
+    "title": "¡Pedido confirmado!",
+    "subtitle": "Gracias por tu pedido. Recibirás un email de confirmación.",
+    "orderSummary": "Resumen",
+    "trackOrder": "Rastrear pedido",
+    "continueShopping": "Seguir comprando"
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "profile": "Perfil",
+    "orders": "Pedidos",
+    "addresses": "Direcciones",
+    "wishlist": "Favoritos",
+    "signOut": "Cerrar sesión",
+    "noOrders": "Aún no hay pedidos. ¡Empieza a comprar!",
+    "orderPlaced": "Pedido realizado",
+    "confirmed": "Confirmado",
+    "shipped": "Enviado",
+    "delivered": "Entregado"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión en tu cuenta Luxe Store",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "signIn": "Iniciar sesión",
+      "noAccount": "¿No tienes cuenta?",
+      "createAccount": "Crear cuenta",
+      "orContinueWith": "o continúa con",
+      "continueWithGoogle": "Continuar con Google",
+      "invalidCredentials": "Email o contraseña inválidos",
+      "welcomeBack": "¡Bienvenido de nuevo!"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Únete a miles de compradores de lujo",
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "createAccount": "Crear cuenta",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "signIn": "Iniciar sesión",
+      "success": "¡Cuenta creada! Por favor inicia sesión."
+    },
+    "forgotPassword": {
+      "title": "¿Olvidaste tu contraseña?",
+      "subtitle": "Introduce tu email y te enviaremos un enlace",
+      "email": "Correo electrónico",
+      "send": "Enviar enlace",
+      "back": "Volver al inicio de sesión",
+      "sent": "¡Enlace enviado!",
+      "sentDesc": "Revisa tu email para el enlace de restablecimiento."
+    }
+  },
+  "footer": {
+    "shop": "Tienda",
+    "help": "Ayuda",
+    "company": "Empresa",
+    "allRights": "Todos los derechos reservados.",
+    "noAccount": "¿No tienes cuenta?",
+    "createOne": "Crear una",
+    "beauty": "Belleza",
+    "tech": "Tecnología",
+    "brands": "Marcas",
+    "deals": "Ofertas",
+    "newArrivals": "Novedades",
+    "bestSellers": "Más vendidos",
+    "faq": "Preguntas frecuentes",
+    "contact": "Contáctanos",
+    "shipping": "Envío",
+    "returns": "Devoluciones",
+    "trackOrder": "Rastrear pedido",
+    "about": "Sobre nosotros",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de uso",
+    "sitemap": "Mapa del sitio"
+  },
+  "pages": {
+    "newArrivals": {
+      "title": "Novedades",
+      "subtitle": "Nuevos artículos cada semana.",
+      "badge": "Recién llegado"
+    },
+    "bestSellers": {
+      "title": "Más vendidos",
+      "subtitle": "Nuestros productos más populares.",
+      "badge": "Los más amados"
+    },
+    "featured": {
+      "title": "Destacados",
+      "subtitle": "Seleccionados por nuestros expertos.",
+      "badge": "Elección del editor"
+    },
+    "deals": {
+      "title": "Ofertas y Rebajas",
+      "subtitle": "Lujo a un precio que te encantará.",
+      "badge": "Tiempo limitado"
+    },
+    "brands": {
+      "title": "Nuestras Marcas",
+      "subtitle": "Compra tus marcas de lujo favoritas.",
+      "products": "productos"
+    },
+    "search": {
+      "title": "Buscar",
+      "resultsFor": "Resultados para",
+      "noResults": "Sin resultados para",
+      "tryDifferent": "Prueba con otras palabras clave"
+    },
+    "about": {
+      "badge": "Nuestra historia",
+      "title": "El lujo, seleccionado para ti"
+    },
+    "sitemap": {
+      "title": "Mapa del sitio",
+      "subtitle": "Encuentra todo en Luxe Store"
+    },
+    "trackOrder": {
+      "title": "Rastrear tu pedido",
+      "subtitle": "Introduce tu número de pedido y email.",
+      "orderNumber": "Número de pedido",
+      "email": "Correo electrónico",
+      "track": "Rastrear",
+      "notFound": "Pedido no encontrado. Comprueba tus datos.",
+      "itemsOrdered": "Artículos pedidos",
+      "shippingTo": "Envío a"
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "subtitle": "Estamos aquí para ayudarte.",
+      "getInTouch": "Ponte en contacto",
+      "email": "Email",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "openInMaps": "Abrir en Google Maps →",
+      "chatWithUs": "Chatea con nosotros",
+      "businessHours": "Horario comercial",
+      "monFri": "Lunes – Viernes",
+      "saturday": "Sábado",
+      "sunday": "Domingo",
+      "closed": "Cerrado",
+      "sendMessage": "Enviar mensaje",
+      "yourName": "Tu nombre *",
+      "yourEmail": "Email *",
+      "subject": "Asunto",
+      "message": "Mensaje *",
+      "send": "Enviar",
+      "messageSent": "¡Mensaje enviado!",
+      "messageSentDesc": "Te responderemos en 24 horas.",
+      "sendAnother": "Enviar otro mensaje"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "subtitle": "Todo lo que necesitas saber sobre Luxe Store."
+    },
+    "shipping": {
+      "title": "Política de envío",
+      "subtitle": "Entrega rápida y fiable."
+    },
+    "returns": {
+      "title": "Devoluciones y Reembolsos",
+      "subtitle": "Devoluciones sin complicaciones en 30 días."
+    },
+    "privacy": {
+      "title": "Política de privacidad"
+    },
+    "terms": {
+      "title": "Términos de uso"
+    },
+    "wishlist": {
+      "title": "Mis favoritos",
+      "empty": "Tu lista está vacía",
+      "emptyDesc": "Toca el corazón en cualquier producto para guardarlo aquí.",
+      "startShopping": "Empezar a comprar",
+      "clearAll": "Borrar todo",
+      "syncHint": "Tu lista está guardada en este dispositivo.",
+      "signInSync": "Inicia sesión",
+      "toSync": "para sincronizar en todos tus dispositivos."
+    },
+    "notFound": {
+      "title": "Página no encontrada",
+      "subtitle": "Esta página no existe.",
+      "back": "Inicio"
+    }
+  },
+  "common": {
+    "loading": "Cargando…",
+    "error": "Algo salió mal",
+    "notFound": "No encontrado",
+    "back": "Volver",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "newest": "Más reciente",
+    "bestSelling": "Más vendidos",
+    "topRated": "Mejor valorado",
+    "priceLow": "Precio: menor",
+    "priceHigh": "Precio: mayor",
+    "discount": "Descuento",
+    "products": "productos",
+    "loadMore": "Cargar más",
+    "noProducts": "No se encontraron productos.",
+    "required": "Obligatorio",
+    "inStock": "En stock",
+    "outOfStock": "Sin stock",
+    "lowStock": "¡Solo quedan pocos!",
+    "new": "Nuevo",
+    "sale": "Oferta",
+    "off": "de descuento",
+    "free": "GRATIS",
+    "allProducts": "Todos los productos",
+    "viewAll": "Ver todo",
+    "seeAll": "Ver todo",
+    "by": "por",
+    "from": "de",
+    "to": "a",
+    "or": "o",
+    "priceRange": "Rango de precio",
+    "brand": "Marca",
+    "availability": "Disponibilidad",
+    "inStockOnly": "Solo en stock",
+    "onSale": "En oferta",
+    "clearAll": "Borrar todo",
+    "filters": "Filtros",
+    "apply": "Aplicar",
+    "reset": "Restablecer",
+    "items": "artículos",
+    "item": "artículo",
+    "of": "de",
+    "showing": "Mostrando",
+    "qty": "Cantidad",
+    "sku": "Ref.",
+    "addedToCart": "Añadido al carrito",
+    "removedFromWishlist": "Eliminado de favoritos"
+  }
+}

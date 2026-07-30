@@ -1,0 +1,380 @@
+{
+  "nav": {
+    "beauty": "Beauty",
+    "tech": "Tech",
+    "brands": "Brands",
+    "deals": "Deals",
+    "new": "New",
+    "signIn": "Sign In",
+    "search": "Search",
+    "myAccount": "My Account",
+    "orders": "Orders",
+    "wishlist": "Wishlist",
+    "adminPanel": "Admin Panel",
+    "signOut": "Sign Out"
+  },
+  "home": {
+    "hero": {
+      "badge": "New Arrivals Every Week",
+      "title": "Luxury",
+      "titleGold": "Redefined.",
+      "subtitle": "Discover 186 curated products across luxury beauty and premium tech.",
+      "shopBeauty": "Shop Beauty",
+      "exploreTech": "Explore Tech",
+      "stats": {
+        "products": "Curated Products",
+        "brands": "Luxury Brands",
+        "customers": "Happy Customers",
+        "rating": "Average Rating"
+      }
+    },
+    "categories": {
+      "title": "Shop by Category",
+      "subtitle": "From skincare rituals to cutting-edge tech"
+    },
+    "featured": {
+      "title": "Featured",
+      "subtitle": "Handpicked by our editors",
+      "viewAll": "View all"
+    },
+    "flashSale": {
+      "title": "Flash Sale",
+      "subtitle": "Limited time offers",
+      "hrs": "HRS",
+      "min": "MIN",
+      "sec": "SEC"
+    },
+    "brands": {
+      "title": "Our Brands",
+      "subtitle": "Curated from the world's finest houses"
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "subtitle": "Over 50,000 satisfied customers worldwide"
+    },
+    "newsletter": {
+      "badge": "Exclusive Offers",
+      "title": "Join the Inner Circle",
+      "subtitle": "Be first to know about new arrivals, exclusive deals, and beauty secrets.",
+      "placeholder": "Enter your email address",
+      "subscribe": "Subscribe",
+      "noSpam": "No spam, ever. Unsubscribe anytime.",
+      "success": "You're in! Welcome to Luxe Store.",
+      "invalidEmail": "Please enter a valid email address",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "outOfStock": "Out of Stock",
+    "lowStock": "Only a few left!",
+    "quickView": "Quick View",
+    "addToWishlist": "Add to Wishlist",
+    "wishlisted": "Wishlisted",
+    "share": "Share",
+    "reviews": "reviews",
+    "inStock": "In Stock",
+    "newArrival": "New Arrival",
+    "bestSeller": "Best Seller",
+    "aboutProduct": "About this product",
+    "specifications": "Specifications",
+    "youMayAlsoLike": "You May Also Like",
+    "viewFullDetails": "View full details",
+    "qty": "Qty",
+    "removed": "Removed"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "emptyDesc": "Looks like you haven't added anything yet.",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
+    "free": "FREE",
+    "checkout": "Proceed to Checkout",
+    "coupon": "Coupon code",
+    "apply": "Apply",
+    "items": "items",
+    "item": "item",
+    "discount": "Discount",
+    "couponApplied": "Coupon applied!",
+    "invalidCoupon": "Invalid coupon code",
+    "secureCheckout": "Secure checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "continueAsGuest": "Continue as Guest",
+    "guestSubtitle": "No account needed — just fill in your details",
+    "signIn": "Sign In",
+    "signInSubtitle": "Sign in for faster checkout and order tracking",
+    "createAccount": "Create one",
+    "noAccount": "Don't have an account?",
+    "yourDetails": "Your Details",
+    "back": "Back",
+    "firstName": "First Name *",
+    "lastName": "Last Name *",
+    "email": "Email Address *",
+    "phone": "Phone Number",
+    "address": "Address *",
+    "apartment": "Apartment, suite, etc.",
+    "city": "City *",
+    "state": "State *",
+    "postalCode": "Postal Code *",
+    "country": "Country",
+    "payment": "Payment",
+    "cashOnDelivery": "Cash on Delivery",
+    "placeOrder": "Place Order",
+    "orderNotes": "Order notes (optional)",
+    "shippingAddress": "Shipping Address",
+    "orderSummary": "Order Summary",
+    "addNewAddress": "+ Add new address",
+    "noAddresses": "No saved addresses",
+    "addAddress": "+ Add address",
+    "termsNotice": "By placing your order you agree to our Terms of Service."
+  },
+  "orderSuccess": {
+    "title": "Order Confirmed!",
+    "subtitle": "Thank you for your order. You'll receive a confirmation email shortly.",
+    "orderSummary": "Order Summary",
+    "trackOrder": "Track Order",
+    "continueShopping": "Continue Shopping"
+  },
+  "account": {
+    "title": "My Account",
+    "profile": "Profile",
+    "orders": "Orders",
+    "addresses": "Addresses",
+    "wishlist": "Wishlist",
+    "signOut": "Sign Out",
+    "noOrders": "No orders yet. Start shopping!",
+    "orderPlaced": "Order Placed",
+    "confirmed": "Confirmed",
+    "shipped": "Shipped",
+    "delivered": "Delivered"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your Luxe Store account",
+      "email": "Email address",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account",
+      "orContinueWith": "or continue with",
+      "continueWithGoogle": "Continue with Google",
+      "invalidCredentials": "Invalid email or password",
+      "welcomeBack": "Welcome back!"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Join thousands of luxury shoppers",
+      "name": "Full name",
+      "email": "Email address",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "createAccount": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "success": "Account created! Please sign in."
+    },
+    "forgotPassword": {
+      "title": "Forgot password?",
+      "subtitle": "Enter your email and we'll send a reset link",
+      "email": "Email address",
+      "send": "Send Reset Link",
+      "back": "Back to sign in",
+      "sent": "Reset link sent!",
+      "sentDesc": "Check your email for the reset link."
+    }
+  },
+  "footer": {
+    "shop": "Shop",
+    "help": "Help",
+    "company": "Company",
+    "allRights": "All rights reserved.",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one",
+    "beauty": "Beauty",
+    "tech": "Tech",
+    "brands": "Brands",
+    "deals": "Deals",
+    "newArrivals": "New Arrivals",
+    "bestSellers": "Best Sellers",
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "shipping": "Shipping",
+    "returns": "Returns",
+    "trackOrder": "Track Order",
+    "about": "About Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "sitemap": "Sitemap"
+  },
+  "pages": {
+    "newArrivals": {
+      "title": "New Arrivals",
+      "subtitle": "Fresh drops added weekly.",
+      "badge": "Just In"
+    },
+    "bestSellers": {
+      "title": "Best Sellers",
+      "subtitle": "Our most popular products loved by thousands.",
+      "badge": "Most Loved"
+    },
+    "featured": {
+      "title": "Featured",
+      "subtitle": "Handpicked by our luxury experts.",
+      "badge": "Editor's Pick"
+    },
+    "deals": {
+      "title": "Deals & Sales",
+      "subtitle": "Luxury at a price you'll love.",
+      "badge": "Limited Time"
+    },
+    "brands": {
+      "title": "Our Brands",
+      "subtitle": "Shop your favourite luxury brands.",
+      "products": "products"
+    },
+    "search": {
+      "title": "Search",
+      "resultsFor": "Results for",
+      "noResults": "No results for",
+      "tryDifferent": "Try different keywords"
+    },
+    "about": {
+      "badge": "Our Story",
+      "title": "Luxury, Curated for You"
+    },
+    "sitemap": {
+      "title": "Sitemap",
+      "subtitle": "Find everything on Luxe Store"
+    },
+    "trackOrder": {
+      "title": "Track Your Order",
+      "subtitle": "Enter your order number and email to track your delivery.",
+      "orderNumber": "Order Number",
+      "email": "Email Address",
+      "track": "Track Order",
+      "notFound": "Order not found. Please check your details.",
+      "itemsOrdered": "Items Ordered",
+      "shippingTo": "Shipping To"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "We're here to help. Reach out and we'll respond within 24 hours.",
+      "getInTouch": "Get In Touch",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "openInMaps": "Open in Google Maps →",
+      "chatWithUs": "Chat With Us",
+      "businessHours": "Business Hours",
+      "monFri": "Monday – Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "closed": "Closed",
+      "sendMessage": "Send a Message",
+      "yourName": "Your Name *",
+      "yourEmail": "Email *",
+      "subject": "Subject",
+      "message": "Message *",
+      "send": "Send Message",
+      "messageSent": "Message Sent!",
+      "messageSentDesc": "We'll get back to you within 24 hours.",
+      "sendAnother": "Send another message"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about Luxe Store."
+    },
+    "shipping": {
+      "title": "Shipping Policy",
+      "subtitle": "Fast, reliable delivery to your door."
+    },
+    "returns": {
+      "title": "Returns & Refunds",
+      "subtitle": "30-day hassle-free returns."
+    },
+    "privacy": {
+      "title": "Privacy Policy"
+    },
+    "terms": {
+      "title": "Terms of Use"
+    },
+    "wishlist": {
+      "title": "My Wishlist",
+      "empty": "Your wishlist is empty",
+      "emptyDesc": "Tap the heart icon on any product to save it here. No account needed!",
+      "startShopping": "Start Shopping",
+      "clearAll": "Clear all",
+      "syncHint": "Your wishlist is saved on this device.",
+      "signInSync": "Sign in",
+      "toSync": "to sync across devices."
+    },
+    "notFound": {
+      "title": "Page Not Found",
+      "subtitle": "The page you're looking for doesn't exist.",
+      "back": "Go Home"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "notFound": "Not found",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "newest": "Newest",
+    "bestSelling": "Best Selling",
+    "topRated": "Top Rated",
+    "priceLow": "Price: Low",
+    "priceHigh": "Price: High",
+    "discount": "Discount",
+    "products": "products",
+    "loadMore": "Load More",
+    "noProducts": "No products found.",
+    "required": "Required",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "lowStock": "Only a few left!",
+    "new": "New",
+    "sale": "Sale",
+    "off": "Off",
+    "free": "FREE",
+    "allProducts": "All Products",
+    "viewAll": "View all",
+    "seeAll": "See all",
+    "by": "by",
+    "from": "from",
+    "to": "to",
+    "or": "or",
+    "priceRange": "Price Range",
+    "brand": "Brand",
+    "availability": "Availability",
+    "inStockOnly": "In Stock Only",
+    "onSale": "On Sale",
+    "clearAll": "Clear all",
+    "filters": "Filters",
+    "apply": "Apply",
+    "reset": "Reset",
+    "items": "items",
+    "item": "item",
+    "of": "of",
+    "showing": "Showing",
+    "qty": "Quantity",
+    "sku": "SKU",
+    "addedToCart": "Added to cart",
+    "removedFromWishlist": "Removed from wishlist"
+  }
+}
