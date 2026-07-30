@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useTranslations } from "next-intl";
 
 export function HeroSection() {
+  const t = useTranslations("home.hero");
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-surface-950">
       {/* Animated background */}
@@ -29,7 +31,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-500/10 border border-brand-500/20 mb-8"
           >
             <Sparkles size={14} className="text-brand-400" />
-            <span className="text-sm text-brand-300 font-medium">New Arrivals Every Week</span>
+            <span className="text-sm text-brand-300 font-medium">{t("badge")}</span>
           </motion.div>
 
           {/* Headline */}
@@ -39,10 +41,10 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-6xl md:text-7xl lg:text-8xl text-white leading-none tracking-tight mb-6"
           >
-            Luxury
+            {t("title")}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-gold">
-              Redefined.
+              {t("titleGold")}
             </span>
           </motion.h1>
 
@@ -52,8 +54,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-surface-400 max-w-xl leading-relaxed mb-10"
           >
-            Discover 186 curated products across luxury beauty and premium tech. 
-            Brands you love, experiences that transcend.
+            {t("subtitle")}
           </motion.p>
 
           {/* CTAs */}
@@ -64,10 +65,10 @@ export function HeroSection() {
             className="flex flex-wrap gap-4"
           >
             <Button variant="gold" size="xl" rightIcon={<ArrowRight size={20} />} asChild>
-              <Link href="/beauty">Shop Beauty</Link>
+              <Link href="/beauty">{t("shopBeauty")}</Link>
             </Button>
             <Button variant="outline" size="xl" className="border-surface-700 text-white hover:bg-surface-800" asChild>
-              <Link href="/tech">Explore Tech</Link>
+              <Link href="/tech">{t("exploreTech")}</Link>
             </Button>
           </motion.div>
 
@@ -79,10 +80,10 @@ export function HeroSection() {
             className="flex flex-wrap gap-10 mt-16"
           >
             {[
-              { value: "186+", label: "Curated Products" },
-              { value: "31",   label: "Luxury Brands"    },
-              { value: "50K+", label: "Happy Customers"  },
-              { value: "4.9★", label: "Average Rating"   },
+              { value: "186+", label: t("stats.products") },
+              { value: "31",   label: t("stats.brands")   },
+              { value: "50K+", label: t("stats.customers") },
+              { value: "4.9★", label: t("stats.rating")   },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-3xl font-display text-white">{stat.value}</p>

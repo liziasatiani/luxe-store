@@ -80,9 +80,9 @@ export function ProductCard({ product, index = 0, variant = "default" }: Product
             />
 
             <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-              {product.isNewArrival && <Badge variant="gold">New</Badge>}
+              {product.isNewArrival && <Badge variant="gold">{t("newArrival")}</Badge>}
               {discount > 0 && <Badge variant="error">-{discount}%</Badge>}
-              {product.isBestSeller && <Badge variant="default">Best Seller</Badge>}
+              {product.isBestSeller && <Badge variant="default">{t("bestSeller")}</Badge>}
             </div>
 
             <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
@@ -99,7 +99,7 @@ export function ProductCard({ product, index = 0, variant = "default" }: Product
 
             {product.stockStatus === "OUT_OF_STOCK" && (
               <div className="absolute inset-0 bg-white/60 dark:bg-surface-900/60 flex items-center justify-center">
-                <span className="text-xs font-semibold text-surface-600 bg-white dark:bg-surface-800 px-3 py-1.5 rounded-full">Out of Stock</span>
+                <span className="text-xs font-semibold text-surface-600 bg-white dark:bg-surface-800 px-3 py-1.5 rounded-full">{t("outOfStock")}</span>
               </div>
             )}
 
@@ -108,7 +108,7 @@ export function ProductCard({ product, index = 0, variant = "default" }: Product
               className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
             >
               <div className="flex items-center justify-center gap-1 bg-white/90 dark:bg-surface-900/90 backdrop-blur-sm rounded-xl py-2 text-xs font-medium text-surface-700 dark:text-surface-300 hover:bg-white dark:hover:bg-surface-900">
-                <Eye size={13} /> Quick View
+                <Eye size={13} /> {t("quickView")}
               </div>
             </button>
           </div>
@@ -126,7 +126,7 @@ export function ProductCard({ product, index = 0, variant = "default" }: Product
               )}
             </div>
             {product.stockStatus === "LOW_STOCK" && (
-              <p className="text-xs text-yellow-600 font-medium">Only a few left!</p>
+              <p className="text-xs text-yellow-600 font-medium">{t("lowStock")}</p>
             )}
           </div>
         </Link>

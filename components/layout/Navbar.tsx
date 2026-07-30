@@ -185,11 +185,11 @@ export function Navbar() {
                 {user ? (
                   <>
                     <Link href="/account" onClick={closeMobileMenu} className="flex items-center gap-3 h-12 px-4 text-surface-700 dark:text-surface-300">
-                      <User size={18} /> My Account
+                      <User size={18} /> {t("myAccount")}
                     </Link>
                     {isAdmin && (
                       <Link href="/admin" onClick={closeMobileMenu} className="flex items-center gap-3 h-12 px-4 text-surface-700 dark:text-surface-300">
-                        <LayoutDashboard size={18} /> Admin Panel
+                        <LayoutDashboard size={18} /> {t("adminPanel")}
                       </Link>
                     )}
                     <button onClick={() => { signOut(); closeMobileMenu(); }} className="flex items-center gap-3 h-12 px-4 text-red-500 w-full">
@@ -214,6 +214,7 @@ export function Navbar() {
 }
 
 function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: string | null }; isAdmin: boolean }) {
+  const t = useTranslations("nav");
   const [open, setOpen] = useState(false);
   const ref = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
@@ -238,9 +239,9 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
               <p className="text-sm font-medium text-surface-900 dark:text-white truncate">{user.name}</p>
             </div>
             {[
-              { href: "/account",        icon: User,    label: "My Account" },
-              { href: "/account/orders", icon: Package, label: "Orders"     },
-              { href: "/wishlist",       icon: Heart,   label: "Wishlist"   },
+              { href: "/account",        icon: User,    label: t("myAccount") },
+              { href: "/account/orders", icon: Package, label: t("orders")    },
+              { href: "/wishlist",       icon: Heart,   label: t("wishlist")  },
             ].map((item) => (
               <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors">
@@ -251,13 +252,13 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
             {isAdmin && (
               <Link href="/admin" onClick={() => setOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-brand-600 dark:text-brand-400 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors">
-                <LayoutDashboard size={16} /> Admin Panel
+                <LayoutDashboard size={16} /> {t("adminPanel")}
               </Link>
             )}
             <div className="border-t border-surface-100 dark:border-surface-800 mt-1 pt-1">
               <button onClick={() => { signOut({ callbackUrl: "/" }); setOpen(false); }}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 w-full transition-colors">
-                <LogOut size={16} /> Sign Out
+                <LogOut size={16} /> {t("signOut")}
               </button>
             </div>
           </motion.div>
