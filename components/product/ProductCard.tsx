@@ -40,7 +40,7 @@ export function ProductCard({ product, index = 0, variant = "default" }: Product
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     toggle(product.id);
-    toast.success(isWishlisted ? t("addToWishlist") : t("addToWishlist"), {
+    toast.success(isWishlisted ? t("wishlisted") : t("addToWishlist"), {
       icon: isWishlisted ? "💔" : "❤️", style: { borderRadius: "12px" },
     });
   };

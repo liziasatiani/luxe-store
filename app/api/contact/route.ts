@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validations";
+import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
+  const rl = rateLimit(`contact:${getIP(req)}`, 5, 60 * 1000);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const body = await req.json();
     const parsed = contactSchema.safeParse(body);
@@ -9,14 +13,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    // In production: send email via Resend or similar
-    // const { name, email, subject, message } = parsed.data;
-    // await resend.emails.send({ from: process.env.EMAIL_FROM, to: "hello@luxestore.com", ... });
+    const { name, email, subject, message } = parsed.data;
 
-    console.log("[contact]", parsed.data);
+    if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== "[YOUR-RESEND-API-KEY]") {
+      const { Resend } = await import("resend");
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: "Luxe Store <noreply@luxestore.com>",
+        to: process.env.CONTACT_EMAIL ?? "hello@luxestore.com",
+        replyTo: email,
+        subject: `[Contact] ${subject}`,
+        text: `From: ${name} <${email}>\n\n${message}`,
+      });
+    }
 
     return NextResponse.json({ success: true, message: "Message sent! We'll reply within 24 hours." });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to send message" }, { status: 500 });
   }
 }

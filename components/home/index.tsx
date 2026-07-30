@@ -91,10 +91,25 @@ export function FeaturedProductsSection() {
 }
 
 // ─── Flash Sale Section ───────────────────────────────────────
+const FLASH_SALE_END_KEY = "luxe-flash-sale-end";
+
+function getOrInitSaleEnd(): Date {
+  if (typeof window === "undefined") return new Date(Date.now() + 47 * 3600000);
+  const stored = localStorage.getItem(FLASH_SALE_END_KEY);
+  if (stored) {
+    const ts = parseInt(stored, 10);
+    if (!isNaN(ts) && ts > Date.now()) return new Date(ts);
+  }
+  const end = Date.now() + 47 * 3600000 + 23 * 60000 + 15000;
+  localStorage.setItem(FLASH_SALE_END_KEY, String(end));
+  return new Date(end);
+}
+
 export function FlashSaleSection() {
   const [products, setProducts] = useState<ProductCardType[]>([]);
-  const saleEnd = new Date(Date.now() + 47 * 3600000 + 23 * 60000 + 15000);
-  const { h, m, s } = useCountdown(saleEnd);
+  const saleEndRef = useRef<Date | null>(null);
+  if (!saleEndRef.current) saleEndRef.current = getOrInitSaleEnd();
+  const { h, m, s } = useCountdown(saleEndRef.current);
 
   useEffect(() => {
     fetch("/api/products?onSale=true&limit=4")

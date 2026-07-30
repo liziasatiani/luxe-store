@@ -114,6 +114,18 @@ export async function importProducts(
     brands.map((b) => [b.name.toLowerCase(), b.id])
   );
 
+  // Batch-check all SKUs and slugs up front to avoid per-row queries
+  const validRows = rows.filter(r => r.name && r.price > 0);
+  const baseSlugs = validRows.map(r => slugify(r.name));
+  const baseSkus = validRows.map((r, i) => r.sku ?? `IMP-${Date.now()}-${i}`);
+
+  const [existingSlugs, existingSkus] = await Promise.all([
+    prisma.product.findMany({ where: { slug: { in: baseSlugs } }, select: { slug: true } }),
+    prisma.product.findMany({ where: { sku: { in: baseSkus } }, select: { sku: true } }),
+  ]);
+  const takenSlugs = new Set(existingSlugs.map(p => p.slug));
+  const takenSkus = new Set(existingSkus.map(p => p.sku));
+
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     try {
@@ -141,19 +153,13 @@ export async function importProducts(
         brandId = nb.id;
       }
 
-      // Generate unique SKU
       const baseSku = row.sku ?? `IMP-${Date.now()}-${i}`;
-      const existingSku = await prisma.product.findUnique({
-        where: { sku: baseSku },
-      });
-      const finalSku = existingSku ? `${baseSku}-${i}` : baseSku;
+      const finalSku = takenSkus.has(baseSku) ? `${baseSku}-${i}` : baseSku;
+      takenSkus.add(finalSku);
 
-      // Generate unique slug
       const baseSlug = slugify(row.name);
-      const existingSlug = await prisma.product.findUnique({
-        where: { slug: baseSlug },
-      });
-      const finalSlug = existingSlug ? `${baseSlug}-${i}` : baseSlug;
+      const finalSlug = takenSlugs.has(baseSlug) ? `${baseSlug}-${i}` : baseSlug;
+      takenSlugs.add(finalSlug);
 
       const stockQty = row.stock ?? 100;
       const stockStatus: StockStatus =

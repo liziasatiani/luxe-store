@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
+import type { ProductCard } from "@/types";
 
 export function useDebounce<T>(value: T, delay = 300): T {
   const [debounced, setDebounced] = useState(value);
@@ -34,7 +35,7 @@ export function useClickOutside<T extends HTMLElement>(callback: () => void) {
 
 export function useSearch() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Record<string, unknown>[]>([]);
+  const [results, setResults] = useState<ProductCard[]>([]);
   const [loading, setLoading] = useState(false);
   const debouncedQuery = useDebounce(query, 350);
 

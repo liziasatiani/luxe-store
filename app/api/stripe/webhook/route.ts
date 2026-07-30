@@ -22,6 +22,12 @@ export async function POST(req: NextRequest) {
         const session = event.data.object;
         const orderId = session.metadata?.orderId;
         if (orderId) {
+          const existing = await prisma.order.findUnique({
+            where: { id: orderId },
+            select: { paymentStatus: true },
+          });
+          if (existing?.paymentStatus === "PAID") break;
+
           await prisma.order.update({
             where: { id: orderId },
             data: {
@@ -33,7 +39,7 @@ export async function POST(req: NextRequest) {
 
           // Send notification
           const order = await prisma.order.findUnique({ where: { id: orderId } });
-          if (order) {
+          if (order?.userId) {
             await prisma.notification.create({
               data: {
                 userId: order.userId,

@@ -7,6 +7,31 @@ import { Spinner, Badge } from "@/components/ui";
 import Link from "next/link";
 import Image from "next/image";
 
+function StatCard({ title, value, change, icon: Icon, prefix = "", color = "text-brand-500" }: {
+  title: string; value: string | number; change?: number; icon: typeof DollarSign; prefix?: string; color?: string;
+}) {
+  return (
+    <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6">
+      <div className="flex items-start justify-between mb-4">
+        <div className={`w-10 h-10 rounded-xl bg-surface-50 dark:bg-surface-800 flex items-center justify-center ${color}`}>
+          <Icon size={20} />
+        </div>
+        {change !== undefined && (
+          <div className={`flex items-center gap-1 text-xs font-medium ${change >= 0 ? "text-green-500" : "text-error"}`}>
+            {change >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+            {Math.abs(change)}%
+          </div>
+        )}
+      </div>
+      <p className="text-2xl font-display font-bold text-surface-900 dark:text-white">
+        {prefix}{typeof value === "number" && prefix === "$" ? formatPrice(value).replace("$", "") : formatNumber(value as number)}
+      </p>
+      <p className="text-sm text-surface-400 mt-1">{title}</p>
+      {change !== undefined && <p className="text-xs text-surface-400 mt-0.5">vs last month</p>}
+    </div>
+  );
+}
+
 interface Analytics {
   summary: {
     totalRevenue: number; totalOrders: number; totalCustomers: number;
@@ -30,27 +55,6 @@ export default function AdminDashboard() {
   if (!data) return <p className="text-error">Failed to load analytics</p>;
 
   const { summary, recentOrders, topProducts, revenueChart } = data;
-
-  const StatCard = ({ title, value, change, icon: Icon, prefix = "", color = "text-brand-500" }: {
-    title: string; value: string | number; change?: number; icon: typeof DollarSign; prefix?: string; color?: string;
-  }) => (
-    <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6">
-      <div className="flex items-start justify-between mb-4">
-        <div className={`w-10 h-10 rounded-xl bg-surface-50 dark:bg-surface-800 flex items-center justify-center ${color}`}>
-          <Icon size={20} />
-        </div>
-        {change !== undefined && (
-          <div className={`flex items-center gap-1 text-xs font-medium ${change >= 0 ? "text-green-500" : "text-error"}`}>
-            {change >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-            {Math.abs(change)}%
-          </div>
-        )}
-      </div>
-      <p className="text-2xl font-display font-bold text-surface-900 dark:text-white">{prefix}{typeof value === "number" && prefix === "$" ? formatPrice(value).replace("$","") : formatNumber(value as number)}</p>
-      <p className="text-sm text-surface-400 mt-1">{title}</p>
-      {change !== undefined && <p className="text-xs text-surface-400 mt-0.5">vs last month</p>}
-    </div>
-  );
 
   return (
     <div className="space-y-8">

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
+import { couponSchema } from "@/lib/validations";
 
 async function requireAdmin() {
   const session = await auth();
@@ -18,19 +19,11 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   const body = await req.json();
-  const coupon = await prisma.coupon.create({
-    data: {
-      code: body.code.toUpperCase(),
-      type: body.type,
-      value: parseFloat(body.value),
-      minOrderAmount: body.minOrderAmount,
-      maxDiscount: body.maxDiscount,
-      usageLimit: body.usageLimit,
-      perUserLimit: body.perUserLimit ?? 1,
-      description: body.description,
-      isActive: true,
-    },
-  });
+  const parsed = couponSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+  }
+  const coupon = await prisma.coupon.create({ data: parsed.data });
   return NextResponse.json({ success: true, data: { coupon: serializeDecimal(coupon) } }, { status: 201 });
 }
 
