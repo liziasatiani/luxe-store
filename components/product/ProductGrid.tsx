@@ -129,7 +129,7 @@ export function ProductGrid({
                 <motion.aside
                   initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
                   transition={{ type: "spring", damping: 30 }}
-                  className="fixed left-0 top-0 bottom-0 z-50 w-80 bg-white dark:bg-surface-900 overflow-y-auto p-6 lg:hidden"
+                  className="fixed left-0 top-0 bottom-0 z-50 w-80 bg-white dark:bg-black overflow-y-auto p-6 lg:hidden"
                 >
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="font-semibold text-lg">Filters</h3>
@@ -155,30 +155,30 @@ export function ProductGrid({
             {showFilters && (
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden flex items-center gap-2 px-4 h-10 rounded-xl border border-surface-200 dark:border-surface-700 text-sm"
+                className="lg:hidden flex items-center gap-2 px-4 h-10 border border-black/15 dark:border-white/15 text-[11px] tracking-[0.08em] uppercase"
               >
                 <SlidersHorizontal size={16} />
                 Filters
               </button>
             )}
-            <p className="text-sm text-surface-500">
+            <p className="text-sm text-black/40 dark:text-white/40">
               {loading ? "Loading…" : `${total.toLocaleString()} products`}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-sm text-surface-500 hidden sm:block">Sort:</span>
+            <span className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 hidden sm:block">Sort:</span>
             <div className="relative">
               <select
                 value={filters.sort ?? "newest"}
                 onChange={(e) => handleFilterChange("sort", e.target.value as SortOption)}
-                className="h-10 pl-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 appearance-none"
+                className="h-10 pl-3 pr-8 border border-black/15 dark:border-white/15 bg-white dark:bg-black text-[11px] tracking-[0.06em] uppercase focus:outline-none appearance-none"
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
                 ))}
               </select>
-              <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-surface-400" />
+              <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-black/40 dark:text-white/40" />
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export function ProductGrid({
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-surface-500">No products found.</p>
+            <p className="text-black/40 dark:text-white/40">No products found.</p>
           </div>
         ) : (
           <>
@@ -226,8 +226,8 @@ function FilterSidebar({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-surface-900 dark:text-white">Filters</h3>
-        <button onClick={onClear} className="text-xs text-brand-500 hover:underline">Clear all</button>
+        <h3 className="text-[11px] tracking-[0.14em] uppercase text-black dark:text-white font-medium">Filters</h3>
+        <button onClick={onClear} className="text-[10px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">Clear all</button>
       </div>
 
       <FilterSection title="Price Range">
@@ -239,7 +239,7 @@ function FilterSidebar({
             className="h-9 text-sm"
             onChange={(e) => onFilterChange("minPrice", e.target.value ? Number(e.target.value) : undefined)}
           />
-          <span className="text-surface-400">—</span>
+          <span className="text-black/30 dark:text-white/30">—</span>
           <Input
             type="number"
             placeholder="Max"
@@ -259,9 +259,9 @@ function FilterSidebar({
                   type="checkbox"
                   checked={filters.brandSlugs?.includes(b.slug) ?? false}
                   onChange={() => onBrandToggle(b.slug)}
-                  className="w-4 h-4 rounded border-surface-300 text-brand-500 focus:ring-brand-500 focus:ring-offset-0"
+                  className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0 focus:ring-offset-0"
                 />
-                <span className="text-sm text-surface-700 dark:text-surface-300">{b.name}</span>
+                <span className="text-sm text-black/70 dark:text-white/70">{b.name}</span>
               </label>
             ))}
           </div>
@@ -274,9 +274,9 @@ function FilterSidebar({
             type="checkbox"
             checked={filters.inStock ?? false}
             onChange={(e) => onFilterChange("inStock", e.target.checked)}
-            className="w-4 h-4 rounded border-surface-300 text-brand-500 focus:ring-brand-500"
+            className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0"
           />
-          <span className="text-sm text-surface-700 dark:text-surface-300">In Stock Only</span>
+          <span className="text-sm text-black/70 dark:text-white/70">In Stock Only</span>
         </label>
       </FilterSection>
 
@@ -286,9 +286,9 @@ function FilterSidebar({
             type="checkbox"
             checked={filters.isOnSale ?? false}
             onChange={(e) => onFilterChange("isOnSale", e.target.checked)}
-            className="w-4 h-4 rounded border-surface-300 text-brand-500 focus:ring-brand-500"
+            className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0"
           />
-          <span className="text-sm text-surface-700 dark:text-surface-300">On Sale</span>
+          <span className="text-sm text-black/70 dark:text-white/70">On Sale</span>
         </label>
       </FilterSection>
     </div>
@@ -298,13 +298,13 @@ function FilterSidebar({
 function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="border-b border-surface-100 dark:border-surface-800 pb-5">
+    <div className="border-b border-black/8 dark:border-white/8 pb-5">
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center justify-between w-full mb-3"
       >
-        <span className="text-sm font-medium text-surface-900 dark:text-white">{title}</span>
-        <ChevronDown size={14} className={cn("text-surface-400 transition-transform", open && "rotate-180")} />
+        <span className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white">{title}</span>
+        <ChevronDown size={12} className={cn("text-black/40 dark:text-white/40 transition-transform", open && "rotate-180")} />
       </button>
       {open && <div>{children}</div>}
     </div>

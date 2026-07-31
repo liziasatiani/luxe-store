@@ -33,7 +33,7 @@ export function LanguageSelector() {
     <div className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 h-10 px-3 rounded-xl text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors text-sm font-medium"
+        className="flex items-center gap-1.5 p-1 text-black dark:text-white hover:opacity-50 transition-opacity text-sm"
       >
         <Globe size={16} />
         <span>{localeFlags[currentLocale]}</span>
@@ -49,22 +49,22 @@ export function LanguageSelector() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 top-full mt-2 w-44 bg-white dark:bg-surface-900 rounded-2xl shadow-xl border border-surface-100 dark:border-surface-800 py-2 z-50"
+              className="absolute right-0 top-full mt-3 w-44 bg-white dark:bg-black border border-black/10 dark:border-white/10 py-1 z-50"
             >
               {locales.map((l) => (
                 <button
                   key={l}
                   onClick={() => switchLocale(l)}
                   className={cn(
-                    "flex items-center gap-3 w-full px-4 py-2.5 text-sm transition-colors",
+                    "flex items-center gap-3 w-full px-4 py-2.5 text-[11px] tracking-[0.06em] uppercase transition-colors",
                     l === currentLocale
-                      ? "text-brand-500 bg-brand-50 dark:bg-brand-900/20"
-                      : "text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800"
+                      ? "text-black dark:text-white"
+                      : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
                   )}
                 >
                   <span className="text-base">{localeFlags[l]}</span>
                   <span>{localeNames[l]}</span>
-                  {l === currentLocale && <span className="ml-auto text-brand-500">✓</span>}
+                  {l === currentLocale && <span className="ml-auto text-black dark:text-white">✓</span>}
                 </button>
               ))}
             </motion.div>
