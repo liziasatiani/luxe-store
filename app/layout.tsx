@@ -11,6 +11,7 @@ import { SearchModal } from "@/components/search/SearchModal";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
+import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -52,6 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <WishlistSync />
               <Toaster position="bottom-right" />
               <CookieConsent />
+              <ExitIntentCapture />
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>

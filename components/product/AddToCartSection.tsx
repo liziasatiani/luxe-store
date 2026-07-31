@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Heart, Share2, ShoppingBag, Zap } from "lucide-react";
 import { useCartStore, useWishlistStore } from "@/store";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import type { ProductCard } from "@/types";
@@ -24,11 +24,24 @@ interface Props {
 export function AddToCartSection({ product }: Props) {
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+  const [stickyVisible, setStickyVisible] = useState(false);
   const { addItem, openCart } = useCartStore();
   const { toggle, has } = useWishlistStore();
   const router = useRouter();
   const isWishlisted = has(product.id);
   const outOfStock = product.stockStatus === "OUT_OF_STOCK";
+  const buttonsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = buttonsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setStickyVisible(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const variantGroups = (product.variants ?? []).reduce<Record<string, Variant[]>>((acc, v) => {
     if (!acc[v.name]) acc[v.name] = [];
@@ -114,7 +127,7 @@ export function AddToCartSection({ product }: Props) {
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div ref={buttonsRef} className="flex gap-3">
         <button
           onClick={handleAddToCart}
           disabled={outOfStock}
@@ -132,6 +145,33 @@ export function AddToCartSection({ product }: Props) {
           Buy Now
         </button>
       </div>
+
+      {/* Sticky mobile add-to-cart bar — visible only when main buttons scroll off screen */}
+      {stickyVisible && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-black border-t border-black/10 dark:border-white/10 px-4 py-3 flex items-center gap-3 safe-area-inset-bottom">
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 truncate">{product.name}</p>
+            <p className="text-sm font-medium text-black dark:text-white">
+              {formatPrice(selectedVariant?.price ?? Number(product.price))}
+            </p>
+          </div>
+          <button
+            onClick={handleAddToCart}
+            disabled={outOfStock}
+            className="h-11 px-5 flex items-center gap-2 border border-black dark:border-white text-black dark:text-white text-[10px] tracking-[0.14em] uppercase font-medium disabled:opacity-40"
+          >
+            <ShoppingBag size={14} />
+            {outOfStock ? "Out of Stock" : "Add to Cart"}
+          </button>
+          <button
+            onClick={handleBuyNow}
+            disabled={outOfStock}
+            className="h-11 px-5 flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[10px] tracking-[0.14em] uppercase font-medium disabled:opacity-40"
+          >
+            Buy Now
+          </button>
+        </div>
+      )}
 
       <div className="flex items-center gap-3 pt-2">
         <button

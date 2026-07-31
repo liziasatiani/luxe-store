@@ -146,37 +146,80 @@ export default function CheckoutPage() {
     if (guestErrors[k]) setGuestErrors(e => ({ ...e, [k]: "" }));
   };
 
-  // Guest checkout is disabled until `Order` gains nullable `userId` and the
-  // guest contact columns; see the note in app/api/orders/route.ts. Sending
-  // users through the guest form would only end in a 503 after data entry.
   if (!session && mode === "choose") {
     return (
       <Container className="py-16 max-w-lg">
-        <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-8 text-center">Checkout</h1>
-        <div className="space-y-4">
-          <button onClick={() => router.push("/login?redirect=/checkout")}
-            className="w-full p-6 rounded-2xl border-2 border-surface-200 dark:border-surface-700 hover:border-brand-500 transition-all text-left group">
+        <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-2 text-center">Checkout</h1>
+        <p className="text-center text-sm text-surface-400 mb-10">How would you like to continue?</p>
+        <div className="space-y-3">
+          {/* Guest first — primary path per Baymard */}
+          <button onClick={() => setMode("guest")}
+            className="w-full p-6 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-left group">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center">
-                <LogIn size={22} className="text-surface-600 dark:text-surface-400" />
+              <div className="w-10 h-10 rounded-full border border-white/20 dark:border-black/20 flex items-center justify-center">
+                <User size={18} />
               </div>
               <div>
-                <p className="font-semibold text-surface-900 dark:text-white group-hover:text-brand-500 transition-colors">Sign In</p>
-                <p className="text-sm text-surface-500">Sign in for faster checkout and order tracking</p>
+                <p className="font-medium text-[13px] tracking-[0.06em] uppercase">Continue as Guest</p>
+                <p className="text-[12px] text-white/60 dark:text-black/60 mt-0.5">No account required · Fast checkout</p>
               </div>
             </div>
           </button>
-          <p className="text-center text-sm text-surface-400">
-            Don't have an account?{" "}
-            <Link href="/register?redirect=/checkout" className="text-brand-500 hover:text-brand-600 font-medium">Create one</Link>
+
+          <div className="flex items-center gap-4 py-1">
+            <div className="flex-1 h-px bg-surface-200 dark:bg-surface-700" />
+            <span className="text-[11px] tracking-[0.1em] uppercase text-surface-400">or</span>
+            <div className="flex-1 h-px bg-surface-200 dark:bg-surface-700" />
+          </div>
+
+          <button onClick={() => router.push("/login?redirect=/checkout")}
+            className="w-full p-6 border border-surface-200 dark:border-surface-700 hover:border-black dark:hover:border-white transition-colors text-left group">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 flex items-center justify-center text-surface-500 dark:text-surface-400">
+                <LogIn size={18} />
+              </div>
+              <div>
+                <p className="text-[13px] tracking-[0.06em] uppercase font-medium text-surface-900 dark:text-white">Sign In</p>
+                <p className="text-[12px] text-surface-400 mt-0.5">Faster checkout · Order tracking · Saved addresses</p>
+              </div>
+            </div>
+          </button>
+
+          <p className="text-center text-xs text-surface-400 pt-2">
+            New here?{" "}
+            <Link href="/register?redirect=/checkout" className="underline hover:text-surface-900 dark:hover:text-white transition-colors">Create an account</Link>
           </p>
         </div>
       </Container>
     );
   }
 
+  const progressStep = placing ? 2 : 1;
+  const steps = ["Details", "Payment", "Confirm"];
+
   return (
     <Container className="py-12 max-w-5xl">
+      {/* Progress indicator */}
+      <div className="flex items-center justify-center gap-0 mb-10">
+        {steps.map((label, i) => {
+          const done = i < progressStep;
+          const active = i === progressStep;
+          return (
+            <div key={label} className="flex items-center">
+              <div className="flex flex-col items-center gap-1.5">
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-medium transition-colors ${done ? "bg-black dark:bg-white text-white dark:text-black" : active ? "border-2 border-black dark:border-white text-black dark:text-white" : "border border-surface-300 dark:border-surface-600 text-surface-400"}`}>
+                  {done ? "✓" : i + 1}
+                </div>
+                <span className={`text-[10px] tracking-[0.1em] uppercase ${active ? "text-black dark:text-white" : "text-surface-400"}`}>{label}</span>
+              </div>
+              {i < steps.length - 1 && (
+                <div className={`w-16 sm:w-24 h-px mx-3 mb-5 ${done ? "bg-black dark:bg-white" : "bg-surface-200 dark:bg-surface-700"}`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
       <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-10">Checkout</h1>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
         <div className="lg:col-span-3 space-y-8">
