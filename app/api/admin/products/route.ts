@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/validations";
-import { slugify, serializeDecimal } from "@/lib/utils";
+import { slugify, serializeDecimal, parseIntParam } from "@/lib/utils";
 
 async function requireAdmin() {
   const session = await auth();
@@ -15,8 +15,8 @@ export async function GET(req: NextRequest) {
   try {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1");
-    const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "20");
+    const page = parseIntParam(req.nextUrl.searchParams.get("page"), 1, { min: 1 });
+    const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 20, { min: 1, max: 100 });
     const search = req.nextUrl.searchParams.get("search") ?? "";
     const category = req.nextUrl.searchParams.get("category") ?? "";
 

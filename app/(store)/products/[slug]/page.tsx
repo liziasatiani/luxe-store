@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
-import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";

@@ -111,17 +111,21 @@ export function Navbar() {
 
               {mounted && <LanguageSelector />}
 
-              <button onClick={openSearch} className="p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+              <button onClick={openSearch} aria-label="Open search" className="p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
                 <Search size={18} />
               </button>
 
               {mounted && (
-                <button onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} className="p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+                <button
+                  onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+                  aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                  className="p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity"
+                >
                   {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
               )}
 
-              <Link href="/wishlist" className="relative p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+              <Link href="/wishlist" aria-label="Wishlist" className="relative p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
                 <Heart size={18} />
                 {mounted && wishlistIds.length > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-black dark:bg-white text-white dark:text-black text-[9px] flex items-center justify-center font-bold">
@@ -130,7 +134,7 @@ export function Navbar() {
                 )}
               </Link>
 
-              <Link href="/cart" className="relative p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+              <Link href="/cart" aria-label="Shopping bag" className="relative p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
                 <ShoppingBag size={18} />
                 {mounted && count > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-black dark:bg-white text-white dark:text-black text-[9px] flex items-center justify-center font-bold">
@@ -147,8 +151,12 @@ export function Navbar() {
                 </Link>
               ))}
 
-              <button onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
-                className="lg:hidden p-1 text-black dark:text-white">
+              <button
+                onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileMenuOpen}
+                className="lg:hidden p-2.5 text-black dark:text-white"
+              >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
@@ -216,7 +224,7 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
 
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen(o => !o)} className="p-1 text-black dark:text-white hover:opacity-50 transition-opacity">
+      <button onClick={() => setOpen(o => !o)} aria-label="Open account menu" aria-expanded={open} className="p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
         {user.image ? (
           <Image src={user.image} alt={user.name ?? ""} width={24} height={24} className="rounded-full object-cover" />
         ) : (
