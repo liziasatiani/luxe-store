@@ -9,7 +9,7 @@ import { resolveCoupon } from "@/lib/pricing";
  * validation runs again in `/api/orders` via the same `resolveCoupon` helper.
  */
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`coupons:${getIP(req)}`, 20, 60 * 1000);
+  const rl = await rateLimit(`coupons:${getIP(req)}`, 20, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {

@@ -50,7 +50,7 @@ export const authConfig: NextAuthConfig = {
 
         const emailKey = normalizeEmail(credentials.email);
 
-        const rl = rateLimit(`login:${emailKey}`, LOGIN_ATTEMPTS, LOGIN_WINDOW_MS);
+        const rl = await rateLimit(`login:${emailKey}`, LOGIN_ATTEMPTS, LOGIN_WINDOW_MS);
         if (!rl.allowed) return null;
 
         const user = await prisma.user.findUnique({
@@ -79,10 +79,34 @@ export const authConfig: NextAuthConfig = {
       if (user) {
         token.id = user.id;
         token.role = (user as { role?: string }).role;
+        token.isActive = true;
+        token.checkedAt = Date.now();
       }
+
+      // Re-verify the account is still active at most every 5 minutes.
+      // JWT sessions are stateless, so a deactivated user would otherwise remain
+      // valid until the token expires. The check is throttled to avoid a DB
+      // round-trip on every single request.
+      const RECHECK_MS = 5 * 60 * 1000;
+      const checkedAt = token.checkedAt as number | undefined;
+      if (token.id && (!checkedAt || Date.now() - checkedAt > RECHECK_MS)) {
+        const fresh = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { isActive: true, role: true },
+        });
+        token.isActive = fresh?.isActive ?? false;
+        token.role = fresh?.role ?? token.role;
+        token.checkedAt = Date.now();
+      }
+
       return token;
     },
     async session({ session, token }) {
+      // Deactivated users get a session with no user object, which causes
+      // client-side auth hooks to treat them as signed out.
+      if (!token.isActive) {
+        return { ...session, user: null as unknown as typeof session.user };
+      }
       if (session.user) {
         session.user.id = token.id as string;
         (session.user as { role?: string }).role = token.role as string;
