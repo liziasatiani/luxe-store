@@ -7,7 +7,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ClientModals } from "@/components/layout/ClientModals";
+import { SearchModal } from "@/components/search/SearchModal";
+import { CartDrawer } from "@/components/cart/CartDrawer";
+import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
@@ -57,7 +59,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <main id="main-content" className="min-h-screen pb-14 md:pb-0">{children}</main>
               <Footer />
               <BottomTabBar />
-              <ClientModals />
+              <SearchModal />
+              <CartDrawer />
+              <ExitIntentCapture />
               <WishlistSync />
               <Toaster position="bottom-right" />
               <CookieConsent />
