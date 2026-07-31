@@ -94,6 +94,12 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               {product.isBestSeller && (
                 <span className="bg-white text-black text-[9px] tracking-[0.14em] uppercase px-2 py-0.5">{t("bestSeller")}</span>
               )}
+              {product.isBestSeller && (
+                <span className="bg-black/70 text-white text-[9px] tracking-[0.1em] uppercase px-2 py-0.5 flex items-center gap-1">
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  Authentic
+                </span>
+              )}
             </div>
 
             {/* Action icons */}

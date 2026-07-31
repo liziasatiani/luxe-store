@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
+import { TrustBar } from "@/components/ui/TrustBar";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
@@ -33,6 +34,7 @@ export default async function TechPage() {
         </div>
         <ProductGrid filters={{ categorySlug: "tech" }} />
       </Container>
+      <TrustBar />
     </>
   );
 }

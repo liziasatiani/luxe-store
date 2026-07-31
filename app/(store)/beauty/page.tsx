@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container, SectionHeader } from "@/components/ui";
+import { TrustBar } from "@/components/ui/TrustBar";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
@@ -36,6 +37,7 @@ export default async function BeautyPage() {
 
         <ProductGrid filters={{ categorySlug: "beauty" }} />
       </Container>
+      <TrustBar />
     </>
   );
 }
