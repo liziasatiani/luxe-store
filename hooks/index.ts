@@ -45,9 +45,14 @@ export function useSearch() {
     setLoading(true);
     fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}&limit=8`, { signal: ctrl.signal })
       .then((r) => r.json())
-      .then((d) => setResults(d.data?.products ?? []))
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .then((d) => {
+        setResults(d.data?.products ?? []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        // An aborted request has been superseded; the newer one owns the state.
+        if (err?.name !== "AbortError") setLoading(false);
+      });
     return () => ctrl.abort();
   }, [debouncedQuery]);
 
@@ -73,21 +78,4 @@ export function useCountdown(target: Date) {
   }, [targetTime]);
 
   return { h, m, s };
-}
-
-export function useCartSync() {
-  const [syncing, setSyncing] = useState(false);
-  const syncToServer = useCallback(async (items: unknown[]) => {
-    setSyncing(true);
-    try {
-      await fetch("/api/cart/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items }),
-      });
-    } finally {
-      setSyncing(false);
-    }
-  }, []);
-  return { syncing, syncToServer };
 }

@@ -1,15 +1,33 @@
 import { z } from "zod";
 
+// ─── Primitives ──────────────────────────────────────────────
+/** Emails are stored and compared in canonical lowercase form. */
+const email = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email("Invalid email address");
+
+/**
+ * bcrypt silently truncates input past 72 bytes, so anything longer is both
+ * misleading and a cheap way to burn CPU. Cap it explicitly.
+ */
+const password = z
+  .string()
+  .min(8, "Password must be at least 8 characters")
+  .max(72, "Password must be at most 72 characters")
+  .regex(/[A-Z]/, "Must contain an uppercase letter")
+  .regex(/[0-9]/, "Must contain a number");
+
+/** Prisma cuid — used wherever an id arrives from an untrusted client. */
+const id = z.string().min(1).max(64);
+
 // ─── Auth ────────────────────────────────────────────────────
 export const registerSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Invalid email address"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Must contain an uppercase letter")
-      .regex(/[0-9]/, "Must contain a number"),
+    name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+    email,
+    password,
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
@@ -18,21 +36,15 @@ export const registerSchema = z
   });
 
 export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email,
   password: z.string().min(1, "Password is required"),
 });
 
-export const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
+export const forgotPasswordSchema = z.object({ email });
 
 export const resetPasswordSchema = z
   .object({
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Must contain an uppercase letter")
-      .regex(/[0-9]/, "Must contain a number"),
+    password,
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
@@ -97,9 +109,14 @@ export const productSchema = z.object({
 
 // ─── Review ──────────────────────────────────────────────────
 export const reviewSchema = z.object({
-  rating: z.number().int().min(1).max(5),
-  title: z.string().optional(),
-  body: z.string().min(10, "Review must be at least 10 characters"),
+  productId: id,
+  rating: z.coerce.number().int().min(1).max(5),
+  title: z.string().trim().max(200).optional(),
+  body: z
+    .string()
+    .trim()
+    .min(10, "Review must be at least 10 characters")
+    .max(5000, "Review is too long"),
 });
 
 // ─── Coupon (Admin) ───────────────────────────────────────────
@@ -119,23 +136,82 @@ export const couponSchema = z.object({
 
 // ─── Contact ──────────────────────────────────────────────────
 export const contactSchema = z.object({
-  name: z.string().min(2, "Name is required"),
-  email: z.string().email("Invalid email"),
-  subject: z.string().min(1, "Subject is required"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  name: z.string().trim().min(2, "Name is required").max(100),
+  email,
+  subject: z.string().trim().min(1, "Subject is required").max(200),
+  message: z
+    .string()
+    .trim()
+    .min(10, "Message must be at least 10 characters")
+    .max(5000, "Message is too long"),
 });
 
 // ─── Newsletter ──────────────────────────────────────────────
-export const newsletterSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
+export const newsletterSchema = z.object({ email });
 
 // ─── Profile ─────────────────────────────────────────────────
 export const profileSchema = z.object({
-  name: z.string().min(2),
-  phone: z.string().optional(),
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  phone: z.string().trim().max(32).optional().nullable(),
   image: z.string().url().optional().nullable(),
 });
+
+// ─── Cart & Orders ───────────────────────────────────────────
+/**
+ * A line item as supplied by the client. Only `productId` and `quantity` are
+ * trusted — price is always re-derived from the database server-side, and the
+ * quantity bounds stop negative values from inverting the order total or
+ * incrementing stock via `decrement`.
+ */
+export const cartLineSchema = z.object({
+  productId: id,
+  variantId: id.nullish(),
+  quantity: z.coerce.number().int().min(1, "Quantity must be at least 1").max(99),
+});
+
+export const cartLinesSchema = z
+  .array(cartLineSchema)
+  .min(1, "Cart is empty")
+  .max(100, "Too many items in cart");
+
+export const shippingSnapshotSchema = z.object({
+  shippingName: z.string().trim().min(1).max(200),
+  shippingLine1: z.string().trim().min(1).max(200),
+  shippingLine2: z.string().trim().max(200).nullish(),
+  shippingCity: z.string().trim().min(1).max(100),
+  shippingState: z.string().trim().min(1).max(100),
+  shippingPostal: z.string().trim().min(1).max(32),
+  shippingCountry: z.string().trim().min(1).max(64).default("US"),
+  shippingPhone: z.string().trim().max(32).nullish(),
+});
+
+export const guestInfoSchema = z.object({
+  firstName: z.string().trim().min(1, "First name is required").max(100),
+  lastName: z.string().trim().min(1, "Last name is required").max(100),
+  email,
+  phone: z.string().trim().max(32).nullish(),
+});
+
+const orderBaseSchema = z.object({
+  paymentMethod: z
+    .enum(["STRIPE", "CASH_ON_DELIVERY", "BANK_TRANSFER"])
+    .default("CASH_ON_DELIVERY"),
+  couponCode: z.string().trim().max(64).nullish(),
+  notes: z.string().trim().max(2000).nullish(),
+  cartItems: cartLinesSchema,
+});
+
+export const createOrderSchema = z.discriminatedUnion("guest", [
+  orderBaseSchema.extend({
+    guest: z.literal(true),
+    guestInfo: guestInfoSchema,
+    shippingSnapshot: shippingSnapshotSchema,
+  }),
+  orderBaseSchema.extend({
+    guest: z.literal(false).default(false),
+    addressId: id,
+  }),
+]);
 
 // ─── Types ───────────────────────────────────────────────────
 export type RegisterInput = z.infer<typeof registerSchema>;
@@ -147,3 +223,5 @@ export type ReviewInput = z.infer<typeof reviewSchema>;
 export type CouponInput = z.infer<typeof couponSchema>;
 export type ContactInput = z.infer<typeof contactSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
+export type CartLineInput = z.infer<typeof cartLineSchema>;
+export type CreateOrderInput = z.infer<typeof createOrderSchema>;

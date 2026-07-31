@@ -30,11 +30,11 @@ export async function GET(
       return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
     }
 
-    // Increment view count
-    await prisma.product.update({
-      where: { id: product.id },
-      data: { viewCount: { increment: 1 } },
-    });
+    // Analytics write must not sit on the response critical path, and its
+    // failure must never turn a successful product fetch into a 500.
+    void prisma.product
+      .update({ where: { id: product.id }, data: { viewCount: { increment: 1 } } })
+      .catch((err) => console.error("[product/GET] viewCount", err));
 
     // Related products
     const related = await prisma.product.findMany({

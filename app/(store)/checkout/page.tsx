@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -33,8 +33,12 @@ export default function CheckoutPage() {
   });
   const [guestErrors, setGuestErrors] = useState<Record<string, string>>({});
 
+  // Set once the order is placed, so clearing the cart does not trip the
+  // "empty cart" redirect below and bounce the user away from the success page.
+  const placedRef = useRef(false);
+
   useEffect(() => {
-    if (items.length === 0) {
+    if (items.length === 0 && !placedRef.current) {
       router.push("/cart");
     }
   }, [items.length, router]);
@@ -50,7 +54,7 @@ export default function CheckoutPage() {
     }
   }, [session]);
 
-  if (items.length === 0) return null;
+  if (items.length === 0 && !placedRef.current) return null;
 
   const validateGuest = () => {
     const errors: Record<string, string> = {};
@@ -77,10 +81,24 @@ export default function CheckoutPage() {
     }
     setPlacing(true);
     try {
+      // The cart lives in localStorage, so every order — guest or signed-in —
+      // must carry its line items. Only ids and quantities are sent; the server
+      // re-derives all prices.
+      const cartItems = items.map(i => ({
+        productId: i.productId,
+        variantId: i.variantId ?? null,
+        quantity: i.quantity,
+      }));
+
       const body = mode === "guest"
         ? {
-            guest: true,
-            guestInfo: guest,
+            guest: true as const,
+            guestInfo: {
+              firstName: guest.firstName,
+              lastName: guest.lastName,
+              email: guest.email,
+              phone: guest.phone,
+            },
             paymentMethod,
             couponCode: coupon?.code,
             notes,
@@ -94,15 +112,16 @@ export default function CheckoutPage() {
               shippingCountry: guest.country,
               shippingPhone: guest.phone,
             },
-            cartItems: items.map(i => ({
-              productId: i.productId,
-              quantity: i.quantity,
-              unitPrice: Number(i.variant?.price ?? i.product.price),
-              productName: i.product.name,
-              productImage: i.product.images[0]?.url ?? null,
-            })),
+            cartItems,
           }
-        : { addressId: selectedAddress, paymentMethod, couponCode: coupon?.code, notes };
+        : {
+            guest: false as const,
+            addressId: selectedAddress,
+            paymentMethod,
+            couponCode: coupon?.code,
+            notes,
+            cartItems,
+          };
 
       const res = await fetch("/api/orders", {
         method: "POST",
@@ -110,7 +129,8 @@ export default function CheckoutPage() {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error ?? "Failed to place order");
+      placedRef.current = true;
       clearCart();
       const guestEmail = mode === "guest" ? guest.email : undefined;
       router.push(`/checkout/success?orderId=${data.data.order.id}${guestEmail ? `&email=${encodeURIComponent(guestEmail)}` : ""}`);
@@ -126,25 +146,14 @@ export default function CheckoutPage() {
     if (guestErrors[k]) setGuestErrors(e => ({ ...e, [k]: "" }));
   };
 
-  // Choose mode for non-logged-in users
+  // Guest checkout is disabled until `Order` gains nullable `userId` and the
+  // guest contact columns; see the note in app/api/orders/route.ts. Sending
+  // users through the guest form would only end in a 503 after data entry.
   if (!session && mode === "choose") {
     return (
       <Container className="py-16 max-w-lg">
         <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-8 text-center">Checkout</h1>
         <div className="space-y-4">
-          <button onClick={() => setMode("guest")}
-            className="w-full p-6 rounded-2xl border-2 border-surface-200 dark:border-surface-700 hover:border-brand-500 transition-all text-left group">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center">
-                <User size={22} className="text-brand-500" />
-              </div>
-              <div>
-                <p className="font-semibold text-surface-900 dark:text-white group-hover:text-brand-500 transition-colors">Continue as Guest</p>
-                <p className="text-sm text-surface-500">No account needed — just fill in your details</p>
-              </div>
-            </div>
-          </button>
-          <div className="relative"><Divider label="or" /></div>
           <button onClick={() => router.push("/login?redirect=/checkout")}
             className="w-full p-6 rounded-2xl border-2 border-surface-200 dark:border-surface-700 hover:border-brand-500 transition-all text-left group">
             <div className="flex items-center gap-4">

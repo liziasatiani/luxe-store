@@ -27,6 +27,7 @@ export async function GET() {
 
     return NextResponse.json({ success: true, data: { items: serializeDecimal(items) } });
   } catch (err) {
+    console.error("[wishlist/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch wishlist" }, { status: 500 });
   }
 }
@@ -36,7 +37,19 @@ export async function POST(req: NextRequest) {
     const session = await auth();
     if (!session?.user?.id) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const { productId } = await req.json();
+    const body = await req.json().catch(() => null);
+    const productId = typeof body?.productId === "string" ? body.productId : "";
+    if (!productId) {
+      return NextResponse.json({ success: false, error: "productId required" }, { status: 400 });
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+      select: { id: true },
+    });
+    if (!product) {
+      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+    }
 
     const existing = await prisma.wishlistItem.findUnique({
       where: { userId_productId: { userId: session.user.id, productId } },
@@ -50,6 +63,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, data: { action: "added" } });
     }
   } catch (err) {
+    console.error("[wishlist/POST]", err);
     return NextResponse.json({ success: false, error: "Failed to update wishlist" }, { status: 500 });
   }
 }

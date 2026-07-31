@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal } from "@/lib/utils";
+import { serializeDecimal, parseIntParam } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
   try {
-    const q = req.nextUrl.searchParams.get("q") ?? "";
-    const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "10");
+    const q = (req.nextUrl.searchParams.get("q") ?? "").slice(0, 100);
+    const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 10, { min: 1, max: 25 });
 
     if (!q.trim()) {
       return NextResponse.json({ success: true, data: { products: [], categories: [], brands: [], total: 0 } });

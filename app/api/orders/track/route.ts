@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal, isValidEmail } from "@/lib/utils";
+import { serializeDecimal, isValidEmail, normalizeEmail } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,17 +14,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Invalid email address" }, { status: 400 });
     }
 
-    const emailClean = email.trim().toLowerCase();
+    const emailClean = normalizeEmail(email);
     const orderNumberClean = orderNumber.trim().toUpperCase();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const order = await (prisma.order as any).findFirst({
+    // Orders are always attached to a user: `Order` has no guest columns, so the
+    // previous `guestEmail` branch referenced a column that does not exist and
+    // made every lookup throw. The `as any` cast is what hid it from the compiler.
+    const order = await prisma.order.findFirst({
       where: {
         orderNumber: orderNumberClean,
-        OR: [
-          { user: { email: { equals: emailClean, mode: "insensitive" } } },
-          { guestEmail: { equals: emailClean, mode: "insensitive" } },
-        ],
+        user: { email: { equals: emailClean, mode: "insensitive" } },
       },
       include: {
         items: { select: { productName: true, quantity: true, totalPrice: true } },

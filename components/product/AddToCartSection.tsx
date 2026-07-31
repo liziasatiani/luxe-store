@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { Heart, Share2, ShoppingBag, Zap } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { useCartStore, useWishlistStore } from "@/store";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";

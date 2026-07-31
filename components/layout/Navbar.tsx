@@ -4,17 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Heart, Search, Sun, Moon, Menu, X, User, ChevronDown, Package, LogOut, LayoutDashboard } from "lucide-react";
+import { ShoppingBag, Heart, Search, Sun, Moon, Menu, X, User, Package, LogOut, LayoutDashboard } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { useScrolled, useClickOutside } from "@/hooks";
+import { useClickOutside } from "@/hooks";
 import { useCartStore, useUIStore, useWishlistStore } from "@/store";
 import { Container } from "@/components/ui";
-import { cn } from "@/lib/utils";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
 
 export function Navbar() {
-  const scrolled = useScrolled(60);
   const { data: session } = useSession();
   const { resolvedTheme, setTheme } = useTheme();
   const { openSearch, openMobileMenu, mobileMenuOpen, closeMobileMenu } = useUIStore();

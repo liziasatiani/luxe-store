@@ -1,20 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal } from "@/lib/utils";
+import { serializeDecimal, parseIntParam } from "@/lib/utils";
 import type { Prisma } from "@prisma/client";
+
+/** Returns undefined for absent or non-numeric values so they drop out of `where`. */
+function parseFloatParam(raw: string | null): number | undefined {
+  if (raw === null || raw.trim() === "") return undefined;
+  const n = Number.parseFloat(raw);
+  return Number.isFinite(n) ? n : undefined;
+}
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = req.nextUrl;
-    const page     = Math.max(1, parseInt(searchParams.get("page")  ?? "1"));
-    const limit    = Math.min(48, parseInt(searchParams.get("limit") ?? "24"));
+    // parseIntParam clamps and rejects NaN; `parseInt("abc")` previously flowed
+    // into `skip`/`take` and crashed the query with a 500.
+    const page     = parseIntParam(searchParams.get("page"), 1, { min: 1 });
+    const limit    = parseIntParam(searchParams.get("limit"), 24, { min: 1, max: 48 });
     const skip     = (page - 1) * limit;
 
     const search    = searchParams.get("search") ?? searchParams.get("q") ?? "";
     const category  = searchParams.get("category") ?? "";
     const brands    = searchParams.get("brands")?.split(",").filter(Boolean) ?? [];
-    const minPrice  = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
-    const maxPrice  = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
+    const minPrice  = parseFloatParam(searchParams.get("minPrice"));
+    const maxPrice  = parseFloatParam(searchParams.get("maxPrice"));
     const inStock   = searchParams.get("inStock") === "true";
     const onSale    = searchParams.get("onSale") === "true";
     const featured  = searchParams.get("featured") === "true";
@@ -22,9 +31,12 @@ export async function GET(req: NextRequest) {
     const newArrival= searchParams.get("newArrival") === "true";
     const sort      = searchParams.get("sort") ?? "newest";
 
-    const where: Prisma.ProductWhereInput = {
-      isActive: true,
-      ...(search && {
+    // Search and category each need their own OR group. Spreading two `OR` keys
+    // into one object silently dropped the search terms whenever a category was
+    // also selected, so filtering inside a category returned the whole category.
+    const and: Prisma.ProductWhereInput[] = [];
+    if (search) {
+      and.push({
         OR: [
           { name: { contains: search, mode: "insensitive" } },
           { description: { contains: search, mode: "insensitive" } },
@@ -32,13 +44,20 @@ export async function GET(req: NextRequest) {
           { brand: { name: { contains: search, mode: "insensitive" } } },
           { category: { name: { contains: search, mode: "insensitive" } } },
         ],
-      }),
-      ...(category && {
+      });
+    }
+    if (category) {
+      and.push({
         OR: [
           { category: { slug: category } },
           { category: { parent: { slug: category } } },
         ],
-      }),
+      });
+    }
+
+    const where: Prisma.ProductWhereInput = {
+      isActive: true,
+      ...(and.length && { AND: and }),
       ...(brands.length && { brand: { slug: { in: brands } } }),
       ...(minPrice !== undefined && { price: { gte: minPrice } }),
       ...(maxPrice !== undefined && { price: { lte: maxPrice } }),
