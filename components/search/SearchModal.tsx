@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, TrendingUp } from "lucide-react";
+import FocusTrap from "focus-trap-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUIStore } from "@/store";
@@ -46,11 +47,15 @@ export function SearchModal() {
           />
 
           {/* Modal */}
+          <FocusTrap active={searchOpen} focusTrapOptions={{ escapeDeactivates: false, allowOutsideClick: true, initialFocus: () => inputRef.current ?? false }}>
           <motion.div
             initial={{ opacity: 0, scale: 0.97, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: -10 }}
             transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search"
             className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[640px] z-50"
           >
             <div className="bg-white dark:bg-surface-900 rounded-2xl shadow-luxury-xl overflow-hidden">
@@ -123,6 +128,7 @@ export function SearchModal() {
               </div>
             </div>
           </motion.div>
+          </FocusTrap>
         </>
       )}
     </AnimatePresence>

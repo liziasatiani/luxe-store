@@ -67,8 +67,17 @@ export function Navbar() {
               {NAV_LINKS.slice(0, 3).map((link) => (
                 <div key={link.href} className="relative"
                   onMouseEnter={() => link.children?.length ? setMegaMenu(link.href) : undefined}
-                  onMouseLeave={() => setMegaMenu(null)}>
-                  <Link href={link.href} className="text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity">
+                  onMouseLeave={() => setMegaMenu(null)}
+                  onFocus={() => link.children?.length ? setMegaMenu(link.href) : undefined}
+                  onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setMegaMenu(null); }}
+                >
+                  <Link
+                    href={link.href}
+                    aria-haspopup={link.children?.length ? "true" : undefined}
+                    aria-expanded={link.children?.length ? megaMenu === link.href : undefined}
+                    onKeyDown={(e) => { if (e.key === "Escape") setMegaMenu(null); }}
+                    className="text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity"
+                  >
                     {link.label}
                   </Link>
                   <AnimatePresence>
@@ -76,10 +85,13 @@ export function Navbar() {
                       <motion.div
                         initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
                         transition={{ duration: 0.15 }}
+                        role="menu"
                         className="absolute top-full left-0 mt-3 w-44 bg-white dark:bg-black border border-black/10 dark:border-white/10 py-2 z-50"
                       >
                         {link.children.map((child) => (
                           <Link key={child.href} href={child.href}
+                            role="menuitem"
+                            onKeyDown={(e) => { if (e.key === "Escape") setMegaMenu(null); }}
                             className="block px-4 py-2 text-[11px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
                             onClick={() => setMegaMenu(null)}>
                             {child.label}

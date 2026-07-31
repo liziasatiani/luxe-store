@@ -83,16 +83,24 @@ export function AddToCartSection({ product }: Props) {
 
   return (
     <div className="space-y-5">
-      {Object.entries(variantGroups).map(([groupName, variants]) => (
+      {Object.entries(variantGroups).map(([groupName, variants]) => {
+        const groupId = `variant-group-${groupName.toLowerCase().replace(/\s+/g, "-")}`;
+        return (
         <div key={groupName}>
-          <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">
+          <p id={groupId} className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">
             {groupName}: <span className="text-black dark:text-white">{selectedVariant?.name === groupName ? selectedVariant.value : "Select"}</span>
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div role="radiogroup" aria-labelledby={groupId} className="flex flex-wrap gap-2">
             {variants.map((v) => (
               <button
                 key={v.id}
-                onClick={() => setSelectedVariant(v)}
+                role="radio"
+                aria-checked={selectedVariant?.id === v.id}
+                aria-disabled={v.stock === 0}
+                onClick={() => { if (v.stock !== 0) setSelectedVariant(v); }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (v.stock !== 0) setSelectedVariant(v); }
+                }}
                 disabled={v.stock === 0}
                 className={cn(
                   "px-4 py-2 text-sm border transition-colors",
@@ -107,7 +115,8 @@ export function AddToCartSection({ product }: Props) {
             ))}
           </div>
         </div>
-      ))}
+        );
+      })}
 
       <div>
         <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">Quantity</p>
