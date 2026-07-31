@@ -394,7 +394,7 @@ export default function CheckoutPage() {
                   <input type="radio" readOnly checked={paymentMethod === "STRIPE"} className="shrink-0" />
                   <CreditCard size={16} className="text-black/60 dark:text-white/60 shrink-0" />
                   <div className="flex-1">
-                    <span className="text-sm text-black dark:text-white font-medium">Card · Apple Pay · Google Pay</span>
+                    <span className="text-sm text-black dark:text-white font-medium">{t("cardPayment")}</span>
                   </div>
                   <div className="flex items-center gap-1.5 ml-auto">
                     {["VISA", "MC", "AMEX"].map(p => (
@@ -419,12 +419,12 @@ export default function CheckoutPage() {
                   <Banknote size={16} className="text-black/60 dark:text-white/60 shrink-0" />
                   <span className="text-sm text-black dark:text-white font-medium">{t("cashOnDelivery")}</span>
                   <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">
-                    {codAvailable ? "Pay when received" : `Only available under ₾${COD_MAX_GEL}`}
+                    {codAvailable ? t("payWhenReceived") : t("codUnavailable", { max: COD_MAX_GEL })}
                   </span>
                 </button>
                 {!codAvailable && (
                   <p className="text-[11px] text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                    <span>⚠</span> Cash on delivery is only available for orders under ₾{COD_MAX_GEL}. Please pay by card.
+                    <span>⚠</span> {t("codUnavailableMsg", { max: COD_MAX_GEL })}
                   </p>
                 )}
               </div>

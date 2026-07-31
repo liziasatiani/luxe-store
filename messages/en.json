@@ -189,7 +189,11 @@
       "fieldRequired": "Required",
       "invalidEmail": "Invalid email",
       "failedOrder": "Failed to place order"
-    }
+    },
+    "cardPayment": "Card · Apple Pay · Google Pay",
+    "payWhenReceived": "Pay when received",
+    "codUnavailable": "Only available under ₾{max}",
+    "codUnavailableMsg": "Cash on delivery is only available for orders under ₾{max}. Please pay by card."
   },
   "orderSuccess": {
     "title": "Order Confirmed!",
@@ -216,7 +220,16 @@
       "saveChanges": "Save Changes",
       "updated": "Profile updated!",
       "error": "Couldn't save changes",
-      "connectionError": "Couldn't save changes — check your connection"
+      "connectionError": "Couldn't save changes — check your connection",
+      "dangerZone": "Danger zone",
+      "dangerZoneDesc": "Once you delete your account, all your data will be permanently removed.",
+      "deleteAccount": "Delete my account",
+      "deleteConfirmTitle": "This action is permanent and cannot be undone. Type DELETE to confirm.",
+      "deleteConfirmPlaceholder": "Type DELETE to confirm",
+      "deleteConfirmBtn": "Delete account",
+      "deleteSuccess": "Account deleted.",
+      "deleteError": "Failed to delete account. Please try again.",
+      "cancel": "Cancel"
     },
     "orders": "Orders",
     "addresses": {

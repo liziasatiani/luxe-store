@@ -53,9 +53,9 @@ export default function AccountPage() {
       if (!res.ok) throw new Error();
       await signOut({ redirect: false });
       router.push("/");
-      toast.success("Account deleted.");
+      toast.success(t("deleteSuccess"));
     } catch {
-      toast.error("Failed to delete account. Please try again.");
+      toast.error(t("deleteError"));
       setDeleting(false);
     }
   };
@@ -75,26 +75,24 @@ export default function AccountPage() {
 
       {/* Danger zone */}
       <div className="max-w-lg">
-        <h2 className="text-sm font-medium text-surface-900 dark:text-white mb-1">Danger zone</h2>
-        <p className="text-xs text-surface-500 mb-4">Once you delete your account, all your data will be permanently removed.</p>
+        <h2 className="text-sm font-medium text-surface-900 dark:text-white mb-1">{t("dangerZone")}</h2>
+        <p className="text-xs text-surface-500 mb-4">{t("dangerZoneDesc")}</p>
         {!showDeleteConfirm ? (
           <button
             onClick={() => setShowDeleteConfirm(true)}
             className="flex items-center gap-2 text-sm text-red-500 hover:text-red-600 transition-colors"
           >
-            <Trash2 size={14} /> Delete my account
+            <Trash2 size={14} /> {t("deleteAccount")}
           </button>
         ) : (
           <div className="border border-red-200 dark:border-red-900/50 rounded-xl p-5 space-y-4 bg-red-50/50 dark:bg-red-950/20">
-            <p className="text-sm text-red-700 dark:text-red-400">
-              This action is <strong>permanent</strong> and cannot be undone. Type <strong>DELETE</strong> to confirm.
-            </p>
+            <p className="text-sm text-red-700 dark:text-red-400">{t("deleteConfirmTitle")}</p>
             <Input
               id="delete-confirm"
               label=""
               value={deleteConfirmText}
               onChange={e => setDeleteConfirmText(e.target.value)}
-              placeholder="Type DELETE to confirm"
+              placeholder={t("deleteConfirmPlaceholder")}
             />
             <div className="flex gap-3">
               <Button
@@ -104,10 +102,10 @@ export default function AccountPage() {
                 className="!bg-red-600 hover:!bg-red-700 !text-white disabled:opacity-40"
                 leftIcon={<Trash2 size={14} />}
               >
-                Delete account
+                {t("deleteConfirmBtn")}
               </Button>
               <Button variant="outline" onClick={() => { setShowDeleteConfirm(false); setDeleteConfirmText(""); }}>
-                Cancel
+                {t("cancel")}
               </Button>
             </div>
           </div>
