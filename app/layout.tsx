@@ -7,11 +7,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { SearchModal } from "@/components/search/SearchModal";
-import { CartDrawer } from "@/components/cart/CartDrawer";
+import { ClientModals } from "@/components/layout/ClientModals";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
-import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
 import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { PWAInit } from "@/components/PWAInit";
 import { buildMetadata } from "@/lib/seo";
@@ -36,12 +34,18 @@ export const metadata: Metadata = {
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Everything Street" },
 };
 
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
+      </head>
       <body className="bg-white dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
@@ -53,12 +57,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <main id="main-content" className="min-h-screen pb-14 md:pb-0">{children}</main>
               <Footer />
               <BottomTabBar />
-              <SearchModal />
-              <CartDrawer />
+              <ClientModals />
               <WishlistSync />
               <Toaster position="bottom-right" />
               <CookieConsent />
-              <ExitIntentCapture />
               <PWAInit />
             </ThemeProvider>
           </SessionProvider>
