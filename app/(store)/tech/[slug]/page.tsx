@@ -34,11 +34,11 @@ export default async function TechSubcategoryPage({ params }: Props) {
 
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-10">
+      <div className="border-b border-black/8 dark:border-white/8 py-12">
         <Container>
           <Breadcrumbs items={breadcrumbs} />
-          <h1 className="font-display text-4xl md:text-5xl text-surface-900 dark:text-white mt-4">{category.name}</h1>
-          <p className="text-surface-500 mt-2">{category._count.products} products</p>
+          <h1 className="font-display text-4xl md:text-5xl text-black dark:text-white font-light mt-4">{category.name}</h1>
+          <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-2">{category._count.products} products</p>
         </Container>
       </div>
       <Container className="py-10">
