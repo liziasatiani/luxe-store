@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 import { HeroSection } from "@/components/home/HeroSection";
+import { PressBar } from "@/components/home/PressBar";
 import {
   CategoriesSection,
   FeaturedProductsSection,
@@ -36,6 +37,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
+      <PressBar />
       <CategoriesSection categories={serializeDecimal(categories)} />
       <FeaturedProductsSection />
       <FlashSaleSection />

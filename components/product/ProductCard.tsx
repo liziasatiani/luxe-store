@@ -17,11 +17,12 @@ const QuickView = dynamic(() => import("./QuickView").then(m => ({ default: m.Qu
 interface ProductCardProps {
   product: ProductCardType;
   index?: number;
+  priority?: boolean;
   variant?: "default" | "compact" | "horizontal";
   darkBg?: boolean;
 }
 
-export function ProductCard({ product, index = 0, variant = "default", darkBg = false }: ProductCardProps) {
+export function ProductCard({ product, index = 0, priority = false, variant = "default", darkBg = false }: ProductCardProps) {
   const t = useTranslations("product");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
@@ -78,6 +79,7 @@ export function ProductCard({ product, index = 0, variant = "default", darkBg = 
             <Image
               src={imageUrl} alt={product.name} fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              priority={priority}
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
 

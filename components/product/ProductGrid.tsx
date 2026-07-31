@@ -194,7 +194,7 @@ export function ProductGrid({
         ) : (
           <>
             <div className={cn("grid gap-5", gridCols[columns])}>
-              {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+              {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
             </div>
             {hasMore && (
               <div className="mt-12 text-center">

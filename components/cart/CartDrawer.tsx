@@ -3,13 +3,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useCartStore } from "@/store";
 import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import type { ProductCard } from "@/types";
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, discount, shipping, total, coupon } = useCartStore();
+  const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
+  const [suggestions, setSuggestions] = useState<ProductCard[]>([]);
+
+  useEffect(() => {
+    if (!isOpen || items.length === 0) { setSuggestions([]); return; }
+    const categorySlug = items[0]?.product?.category?.slug ?? "";
+    const inCart = new Set(items.map(i => i.productId));
+    const url = `/api/products?limit=8&category=${categorySlug}&sort=best-selling`;
+    fetch(url)
+      .then(r => r.json())
+      .then(d => {
+        const all: ProductCard[] = d.data?.products ?? [];
+        setSuggestions(all.filter(p => !inCart.has(p.id)).slice(0, 3));
+      })
+      .catch(() => {});
+  }, [isOpen, items]);
 
   return (
     <AnimatePresence>
@@ -123,6 +140,36 @@ export function CartDrawer() {
                 </ul>
               )}
             </div>
+
+            {/* Cross-sell */}
+            {items.length > 0 && suggestions.length > 0 && (
+              <div className="border-t border-surface-100 dark:border-surface-800 px-5 py-4">
+                <p className="text-[9px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 mb-3">You might also like</p>
+                <div className="space-y-3">
+                  {suggestions.map((p) => {
+                    const img = getProductImageUrl(p.images);
+                    return (
+                      <div key={p.id} className="flex items-center gap-3">
+                        <Link href={`/products/${p.slug}`} onClick={closeCart} className="relative w-12 h-12 shrink-0 overflow-hidden bg-surface-100 dark:bg-surface-800">
+                          <Image src={img} alt={p.name} fill className="object-cover" sizes="48px" />
+                        </Link>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-medium text-black dark:text-white line-clamp-1">{p.name}</p>
+                          <p className="text-xs text-black/40 dark:text-white/40">{formatPrice(Number(p.price))}</p>
+                        </div>
+                        <button
+                          onClick={() => { addItem(p); }}
+                          disabled={p.stockStatus === "OUT_OF_STOCK"}
+                          className="shrink-0 h-7 px-3 border border-black dark:border-white text-black dark:text-white text-[9px] tracking-[0.1em] uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Footer */}
             {items.length > 0 && (

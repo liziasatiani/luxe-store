@@ -11,7 +11,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 86400,
+    deviceSizes: [390, 640, 828, 1080, 1200, 1920],
+    imageSizes: [48, 64, 80, 128, 256],
   },
   serverExternalPackages: ["@prisma/client", "prisma"],
   async headers() {
