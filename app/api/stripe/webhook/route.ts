@@ -68,7 +68,13 @@ export async function POST(req: NextRequest) {
       }
     }
   } catch (err) {
+    // Returning 200 here told Stripe the event was handled, so a transient
+    // database failure permanently lost the payment confirmation: the order
+    // stayed PENDING/unpaid with no retry and no alert. Signal failure so
+    // Stripe redelivers. The handlers above are already idempotent (the
+    // paymentStatus === "PAID" short-circuit), which is what makes retry safe.
     console.error("[stripe/webhook] handler error:", err);
+    return NextResponse.json({ error: "Handler failed" }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

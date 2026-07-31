@@ -59,8 +59,17 @@ export async function GET(req: NextRequest) {
       isActive: true,
       ...(and.length && { AND: and }),
       ...(brands.length && { brand: { slug: { in: brands } } }),
-      ...(minPrice !== undefined && { price: { gte: minPrice } }),
-      ...(maxPrice !== undefined && { price: { lte: maxPrice } }),
+      // Both bounds must live under a single `price` key. Spreading two `price`
+      // keys into one object literal drops the first: with ?minPrice=50&maxPrice=100
+      // the `gte` was silently discarded and every product under $100 came back.
+      // This is the same collision the auditor fixed for `OR` two lines above and
+      // then reintroduced here.
+      ...((minPrice !== undefined || maxPrice !== undefined) && {
+        price: {
+          ...(minPrice !== undefined && { gte: minPrice }),
+          ...(maxPrice !== undefined && { lte: maxPrice }),
+        },
+      }),
       ...(inStock && { stockStatus: { not: "OUT_OF_STOCK" } }),
       ...(onSale && { isOnSale: true }),
       ...(featured && { isFeatured: true }),

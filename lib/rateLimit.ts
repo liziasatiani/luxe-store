@@ -49,12 +49,22 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
   return { allowed: true, remaining: limit - entry.count, resetAt: entry.resetAt };
 }
 
+/**
+ * WARNING: `x-forwarded-for` and `x-real-ip` are attacker-controlled unless a
+ * trusted proxy overwrites them. Any limit keyed on this value can be evaded by
+ * rotating the header, so IP keys are a speed bump, not a control. Prefer keying
+ * on a stable identity (account email, user id) for anything security-critical —
+ * see the login limiter in lib/auth.ts.
+ *
+ * `x-forwarded-for` is also a client→proxy chain, so the left-most entry is the
+ * least trustworthy hop; behind a known proxy depth you want the right-most.
+ */
 export function getIP(req: NextRequest): string {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown"
-  );
+  const forwarded = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  // An empty header yields "" rather than undefined, which would bucket every
+  // such request under one shared key.
+  if (forwarded) return forwarded;
+  return req.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
 export function rateLimitResponse(resetAt: number): NextResponse {

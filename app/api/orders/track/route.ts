@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, isValidEmail, normalizeEmail } from "@/lib/utils";
+import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function GET(req: NextRequest) {
+  // This is the only unauthenticated endpoint that returns personal data (full
+  // recipient name, street address, postal code, order contents). It had no
+  // throttle at all, so `orderNumber` + `email` pairs could be guessed at line
+  // speed. The previous audit edited this file and left that untouched.
+  const rl = rateLimit(`track:${getIP(req)}`, 10, 60 * 1000);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const orderNumber = req.nextUrl.searchParams.get("orderNumber");
     const email = req.nextUrl.searchParams.get("email");

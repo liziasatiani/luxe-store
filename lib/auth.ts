@@ -5,10 +5,25 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { normalizeEmail } from "@/lib/utils";
+import { rateLimit } from "@/lib/rateLimit";
 import type { NextAuthConfig } from "next-auth";
 
 /** bcrypt hash of a value no user can supply; used only to equalise timing. */
 const DUMMY_HASH = "$2a$12$C6UzMDM.H6dfI/f/IKcEe.aQjKk8pQ5HrhTiWnJ5Vd1LhoAxKPWTm";
+
+/**
+ * Password guessing was completely unthrottled: `/api/auth/[...nextauth]` is
+ * excluded from the middleware matcher and never called `rateLimit`, so the
+ * credentials provider accepted unlimited attempts. Constant-time comparison
+ * (added by the previous audit) is meaningless while an attacker can simply try
+ * every password.
+ *
+ * Keyed by the submitted email rather than by IP: `getIP` reads the
+ * client-controlled `x-forwarded-for` header, so an IP key is trivially evaded
+ * by rotating that header. The account is the thing worth protecting.
+ */
+const LOGIN_ATTEMPTS = 10;
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
@@ -33,8 +48,13 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
 
+        const emailKey = normalizeEmail(credentials.email);
+
+        const rl = rateLimit(`login:${emailKey}`, LOGIN_ATTEMPTS, LOGIN_WINDOW_MS);
+        if (!rl.allowed) return null;
+
         const user = await prisma.user.findUnique({
-          where: { email: normalizeEmail(credentials.email) },
+          where: { email: emailKey },
         });
 
         // Compare against a dummy hash when the account is missing or has no

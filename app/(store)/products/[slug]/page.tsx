@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal, formatPrice, formatDiscount, getStockLabel } from "@/lib/utils";
+import { serializeDecimal, formatPrice, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -93,8 +93,8 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildProductSchema({ ...p, brand: p.brand })) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbSchema(breadcrumbs)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildProductSchema({ ...p, brand: p.brand })) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildBreadcrumbSchema(breadcrumbs)) }} />
 
       <Container className="py-8">
         <Breadcrumbs items={breadcrumbs} />
