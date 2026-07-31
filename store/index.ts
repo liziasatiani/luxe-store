@@ -159,6 +159,28 @@ interface UIStore {
   closeMobileMenu: () => void;
 }
 
+// ─── Recently Viewed ──────────────────────────────────────────
+interface RecentlyViewedStore {
+  items: ProductCard[];
+  add: (product: ProductCard) => void;
+  clear: () => void;
+}
+
+export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
+  persist(
+    (set) => ({
+      items: [],
+      add: (product) =>
+        set((s) => {
+          const filtered = s.items.filter((p) => p.id !== product.id);
+          return { items: [product, ...filtered].slice(0, 12) };
+        }),
+      clear: () => set({ items: [] }),
+    }),
+    { name: "luxe-recently-viewed", storage: createJSONStorage(() => localStorage) }
+  )
+);
+
 export const useUIStore = create<UIStore>((set) => ({
   searchOpen: false,
   mobileMenuOpen: false,

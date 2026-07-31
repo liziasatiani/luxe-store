@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
 import { Container, SectionHeader } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";

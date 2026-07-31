@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { Suspense } from "react";
 import { Container, Spinner } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";

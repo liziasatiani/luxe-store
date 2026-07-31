@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container, SectionHeader } from "@/components/ui";
