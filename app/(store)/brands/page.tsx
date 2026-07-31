@@ -3,7 +3,7 @@ import { Container, SectionHeader } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata = buildMetadata({ title: "Brands", description: "Explore all luxury beauty and premium tech brands at Luxe Store." });
+export const metadata = buildMetadata({ title: "Brands", description: "Explore all luxury beauty and premium tech brands at Everything Street." });
 
 export default async function BrandsPage() {
   const brands = await prisma.brand.findMany({

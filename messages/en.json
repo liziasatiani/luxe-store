@@ -59,7 +59,7 @@
       "placeholder": "Enter your email address",
       "subscribe": "Subscribe",
       "noSpam": "No spam, ever. Unsubscribe anytime.",
-      "success": "You're in! Welcome to Luxe Store.",
+      "success": "You're in! Welcome to Everything Street.",
       "invalidEmail": "Please enter a valid email address",
       "error": "Something went wrong. Please try again."
     }
@@ -158,7 +158,7 @@
   "auth": {
     "login": {
       "title": "Welcome back",
-      "subtitle": "Sign in to your Luxe Store account",
+      "subtitle": "Sign in to your Everything Street account",
       "email": "Email address",
       "password": "Password",
       "forgotPassword": "Forgot password?",
@@ -253,7 +253,7 @@
     },
     "sitemap": {
       "title": "Sitemap",
-      "subtitle": "Find everything on Luxe Store"
+      "subtitle": "Find everything on Everything Street"
     },
     "trackOrder": {
       "title": "Track Your Order",
@@ -291,7 +291,7 @@
     },
     "faq": {
       "title": "Frequently Asked Questions",
-      "subtitle": "Everything you need to know about Luxe Store."
+      "subtitle": "Everything you need to know about Everything Street."
     },
     "shipping": {
       "title": "Shipping Policy",

@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM = process.env.EMAIL_FROM ?? "Luxe Store <noreply@luxestore.com>";
+const FROM = process.env.EMAIL_FROM ?? "Everything Street <noreply@everythingstreet.com>";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 interface OrderItem {
@@ -165,7 +165,7 @@ function buildOrderEmail(data: OrderEmailData): string {
           <tr>
             <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 12px 12px;padding:24px 40px;text-align:center;">
               <p style="margin:0 0 4px;font-size:12px;color:#9CA3AF;">Questions? Reply to this email or visit <a href="${APP_URL}/contact" style="color:#6B7280;">our contact page</a>.</p>
-              <p style="margin:0;font-size:12px;color:#D1D5DB;">© ${new Date().getFullYear()} Luxe Store. All rights reserved.</p>
+              <p style="margin:0;font-size:12px;color:#D1D5DB;">© ${new Date().getFullYear()} Everything Street. All rights reserved.</p>
             </td>
           </tr>
 

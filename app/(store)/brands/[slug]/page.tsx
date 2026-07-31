@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const brand = await prisma.brand.findUnique({ where: { slug } });
   if (!brand) return {};
-  return buildMetadata({ title: brand.name, description: brand.description ?? `Shop all ${brand.name} products at Luxe Store.` });
+  return buildMetadata({ title: brand.name, description: brand.description ?? `Shop all ${brand.name} products at Everything Street.` });
 }
 
 export default async function BrandPage({ params }: Props) {
