@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Package, ArrowRight, CheckCircle } from "lucide-react";
+import { Package, ArrowRight, CheckCircle, UserPlus } from "lucide-react";
 import { Container } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { prisma } from "@/lib/prisma";
@@ -76,6 +76,26 @@ export default async function SuccessPage({ searchParams }: Props) {
           <Link href="/">Continue Shopping</Link>
         </Button>
       </div>
+
+      {/* Guest → account conversion */}
+      {!session && order && (
+        <div className="mt-10 border border-surface-200 dark:border-surface-700 rounded-2xl p-6 text-left">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center shrink-0">
+              <UserPlus size={16} className="text-surface-600 dark:text-surface-400" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-surface-900 dark:text-white text-sm mb-1">Save your order history</h3>
+              <p className="text-xs text-surface-500 dark:text-surface-400 leading-relaxed mb-4">
+                Create a free account to track this order, reorder with one click, and get early access to new arrivals.
+              </p>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/register?orderId=${order.id}`}>Create Account</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

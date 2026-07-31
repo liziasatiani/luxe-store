@@ -75,12 +75,20 @@ export function generateOrderNumber(): string {
 
 
 export function getProductImageUrl(
-  images: Array<{ url: string; isPrimary?: boolean }> | undefined
+  images: Array<{ url: string; isPrimary?: boolean }> | undefined,
+  width = 600,
+  quality = 80
 ): string {
   if (!images || images.length === 0)
     return "/placeholder.jpg";
   const primary = images.find((i) => i.isPrimary);
-  return primary?.url ?? images[0]?.url ?? "/placeholder.jpg";
+  const url = primary?.url ?? images[0]?.url ?? "/placeholder.jpg";
+  // Apply Supabase Storage image transforms for Supabase-hosted images
+  if (url.includes("supabase") && url.includes("/storage/")) {
+    const sep = url.includes("?") ? "&" : "?";
+    return `${url}${sep}width=${width}&quality=${quality}&format=webp`;
+  }
+  return url;
 }
 
 

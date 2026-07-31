@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -7,17 +8,25 @@ export function HeroSection() {
   const t = useTranslations("home.hero");
   return (
     <section className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.04]"
-        style={{ backgroundImage: "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize: "80px 80px" }}
+      {/* Editorial hero image */}
+      <Image
+        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&q=75&auto=format"
+        alt="Luxury fashion editorial"
+        fill
+        priority
+        fetchPriority="high"
+        className="object-cover object-center opacity-30"
+        sizes="100vw"
       />
+      {/* Dark overlay for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
       <div className="relative z-10 w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-[10px] tracking-[0.28em] uppercase text-white/40 mb-8"
+          className="text-[10px] tracking-[0.28em] uppercase text-white/60 mb-8"
         >
           {t("badge")}
         </motion.p>
@@ -38,7 +47,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm md:text-base text-white/40 max-w-md mx-auto leading-relaxed mb-12 tracking-wide"
+          className="text-sm md:text-base text-white/65 max-w-md mx-auto leading-relaxed mb-12 tracking-wide"
         >
           {t("subtitle")}
         </motion.p>
@@ -73,7 +82,7 @@ export function HeroSection() {
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="font-display text-2xl md:text-3xl text-white font-light">{stat.value}</p>
-              <p className="text-[10px] tracking-[0.12em] uppercase text-white/35 mt-1">{stat.label}</p>
+              <p className="text-[10px] tracking-[0.12em] uppercase text-white/60 mt-1">{stat.label}</p>
             </div>
           ))}
         </motion.div>
@@ -84,7 +93,7 @@ export function HeroSection() {
         transition={{ duration: 1.8, repeat: Infinity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[9px] tracking-[0.2em] uppercase text-white/25">Scroll</span>
+        <span className="text-[9px] tracking-[0.2em] uppercase text-white/55">Scroll</span>
         <div className="w-px h-8 bg-gradient-to-b from-white/25 to-transparent" />
       </motion.div>
     </section>

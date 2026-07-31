@@ -2,17 +2,45 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { X, ShoppingBag, Trash2, ArrowRight, Tag, Check } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { useCartStore } from "@/store";
 import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import type { ProductCard } from "@/types";
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon } = useCartStore();
+  const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon, setCoupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
   const [suggestions, setSuggestions] = useState<ProductCard[]>([]);
+  const [couponInput, setCouponInput] = useState("");
+  const [couponError, setCouponError] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const couponRef = useRef<HTMLInputElement>(null);
+
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCouponError("");
+    setCouponLoading(true);
+    try {
+      const res = await fetch("/api/coupons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponInput.trim().toUpperCase(), subtotal: items.reduce((s, i) => s + Number(i.variant?.price ?? i.product.price) * i.quantity, 0) }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.data?.coupon) {
+        setCouponError(data.error ?? "Invalid coupon code");
+      } else {
+        setCoupon(data.data.coupon);
+        setCouponInput("");
+      }
+    } catch {
+      setCouponError("Something went wrong");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!isOpen || items.length === 0) { setSuggestions([]); return; }
@@ -174,9 +202,46 @@ export function CartDrawer() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="border-t border-surface-100 dark:border-surface-800 px-5 py-4 space-y-3">
+                {/* Coupon field */}
+                {coupon ? (
+                  <div className="flex items-center justify-between text-sm bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded px-3 py-2">
+                    <span className="flex items-center gap-1.5 text-green-700 dark:text-green-400">
+                      <Check size={12} />
+                      <span className="font-mono font-bold">{coupon.code}</span>
+                      <span className="text-green-600 dark:text-green-500">−{formatPrice(discount())}</span>
+                    </span>
+                    <button onClick={() => setCoupon(null)} className="text-green-600 dark:text-green-400 hover:text-red-500 transition-colors">
+                      <X size={13} />
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Tag size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/40 dark:text-white/40" />
+                        <input
+                          ref={couponRef}
+                          value={couponInput}
+                          onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
+                          onKeyDown={e => e.key === "Enter" && handleApplyCoupon()}
+                          placeholder="Coupon code"
+                          className="w-full pl-7 pr-2 h-8 text-[11px] tracking-[0.06em] uppercase border border-surface-200 dark:border-surface-700 bg-transparent text-black dark:text-white placeholder-black/35 dark:placeholder-white/35 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+                        />
+                      </div>
+                      <button
+                        onClick={handleApplyCoupon}
+                        disabled={couponLoading || !couponInput.trim()}
+                        className="h-8 px-3 border border-black dark:border-white text-black dark:text-white text-[9px] tracking-[0.1em] uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40"
+                      >
+                        {couponLoading ? "…" : "Apply"}
+                      </button>
+                    </div>
+                    {couponError && <p className="text-[10px] text-red-500 mt-1">{couponError}</p>}
+                  </div>
+                )}
                 {coupon && (
                   <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
-                    <span>Coupon ({coupon.code})</span>
+                    <span>Coupon savings</span>
                     <span>−{formatPrice(discount())}</span>
                   </div>
                 )}
