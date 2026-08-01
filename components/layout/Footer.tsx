@@ -39,14 +39,14 @@ export async function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 border-b border-white/8 pb-16">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
-              <span className="font-display text-2xl tracking-[0.14em] uppercase text-white">Luxe</span>
+              <span className="font-display text-2xl tracking-[0.14em] uppercase text-white">Everything Street</span>
             </Link>
             <p className="text-sm text-white/40 leading-relaxed max-w-xs mb-6">
-              Your destination for luxury beauty and premium tech. Curated collections from the world&rsquo;s most coveted brands.
+              Considered technology. Considered beauty. Curated, tested, and delivered together.
             </p>
-            <a href="mailto:hello@luxestore.com" className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors mb-6">
+            <a href="mailto:hello@everythingstreet.com" className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors mb-6">
               <Mail size={14} />
-              hello@luxestore.com
+              hello@everythingstreet.com
             </a>
             <div className="flex items-center gap-3">
               {instagram && (

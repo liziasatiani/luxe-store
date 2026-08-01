@@ -14,7 +14,7 @@ const SECTIONS = [
   { title: "8. Limitation of Liability", content: "To the fullest extent permitted by law, Everything Street shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services, even if we have been advised of the possibility of such damages. Our total liability shall not exceed the amount paid by you for the specific order in question." },
   { title: "9. Governing Law", content: "These Terms shall be governed by and construed in accordance with the laws of the State of California, United States, without regard to its conflict of law provisions." },
   { title: "10. Changes to Terms", content: "We reserve the right to modify these Terms at any time. Continued use of our services after changes constitutes acceptance of the new Terms. We will notify you of material changes via email or website notice." },
-  { title: "11. Contact", content: "For questions about these Terms, contact us at legal@luxestore.com or write to us at 123 Luxury Lane, Beverly Hills, CA 90210." },
+  { title: "11. Contact", content: "For questions about these Terms, contact us at legal@everythingstreet.com or write to us at 123 Luxury Lane, Beverly Hills, CA 90210." },
 ];
 
 export default function TermsPage() {
