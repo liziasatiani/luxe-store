@@ -171,6 +171,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   rightIcon?: React.ReactNode;
 }
 export function Input({ label, error, leftIcon, rightIcon, className, id, ...props }: InputProps) {
+  const errorId = error && id ? `${id}-error` : undefined;
   return (
     <div className="w-full">
       {label && (
@@ -184,11 +185,14 @@ export function Input({ label, error, leftIcon, rightIcon, className, id, ...pro
         )}
         <input
           id={id}
+          aria-invalid={error ? "true" : undefined}
+          aria-describedby={errorId}
           className={cn(
             "w-full h-11 rounded-xl border bg-white dark:bg-surface-900 text-surface-900 dark:text-white",
             "border-surface-200 dark:border-surface-700",
             "focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500",
             "placeholder:text-surface-400 transition-colors",
+            "text-base", // ≥16px prevents iOS auto-zoom on focus
             leftIcon && "pl-10",
             rightIcon && "pr-10",
             !leftIcon && "pl-4",
@@ -202,7 +206,7 @@ export function Input({ label, error, leftIcon, rightIcon, className, id, ...pro
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400">{rightIcon}</span>
         )}
       </div>
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && <p id={errorId} role="alert" className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   );
 }

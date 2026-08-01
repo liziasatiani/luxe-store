@@ -82,6 +82,15 @@ export function SearchModal() {
                 </button>
               </div>
 
+              {/* Screen-reader result count announcement */}
+              <p aria-live="polite" aria-atomic="true" className="sr-only">
+                {query && !loading
+                  ? results.length > 0
+                    ? `${results.length} result${results.length === 1 ? "" : "s"} for ${query}`
+                    : `No results for ${query}`
+                  : ""}
+              </p>
+
               {/* Results */}
               <div className="max-h-[60vh] overflow-y-auto p-4">
                 {!query ? (
