@@ -117,7 +117,7 @@ export function CartDrawer() {
                 <ul className="divide-y divide-surface-100 dark:divide-surface-800 px-5 py-2">
                   <AnimatePresence initial={false}>
                     {items.map((item) => {
-                      const img = getProductImageUrl(item.product.images);
+                      const img = getProductImageUrl(item.product.images, 200, 75);
                       const price = Number(item.variant?.price ?? item.product.price);
                       return (
                         <motion.li
@@ -180,7 +180,7 @@ export function CartDrawer() {
                 <p className="text-[9px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 mb-3">You might also like</p>
                 <div className="space-y-3">
                   {suggestions.map((p) => {
-                    const img = getProductImageUrl(p.images);
+                    const img = getProductImageUrl(p.images, 200, 75);
                     return (
                       <div key={p.id} className="flex items-center gap-3">
                         <Link href={`/products/${p.slug}`} onClick={closeCart} className="relative w-12 h-12 shrink-0 overflow-hidden bg-surface-100 dark:bg-surface-800">
