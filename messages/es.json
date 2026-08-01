@@ -18,9 +18,9 @@
       "badge": "Tech & Belleza, Una Calle",
       "title": "Dos mundos,",
       "titleGold": "una calle.",
-      "subtitle": "Everything Street une tecnología considerada con belleza considerada — seleccionada, probada y entregada juntas.",
+      "subtitle": "Everything Street fusiona tecnología de vanguardia con belleza de excepción — seleccionadas, probadas y entregadas juntas.",
       "shopBeauty": "Comprar Belleza",
-      "exploreTech": "Explorar Tecnología",
+      "exploreTech": "Explorar Tech",
       "stats": {
         "products": "Productos seleccionados",
         "brands": "Marcas de lujo",
@@ -54,7 +54,7 @@
     },
     "newsletter": {
       "badge": "Ofertas exclusivas",
-      "title": "Únete al círculo VIP",
+      "title": "Únete al círculo selecto",
       "subtitle": "Sé el primero en conocer las novedades, ofertas exclusivas y secretos de belleza.",
       "placeholder": "Introduce tu correo electrónico",
       "subscribe": "Suscribirse",
@@ -167,7 +167,7 @@
       "createAccount": "Crear cuenta",
       "orContinueWith": "o continúa con",
       "continueWithGoogle": "Continuar con Google",
-      "invalidCredentials": "Email o contraseña inválidos",
+      "invalidCredentials": "Correo electrónico o contraseña incorrectos",
       "welcomeBack": "¡Bienvenido de nuevo!"
     },
     "register": {
@@ -219,12 +219,12 @@
     "newArrivals": {
       "title": "Novedades",
       "subtitle": "Nuevos artículos cada semana.",
-      "badge": "Recién llegado"
+      "badge": "Recién llegados"
     },
     "bestSellers": {
       "title": "Más vendidos",
       "subtitle": "Nuestros productos más populares.",
-      "badge": "Los más amados"
+      "badge": "Los preferidos"
     },
     "featured": {
       "title": "Destacados",
@@ -267,7 +267,7 @@
     },
     "contact": {
       "title": "Contáctanos",
-      "subtitle": "Estamos aquí para ayudarte.",
+      "subtitle": "Estamos aquí para ayudarte. Escríbenos y te responderemos en menos de 24 horas.",
       "getInTouch": "Ponte en contacto",
       "email": "Email",
       "phone": "Teléfono",

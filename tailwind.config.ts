@@ -59,7 +59,7 @@ const config: Config = {
         error: "#dc2626",
       },
       fontFamily: {
-        display: ["var(--font-cormorant)", "Georgia", "serif"],
+        display: ["var(--font-cinzel)", "Georgia", "serif"],
         serif:   ["var(--font-lora)", "Georgia", "serif"],
         sans:    ["var(--font-inter)", "system-ui", "sans-serif"],
         mono:    ["monospace"],

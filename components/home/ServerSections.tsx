@@ -13,7 +13,7 @@ function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
   return (
     <div className="flex items-baseline justify-between mb-10">
       <div>
-        <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-light">{title}</h2>
+        <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{title}</h2>
         {subtitle && <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-1">{subtitle}</p>}
       </div>
       {viewAllHref && (

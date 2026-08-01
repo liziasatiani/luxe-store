@@ -15,12 +15,12 @@
   },
   "home": {
     "hero": {
-      "badge": "Tech & Beauté, Une Rue",
+      "badge": "Tech & Beauté, une rue",
       "title": "Deux mondes,",
       "titleGold": "une rue.",
-      "subtitle": "Everything Street associe technologie réfléchie et beauté considérée — sélectionnée, testée et livrée ensemble.",
-      "shopBeauty": "Acheter Beauté",
-      "exploreTech": "Explorer Tech",
+      "subtitle": "Everything Street marie technologie pointue et beauté étudiée — soigneusement sélectionnées, testées et livrées ensemble.",
+      "shopBeauty": "Découvrir la Beauté",
+      "exploreTech": "Explorer la Tech",
       "stats": {
         "products": "Produits sélectionnés",
         "brands": "Marques de luxe",
@@ -87,7 +87,7 @@
   "cart": {
     "title": "Panier",
     "empty": "Votre panier est vide",
-    "emptyDesc": "Vous n'avez rien ajouté encore.",
+    "emptyDesc": "Votre panier est encore vide.",
     "continueShopping": "Continuer les achats",
     "subtotal": "Sous-total",
     "shipping": "Livraison",
@@ -157,7 +157,7 @@
   },
   "auth": {
     "login": {
-      "title": "Bon retour",
+      "title": "Heureux de vous revoir",
       "subtitle": "Connectez-vous à votre compte Everything Street",
       "email": "Adresse email",
       "password": "Mot de passe",
@@ -168,7 +168,7 @@
       "orContinueWith": "ou continuer avec",
       "continueWithGoogle": "Continuer avec Google",
       "invalidCredentials": "Email ou mot de passe invalide",
-      "welcomeBack": "Bon retour !"
+      "welcomeBack": "Ravi de vous retrouver !"
     },
     "register": {
       "title": "Créer un compte",
@@ -209,7 +209,7 @@
     "contact": "Nous contacter",
     "shipping": "Livraison",
     "returns": "Retours",
-    "trackOrder": "Suivre commande",
+    "trackOrder": "Suivi de commande",
     "about": "À propos",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
@@ -219,7 +219,7 @@
     "newArrivals": {
       "title": "Nouveautés",
       "subtitle": "De nouvelles arrivées chaque semaine.",
-      "badge": "Tout frais"
+      "badge": "Dernières arrivées"
     },
     "bestSellers": {
       "title": "Meilleures ventes",
@@ -267,7 +267,7 @@
     },
     "contact": {
       "title": "Contactez-nous",
-      "subtitle": "Nous sommes là pour vous aider.",
+      "subtitle": "Nous sommes là pour vous aider. Écrivez-nous et nous vous répondrons dans les 24 heures.",
       "getInTouch": "Prendre contact",
       "email": "Email",
       "phone": "Téléphone",

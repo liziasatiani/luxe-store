@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Cormorant_Garamond, Lora } from "next/font/google";
+import { Inter, Cinzel, Lora } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
@@ -23,11 +23,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cinzel",
   display: "swap",
 });
 
@@ -52,7 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cormorant.variable} ${lora.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cinzel.variable} ${lora.variable}`}>
       <head>
         <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />

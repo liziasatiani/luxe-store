@@ -61,8 +61,19 @@ export function Navbar() {
           New arrivals dropping five days a week
         </div>
         <Container>
-          <div className="grid grid-cols-3 items-center h-14 md:h-16">
-            {/* Left nav */}
+          <div className="relative flex items-center h-14 md:h-16">
+
+            {/* Mobile: hamburger left */}
+            <button
+              onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              className="lg:hidden p-2.5 text-black dark:text-white"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+
+            {/* Desktop: left nav */}
             <nav className="hidden lg:flex items-center gap-6">
               {NAV_LINKS.slice(0, 3).map((link) => (
                 <div key={link.href} className="relative"
@@ -104,16 +115,20 @@ export function Navbar() {
               ))}
             </nav>
 
-            {/* Centre logo */}
-            <Link href="/" className="flex justify-center" onClick={closeMobileMenu}>
-              <span className="font-display text-sm md:text-base tracking-[0.08em] uppercase text-black dark:text-white whitespace-nowrap">
+            {/* Logo — absolutely centered on all viewports */}
+            <Link
+              href="/"
+              onClick={closeMobileMenu}
+              className="absolute left-1/2 -translate-x-1/2"
+            >
+              <span className="font-display text-sm md:text-base tracking-[0.1em] uppercase text-black dark:text-white whitespace-nowrap">
                 Everything Street
               </span>
             </Link>
 
             {/* Right icons */}
-            <div className="flex items-center gap-3 justify-end">
-              <div className="hidden lg:flex items-center gap-5 mr-2">
+            <div className="flex items-center gap-1 ml-auto">
+              <div className="hidden lg:flex items-center gap-5 mr-3">
                 {NAV_LINKS.slice(3).map((link) => (
                   <Link key={link.href} href={link.href} className="text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity">
                     {link.label}
@@ -121,7 +136,9 @@ export function Navbar() {
                 ))}
               </div>
 
-              {mounted && <LanguageSelector />}
+              <div className="hidden lg:block">
+                {mounted && <LanguageSelector />}
+              </div>
 
               <button onClick={openSearch} aria-label="Open search" className="p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
                 <Search size={18} />
@@ -131,13 +148,13 @@ export function Navbar() {
                 <button
                   onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
                   aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                  className="p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity"
+                  className="hidden lg:block p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity"
                 >
                   {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
               )}
 
-              <Link href="/wishlist" aria-label="Wishlist" className="relative p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
+              <Link href="/wishlist" aria-label="Wishlist" className="relative hidden md:block p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
                 <Heart size={18} />
                 {mounted && wishlistIds.length > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-black dark:bg-white text-white dark:text-black text-[9px] flex items-center justify-center font-bold">
@@ -162,15 +179,6 @@ export function Navbar() {
                   {t("signIn")}
                 </Link>
               ))}
-
-              <button
-                onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
-                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={mobileMenuOpen}
-                className="lg:hidden p-2.5 text-black dark:text-white"
-              >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
             </div>
           </div>
         </Container>

@@ -62,20 +62,26 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center sm:p-4"
           onClick={onClose}
         >
+          {/* Bottom sheet on mobile, centered modal on sm+ */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2 }}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 32, stiffness: 300 }}
+            style={{ willChange: "transform" }}
             role="dialog"
             aria-modal="true"
             aria-label="Quick view"
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-900 rounded-2xl shadow-2xl"
+            className="relative w-full sm:max-w-3xl sm:mx-auto max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-900 rounded-t-2xl sm:rounded-2xl shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
+            {/* Drag handle on mobile */}
+            <div className="sm:hidden flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-surface-200 dark:bg-surface-700" />
+            </div>
             <button
               onClick={onClose}
               className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
@@ -89,7 +95,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
               </div>
             ) : product ? (
               <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="relative aspect-square rounded-tl-2xl rounded-bl-2xl overflow-hidden bg-surface-50 dark:bg-surface-800">
+                <div className="relative aspect-square sm:rounded-tl-2xl sm:rounded-bl-2xl overflow-hidden bg-surface-50 dark:bg-surface-800">
                   <Image src={img} alt={product.name} fill className="object-cover" sizes="400px" />
                   {product.isNewArrival && (
                     <div className="absolute top-3 left-3">
