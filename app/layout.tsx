@@ -52,6 +52,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 
+export function generateViewport() {
+  return { width: "device-width", initialScale: 1, viewportFit: "cover" };
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   const messages = await getMessages();

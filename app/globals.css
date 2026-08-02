@@ -105,6 +105,9 @@ textarea:focus-visible,
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* iOS safe-area: pads fixed bottom elements above the home indicator */
+  .safe-area-inset-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
   .text-balance { text-wrap: balance; }
 
   .glass {
