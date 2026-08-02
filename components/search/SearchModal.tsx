@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, TrendingUp } from "lucide-react";
 import FocusTrap from "focus-trap-react";
@@ -11,15 +11,27 @@ import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { Spinner } from "@/components/ui";
 import type { ProductCard } from "@/types";
 
-const TRENDING = ["La Mer cream", "Sony headphones", "Charlotte Tilbury", "AirPods Pro", "Dyson hair", "Tom Ford"];
+const TRENDING = ["La Mer cream", "Sony headphones", "Charlotte Tilbury", "AirPods Pro", "Dyson hair", "Tom Ford"] as const;
 
 export function SearchModal() {
   const { searchOpen, closeSearch } = useUIStore();
   const { query, setQuery, results, loading } = useSearch();
+  const [activeTab, setActiveTab] = useState<"all" | "beauty" | "tech">("all");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const filteredResults = useMemo(() => {
+    if (activeTab === "all") return results;
+    return results.filter(p => {
+      const slug = (p as ProductCard & { category: { slug: string } }).category?.slug ?? "";
+      return activeTab === "beauty"
+        ? ["beauty", "skincare", "makeup", "hair-care", "body-care", "perfume", "beauty-tools"].some(s => slug.includes(s))
+        : ["tech", "headphones", "cameras", "tablets", "gaming", "wearables", "smart-home", "audio", "accessories"].some(s => slug.includes(s));
+    });
+  }, [results, activeTab]);
 
   useEffect(() => {
     if (searchOpen) setTimeout(() => inputRef.current?.focus(), 100);
+    if (!searchOpen) setActiveTab("all");
   }, [searchOpen]);
 
   useEffect(() => {
@@ -91,6 +103,25 @@ export function SearchModal() {
                   : ""}
               </p>
 
+              {/* Category tabs — only when there are results */}
+              {query && results.length > 0 && (
+                <div className="flex gap-0 border-b border-surface-100 dark:border-surface-800 px-5">
+                  {(["all", "beauty", "tech"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`px-4 h-10 text-[10px] tracking-[0.12em] uppercase transition-colors border-b-2 -mb-px ${
+                        activeTab === tab
+                          ? "border-black dark:border-white text-black dark:text-white"
+                          : "border-transparent text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70"
+                      }`}
+                    >
+                      {tab === "all" ? `All (${results.length})` : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Results */}
               <div className="max-h-[60vh] overflow-y-auto p-4">
                 {!query ? (
@@ -111,9 +142,9 @@ export function SearchModal() {
                       ))}
                     </div>
                   </div>
-                ) : results.length > 0 ? (
+                ) : filteredResults.length > 0 ? (
                   <div className="space-y-1">
-                    {results.map((product) => (
+                    {filteredResults.map((product) => (
                       <SearchResultItem
                         key={(product as ProductCard).id}
                         product={product as ProductCard}
