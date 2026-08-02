@@ -15,6 +15,11 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
     if (!file) return NextResponse.json({ success: false, error: "No file uploaded" }, { status: 400 });
 
+    const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json({ success: false, error: "File too large. Maximum size is 10 MB." }, { status: 413 });
+    }
+
     const ext = file.name.split(".").pop()?.toLowerCase();
     if (!["csv", "xlsx", "xls", "json"].includes(ext ?? "")) {
       return NextResponse.json({ success: false, error: "Unsupported file type. Use CSV, Excel, or JSON." }, { status: 400 });

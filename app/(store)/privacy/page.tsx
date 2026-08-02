@@ -26,7 +26,7 @@ export default function PrivacyPage() {
       <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
         <Container className="text-center">
           <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">Privacy Policy</h1>
-          <p className="text-surface-500">Last updated: January 1, 2025</p>
+          <p className="text-surface-500">Last updated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
         </Container>
       </div>
       <Container className="py-16 max-w-3xl space-y-8">

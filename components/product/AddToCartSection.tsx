@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
 import { cn, formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -23,17 +23,18 @@ interface Props {
   };
 }
 
-function getDeliveryEstimate(): string {
+function getDeliveryEstimate(locale = "en"): string {
   const now = new Date();
   const day = now.getDay(); // 0=Sun, 6=Sat
   const daysToAdd = day === 0 ? 2 : day === 5 ? 3 : day === 6 ? 2 : 2;
   const d = new Date(now);
   d.setDate(d.getDate() + daysToAdd);
-  return d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+  return d.toLocaleDateString(locale, { weekday: "long", month: "short", day: "numeric" });
 }
 
 export function AddToCartSection({ product }: Props) {
   const t = useTranslations("product");
+  const locale = useLocale();
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [stickyVisible, setStickyVisible] = useState(false);
@@ -208,7 +209,7 @@ export function AddToCartSection({ product }: Props) {
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
         {[
-          { icon: Truck,      text: `Free shipping on orders over $75 — get it by ${getDeliveryEstimate()}` },
+          { icon: Truck,      text: `Free shipping on orders over $75 — get it by ${getDeliveryEstimate(locale)}` },
           { icon: RotateCcw,  text: "30-day free returns", href: "/returns" },
           { icon: Shield,     text: "100% authentic — guaranteed" },
         ].map(({ icon: Icon, text, href }) => (

@@ -23,25 +23,35 @@ import {
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [categories, brands, bestSellersData] = await Promise.all([
-    prisma.category.findMany({
-      where: { parentId: { not: null }, isActive: true },
-      select: {
-        name: true, slug: true, image: true,
-        parent: { select: { slug: true } },
-        _count: { select: { products: { where: { isActive: true } } } },
-      },
-      orderBy: { sortOrder: "asc" },
-      take: 12,
-    }),
-    prisma.brand.findMany({
-      where: { isFeatured: true, isActive: true },
-      select: { name: true, slug: true, logo: true },
-      orderBy: { sortOrder: "asc" },
-      take: 18,
-    }),
-    BestSellersSectionServer(),
-  ]);
+  type Categories = Awaited<ReturnType<typeof prisma.category.findMany<{ select: { name: true; slug: true; image: true; parent: { select: { slug: true } }; _count: { select: { products: { where: { isActive: true } } } } } }>>>;
+  type Brands = Awaited<ReturnType<typeof prisma.brand.findMany<{ select: { name: true; slug: true; logo: true } }>>>;
+  let categories: Categories = [];
+  let brands: Brands = [];
+  let bestSellersData: Awaited<ReturnType<typeof BestSellersSectionServer>> = { title: "", initialProducts: [] };
+
+  try {
+    [categories, brands, bestSellersData] = await Promise.all([
+      prisma.category.findMany({
+        where: { parentId: { not: null }, isActive: true },
+        select: {
+          name: true, slug: true, image: true,
+          parent: { select: { slug: true } },
+          _count: { select: { products: { where: { isActive: true } } } },
+        },
+        orderBy: { sortOrder: "asc" },
+        take: 12,
+      }),
+      prisma.brand.findMany({
+        where: { isFeatured: true, isActive: true },
+        select: { name: true, slug: true, logo: true },
+        orderBy: { sortOrder: "asc" },
+        take: 18,
+      }),
+      BestSellersSectionServer(),
+    ]);
+  } catch {
+    // DB unavailable — render hero and static sections; dynamic sections show empty
+  }
 
   return (
     <>

@@ -42,14 +42,12 @@ export default function AboutPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border border-black/8 dark:border-white/8 mb-24">
+        <div className="grid grid-cols-2 gap-0 border border-black/8 dark:border-white/8 mb-24">
           {[
             { value: "186+", label: "Curated Products" },
             { value: "31",   label: "Luxury Brands"   },
-            { value: "50K+", label: "Customers Served" },
-            { value: "4.9",  label: "Average Rating"   },
           ].map((s, i) => (
-            <div key={s.label} className={`text-center py-10 px-6 ${i < 3 ? "border-r border-black/8 dark:border-white/8" : ""}`}>
+            <div key={s.label} className={`text-center py-10 px-6 ${i === 0 ? "border-r border-black/8 dark:border-white/8" : ""}`}>
               <p className="font-display text-4xl text-black dark:text-white font-normal">{s.value}</p>
               <p className="text-[10px] tracking-[0.12em] uppercase text-black/30 dark:text-white/30 mt-2">{s.label}</p>
             </div>

@@ -80,9 +80,9 @@ export function getProductImageUrl(
   quality = 80
 ): string {
   if (!images || images.length === 0)
-    return "/placeholder.jpg";
+    return "/placeholder.png";
   const primary = images.find((i) => i.isPrimary);
-  const url = primary?.url ?? images[0]?.url ?? "/placeholder.jpg";
+  const url = primary?.url ?? images[0]?.url ?? "/placeholder.png";
   // Apply Supabase Storage image transforms for Supabase-hosted images
   if (url.includes("supabase") && url.includes("/storage/")) {
     const sep = url.includes("?") ? "&" : "?";
