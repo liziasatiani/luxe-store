@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
 import { useCartStore, useWishlistStore } from "@/store";
 import { cn, formatPrice } from "@/lib/utils";
@@ -30,6 +30,14 @@ export function AddToCartSection({ product }: Props) {
   const router = useRouter();
   const isWishlisted = has(product.id);
   const outOfStock = product.stockStatus === "OUT_OF_STOCK";
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [notifySent, setNotifySent] = useState(false);
+  const handleNotify = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (!notifyEmail.trim()) return;
+    setNotifySent(true);
+    toast.success("We'll notify you when this item is back in stock.");
+  }, [notifyEmail]);
   const buttonsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -154,6 +162,36 @@ export function AddToCartSection({ product }: Props) {
           Buy Now
         </button>
       </div>
+
+      {/* Back-in-stock notification */}
+      {outOfStock && (
+        <div className="border border-black/10 dark:border-white/10 p-4">
+          {notifySent ? (
+            <p className="text-[11px] tracking-[0.08em] text-green-600 dark:text-green-400 text-center">✓ You&apos;re on the list — we&apos;ll email you when it&apos;s back.</p>
+          ) : (
+            <form onSubmit={handleNotify} className="space-y-2">
+              <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50">Notify me when available</p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  value={notifyEmail}
+                  onChange={e => setNotifyEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  inputMode="email"
+                  autoComplete="email"
+                  className="flex-1 h-9 px-3 text-[11px] border border-surface-200 dark:border-surface-700 bg-transparent text-black dark:text-white placeholder-black/30 dark:placeholder-white/30 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+                />
+                <button
+                  type="submit"
+                  className="h-9 px-4 border border-black dark:border-white text-black dark:text-white text-[9px] tracking-[0.1em] uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+                >
+                  Notify
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      )}
 
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
