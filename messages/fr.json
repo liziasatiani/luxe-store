@@ -291,7 +291,53 @@
     },
     "faq": {
       "title": "Questions fréquentes",
-      "subtitle": "Tout ce que vous devez savoir sur Everything Street."
+      "subtitle": "Tout ce que vous devez savoir sur Everything Street.",
+      "stillHaveQuestions": "Vous avez encore des questions ?",
+      "supportHours": "Notre équipe est disponible du lundi au samedi, de 9h à 18h (EST).",
+      "contactSupport": "Contacter le support",
+      "categories": [
+        {
+          "title": "Commandes & Livraison",
+          "items": [
+            { "q": "Quel est le délai de livraison ?", "a": "La livraison standard prend 3 à 5 jours ouvrés aux États-Unis. La livraison express (1 à 2 jours ouvrés) est disponible au moment du paiement. Les commandes internationales prennent généralement 7 à 14 jours ouvrés." },
+            { "q": "La livraison est-elle gratuite ?", "a": "Oui ! Toutes les commandes supérieures à 75 $ bénéficient de la livraison standard gratuite aux États-Unis. Les commandes inférieures à 75 $ sont soumises à des frais forfaitaires de 9,99 $." },
+            { "q": "Puis-je suivre ma commande ?", "a": "Absolument. Une fois votre commande expédiée, vous recevrez un e-mail avec un numéro de suivi. Vous pouvez également suivre votre commande dans votre espace compte sous « Mes commandes »." },
+            { "q": "Livrez-vous à l'international ?", "a": "Oui, nous livrons dans plus de 50 pays. Les frais d'expédition et les délais varient selon la destination. Des droits de douane et taxes peuvent s'appliquer." }
+          ]
+        },
+        {
+          "title": "Produits & Authenticité",
+          "items": [
+            { "q": "Tous les produits sont-ils authentiques ?", "a": "100 % oui. Chaque produit chez Everything Street est sourcé directement auprès de distributeurs officiels. Nous avons des procédures de vérification strictes et une tolérance zéro pour les contrefaçons." },
+            { "q": "D'où proviennent vos produits ?", "a": "Nous travaillons directement avec des distributeurs officiels et des revendeurs agréés aux États-Unis, en Europe et en Asie. Chaque marque présente sur notre plateforme a été vérifiée et approuvée." },
+            { "q": "Que faire si je reçois un produit endommagé ?", "a": "Contactez-nous dans les 7 jours suivant la livraison et nous organiserons immédiatement un remplacement complet ou un remboursement. Nous prendrons également en charge les frais de retour pour les articles endommagés." }
+          ]
+        },
+        {
+          "title": "Retours & Remboursements",
+          "items": [
+            { "q": "Quelle est votre politique de retour ?", "a": "Nous proposons des retours sans tracas sous 30 jours sur tous les produits. Les articles doivent être non utilisés, dans leur emballage d'origine, avec toutes les étiquettes. Les produits de beauté doivent être non ouverts et scellés." },
+            { "q": "Combien de temps prend un remboursement ?", "a": "Une fois l'article retourné reçu, les remboursements sont traités sous 3 à 5 jours ouvrés et apparaissent sur votre moyen de paiement initial sous 5 à 10 jours ouvrés." },
+            { "q": "Y a-t-il des articles qui ne peuvent pas être retournés ?", "a": "Les produits de beauté ouverts (pour des raisons d'hygiène), les articles personnalisés et les téléchargements numériques ne peuvent pas être retournés sauf s'ils sont défectueux." }
+          ]
+        },
+        {
+          "title": "Paiement & Sécurité",
+          "items": [
+            { "q": "Quels moyens de paiement acceptez-vous ?", "a": "Nous acceptons toutes les principales cartes de crédit et de débit (Visa, Mastercard, American Express) et le paiement à la livraison dans certaines régions." },
+            { "q": "Mes informations de paiement sont-elles sécurisées ?", "a": "Oui. Tous les paiements sont traités via Stripe, un processeur certifié PCI-DSS Niveau 1. Nous ne stockons jamais vos informations de carte sur nos serveurs." },
+            { "q": "Proposez-vous des cartes-cadeaux ?", "a": "Nous ne proposons pas de cartes-cadeaux pour l'instant, mais nous offrons des codes promo. Utilisez le code WELCOME15 pour 15 % de réduction sur votre première commande." }
+          ]
+        },
+        {
+          "title": "Compte & Codes promo",
+          "items": [
+            { "q": "Comment utiliser un code promo ?", "a": "Saisissez votre code promo dans le champ « Code promo » sur la page du panier ou lors du paiement. Les codes valides appliquent automatiquement la remise au total de votre commande." },
+            { "q": "Puis-je combiner plusieurs codes promo ?", "a": "Un seul code promo peut être appliqué par commande. Cependant, les codes promo peuvent être combinés avec les prix soldés." },
+            { "q": "Comment changer mon mot de passe ?", "a": "Allez dans Compte → Profil et utilisez l'option « Changer le mot de passe ». Vous pouvez également utiliser « Mot de passe oublié » sur la page de connexion pour réinitialiser par e-mail." }
+          ]
+        }
+      ]
     },
     "shipping": {
       "title": "Politique de livraison",

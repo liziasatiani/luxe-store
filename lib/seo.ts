@@ -3,6 +3,13 @@ import type { Metadata } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://everythingstreet.com";
 const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Everything Street";
 
+const OG_LOCALE: Record<string, string> = {
+  en: "en_US",
+  fr: "fr_FR",
+  es: "es_ES",
+  ka: "ka_GE",
+};
+
 interface SeoProps {
   title?: string;
   description?: string;
@@ -10,6 +17,7 @@ interface SeoProps {
   url?: string;
   type?: "website" | "article";
   noIndex?: boolean;
+  locale?: string;
 }
 
 export function buildMetadata({
@@ -19,6 +27,7 @@ export function buildMetadata({
   url = BASE_URL,
   type = "website",
   noIndex = false,
+  locale = "en",
 }: SeoProps = {}): Metadata {
   const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | Luxury Beauty & Tech`;
 
@@ -37,7 +46,7 @@ export function buildMetadata({
       siteName: SITE_NAME,
       images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
       type,
-      locale: "en_US",
+      locale: OG_LOCALE[locale] ?? "en_US",
     },
     twitter: {
       card: "summary_large_image",
