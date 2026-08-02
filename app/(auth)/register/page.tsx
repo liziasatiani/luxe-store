@@ -46,9 +46,9 @@ export default function RegisterPage() {
         </div>
         <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-8 space-y-4">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <Input id="name" label={t("name")} placeholder="Jane Smith" error={errors.name?.message} {...register("name")} />
-            <Input id="email" label={t("email")} type="email" placeholder="you@example.com" error={errors.email?.message} {...register("email")} />
-            <Input id="password" label={t("password")} type={showPw ? "text" : "password"} placeholder="••••••••" error={errors.password?.message}
+            <Input id="name" label={t("name")} autoComplete="name" placeholder="Jane Smith" error={errors.name?.message} {...register("name")} />
+            <Input id="email" label={t("email")} type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" error={errors.email?.message} {...register("email")} />
+            <Input id="password" label={t("password")} type={showPw ? "text" : "password"} autoComplete="new-password" placeholder="••••••••" error={errors.password?.message}
               rightIcon={<button type="button" onClick={() => setShowPw(p => !p)}>{showPw ? <EyeOff size={16} /> : <Eye size={16} />}</button>}
               {...register("password")} />
             <Button type="submit" variant="gold" size="lg" fullWidth loading={loading} leftIcon={<UserPlus size={18} />}>{t("createAccount")}</Button>

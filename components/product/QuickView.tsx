@@ -84,7 +84,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
             </div>
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
+              className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
             >
               <X size={18} />
             </button>
@@ -131,9 +131,9 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                   <div>
                     <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">Qty</p>
                     <div className="flex items-center gap-1 w-fit rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
-                      <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-9 h-9 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">−</button>
-                      <span className="w-10 text-center text-sm font-medium">{qty}</span>
-                      <button onClick={() => setQty(q => q + 1)} className="w-9 h-9 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">+</button>
+                      <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Decrease quantity" className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">−</button>
+                      <span className="w-10 text-center text-sm font-medium" aria-live="polite" aria-atomic="true">{qty}</span>
+                      <button onClick={() => setQty(q => q + 1)} aria-label="Increase quantity" className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">+</button>
                     </div>
                   </div>
                   <div className="flex gap-3 pt-2">

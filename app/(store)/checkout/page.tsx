@@ -231,28 +231,28 @@ export default function CheckoutPage() {
                     <button onClick={() => setMode("choose")} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Change</button>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <Input id="firstName" label="First Name *" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
-                    <Input id="lastName" label="Last Name *" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
+                    <Input id="firstName" label="First Name *" autoComplete="given-name" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
+                    <Input id="lastName" label="Last Name *" autoComplete="family-name" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
                     <div className="col-span-2">
-                      <Input id="email" label="Email *" type="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
+                      <Input id="email" label="Email *" type="email" autoComplete="email" inputMode="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
                     </div>
                     <div className="col-span-2">
-                      <Input id="phone" label="Phone" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" />
+                      <Input id="phone" label="Phone" autoComplete="tel" inputMode="tel" value={guest.phone} onChange={e => setG("phone", e.target.value)} placeholder="+1 555 000 0000" />
                     </div>
                   </div>
 
                   <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 pt-2">Address</p>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="col-span-2">
-                      <Input id="line1" label="Street Address *" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
+                      <Input id="line1" label="Street Address *" autoComplete="address-line1" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
                     </div>
                     <div className="col-span-2">
-                      <Input id="line2" label="Apt, suite, etc." value={guest.line2} onChange={e => setG("line2", e.target.value)} />
+                      <Input id="line2" label="Apt, suite, etc." autoComplete="address-line2" value={guest.line2} onChange={e => setG("line2", e.target.value)} />
                     </div>
-                    <Input id="city" label="City *" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
-                    <Input id="state" label="State *" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
-                    <Input id="postalCode" label="Postal Code *" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
-                    <Input id="country" label="Country" value={guest.country} onChange={e => setG("country", e.target.value)} />
+                    <Input id="city" label="City *" autoComplete="address-level2" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
+                    <Input id="state" label="State *" autoComplete="address-level1" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
+                    <Input id="postalCode" label="Postal Code *" autoComplete="postal-code" inputMode="numeric" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
+                    <Input id="country" label="Country" autoComplete="country-name" value={guest.country} onChange={e => setG("country", e.target.value)} />
                   </div>
                 </div>
               )}
