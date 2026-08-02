@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
         count: stats._count.rating,
         distribution: Object.fromEntries(distribution.map(d => [d.rating, d._count])),
       },
-    });
+    }, { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600" } });
   } catch (err) {
     console.error("[reviews/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch reviews" }, { status: 500 });

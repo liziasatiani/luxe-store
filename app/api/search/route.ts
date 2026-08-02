@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
         brands,
         total: products.length + categories.length + brands.length,
       },
-    });
+    }, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } });
   } catch (err) {
     console.error("[search/GET]", err);
     return NextResponse.json({ success: false, error: "Search failed" }, { status: 500 });

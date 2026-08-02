@@ -18,7 +18,9 @@ export async function GET(req: NextRequest) {
         },
         orderBy: { sortOrder: "asc" },
       });
-      return NextResponse.json({ success: true, data: { categories } });
+      return NextResponse.json({ success: true, data: { categories } }, {
+        headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
+      });
     }
 
     const categories = await prisma.category.findMany({
@@ -33,7 +35,9 @@ export async function GET(req: NextRequest) {
       orderBy: { sortOrder: "asc" },
     });
 
-    return NextResponse.json({ success: true, data: { categories } });
+    return NextResponse.json({ success: true, data: { categories } }, {
+      headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
+    });
   } catch (err) {
     console.error("[categories/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch categories" }, { status: 500 });
