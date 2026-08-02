@@ -77,8 +77,6 @@ export function HeroSection() {
           {[
             { value: "186+", label: t("stats.products") },
             { value: "31",   label: t("stats.brands")   },
-            { value: "50K+", label: t("stats.customers") },
-            { value: "4.9★", label: t("stats.rating")   },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="font-display text-2xl md:text-3xl text-white font-light">{stat.value}</p>

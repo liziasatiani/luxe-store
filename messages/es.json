@@ -30,9 +30,7 @@
       "exploreTech": "Explorar Tech",
       "stats": {
         "products": "Productos seleccionados",
-        "brands": "Marcas de lujo",
-        "customers": "Clientes satisfechos",
-        "rating": "Valoración media"
+        "brands": "Marcas de lujo"
       }
     },
     "categories": {
@@ -306,42 +304,90 @@
         {
           "title": "Pedidos y envíos",
           "items": [
-            { "q": "¿Cuánto tarda el envío?", "a": "El envío estándar tarda de 3 a 5 días hábiles en EE. UU. El envío urgente (1–2 días hábiles) está disponible al tramitar el pedido. Los pedidos internacionales suelen tardar entre 7 y 14 días hábiles." },
-            { "q": "¿Ofrecen envío gratuito?", "a": "¡Sí! Todos los pedidos superiores a 75 $ tienen envío estándar gratuito en EE. UU. Los pedidos inferiores a 75 $ tienen una tarifa plana de envío de 9,99 $." },
-            { "q": "¿Puedo rastrear mi pedido?", "a": "Por supuesto. Una vez enviado tu pedido, recibirás un correo con un número de seguimiento. También puedes rastrearlo en tu cuenta en 'Mis pedidos'." },
-            { "q": "¿Envían a nivel internacional?", "a": "Sí, enviamos a más de 50 países de todo el mundo. Los costes y plazos de envío varían según el destino. Pueden aplicarse aranceles e impuestos." }
+            {
+              "q": "¿Cuánto tarda el envío?",
+              "a": "El envío estándar tarda de 3 a 5 días hábiles en EE. UU. El envío urgente (1–2 días hábiles) está disponible al tramitar el pedido. Los pedidos internacionales suelen tardar entre 7 y 14 días hábiles."
+            },
+            {
+              "q": "¿Ofrecen envío gratuito?",
+              "a": "¡Sí! Todos los pedidos superiores a 75 $ tienen envío estándar gratuito en EE. UU. Los pedidos inferiores a 75 $ tienen una tarifa plana de envío de 9,99 $."
+            },
+            {
+              "q": "¿Puedo rastrear mi pedido?",
+              "a": "Por supuesto. Una vez enviado tu pedido, recibirás un correo con un número de seguimiento. También puedes rastrearlo en tu cuenta en 'Mis pedidos'."
+            },
+            {
+              "q": "¿Envían a nivel internacional?",
+              "a": "Sí, enviamos a más de 50 países de todo el mundo. Los costes y plazos de envío varían según el destino. Pueden aplicarse aranceles e impuestos."
+            }
           ]
         },
         {
           "title": "Productos y autenticidad",
           "items": [
-            { "q": "¿Son auténticos todos los productos?", "a": "100 % sí. Cada producto de Everything Street se obtiene directamente de distribuidores autorizados por la marca. Tenemos estrictos procesos de verificación y tolerancia cero con las falsificaciones." },
-            { "q": "¿De dónde provienen sus productos?", "a": "Trabajamos directamente con distribuidores oficiales y minoristas autorizados en EE. UU., Europa y Asia. Cada marca de nuestra plataforma ha sido verificada y aprobada." },
-            { "q": "¿Qué pasa si recibo un producto dañado?", "a": "Contáctanos en los 7 días siguientes a la entrega y organizaremos inmediatamente un reemplazo completo o un reembolso. También cubriremos los gastos de devolución de los artículos dañados." }
+            {
+              "q": "¿Son auténticos todos los productos?",
+              "a": "100 % sí. Cada producto de Everything Street se obtiene directamente de distribuidores autorizados por la marca. Tenemos estrictos procesos de verificación y tolerancia cero con las falsificaciones."
+            },
+            {
+              "q": "¿De dónde provienen sus productos?",
+              "a": "Trabajamos directamente con distribuidores oficiales y minoristas autorizados en EE. UU., Europa y Asia. Cada marca de nuestra plataforma ha sido verificada y aprobada."
+            },
+            {
+              "q": "¿Qué pasa si recibo un producto dañado?",
+              "a": "Contáctanos en los 7 días siguientes a la entrega y organizaremos inmediatamente un reemplazo completo o un reembolso. También cubriremos los gastos de devolución de los artículos dañados."
+            }
           ]
         },
         {
           "title": "Devoluciones y reembolsos",
           "items": [
-            { "q": "¿Cuál es su política de devolución?", "a": "Ofrecemos devoluciones sin complicaciones en 30 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados." },
-            { "q": "¿Cuánto tarda el reembolso?", "a": "Una vez recibido el artículo devuelto, los reembolsos se procesan en 3–5 días hábiles y aparecen en tu método de pago original en 5–10 días hábiles." },
-            { "q": "¿Hay artículos que no se pueden devolver?", "a": "Los productos de belleza abiertos (por razones de higiene), los artículos personalizados y las descargas digitales no pueden devolverse salvo que sean defectuosos." }
+            {
+              "q": "¿Cuál es su política de devolución?",
+              "a": "Ofrecemos devoluciones sin complicaciones en 30 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados."
+            },
+            {
+              "q": "¿Cuánto tarda el reembolso?",
+              "a": "Una vez recibido el artículo devuelto, los reembolsos se procesan en 3–5 días hábiles y aparecen en tu método de pago original en 5–10 días hábiles."
+            },
+            {
+              "q": "¿Hay artículos que no se pueden devolver?",
+              "a": "Los productos de belleza abiertos (por razones de higiene), los artículos personalizados y las descargas digitales no pueden devolverse salvo que sean defectuosos."
+            }
           ]
         },
         {
           "title": "Pago y seguridad",
           "items": [
-            { "q": "¿Qué métodos de pago aceptan?", "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) y pago contra reembolso en determinadas regiones." },
-            { "q": "¿Es segura mi información de pago?", "a": "Sí. Todos los pagos se procesan a través de Stripe, un procesador certificado PCI-DSS Nivel 1. Nunca almacenamos los datos de tu tarjeta en nuestros servidores." },
-            { "q": "¿Ofrecen tarjetas regalo?", "a": "Actualmente no ofrecemos tarjetas regalo, pero sí códigos promocionales. Usa el código WELCOME15 para un 15 % de descuento en tu primer pedido." }
+            {
+              "q": "¿Qué métodos de pago aceptan?",
+              "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) y pago contra reembolso en determinadas regiones."
+            },
+            {
+              "q": "¿Es segura mi información de pago?",
+              "a": "Sí. Todos los pagos se procesan a través de Stripe, un procesador certificado PCI-DSS Nivel 1. Nunca almacenamos los datos de tu tarjeta en nuestros servidores."
+            },
+            {
+              "q": "¿Ofrecen tarjetas regalo?",
+              "a": "Actualmente no ofrecemos tarjetas regalo, pero sí códigos promocionales. Usa el código WELCOME15 para un 15 % de descuento en tu primer pedido."
+            }
           ]
         },
         {
           "title": "Cuenta y cupones",
           "items": [
-            { "q": "¿Cómo uso un cupón?", "a": "Introduce tu código de cupón en el campo 'Cupón' de la página del carrito o durante el pago. Los códigos válidos aplicarán automáticamente el descuento al total de tu pedido." },
-            { "q": "¿Puedo combinar varios cupones?", "a": "Solo se puede aplicar un cupón por pedido. Sin embargo, los cupones se pueden combinar con precios en oferta." },
-            { "q": "¿Cómo cambio mi contraseña?", "a": "Ve a Cuenta → Perfil y usa la opción 'Cambiar contraseña'. También puedes usar '¿Olvidaste tu contraseña?' en la página de inicio de sesión para restablecerla por correo electrónico." }
+            {
+              "q": "¿Cómo uso un cupón?",
+              "a": "Introduce tu código de cupón en el campo 'Cupón' de la página del carrito o durante el pago. Los códigos válidos aplicarán automáticamente el descuento al total de tu pedido."
+            },
+            {
+              "q": "¿Puedo combinar varios cupones?",
+              "a": "Solo se puede aplicar un cupón por pedido. Sin embargo, los cupones se pueden combinar con precios en oferta."
+            },
+            {
+              "q": "¿Cómo cambio mi contraseña?",
+              "a": "Ve a Cuenta → Perfil y usa la opción 'Cambiar contraseña'. También puedes usar '¿Olvidaste tu contraseña?' en la página de inicio de sesión para restablecerla por correo electrónico."
+            }
           ]
         }
       ]
