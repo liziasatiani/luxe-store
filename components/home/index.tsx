@@ -10,7 +10,7 @@ import { useCountdown } from "@/hooks";
 import type { ProductCard as ProductCardType } from "@/types";
 
 // ─── Categories Section ───────────────────────────────────────
-export function CategoriesSection({ categories }: { categories: Array<{ name: string; slug: string; image: string | null; _count?: { products: number } }> }) {
+export function CategoriesSection({ categories }: { categories: Array<{ name: string; slug: string; image: string | null; parent?: { slug: string } | null; _count?: { products: number } }> }) {
   const t = useTranslations("home.categories");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -33,7 +33,7 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
               transition={{ delay: i * 0.04 }}
             >
               <Link
-                href={`/${cat.slug}`}
+                href={cat.parent ? `/${cat.parent.slug}/${cat.slug}` : `/${cat.slug}`}
                 className="group flex flex-col items-center justify-center gap-2 py-8 px-4 hover:bg-brand-50 dark:hover:bg-white/[0.03] transition-colors text-center"
               >
                 <p className="text-[11px] tracking-[0.14em] uppercase font-medium text-surface-700 dark:text-white group-hover:text-brand-600 dark:group-hover:opacity-60 transition-colors">

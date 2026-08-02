@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = { title: "My Account", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { User, Package, MapPin, Heart, LogOut } from "lucide-react";

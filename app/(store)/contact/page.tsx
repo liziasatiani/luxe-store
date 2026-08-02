@@ -13,7 +13,9 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.message) { toast.error("Please fill in all required fields"); return; }
+    if (!form.name.trim()) { toast.error("Please enter your name"); return; }
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) { toast.error("Please enter a valid email address"); return; }
+    if (!form.message.trim() || form.message.trim().length < 10) { toast.error("Message must be at least 10 characters"); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
@@ -78,10 +80,12 @@ export default function ContactPage() {
               <h3 className="font-semibold text-surface-900 dark:text-white mb-4">Chat With Us</h3>
               <div className="space-y-2">
                 {[
-                  { icon: MessageCircle, label: "WhatsApp", href: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? ""}`, color: "text-green-500" },
-                  { icon: Instagram,    label: "Instagram", href: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "#",                  color: "text-pink-500"  },
-                  { icon: Facebook,     label: "Facebook",  href: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "#",                   color: "text-blue-500"  },
-                ].map(s => (
+                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
+                    ? { icon: MessageCircle, label: "WhatsApp", href: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`, color: "text-green-500" }
+                    : null,
+                  { icon: Instagram, label: "Instagram", href: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "#", color: "text-pink-500" },
+                  { icon: Facebook,  label: "Facebook",  href: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "#",  color: "text-blue-500" },
+                ].filter((s): s is NonNullable<typeof s> => s !== null).map(s => (
                   <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-xl border border-surface-100 dark:border-surface-800 hover:border-brand-200 dark:hover:border-brand-700 transition-colors group">
                     <s.icon size={18} className={s.color} />

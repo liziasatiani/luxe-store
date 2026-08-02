@@ -12,7 +12,11 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!email) return;
+    const trimmed = email.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
     setLoading(true);
     try {
       await fetch("/api/auth/forgot-password", {

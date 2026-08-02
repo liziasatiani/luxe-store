@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = { title: "My Orders", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
