@@ -5,7 +5,9 @@ import { Container, Input, Textarea } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
 
-const GOOGLE_MAPS_URL = "https://maps.google.com/?q=123+Luxury+Lane,+Beverly+Hills,+CA+90210";
+const PHONE = process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "";
+const ADDRESS = process.env.NEXT_PUBLIC_CONTACT_ADDRESS ?? "";
+const MAPS_URL = process.env.NEXT_PUBLIC_CONTACT_MAPS_URL ?? "";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
@@ -51,28 +53,30 @@ export default function ContactPage() {
                   </div>
                 </a>
 
-                <a href="tel:+15550000000" className="flex items-start gap-3 group">
-                  <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center shrink-0">
-                    <Phone size={18} className="text-brand-500" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-surface-400 mb-0.5">Phone</p>
-                    <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">+1 (555) 000-0000</p>
-                  </div>
-                </a>
+                {PHONE && (
+                  <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="flex items-start gap-3 group">
+                    <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center shrink-0">
+                      <Phone size={18} className="text-brand-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-surface-400 mb-0.5">Phone</p>
+                      <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">{PHONE}</p>
+                    </div>
+                  </a>
+                )}
 
-                <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
-                  <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center shrink-0">
-                    <MapPin size={18} className="text-brand-500" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-surface-400 mb-0.5">Address</p>
-                    <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">
-                      123 Luxury Lane, Beverly Hills, CA 90210
-                    </p>
-                    <p className="text-xs text-brand-400 mt-0.5">Open in Google Maps →</p>
-                  </div>
-                </a>
+                {ADDRESS && (
+                  <a href={MAPS_URL || undefined} target={MAPS_URL ? "_blank" : undefined} rel="noopener noreferrer" className="flex items-start gap-3 group">
+                    <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center shrink-0">
+                      <MapPin size={18} className="text-brand-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-surface-400 mb-0.5">Address</p>
+                      <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">{ADDRESS}</p>
+                      {MAPS_URL && <p className="text-xs text-brand-400 mt-0.5">Open in Google Maps →</p>}
+                    </div>
+                  </a>
+                )}
               </div>
             </div>
 
