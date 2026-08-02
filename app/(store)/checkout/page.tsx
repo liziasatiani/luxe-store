@@ -368,8 +368,8 @@ export default function CheckoutPage() {
             </div>
             <div className="flex flex-col gap-1.5 pt-1">
               {[
-                { icon: Lock, text: "Secure checkout" },
-                { icon: Truck, text: "Free shipping over $150" },
+                { icon: Lock, text: "256-bit SSL encryption" },
+                { icon: Truck, text: "Free shipping over $75" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2">
                   <Icon size={12} className="text-black/30 dark:text-white/30 shrink-0" />

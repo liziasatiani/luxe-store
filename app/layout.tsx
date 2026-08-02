@@ -16,7 +16,8 @@ import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { PWAInit } from "@/components/PWAInit";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { MotionProvider } from "@/components/ui/MotionProvider";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildOrganizationSchema } from "@/lib/seo";
+import { jsonLdSafe } from "@/lib/utils";
 import "./globals.css";
 
 const inter = Inter({
@@ -55,6 +56,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cinzel.variable} ${lora.variable}`}>
       <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
         <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
