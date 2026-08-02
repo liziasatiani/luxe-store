@@ -29,8 +29,11 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-  const { id, ...data } = await req.json();
-  const coupon = await prisma.coupon.update({ where: { id }, data });
+  const { id, ...body } = await req.json();
+  if (!id) return NextResponse.json({ success: false, error: "Coupon ID required" }, { status: 400 });
+  const parsed = couponSchema.partial().safeParse(body);
+  if (!parsed.success) return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
+  const coupon = await prisma.coupon.update({ where: { id }, data: parsed.data });
   return NextResponse.json({ success: true, data: { coupon: serializeDecimal(coupon) } });
 }
 

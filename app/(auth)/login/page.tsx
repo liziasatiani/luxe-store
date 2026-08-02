@@ -15,7 +15,8 @@ import toast from "react-hot-toast";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") ?? "/";
+  const rawRedirect = searchParams.get("redirect") ?? "/";
+  const redirect = rawRedirect.startsWith("/") && !rawRedirect.startsWith("//") ? rawRedirect : "/";
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const t = useTranslations("auth.login");
