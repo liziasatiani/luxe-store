@@ -33,6 +33,7 @@ export default async function OGImage({ params }: Props) {
         {imageUrl && (
           <img
             src={imageUrl}
+            alt=""
             style={{ width: 630, height: 630, objectFit: "cover", opacity: 0.6 }}
           />
         )}
