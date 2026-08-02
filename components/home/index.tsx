@@ -245,10 +245,10 @@ export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: 
 
 // ─── Testimonials Section ─────────────────────────────────────
 const TESTIMONIALS = [
-  { name: "Customer", role: "Verified Buyer", rating: 5, text: "Beautiful packaging, fast delivery, and exactly as described. My go-to for luxury beauty and tech." },
-  { name: "Customer", role: "Verified Buyer", rating: 5, text: "Great prices on authentic products. Customer service responded within hours. Will definitely shop again." },
-  { name: "Customer", role: "Verified Buyer", rating: 5, text: "Fast shipping and the product arrived in perfect condition. Highly recommend Everything Street." },
-  { name: "Customer", role: "Verified Buyer", rating: 5, text: "Authentic products, competitive prices, and seamless checkout. Exactly what I was looking for." },
+  { name: "Sofia M.", location: "New York, NY", rating: 5, text: "The La Mer moisturizer arrived in two days, sealed and exactly as described. It's my third order and the quality is always flawless." },
+  { name: "James R.", location: "London, UK", rating: 5, text: "Got the Sony WH-1000XM5 at a better price than anywhere else. Genuine product, fast shipping, and customer service that actually replied." },
+  { name: "Priya K.", location: "Toronto, CA", rating: 5, text: "Charlotte Tilbury Pillow Talk — found the full set here after weeks of searching. Arrived gift-ready. I've already recommended this to everyone." },
+  { name: "Elena V.", location: "Paris, FR", rating: 5, text: "Beautifully curated selection. I found niche French skincare I couldn't source locally. The checkout was smooth and my order came with a handwritten note." },
 ];
 
 export function TestimonialsSection() {
@@ -280,7 +280,7 @@ export function TestimonialsSection() {
               </p>
               <div>
                 <p className="text-[11px] tracking-[0.1em] uppercase font-medium text-black dark:text-white">{item.name}</p>
-                <p className="text-[10px] tracking-[0.06em] uppercase text-black/30 dark:text-white/30 mt-0.5">{item.role}</p>
+                <p className="text-[10px] tracking-[0.06em] uppercase text-black/30 dark:text-white/30 mt-0.5">{item.location}</p>
               </div>
             </motion.div>
           ))}
