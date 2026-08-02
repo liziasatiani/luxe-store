@@ -49,7 +49,6 @@ export function ExitIntentCapture() {
       if (!res.ok) throw new Error();
       setStatus("done");
       localStorage.setItem(STORAGE_KEY, String(Date.now()));
-      setTimeout(dismiss, 2500);
     } catch {
       setStatus("error");
     }
@@ -87,9 +86,13 @@ export function ExitIntentCapture() {
 
             {status === "done" ? (
               <div className="text-center py-4">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 dark:text-white/40 mb-3">Thank you</p>
-                <p className="font-display text-2xl text-black dark:text-white">You're on the list.</p>
-                <p className="text-sm text-black/50 dark:text-white/50 mt-2">Expect exclusive offers and new arrivals.</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 dark:text-white/40 mb-3">Your code</p>
+                <p className="font-display text-2xl text-black dark:text-white mb-4">You're on the list.</p>
+                <div className="border border-dashed border-black/20 dark:border-white/20 px-6 py-3 mb-3">
+                  <p className="text-[10px] tracking-[0.12em] uppercase text-black/40 dark:text-white/40 mb-1">Use at checkout</p>
+                  <p className="font-mono text-xl tracking-[0.2em] font-medium text-black dark:text-white">WELCOME15</p>
+                </div>
+                <p className="text-xs text-black/40 dark:text-white/40">15% off your first order. Single use.</p>
               </div>
             ) : (
               <>

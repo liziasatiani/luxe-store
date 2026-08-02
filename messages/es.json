@@ -1,4 +1,11 @@
 {
+  "cookie": {
+    "title": "Usamos cookies",
+    "body": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra",
+    "privacy": "Política de privacidad",
+    "decline": "Rechazar",
+    "accept": "Aceptar"
+  },
   "nav": {
     "beauty": "Belleza",
     "tech": "Tecnología",
@@ -50,7 +57,7 @@
     },
     "testimonials": {
       "title": "Lo que dicen nuestros clientes",
-      "subtitle": "Más de 50.000 clientes satisfechos"
+      "subtitle": "Opiniones verificadas de compradores reales"
     },
     "newsletter": {
       "badge": "Ofertas exclusivas",
