@@ -41,12 +41,15 @@ const lora = Lora({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  ...buildMetadata(),
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-  manifest: "/manifest.json",
-  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Everything Street" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    ...buildMetadata({ locale }),
+    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    manifest: "/manifest.json",
+    appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Everything Street" },
+  };
+}
 
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

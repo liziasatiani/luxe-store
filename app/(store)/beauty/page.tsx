@@ -4,9 +4,13 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
 import { SubcategoryNav } from "@/components/ui/SubcategoryNav";
 import { TrustBar } from "@/components/ui/TrustBar";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({ title: "Beauty", description: "Shop luxury skincare, makeup, hair care, perfume and beauty tools from the world's most coveted brands." });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Beauty", description: "Shop luxury skincare, makeup, hair care, perfume and beauty tools from the world's most coveted brands.", locale });
+}
 
 export default async function BeautyPage() {
   const subcategories = await prisma.category.findMany({

@@ -1,10 +1,10 @@
 import { Container } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 
 export async function generateMetadata() {
-  const t = await getTranslations("pages.returns");
-  return buildMetadata({ title: t("title") });
+  const [t, locale] = await Promise.all([getTranslations("pages.returns"), getLocale()]);
+  return buildMetadata({ title: t("title"), locale });
 }
 
 export default async function ReturnsPage() {

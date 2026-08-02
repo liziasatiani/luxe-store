@@ -1,8 +1,12 @@
 import { Container } from "@/components/ui";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
-export const metadata = buildMetadata({ title: "Sitemap", noIndex: true });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Sitemap", noIndex: true, locale });
+}
 
 const SECTIONS = [
   {

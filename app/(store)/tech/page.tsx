@@ -4,9 +4,13 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
 import { SubcategoryNav } from "@/components/ui/SubcategoryNav";
 import { TrustBar } from "@/components/ui/TrustBar";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({ title: "Tech", description: "Shop premium headphones, cameras, tablets, gaming gear, wearables and smart home devices." });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "Tech", description: "Shop premium headphones, cameras, tablets, gaming gear, wearables and smart home devices.", locale });
+}
 
 export default async function TechPage() {
   const subcategories = await prisma.category.findMany({

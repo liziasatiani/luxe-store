@@ -1,11 +1,11 @@
 import { Container } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
 import { Truck, Clock, Globe, Package } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 
 export async function generateMetadata() {
-  const t = await getTranslations("pages.shipping");
-  return buildMetadata({ title: t("title") });
+  const [t, locale] = await Promise.all([getTranslations("pages.shipping"), getLocale()]);
+  return buildMetadata({ title: t("title"), locale });
 }
 
 export default async function ShippingPage() {

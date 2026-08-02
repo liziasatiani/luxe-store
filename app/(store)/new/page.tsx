@@ -3,11 +3,11 @@ import { Suspense } from "react";
 import { Container, Spinner } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { buildMetadata } from "@/lib/seo";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 
 export async function generateMetadata() {
-  const t = await getTranslations("pages.newArrivals");
-  return buildMetadata({ title: t("title") });
+  const [t, locale] = await Promise.all([getTranslations("pages.newArrivals"), getLocale()]);
+  return buildMetadata({ title: t("title"), locale });
 }
 
 export default async function NewArrivalsPage() {

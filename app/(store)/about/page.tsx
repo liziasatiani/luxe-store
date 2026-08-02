@@ -1,8 +1,12 @@
 import { Container } from "@/components/ui";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import { ShieldCheck, Globe, Lock } from "lucide-react";
 
-export const metadata = buildMetadata({ title: "About Us", description: "Everything Street — where luxury beauty and premium technology share the same address." });
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return buildMetadata({ title: "About Us", description: "Everything Street — where luxury beauty and premium technology share the same address.", locale });
+}
 
 export default function AboutPage() {
   return (

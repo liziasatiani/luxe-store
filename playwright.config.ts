@@ -10,7 +10,7 @@ export default defineConfig({
     headless: true,
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "chrome", use: { ...devices["Desktop Chrome"], channel: "chrome" } },
   ],
   webServer: {
     command: "npm run dev",
