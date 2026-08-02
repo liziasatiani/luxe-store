@@ -140,7 +140,11 @@ export function Navbar() {
                 {mounted && <LanguageSelector />}
               </div>
 
-              <button onClick={openSearch} aria-label="Open search" className="p-3 text-black dark:text-white hover:opacity-50 transition-opacity">
+              <button onClick={openSearch} aria-label="Open search (⌘K)" title="Search  ⌘K" className="p-3 text-black dark:text-white hover:opacity-50 transition-opacity hidden md:flex items-center gap-2">
+                <Search size={18} />
+                <span className="text-[10px] tracking-[0.06em] text-black/25 dark:text-white/25 border border-black/10 dark:border-white/10 px-1.5 py-0.5 hidden lg:inline">⌘K</span>
+              </button>
+              <button onClick={openSearch} aria-label="Open search" className="p-3 text-black dark:text-white hover:opacity-50 transition-opacity md:hidden">
                 <Search size={18} />
               </button>
 

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProductCard, ProductCardSkeleton } from "./ProductCard";
@@ -30,9 +31,14 @@ export function ProductGrid({
   showFilters = true,
   columns = 4,
 }: ProductGridProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<ProductCardType[]>(initialProducts ?? []);
   const [loading, setLoading] = useState(!initialProducts);
-  const [filters, setFilters] = useState<ProductFilters>(initialFilters ?? {});
+  const [filters, setFilters] = useState<ProductFilters>(() => {
+    const sort = searchParams.get("sort") as SortOption | null;
+    return { ...(initialFilters ?? {}), ...(sort ? { sort } : {}) };
+  });
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -80,6 +86,11 @@ export function ProductGrid({
     setFilters(next);
     setPage(1);
     fetchProducts(next, 1);
+    if (key === "sort") {
+      const p = new URLSearchParams(searchParams.toString());
+      if (value) p.set("sort", value as string); else p.delete("sort");
+      router.replace(`?${p.toString()}`, { scroll: false });
+    }
   };
 
   const handleBrandToggle = (slug: string) => {

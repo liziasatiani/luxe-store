@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check } from "lucide-react";
+import { CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown } from "lucide-react";
 import { Container, Input, Divider } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
@@ -30,6 +30,7 @@ export default function CheckoutPage() {
   const { items, subtotal, discount, shipping, tax, total, coupon, clearCart } = useCartStore();
   const [mode, setMode] = useState<CheckoutMode>("choose");
   const [step, setStep] = useState<Step>(1);
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [notes, setNotes] = useState("");
@@ -215,6 +216,36 @@ export default function CheckoutPage() {
             </div>
           );
         })}
+      </div>
+
+      {/* Mobile order summary toggle */}
+      <div className="lg:hidden mb-6 border border-black/10 dark:border-white/10">
+        <button
+          onClick={() => setSummaryOpen(o => !o)}
+          className="w-full flex items-center justify-between px-4 py-3 text-sm text-black dark:text-white"
+        >
+          <span className="text-[10px] tracking-[0.14em] uppercase text-black/50 dark:text-white/50">
+            {summaryOpen ? "Hide order summary" : `Show order summary · ${formatPrice(total())}`}
+          </span>
+          <ChevronDown size={14} className={`text-black/40 dark:text-white/40 transition-transform ${summaryOpen ? "rotate-180" : ""}`} />
+        </button>
+        {summaryOpen && (
+          <div className="px-4 pb-4 space-y-3 border-t border-black/8 dark:border-white/8">
+            <div className="space-y-2 pt-3 max-h-40 overflow-y-auto">
+              {items.map(item => (
+                <div key={item.id} className="flex justify-between text-sm gap-3">
+                  <span className="text-black/60 dark:text-white/60 line-clamp-1 flex-1">{item.product.name} × {item.quantity}</span>
+                  <span className="font-medium shrink-0 text-black dark:text-white">{formatPrice(Number(item.product.price) * item.quantity)}</span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-black/8 dark:border-white/8 pt-3 space-y-1.5 text-sm">
+              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Subtotal</span><span>{formatPrice(subtotal())}</span></div>
+              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Shipping</span><span>{shipping() === 0 ? "FREE" : formatPrice(shipping())}</span></div>
+              <div className="flex justify-between font-medium text-black dark:text-white pt-1"><span>Total</span><span>{formatPrice(total())}</span></div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">

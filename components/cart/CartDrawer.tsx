@@ -13,6 +13,7 @@ import type { ProductCard } from "@/types";
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, addItem, discount, shipping, total, coupon, setCoupon } = useCartStore();
   const count = items.reduce((s, i) => s + i.quantity, 0);
+  const touchStartX = useRef(0);
   const FREE_THRESHOLD = 75;
   const subtotalValue = items.reduce((s, i) => s + Number(i.variant?.price ?? i.product.price) * i.quantity, 0);
   const amountToFreeShip = Math.max(0, FREE_THRESHOLD - subtotalValue);
@@ -85,6 +86,8 @@ export function CartDrawer() {
             role="dialog"
             aria-modal="true"
             aria-label="Shopping cart"
+            onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+            onTouchEnd={e => { if (e.changedTouches[0].clientX - touchStartX.current > 72) closeCart(); }}
             className="fixed top-0 right-0 h-full w-full max-w-sm z-50 flex flex-col bg-white dark:bg-surface-950 shadow-2xl"
           >
             {/* Header */}
