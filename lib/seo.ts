@@ -15,7 +15,7 @@ interface SeoProps {
 export function buildMetadata({
   title,
   description = "Shop luxury beauty, skincare, cosmetics and premium tech. Free shipping on orders over $75.",
-  image = `${BASE_URL}/og-default.jpg`,
+  image = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&q=80&auto=format",
   url = BASE_URL,
   type = "website",
   noIndex = false,
@@ -44,7 +44,7 @@ export function buildMetadata({
       title: fullTitle,
       description,
       images: [image],
-      creator: "@luxestore",
+      creator: "@everythingstreet",
     },
   };
 }

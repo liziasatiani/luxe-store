@@ -7,7 +7,7 @@ This is a standalone project. Do NOT reference, modify, or interact with any fil
 A full-stack luxury e-commerce store built with Next.js 15, TypeScript, Prisma, Supabase, and next-intl.
 
 **Live dev server:** `http://localhost:3000`
-**Admin panel:** `http://localhost:3000/admin` (admin@luxestore.com / Admin@123456)
+**Admin panel:** `http://localhost:3000/admin` (admin@everythingstreet.com / Admin@123456)
 
 ## Tech Stack
 - **Framework:** Next.js 15 App Router
@@ -84,8 +84,8 @@ npm run build            # Production build
 **Tech:** headphones, cameras, tablets, gaming, wearables, smart-home, audio, accessories
 
 ## Pre-seeded Data
-- Admin: admin@luxestore.com / Admin@123456
-- Demo: demo@luxestore.com / Demo@123456
+- Admin: admin@everythingstreet.com / Admin@123456
+- Demo: demo@everythingstreet.com / Demo@123456
 - Coupons: WELCOME15 (15%), LUXE20 (20%), FREESHIP, BEAUTY50
 
 ## Product Import

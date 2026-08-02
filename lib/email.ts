@@ -83,7 +83,7 @@ function buildOrderEmail(data: OrderEmailData): string {
           <tr>
             <td style="background:#111827;border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
               <p style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">
-                Luxe<span style="color:#D4A84B;">.</span>
+                Everything Street
               </p>
             </td>
           </tr>

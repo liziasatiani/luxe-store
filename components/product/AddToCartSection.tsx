@@ -206,7 +206,7 @@ export function AddToCartSection({ product }: Props) {
       {/* Inline trust signals */}
       <div className="flex flex-col gap-1.5 pt-1">
         {[
-          { icon: Truck,      text: `Free shipping on orders over $150 — get it by ${getDeliveryEstimate()}` },
+          { icon: Truck,      text: `Free shipping on orders over $75 — get it by ${getDeliveryEstimate()}` },
           { icon: RotateCcw,  text: "30-day free returns", href: "/returns" },
           { icon: Shield,     text: "100% authentic — guaranteed" },
         ].map(({ icon: Icon, text, href }) => (

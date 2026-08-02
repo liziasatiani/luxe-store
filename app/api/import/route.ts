@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse(csv, {
         headers: {
           "Content-Type": "text/csv",
-          "Content-Disposition": 'attachment; filename="luxe-store-import-template.csv"',
+          "Content-Disposition": 'attachment; filename="everything-street-import-template.csv"',
         },
       });
     }
@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse(json, {
         headers: {
           "Content-Type": "application/json",
-          "Content-Disposition": 'attachment; filename="luxe-store-import-template.json"',
+          "Content-Disposition": 'attachment; filename="everything-street-import-template.json"',
         },
       });
     }

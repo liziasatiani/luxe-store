@@ -36,7 +36,7 @@ const FAQS = [
     items: [
       { q: "What payment methods do you accept?", a: "We accept all major credit and debit cards (Visa, Mastercard, American Express), and Cash on Delivery in select regions." },
       { q: "Is my payment information secure?", a: "Yes. All payments are processed through Stripe, a PCI-DSS Level 1 certified payment processor. We never store your card information on our servers." },
-      { q: "Do you offer gift cards?", a: "Gift cards are coming soon! Sign up for our newsletter to be notified when they launch." },
+      { q: "Do you offer gift cards?", a: "We currently do not offer gift cards, but we do offer promo codes. Use code WELCOME15 for 15% off your first order." },
     ],
   },
   {
