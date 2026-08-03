@@ -43,13 +43,13 @@ export default function ContactPage() {
             <div>
               <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-5">Get In Touch</h2>
               <div className="space-y-4">
-                <a href="mailto:hello@everythingstreet.com" className="flex items-start gap-3 group">
+                <a href="mailto:hello@everythingstreet.ge" className="flex items-start gap-3 group">
                   <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-900/20 flex items-center justify-center shrink-0">
                     <Mail size={18} className="text-brand-500" />
                   </div>
                   <div>
                     <p className="text-xs text-surface-400 mb-0.5">Email</p>
-                    <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">hello@everythingstreet.com</p>
+                    <p className="text-sm text-surface-700 dark:text-surface-300 group-hover:text-brand-500 transition-colors">hello@everythingstreet.ge</p>
                   </div>
                 </a>
 

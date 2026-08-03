@@ -7,7 +7,7 @@ import {
   CategoriesSection,
   BestSellersSection,
   BrandsSection,
-  TestimonialsSection,
+
   NewsletterSection,
   TheEditSection,
   HomepageRecentlyViewed,
@@ -67,7 +67,6 @@ export default async function HomePage() {
         <NewArrivalsSection />
       </Suspense>
       <HomepageRecentlyViewed />
-      <TestimonialsSection />
       <NewsletterSection />
     </>
   );

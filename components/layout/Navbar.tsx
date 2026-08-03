@@ -61,7 +61,7 @@ export function Navbar() {
           New arrivals dropping five days a week
         </div>
         <Container>
-          <div className="relative flex items-center h-14 md:h-16">
+          <div className="flex items-center h-14 md:h-16">
 
             {/* Mobile: hamburger left */}
             <button
@@ -73,8 +73,8 @@ export function Navbar() {
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
-            {/* Desktop: left nav */}
-            <nav className="hidden lg:flex items-center gap-6">
+            {/* Desktop: left nav — flex-1 so logo stays truly centered */}
+            <nav className="hidden lg:flex items-center gap-6 flex-1">
               {NAV_LINKS.slice(0, 3).map((link) => (
                 <div key={link.href} className="relative"
                   onMouseEnter={() => link.children?.length ? setMegaMenu(link.href) : undefined}
@@ -119,7 +119,7 @@ export function Navbar() {
             <Link
               href="/"
               onClick={closeMobileMenu}
-              className="absolute left-1/2 -translate-x-1/2"
+              className=""
             >
               <span className="font-display text-sm md:text-base tracking-[0.1em] uppercase text-black dark:text-white whitespace-nowrap">
                 Everything Street
@@ -127,24 +127,12 @@ export function Navbar() {
             </Link>
 
             {/* Right icons */}
-            <div className="flex items-center gap-1 ml-auto">
-              <div className="hidden lg:flex items-center gap-5 mr-3">
-                {NAV_LINKS.slice(3).map((link) => (
-                  <Link key={link.href} href={link.href} className="text-[11px] tracking-[0.12em] uppercase font-medium text-black dark:text-white hover:opacity-50 transition-opacity">
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-
+            <div className="flex items-center gap-1 ml-auto flex-1 justify-end">
               <div className="hidden lg:block">
                 {mounted && <LanguageSelector />}
               </div>
 
-              <button onClick={openSearch} aria-label="Open search (⌘K)" title="Search  ⌘K" className="p-3 text-black dark:text-white hover:opacity-50 transition-opacity hidden md:flex items-center gap-2">
-                <Search size={18} />
-                <span className="text-[10px] tracking-[0.06em] text-black/25 dark:text-white/25 border border-black/10 dark:border-white/10 px-1.5 py-0.5 hidden lg:inline">⌘K</span>
-              </button>
-              <button onClick={openSearch} aria-label="Open search" className="p-3 text-black dark:text-white hover:opacity-50 transition-opacity md:hidden">
+              <button onClick={openSearch} aria-label="Open search" className="p-3 text-black dark:text-white hover:opacity-50 transition-opacity">
                 <Search size={18} />
               </button>
 
