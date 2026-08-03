@@ -19,10 +19,12 @@ export async function GET(req: NextRequest) {
     const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 20, { min: 1, max: 100 });
     const search = req.nextUrl.searchParams.get("search") ?? "";
     const category = req.nextUrl.searchParams.get("category") ?? "";
+    const stock = req.nextUrl.searchParams.get("stock") ?? "";
 
     const where = {
       ...(search && { OR: [{ name: { contains: search, mode: "insensitive" as const } }, { sku: { contains: search, mode: "insensitive" as const } }] }),
       ...(category && { category: { slug: category } }),
+      ...(stock && { stockStatus: stock as "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK" }),
     };
 
     const [products, total] = await prisma.$transaction([
