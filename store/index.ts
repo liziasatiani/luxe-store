@@ -190,3 +190,19 @@ export const useUIStore = create<UIStore>((set) => ({
   openMobileMenu: () => set({ mobileMenuOpen: true }),
   closeMobileMenu: () => set({ mobileMenuOpen: false }),
 }));
+
+// ── Currency Store ────────────────────────────────────────────────────────────
+type Currency = "USD" | "GEL";
+interface CurrencyStore {
+  currency: Currency;
+  setCurrency: (c: Currency) => void;
+}
+export const useCurrencyStore = create<CurrencyStore>()(
+  persist(
+    (set) => ({
+      currency: "GEL",
+      setCurrency: (currency) => set({ currency }),
+    }),
+    { name: "luxe-currency", storage: createJSONStorage(() => localStorage) }
+  )
+);

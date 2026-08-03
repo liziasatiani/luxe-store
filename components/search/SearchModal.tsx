@@ -7,7 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUIStore } from "@/store";
 import { useSearch } from "@/hooks";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { getProductImageUrl } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import { Spinner } from "@/components/ui";
 import type { ProductCard } from "@/types";
 
@@ -176,6 +177,7 @@ export function SearchModal() {
 }
 
 function SearchResultItem({ product, onClose }: { product: ProductCard; onClose: () => void }) {
+  const { format } = useCurrency();
   const img = getProductImageUrl(product.images, 200, 75);
   return (
     <Link
@@ -193,7 +195,7 @@ function SearchResultItem({ product, onClose }: { product: ProductCard; onClose:
         <p className="text-xs text-surface-400">{product.brand?.name} · {product.category.name}</p>
       </div>
       <span className="text-sm font-semibold text-surface-900 dark:text-white shrink-0">
-        {formatPrice(Number(product.price))}
+        {format(Number(product.price))}
       </span>
     </Link>
   );

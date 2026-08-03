@@ -7,7 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Badge, RatingStars, Spinner } from "@/components/ui";
 import { useCartStore, useWishlistStore } from "@/store";
-import { formatPrice, getProductImageUrl, cn } from "@/lib/utils";
+import { getProductImageUrl, cn } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 
 interface QuickViewProps {
@@ -23,6 +24,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
   const [product, setProduct] = useState<AnyProduct>(null);
   const [loading, setLoading] = useState(false);
   const [qty, setQty] = useState(1);
+  const { format } = useCurrency();
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
 
@@ -115,11 +117,11 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                   <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={14} />
                   <div className="flex items-baseline gap-3">
                     <span className="text-2xl font-bold text-surface-900 dark:text-white">
-                      {formatPrice(Number(product.price))}
+                      {format(Number(product.price))}
                     </span>
                     {product.comparePrice && Number(product.comparePrice) > Number(product.price) && (
                       <span className="text-base text-surface-400 line-through">
-                        {formatPrice(Number(product.comparePrice))}
+                        {format(Number(product.comparePrice))}
                       </span>
                     )}
                   </div>

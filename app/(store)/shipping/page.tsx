@@ -21,7 +21,7 @@ export default async function ShippingPage() {
       <Container className="py-16 max-w-3xl space-y-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Truck,   label: "Free Shipping",   desc: "On orders over $75" },
+            { icon: Truck,   label: "Free Shipping",   desc: "On orders over ₾200" },
             { icon: Clock,   label: "Standard",        desc: "3–5 business days"  },
             { icon: Package, label: "Express",         desc: "1–2 business days"  },
             { icon: Globe,   label: "International",   desc: "7–14 business days" },
@@ -34,7 +34,7 @@ export default async function ShippingPage() {
           ))}
         </div>
         {[
-          { title: "Domestic Shipping (United States)", content: "Standard Shipping (3–5 business days): $9.99, FREE on orders over $75\nExpress Shipping (1–2 business days): $19.99\n\nOrders placed before 2PM EST are processed the same day." },
+          { title: "Domestic Shipping", content: "Standard Shipping (3–5 business days): ₾15, FREE on orders over ₾200\nExpress Shipping (1–2 business days): ₾25\n\nOrders placed before 14:00 GET are processed the same day." },
           { title: "International Shipping", content: "We ship to over 50 countries worldwide.\n\nCanada & Mexico: 5–7 business days\nEurope: 7–10 business days\nAsia & Middle East: 10–14 business days" },
           { title: "Duties & Taxes", content: "International orders may be subject to import duties and taxes upon arrival. These charges are the responsibility of the recipient." },
           { title: "Order Tracking", content: "Once your order ships, you'll receive a confirmation email with a tracking number. Track anytime from your account under 'My Orders'." },
