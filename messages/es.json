@@ -699,14 +699,24 @@
     "allTech": "Toda la Tecnología"
   },
   "hero": {
-    "tagline": "Tech & Belleza, Una Calle",
+    "tagline": "Est. 2024",
     "headline1": "Dos mundos,",
     "headline2": "una calle.",
     "description": "Everything Street combina tecnología cuidada con belleza cuidada — seleccionadas, probadas y entregadas juntas.",
     "shopTech": "Comprar Tech",
     "shopBeauty": "Comprar Belleza",
     "statsProducts": "Productos",
-    "statsBrands": "Marcas"
+    "statsBrands": "Marcas",
+    "statsRating": "Valoración",
+    "statsDelivery": "Entrega",
+    "techLabel": "Tecnología Premium",
+    "techHeadline1": "Precisión",
+    "techHeadline2": "por diseño",
+    "beautyLabel": "Belleza de Lujo",
+    "beautyHeadline1": "Resplandor",
+    "beautyHeadline2": "refinado",
+    "exploreTech": "Explorar Tech",
+    "exploreBeauty": "Explorar Belleza"
   },
   "wishlist": {
     "title": "Mi lista de deseos",

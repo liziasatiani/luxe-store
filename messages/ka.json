@@ -699,14 +699,24 @@
     "allTech": "ყველა ტექი"
   },
   "hero": {
-    "tagline": "ტექნიკა & სილამაზე, ერთი ქუჩა",
+    "tagline": "Est. 2024",
     "headline1": "ორი სამყარო,",
     "headline2": "ერთი ქუჩა.",
     "description": "Everything Street აერთიანებს გააზრებულ ტექნიკას გააზრებულ სილამაზესთან — შერჩეული, გამოცდილი და ერთად მიწოდებული.",
     "shopTech": "ტექნიკა",
     "shopBeauty": "სილამაზე",
     "statsProducts": "პროდუქტი",
-    "statsBrands": "ბრენდი"
+    "statsBrands": "ბრენდი",
+    "statsRating": "შეფასება",
+    "statsDelivery": "მიწოდება",
+    "techLabel": "პრემიუმ ტექნიკა",
+    "techHeadline1": "სიზუსტე",
+    "techHeadline2": "დიზაინით",
+    "beautyLabel": "ლუქს სილამაზე",
+    "beautyHeadline1": "ბრწყინვალება",
+    "beautyHeadline2": "დახვეწილი",
+    "exploreTech": "ტექნიკის შესწავლა",
+    "exploreBeauty": "სილამაზის შესწავლა"
   },
   "wishlist": {
     "title": "სურვილების სია",

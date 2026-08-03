@@ -1,96 +1,163 @@
 "use client";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useRef } from "react";
 
 export function HeroSection() {
   const t = useTranslations("hero");
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const textY  = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section ref={ref} className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
-      <motion.div style={{ y: imageY }} className="absolute inset-0">
+    <section className="relative w-full min-h-[100svh] overflow-hidden flex flex-col md:flex-row">
+      {/* Tech — left panel */}
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="relative flex-1 min-h-[50svh] md:min-h-[100svh] group overflow-hidden"
+      >
         <Image
-          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format"
-          alt="Luxury fashion editorial"
+          src="https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format"
+          alt="Premium technology"
           fill
           priority
           fetchPriority="high"
-          className="object-cover object-center opacity-50"
-          sizes="100vw"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
+        {/* Dark overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07090F]/90 via-[#07090F]/40 to-[#07090F]/20" />
+        {/* Divider line center-right */}
+        <div className="hidden md:block absolute top-0 right-0 bottom-0 w-px bg-white/[0.08]" />
+
+        <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 lg:p-16">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-[9px] tracking-[0.3em] uppercase text-white/40 mb-4"
+          >
+            {t("techLabel", { fallback: "Premium Technology" })}
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="font-display font-light text-white leading-[0.95] tracking-tight mb-6"
+            style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
+          >
+            {t("techHeadline1", { fallback: "Precision" })}
+            <br />
+            <span className="italic font-normal text-brand-400">
+              {t("techHeadline2", { fallback: "by design" })}
+            </span>
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
+          >
+            <Link
+              href="/tech"
+              className="inline-flex items-center gap-3 text-[10px] tracking-[0.22em] uppercase font-medium text-white/80 hover:text-white group/link transition-colors"
+            >
+              {t("exploreTech", { fallback: "Explore Tech" })}
+              <span className="w-8 h-px bg-white/40 group-hover/link:w-12 group-hover/link:bg-white transition-all duration-300" />
+            </Link>
+          </motion.div>
+        </div>
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
-      <motion.div style={{ y: textY, opacity }} className="relative z-10 w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-[10px] tracking-[0.28em] uppercase text-white/60 mb-8"
-        >
-          {t("tagline")}
-        </motion.p>
+      {/* Beauty — right panel */}
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="relative flex-1 min-h-[50svh] md:min-h-[100svh] group overflow-hidden"
+      >
+        <Image
+          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&q=80&auto=format"
+          alt="Luxury beauty"
+          fill
+          priority
+          fetchPriority="high"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07090F]/90 via-[#07090F]/40 to-[#07090F]/20" />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display font-light text-white leading-[0.95] tracking-tight mb-8"
-          style={{ fontSize: "clamp(3rem, 9vw, 7rem)" }}
-        >
-          {t("headline1")}
-          <br />
-          <span className="font-serif italic font-normal text-brand-300">{t("headline2")}</span>
-        </motion.h1>
+        <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 lg:p-16">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.45 }}
+            className="text-[9px] tracking-[0.3em] uppercase text-white/40 mb-4"
+          >
+            {t("beautyLabel", { fallback: "Luxury Beauty" })}
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.55 }}
+            className="font-display font-light text-white leading-[0.95] tracking-tight mb-6"
+            style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
+          >
+            {t("beautyHeadline1", { fallback: "Radiance" })}
+            <br />
+            <span className="italic font-normal text-brand-400">
+              {t("beautyHeadline2", { fallback: "refined" })}
+            </span>
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
+            <Link
+              href="/beauty"
+              className="inline-flex items-center gap-3 text-[10px] tracking-[0.22em] uppercase font-medium text-white/80 hover:text-white group/link transition-colors"
+            >
+              {t("exploreBeauty", { fallback: "Explore Beauty" })}
+              <span className="w-8 h-px bg-white/40 group-hover/link:w-12 group-hover/link:bg-white transition-all duration-300" />
+            </Link>
+          </motion.div>
+        </div>
+      </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm md:text-base text-white/65 max-w-md mx-auto leading-relaxed mb-12 tracking-wide"
-        >
-          {t("description")}
-        </motion.p>
+      {/* Center brand mark */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+      >
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-px h-12 bg-white/20" />
+          <span className="text-[8px] tracking-[0.4em] uppercase text-white/30 bg-[#07090F]/60 px-3 py-1">
+            {t("tagline", { fallback: "Est. 2024" })}
+          </span>
+          <div className="w-px h-12 bg-white/20" />
+        </div>
+      </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-wrap gap-3 justify-center"
-        >
-          <Link href="/tech"
-            className="inline-flex items-center h-12 px-8 border border-white/30 text-white text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/10 transition-colors">
-            {t("shopTech")}
-          </Link>
-          <Link href="/beauty"
-            className="inline-flex items-center h-12 px-8 border border-white/30 text-white text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/5 transition-colors">
-            {t("shopBeauty")}
-          </Link>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex justify-center gap-12 mt-20 border-t border-white/8 pt-10"
-        >
-          {[
-            { value: "230+", label: t("statsProducts") },
-            { value: "148",  label: t("statsBrands")   },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="font-display text-2xl md:text-3xl text-white font-light">{stat.value}</p>
-              <p className="text-[10px] tracking-[0.12em] uppercase text-white/60 mt-1">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
+      {/* Stats row */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+        className="absolute bottom-0 left-0 right-0 z-10 hidden md:grid grid-cols-4 border-t border-white/[0.08]"
+      >
+        {[
+          { value: "230+", label: t("statsProducts", { fallback: "Products" }), cls: "text-brand-400" },
+          { value: "148",  label: t("statsBrands",   { fallback: "Brands"   }), cls: "text-brand-400" },
+          { value: "4.9★", label: t("statsRating",   { fallback: "Rating"   }), cls: "text-surface-50" },
+          { value: "2–3d", label: t("statsDelivery", { fallback: "Delivery" }), cls: "text-surface-50" },
+        ].map((stat) => (
+          <div key={stat.label} className="flex flex-col items-center justify-center py-5 border-r last:border-r-0 border-white/[0.08]">
+            <p className={`font-display text-2xl font-light ${stat.cls}`}>{stat.value}</p>
+            <p className="text-[9px] tracking-[0.2em] uppercase text-white/40 mt-1">{stat.label}</p>
+          </div>
+        ))}
       </motion.div>
     </section>
   );
