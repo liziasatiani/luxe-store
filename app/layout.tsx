@@ -84,7 +84,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="dns-prefetch" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
       </head>
       <body className="bg-surface-50 dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
               <MotionProvider>

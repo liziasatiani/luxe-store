@@ -19,9 +19,10 @@ interface ProductCardProps {
   priority?: boolean;
   variant?: "default" | "compact" | "horizontal";
   darkBg?: boolean;
+  className?: string;
 }
 
-export function ProductCard({ product, index = 0, priority = false, variant = "default", darkBg = false }: ProductCardProps) {
+export function ProductCard({ product, index = 0, priority = false, variant = "default", darkBg = false, className }: ProductCardProps) {
   const t = useTranslations("product");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
@@ -74,7 +75,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: (index % 4) * 0.08 }}
-        className={cn("group bg-surface-900 border border-white/[0.06] hover:border-white/[0.12] transition-colors")}
+        className={cn("group bg-surface-900 border border-white/[0.06] hover:border-white/[0.12] transition-colors", className)}
       >
         <Link href={`/products/${product.slug}`} className="block">
           <div className="relative overflow-hidden aspect-[3/4] bg-surface-800">

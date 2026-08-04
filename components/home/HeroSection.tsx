@@ -1,12 +1,65 @@
 "use client";
-"use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+
+const COPY = {
+  ka: {
+    techTag: "Technology",
+    techTitle: "ახალი\nჯენერა-\nცია",
+    techSub: "ყველაფერი\nერთ ქუჩაზე",
+    techDesc: "Sony, Samsung, Apple — ყველაფერი ერთ ადგილზე",
+    techCta: "ტექნოლოგია →",
+    beautyTag: "Beauty",
+    beautyTitle: "სილამა-\nზის\nხელოვნება",
+    beautySub: "ტექნოლოგია\nდა სილამაზე",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — პრემიუმ კოსმეტიკა",
+    beautyCta: "სილამაზე →",
+  },
+  en: {
+    techTag: "Technology",
+    techTitle: "Next\nGenera-\ntion",
+    techSub: "Everything\non one street",
+    techDesc: "Sony, Samsung, Apple — everything in one place",
+    techCta: "Shop Tech →",
+    beautyTag: "Beauty",
+    beautyTitle: "The Art\nof\nBeauty",
+    beautySub: "Technology\n& Beauty",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — premium cosmetics",
+    beautyCta: "Shop Beauty →",
+  },
+  fr: {
+    techTag: "Technology",
+    techTitle: "Prochaine\nGénéra-\ntion",
+    techSub: "Tout sur\nune rue",
+    techDesc: "Sony, Samsung, Apple — tout en un seul endroit",
+    techCta: "Voir Tech →",
+    beautyTag: "Beauty",
+    beautyTitle: "L'Art\nde la\nBeauté",
+    beautySub: "Technologie\net Beauté",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — cosmétiques premium",
+    beautyCta: "Voir Beauté →",
+  },
+  es: {
+    techTag: "Technology",
+    techTitle: "Próxima\nGenera-\nción",
+    techSub: "Todo en\nuna calle",
+    techDesc: "Sony, Samsung, Apple — todo en un solo lugar",
+    techCta: "Ver Tech →",
+    beautyTag: "Beauty",
+    beautyTitle: "El Arte\nde la\nBelleza",
+    beautySub: "Tecnología\ny Belleza",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — cosméticos premium",
+    beautyCta: "Ver Belleza →",
+  },
+} as const;
+
+type Locale = keyof typeof COPY;
 
 export function HeroSection() {
-  const t = useTranslations("hero");
+  const locale = useLocale() as Locale;
+  const c = COPY[locale] ?? COPY.en;
 
   return (
     <section className="relative w-full min-h-[100svh] flex flex-col md:flex-row" style={{ background: "#07090F" }}>
@@ -22,11 +75,8 @@ export function HeroSection() {
           className="object-cover object-center brightness-[0.28] transition-[filter,transform] duration-700 group-hover:brightness-[0.38] group-hover:scale-[1.04]"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        {/* Bottom shade */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(0deg,rgba(7,9,15,.85) 0%,transparent 55%)" }} />
-        {/* Tech tint on hover */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "linear-gradient(135deg,rgba(0,229,255,.18) 0%,transparent 70%)" }} />
-        {/* Center divider */}
         <div className="hidden md:block absolute top-0 right-0 bottom-0 w-px" style={{ background: "rgba(239,233,218,0.12)" }} />
 
         <div className="absolute inset-0 flex flex-col justify-end" style={{ padding: "72px 56px" }}>
@@ -37,18 +87,17 @@ export function HeroSection() {
           >
             <div className="flex items-center gap-2.5 mb-4" style={{ color: "#00E5FF" }}>
               <span className="inline-block w-[22px] h-px" style={{ background: "#00E5FF" }} />
-              <span className="text-[10px] font-semibold tracking-[0.22em] uppercase">Technology</span>
+              <span className="text-[10px] font-semibold tracking-[0.22em] uppercase">{c.techTag}</span>
             </div>
-            <h2 className="font-display font-bold text-white leading-[0.95] tracking-[-0.02em] mb-3.5"
+            <h2 className="font-display font-bold text-white leading-[0.95] tracking-[-0.02em] mb-3.5 whitespace-pre-line"
               style={{ fontSize: "clamp(40px,5.5vw,80px)" }}>
-              {t("techHeadline1", { fallback: "Next" })}<br />
-              <span className="italic">{t("techHeadline2", { fallback: "Generation" })}</span>
+              {c.techTitle}
             </h2>
-            <p className="font-georgian text-white/55 mb-7" style={{ fontSize: "clamp(20px,2.8vw,36px)", fontWeight: 400, lineHeight: 1.2 }}>
-              {t("techSubKa", { fallback: "ყველაფერი ერთ ქუჩაზე" })}
+            <p className="font-georgian text-white/55 mb-7 whitespace-pre-line" style={{ fontSize: "clamp(26px,3.5vw,52px)", fontWeight: 400, lineHeight: 1.2 }}>
+              {c.techSub}
             </p>
             <p className="text-[13px] text-white/60 max-w-[280px] leading-[1.65] mb-8">
-              Sony, Samsung, Apple — {t("techSub", { fallback: "everything in one place" })}
+              {c.techDesc}
             </p>
             <Link href="/tech"
               className="inline-flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase text-white border rounded-[1px] transition-all duration-250"
@@ -56,15 +105,15 @@ export function HeroSection() {
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "#00E5FF"; el.style.borderColor = "#00E5FF"; el.style.color = "#000"; }}
               onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(255,255,255,0.06)"; el.style.borderColor = "rgba(255,255,255,0.30)"; el.style.color = "#fff"; }}
             >
-              Shop Tech →
+              {c.techCta}
             </Link>
           </motion.div>
         </div>
       </div>
 
       {/* Center brand watermark */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none text-center">
-        <span className="font-display text-[13px] font-normal tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.25em" }}>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none hidden md:block">
+        <span className="font-display text-[13px] font-normal tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.5)" }}>
           Everything Street
         </span>
       </div>
@@ -91,18 +140,17 @@ export function HeroSection() {
           >
             <div className="flex items-center gap-2.5 mb-4" style={{ color: "#FF3366" }}>
               <span className="inline-block w-[22px] h-px" style={{ background: "#FF3366" }} />
-              <span className="text-[10px] font-semibold tracking-[0.22em] uppercase">Beauty</span>
+              <span className="text-[10px] font-semibold tracking-[0.22em] uppercase">{c.beautyTag}</span>
             </div>
-            <h2 className="font-display font-bold text-white leading-[0.95] tracking-[-0.02em] mb-3.5"
+            <h2 className="font-display font-bold text-white leading-[0.95] tracking-[-0.02em] mb-3.5 whitespace-pre-line"
               style={{ fontSize: "clamp(40px,5.5vw,80px)" }}>
-              {t("beautyHeadline1", { fallback: "The Art" })}<br />
-              <span className="italic">{t("beautyHeadline2", { fallback: "of Beauty" })}</span>
+              {c.beautyTitle}
             </h2>
-            <p className="font-georgian text-white/55 mb-7" style={{ fontSize: "clamp(20px,2.8vw,36px)", fontWeight: 400, lineHeight: 1.2 }}>
-              {t("beautySubKa", { fallback: "ტექნოლოგია და სილამაზე" })}
+            <p className="font-georgian text-white/55 mb-7 whitespace-pre-line" style={{ fontSize: "clamp(26px,3.5vw,52px)", fontWeight: 400, lineHeight: 1.2 }}>
+              {c.beautySub}
             </p>
             <p className="text-[13px] text-white/60 max-w-[280px] leading-[1.65] mb-8">
-              Charlotte Tilbury, La Mer, Chanel — {t("beautySub", { fallback: "premium cosmetics" })}
+              {c.beautyDesc}
             </p>
             <Link href="/beauty"
               className="inline-flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase text-white border rounded-[1px] transition-all duration-250"
@@ -110,7 +158,7 @@ export function HeroSection() {
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "#FF3366"; el.style.borderColor = "#FF3366"; }}
               onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(255,255,255,0.06)"; el.style.borderColor = "rgba(255,255,255,0.30)"; }}
             >
-              Shop Beauty →
+              {c.beautyCta}
             </Link>
           </motion.div>
         </div>
