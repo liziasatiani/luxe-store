@@ -716,7 +716,11 @@
     "beautyHeadline1": "Éclat",
     "beautyHeadline2": "raffiné",
     "exploreTech": "Explorer la Tech",
-    "exploreBeauty": "Explorer la Beauté"
+    "exploreBeauty": "Explorer la Beauté",
+    "techSub": "tout en un seul endroit",
+    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
+    "beautySub": "cosmétiques premium",
+    "beautySubKa": "ტექნოლოგია და სილამაზე"
   },
   "wishlist": {
     "title": "Ma liste de souhaits",

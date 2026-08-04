@@ -1,0 +1,1000 @@
+
+<title>Everything Street — Design Directions Comparison</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #F7F6F3;
+  --surface: #FFFFFF;
+  --border: #E2E0DA;
+  --ink: #111110;
+  --ink2: #555450;
+  --ink3: #999690;
+  --gold: #8B6F38;
+  --sienna: #C96442;
+  --green: #15803D;
+  --green-light: #DCFCE7;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111110;
+    --surface: #1C1B19;
+    --border: #2C2B28;
+    --ink: #F0EDE6;
+    --ink2: #999690;
+    --ink3: #555450;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F7F6F3; --surface: #FFFFFF; --border: #E2E0DA;
+  --ink: #111110; --ink2: #555450; --ink3: #999690;
+}
+:root[data-theme="dark"] {
+  --bg: #111110; --surface: #1C1B19; --border: #2C2B28;
+  --ink: #F0EDE6; --ink2: #999690; --ink3: #555450;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 80px;
+}
+a { color: inherit; text-decoration: none; }
+
+/* PAGE HEADER */
+.page-header {
+  padding: 48px 40px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.page-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 12px;
+}
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.page-sub {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.7;
+  max-width: 600px;
+}
+.page-divider {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  height: 1px;
+  background: var(--border);
+}
+
+/* CARDS ROW */
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 40px;
+}
+
+.option-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.option-card:hover {
+  border-color: var(--ink3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+/* Miniature design preview — each hand-drawn to capture the essence */
+.option-preview {
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* PREVIEW A — Editorial: warm parchment, editorial grid, serif type art */
+.preview-a {
+  background: #F2F0EB;
+  display: flex;
+  flex-direction: column;
+}
+.prev-a-announce {
+  background: #111110;
+  height: 14px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.prev-a-announce span {
+  width: 40px; height: 2px; background: rgba(255,255,255,0.2); border-radius: 1px;
+}
+.prev-a-nav {
+  background: #F2F0EB;
+  border-bottom: 1px solid #D4D1C7;
+  height: 22px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.prev-a-nav-links {
+  display: flex;
+  gap: 10px;
+}
+.prev-a-nav-links span {
+  width: 18px; height: 3px; background: #111110; border-radius: 1px; opacity: 0.5;
+}
+.prev-a-nav-links span:first-child { width: 22px; opacity: 1; }
+.prev-a-brand {
+  width: 52px; height: 4px; background: #111110; border-radius: 1px;
+}
+.prev-a-hero {
+  flex: 1;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 10px;
+}
+.prev-a-hero-text {}
+.prev-a-eyebrow {
+  width: 60px; height: 2px; background: #8B6F38; border-radius: 1px; margin-bottom: 6px;
+}
+.prev-a-h1 {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #111110;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.prev-a-h1-gold {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: #8B6F38;
+  margin-bottom: 8px;
+}
+.prev-a-body { width: 100%; height: 2px; background: #767570; border-radius: 1px; margin-bottom: 4px; opacity: 0.4; }
+.prev-a-ctas { display: flex; gap: 6px; margin-top: 8px; }
+.prev-a-btn { height: 12px; width: 48px; border-radius: 0; }
+.prev-a-btn:first-child { background: #111110; }
+.prev-a-btn:last-child { border: 1px solid #111110; background: transparent; }
+.prev-a-img { background: #D4D1C7; position: relative; }
+.prev-a-img::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 18px;
+  background: #111110;
+}
+.prev-a-grid {
+  padding: 8px 12px;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 2px;
+  height: 60px;
+}
+.prev-a-grid-cell { background: white; }
+.prev-a-grid-cell:first-child { background: #E8E6E0; }
+
+/* PREVIEW B — Immersive: dark split screen */
+.preview-b {
+  background: #0A0908;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+.prev-b-left {
+  background: linear-gradient(135deg, rgba(61,122,111,0.5) 0%, #0A0908 100%);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+.prev-b-right {
+  background: linear-gradient(225deg, rgba(201,100,66,0.5) 0%, #0A0908 100%);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.prev-b-world-tag {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.prev-b-left .prev-b-world-tag { color: #5AADA0; }
+.prev-b-right .prev-b-world-tag { color: #E07A55; }
+.prev-b-ka {
+  font-size: 16px;
+  font-weight: 300;
+  color: white;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.prev-b-cta {
+  height: 14px;
+  width: 52px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.prev-b-left .prev-b-cta {
+  background: rgba(61,122,111,0.3);
+  border: 1px solid rgba(90,173,160,0.4);
+  color: #5AADA0;
+}
+.prev-b-right .prev-b-cta {
+  background: rgba(201,100,66,0.3);
+  border: 1px solid rgba(224,122,85,0.4);
+  color: #E07A55;
+}
+.prev-b-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(10,9,8,0.9);
+  border: 1px solid rgba(240,236,228,0.1);
+  padding: 5px 10px;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(240,236,228,0.8);
+  white-space: nowrap;
+  z-index: 10;
+}
+.prev-b-pill-nav {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10,9,8,0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(240,236,228,0.1);
+  border-radius: 100px;
+  height: 18px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  z-index: 10;
+}
+.prev-b-pill-nav span { width: 16px; height: 2px; border-radius: 1px; }
+.prev-b-pill-nav span:nth-child(1) { background: #5AADA0; }
+.prev-b-pill-nav span:nth-child(2) { background: #E07A55; }
+.prev-b-pill-nav span:nth-child(3) { background: rgba(240,236,228,0.2); }
+.prev-b-pill-nav span:nth-child(4) { background: rgba(240,236,228,0.2); }
+
+/* PREVIEW C — Utility: white, sidebar, dense grid */
+.preview-c {
+  background: #FFFFFF;
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  grid-template-rows: 18px 1fr;
+}
+.prev-c-header {
+  grid-column: 1 / -1;
+  background: white;
+  border-bottom: 1px solid #E4E4E7;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 6px;
+}
+.prev-c-brand-mark {
+  width: 14px; height: 14px; background: #09090B;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.prev-c-brand-mark span {
+  font-size: 5px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.05em;
+  font-family: system-ui;
+}
+.prev-c-search {
+  flex: 1;
+  height: 10px;
+  background: #F4F4F5;
+  border: 1px solid #E4E4E7;
+  border-radius: 3px;
+}
+.prev-c-header-btns {
+  display: flex; gap: 3px;
+}
+.prev-c-header-btns span {
+  width: 18px; height: 10px; border: 1px solid #E4E4E7; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+}
+.prev-c-header-btns span:last-child {
+  background: #15803D; border-color: #15803D;
+  width: 22px;
+}
+.prev-c-sidebar {
+  background: #FFFFFF;
+  border-right: 1px solid #E4E4E7;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+.prev-c-sidebar-section {
+  margin-bottom: 4px;
+}
+.prev-c-sidebar-label {
+  font-family: monospace;
+  font-size: 5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+  margin-bottom: 2px;
+  padding: 0 2px;
+}
+.prev-c-sidebar-item {
+  height: 10px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding: 0 3px;
+  gap: 2px;
+  margin-bottom: 1px;
+}
+.prev-c-sidebar-item span { height: 2px; border-radius: 1px; }
+.prev-c-sidebar-item span:first-child { flex: 1; background: #D4D4D8; }
+.prev-c-sidebar-item span:last-child { width: 10px; background: #E4E4E7; border-radius: 2px; }
+.prev-c-sidebar-item.active {
+  background: #DCFCE7;
+}
+.prev-c-sidebar-item.active span:first-child { background: #15803D; }
+.prev-c-sidebar-item.active span:last-child { background: rgba(21,128,61,0.2); }
+.prev-c-main {
+  background: white;
+  padding: 4px;
+  overflow: hidden;
+}
+.prev-c-announce {
+  background: #15803D;
+  height: 10px;
+  margin-bottom: 3px;
+  border-radius: 2px;
+}
+.prev-c-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.prev-c-title {
+  width: 60px; height: 8px; background: #09090B; border-radius: 2px;
+  font-family: system-ui;
+}
+.prev-c-sort {
+  width: 30px; height: 8px; border: 1px solid #E4E4E7; border-radius: 2px;
+}
+.prev-c-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: #E4E4E7;
+}
+.prev-c-grid-cell {
+  background: white;
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+}
+.prev-c-grid-cell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60%;
+  background: #F4F4F5;
+}
+.prev-c-grid-cell::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 3px;
+  right: 3px;
+  height: 2px;
+  background: #09090B;
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.prev-c-grid-cell:nth-child(1)::before { background: #E8E8E8; }
+.prev-c-grid-cell:nth-child(2)::before { background: #EEEBE7; }
+.prev-c-grid-cell:nth-child(3)::before { background: #E5ECE9; }
+.prev-c-grid-cell:nth-child(4)::before { background: #EDE8E8; }
+.prev-c-badge {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 5px;
+  border-radius: 1px;
+  background: #DCFCE7;
+}
+.prev-c-badge.sale { background: #FEE2E2; }
+
+/* CARD INFO */
+.option-card-body {
+  padding: 20px;
+}
+.option-letter {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.option-tag {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+}
+.tag-a { background: rgba(139,111,56,0.12); color: var(--gold); }
+.tag-b { background: rgba(201,100,66,0.12); color: var(--sienna); }
+.tag-c { background: rgba(21,128,61,0.12); color: var(--green); }
+.option-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.option-desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink2);
+  margin-bottom: 16px;
+}
+.option-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+.option-meta-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.option-meta-key {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink3);
+  min-width: 72px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.option-meta-val {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+.option-cta {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.01em;
+}
+.cta-a { background: #111110; color: #F2F0EB; }
+.cta-a:hover { background: var(--gold); }
+.cta-b { background: var(--sienna); color: white; }
+.cta-b:hover { background: #A04F32; }
+.cta-c { background: var(--green); color: white; }
+.cta-c:hover { background: #166534; }
+
+/* COMPARISON TABLE */
+.compare-section {
+  max-width: 1200px;
+  margin: 48px auto 0;
+  padding: 0 40px;
+}
+.compare-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.compare-sub {
+  font-size: 13px;
+  color: var(--ink3);
+  margin-bottom: 20px;
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 13px;
+}
+.compare-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+}
+.compare-table th:first-child { color: var(--ink3); font-weight: 400; }
+.compare-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink2);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table td:first-child {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.compare-table tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
+.check { color: #15803D; font-weight: 600; }
+.cross { color: #DC2626; }
+.neutral { color: var(--ink3); }
+.highlight-a { color: var(--gold); font-weight: 500; }
+.highlight-b { color: var(--sienna); font-weight: 500; }
+.highlight-c { color: var(--green); font-weight: 500; }
+
+/* RECOMMENDATION */
+.rec-section {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 40px;
+}
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+.rec-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.rec-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.rec-body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink2);
+}
+.rec-body strong { color: var(--ink); font-weight: 600; }
+.rec-btn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--sienna);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rec-btn:hover { background: #A04F32; }
+
+/* FOOTER */
+.page-footer {
+  max-width: 1200px;
+  margin: 48px auto 0;
+  padding: 24px 40px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--ink3);
+}
+.page-footer-links { display: flex; gap: 16px; }
+.page-footer-links a { color: var(--ink3); transition: color 0.15s; }
+.page-footer-links a:hover { color: var(--ink); }
+
+@media (max-width: 900px) {
+  .page-header { padding: 32px 20px 0; }
+  .cards-row { grid-template-columns: 1fr; padding: 0 20px; }
+  .compare-section { padding: 0 20px; }
+  .compare-table { font-size: 12px; }
+  .compare-table td, .compare-table th { padding: 10px 12px; }
+  .rec-section { padding: 0 20px; }
+  .rec-card { grid-template-columns: 1fr; }
+  .page-footer { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+
+<div class="page-header">
+  <div class="page-eyebrow">Everything Street — Design Review</div>
+  <h1 class="page-title">Three Design Directions</h1>
+  <p class="page-sub">Prepared August 2024. Each direction is built from scratch — different navigation paradigm, emotional register, and content hierarchy. Pick one to develop further.</p>
+</div>
+<div class="page-divider"></div>
+
+<!-- OPTION CARDS -->
+<div class="cards-row">
+
+  <!-- OPTION A -->
+  <div class="option-card">
+    <div class="option-preview preview-a">
+      <div class="prev-a-announce">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="prev-a-nav">
+        <div class="prev-a-nav-links">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="prev-a-brand"></div>
+        <div style="width:36px;display:flex;justify-content:flex-end;gap:4px;">
+          <div style="width:10px;height:10px;border:1px solid #D4D1C7;border-radius:50%;"></div>
+          <div style="width:10px;height:10px;border:1px solid #D4D1C7;border-radius:50%;"></div>
+        </div>
+      </div>
+      <div class="prev-a-hero">
+        <div class="prev-a-hero-text">
+          <div class="prev-a-eyebrow"></div>
+          <div class="prev-a-h1">ორი სამყარო,<br>ერთი ქუჩა.</div>
+          <div class="prev-a-h1-gold">Two worlds, one street.</div>
+          <div class="prev-a-body"></div>
+          <div class="prev-a-body" style="width:80%;"></div>
+          <div class="prev-a-ctas">
+            <div class="prev-a-btn"></div>
+            <div class="prev-a-btn"></div>
+          </div>
+        </div>
+        <div class="prev-a-img"></div>
+      </div>
+      <div class="prev-a-grid">
+        <div class="prev-a-grid-cell"></div>
+        <div class="prev-a-grid-cell" style="display:grid;grid-template-rows:1fr 1fr;gap:2px;">
+          <div style="background:#E8E6E0;"></div>
+          <div style="background:#DDD9D0;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="option-card-body">
+      <div class="option-letter">Option A <span class="option-tag tag-a">Editorial</span></div>
+      <div class="option-name">"Editorial Authority"</div>
+      <div class="option-desc">A luxury magazine that happens to sell things. Typography-led, magazine-structured, culturally authoritative. The city of words, not pixels.</div>
+      <div class="option-meta">
+        <div class="option-meta-row">
+          <span class="option-meta-key">Nav</span>
+          <span class="option-meta-val">Horizontal sticky — categories always visible</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Hero</span>
+          <span class="option-meta-val">Editorial split — copy left, product right</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Grid</span>
+          <span class="option-meta-val">Asymmetric magazine (7:5 then 4:4:4)</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Fonts</span>
+          <span class="option-meta-val">Cormorant Garamond + Barlow</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Best for</span>
+          <span class="option-meta-val">28–50, brand-conscious, high trust needed</span>
+        </div>
+      </div>
+      <button class="option-cta cta-a" onclick="sendPrompt('I want to develop Option A — Editorial Authority — further. Let\'s refine the typography, magazine grid, and product cards.')">
+        Develop Option A →
+      </button>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="option-card">
+    <div class="option-preview preview-b">
+      <div class="prev-b-pill-nav">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="prev-b-left">
+        <div class="prev-b-world-tag">World I — Technology</div>
+        <div class="prev-b-ka">ტექნიკა</div>
+        <div class="prev-b-cta">აღმოჩინე →</div>
+      </div>
+      <div class="prev-b-center">Everything Street</div>
+      <div class="prev-b-right">
+        <div class="prev-b-world-tag">World II — Beauty</div>
+        <div class="prev-b-ka">სილამაზე</div>
+        <div class="prev-b-cta">აღმოჩინე →</div>
+      </div>
+    </div>
+    <div class="option-card-body">
+      <div class="option-letter">Option B <span class="option-tag tag-b">Immersive</span></div>
+      <div class="option-name">"Immersive Explorer"</div>
+      <div class="option-desc">The homepage is the choice. Two full-screen worlds, side by side. Enter a world, discover within it. Navigation appears only when needed.</div>
+      <div class="option-meta">
+        <div class="option-meta-row">
+          <span class="option-meta-key">Nav</span>
+          <span class="option-meta-val">Floating pill — appears on scroll past hero</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Hero</span>
+          <span class="option-meta-val">Full-screen split — two worlds, one choice</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Grid</span>
+          <span class="option-meta-val">Discovery scroll + featured "moments"</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Fonts</span>
+          <span class="option-meta-val">Fraunces (variable) + Outfit</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Best for</span>
+          <span class="option-meta-val">22–38, discovery-driven, first-time visitors</span>
+        </div>
+      </div>
+      <button class="option-cta cta-b" onclick="sendPrompt('I want to develop Option B — Immersive Explorer — further. Let\'s refine the split hero interaction, floating pill nav, and discovery scroll experience.')">
+        Develop Option B →
+      </button>
+    </div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="option-card">
+    <div class="option-preview preview-c">
+      <div class="prev-c-header">
+        <div class="prev-c-brand-mark"><span>ES</span></div>
+        <div class="prev-c-search"></div>
+        <div class="prev-c-header-btns">
+          <span></span>
+          <span style="background:#15803D;border-color:#15803D;"></span>
+        </div>
+      </div>
+      <div class="prev-c-sidebar">
+        <div class="prev-c-sidebar-section">
+          <div class="prev-c-sidebar-label">Categories</div>
+          <div class="prev-c-sidebar-item active"><span></span><span></span></div>
+          <div class="prev-c-sidebar-item" style="padding-left:8px;opacity:0.7;"><span style="background:#E4E4E7;"></span><span></span></div>
+          <div class="prev-c-sidebar-item" style="padding-left:8px;opacity:0.5;"><span style="background:#E4E4E7;"></span><span></span></div>
+          <div class="prev-c-sidebar-item"><span></span><span></span></div>
+        </div>
+        <div class="prev-c-sidebar-section">
+          <div class="prev-c-sidebar-label">Price</div>
+          <div style="height:3px;background:#E4E4E7;margin:2px 3px;border-radius:2px;position:relative;">
+            <div style="position:absolute;left:20%;right:15%;height:100%;background:#15803D;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="prev-c-sidebar-section">
+          <div class="prev-c-sidebar-label">Brands</div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div style="display:flex;align-items:center;gap:3px;height:8px;">
+              <div style="width:6px;height:6px;border:1px solid #15803D;border-radius:1px;background:#DCFCE7;flex-shrink:0;"></div>
+              <div style="flex:1;height:2px;background:#D4D4D8;border-radius:1px;"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:3px;height:8px;">
+              <div style="width:6px;height:6px;border:1px solid #E4E4E7;border-radius:1px;flex-shrink:0;"></div>
+              <div style="flex:1;height:2px;background:#E4E4E7;border-radius:1px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="prev-c-main">
+        <div class="prev-c-announce"></div>
+        <div class="prev-c-content-header">
+          <div class="prev-c-title"></div>
+          <div class="prev-c-sort"></div>
+        </div>
+        <div class="prev-c-grid">
+          <div class="prev-c-grid-cell"><div class="prev-c-badge new"></div></div>
+          <div class="prev-c-grid-cell"><div class="prev-c-badge sale"></div></div>
+          <div class="prev-c-grid-cell"></div>
+          <div class="prev-c-grid-cell"><div class="prev-c-badge new"></div></div>
+          <div class="prev-c-grid-cell"></div>
+          <div class="prev-c-grid-cell"><div class="prev-c-badge sale"></div></div>
+          <div class="prev-c-grid-cell"></div>
+          <div class="prev-c-grid-cell"></div>
+        </div>
+      </div>
+    </div>
+    <div class="option-card-body">
+      <div class="option-letter">Option C <span class="option-tag tag-c">Utility</span></div>
+      <div class="option-name">"Utility Precision"</div>
+      <div class="option-desc">Products above the fold, always. Persistent sidebar with filters. Monospace data typography. For the user who knows exactly what they want.</div>
+      <div class="option-meta">
+        <div class="option-meta-row">
+          <span class="option-meta-key">Nav</span>
+          <span class="option-meta-val">Fixed header + persistent left sidebar</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Hero</span>
+          <span class="option-meta-val">No hero — product grid is the homepage</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Grid</span>
+          <span class="option-meta-val">Dense 4-column with sidebar always open</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Fonts</span>
+          <span class="option-meta-val">Syne + DM Sans + JetBrains Mono</span>
+        </div>
+        <div class="option-meta-row">
+          <span class="option-meta-key">Best for</span>
+          <span class="option-meta-val">Return shoppers, research-first buyers</span>
+        </div>
+      </div>
+      <button class="option-cta cta-c" onclick="sendPrompt('I want to develop Option C — Utility Precision — further. Let\'s refine the sidebar navigation, filter system, and dense product grid.')">
+        Develop Option C →
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="compare-section">
+  <h2 class="compare-title">Side-by-side comparison</h2>
+  <p class="compare-sub">Rated across the criteria that matter for everythingstreet.ge</p>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Criteria</th>
+        <th>A — Editorial</th>
+        <th>B — Immersive</th>
+        <th>C — Utility</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>First-time visitor clarity</td>
+        <td><span class="check">✓ Strong</span> — magazine hierarchy reads fast</td>
+        <td><span class="highlight-b">✓✓ Best</span> — the split says it all instantly</td>
+        <td><span class="neutral">Moderate</span> — sidebar needs orientation</td>
+      </tr>
+      <tr>
+        <td>Return user efficiency</td>
+        <td><span class="neutral">Moderate</span> — editorial rhythm can feel slow</td>
+        <td><span class="neutral">Moderate</span> — discovery model feels slow on repeat</td>
+        <td><span class="highlight-c">✓✓ Best</span> — sidebar + search = 2 clicks</td>
+      </tr>
+      <tr>
+        <td>Mobile experience</td>
+        <td><span class="check">✓ Good</span> — stacks cleanly, still feels premium</td>
+        <td><span class="highlight-b">✓✓ Best</span> — stacked split hero is native-feeling</td>
+        <td><span class="check">✓ Good</span> — sidebar hides, bottom nav replaces</td>
+      </tr>
+      <tr>
+        <td>Brand perception (premium)</td>
+        <td><span class="highlight-a">✓✓ Best</span> — editorial authority = credibility</td>
+        <td><span class="check">✓ Strong</span> — cinematic and aspirational</td>
+        <td><span class="neutral">Moderate</span> — technical trust, not luxury warmth</td>
+      </tr>
+      <tr>
+        <td>Dual-category clarity</td>
+        <td><span class="neutral">Moderate</span> — section-based, needs scroll</td>
+        <td><span class="highlight-b">✓✓ Best</span> — visible from frame one</td>
+        <td><span class="check">✓ Good</span> — sidebar shows both categories</td>
+      </tr>
+      <tr>
+        <td>Georgian cultural fit</td>
+        <td><span class="highlight-a">✓✓ Best</span> — literary tradition, serif authority</td>
+        <td><span class="check">✓ Good</span> — large Georgian script in hero</td>
+        <td><span class="check">✓ Good</span> — Georgian in sidebar nav</td>
+      </tr>
+      <tr>
+        <td>Build complexity</td>
+        <td><span class="check">Low</span> — CSS Grid, no new paradigms</td>
+        <td><span class="neutral">Medium</span> — split hero hover, floating nav scroll logic</td>
+        <td><span class="neutral">Medium</span> — sidebar sticky + filter URL state</td>
+      </tr>
+      <tr>
+        <td>Discovery / impulse buying</td>
+        <td><span class="check">✓ Good</span> — editorial curation drives this</td>
+        <td><span class="highlight-b">✓✓ Best</span> — designed for it</td>
+        <td><span class="cross">Lower</span> — intent-driven, not discovery-driven</td>
+      </tr>
+      <tr>
+        <td>Trust signals above fold</td>
+        <td><span class="check">✓ Good</span> — announcement bar, editorial credibility</td>
+        <td><span class="neutral">Moderate</span> — atmosphere before trust signals</td>
+        <td><span class="highlight-c">✓✓ Best</span> — badges, counts, green announce bar</td>
+      </tr>
+      <tr>
+        <td>Fits existing tech stack</td>
+        <td><span class="highlight-a">✓✓ Easiest</span> — maps directly to current components</td>
+        <td><span class="check">✓ Good</span> — needs split hero + floating nav additions</td>
+        <td><span class="check">✓ Good</span> — sidebar is new; grid reuses ProductCard</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- RECOMMENDATION -->
+<div class="rec-section">
+  <div class="rec-card">
+    <div>
+      <div class="rec-eyebrow">My recommendation</div>
+      <div class="rec-title">Option B — with Option A's typography system</div>
+      <div class="rec-body">
+        <p>If I were launching Everything Street as my own product, I'd build <strong>Option B</strong> — the immersive split-world explorer. Here's why: the dual-category identity (Tech + Beauty) is Everything Street's core proposition, and Option B communicates it before the user reads a single word. No other Georgian e-commerce site has this interaction pattern. That's a competitive moat.</p>
+        <br>
+        <p>But I'd steal Option A's typography system — <strong>Cormorant Garamond for display text, Georgian script as art</strong> — and apply it to Option B's product moments and featured cards. The cinematic dark aesthetic of B with the literary credibility of A's type treatment would be genuinely distinctive.</p>
+        <br>
+        <p>Option C is the pragmatic choice for conversion rate optimization once you have a customer base. Consider it for a future "power user" view toggle — the data shows that when you give shoppers a dense grid option, power users self-select into it and convert at higher rates.</p>
+      </div>
+    </div>
+    <button class="rec-btn" onclick="sendPrompt('Let\'s develop the hybrid approach: Option B\'s immersive split-world structure with Option A\'s Cormorant Garamond typography system applied to the product moments and editorial sections.')">
+      Build the hybrid →
+    </button>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>Everything Street — Design Exploration, August 2024</span>
+  <div class="page-footer-links">
+    <a href="#" onclick="sendPrompt('Show me Option A in more detail — editorial authority direction.')">Option A detail</a>
+    <a href="#" onclick="sendPrompt('Show me Option B in more detail — immersive explorer direction.')">Option B detail</a>
+    <a href="#" onclick="sendPrompt('Show me Option C in more detail — utility precision direction.')">Option C detail</a>
+  </div>
+</div>

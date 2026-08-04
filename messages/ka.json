@@ -716,7 +716,11 @@
     "beautyHeadline1": "ბრწყინვალება",
     "beautyHeadline2": "დახვეწილი",
     "exploreTech": "ტექნიკის შესწავლა",
-    "exploreBeauty": "სილამაზის შესწავლა"
+    "exploreBeauty": "სილამაზის შესწავლა",
+    "techSub": "ყველაფერი ერთ ადგილზე",
+    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
+    "beautySub": "პრემიუმ კოსმეტიკა",
+    "beautySubKa": "ტექნოლოგია და სილამაზე"
   },
   "wishlist": {
     "title": "სურვილების სია",

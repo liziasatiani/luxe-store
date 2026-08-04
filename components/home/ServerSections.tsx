@@ -8,23 +8,22 @@ import { Container } from "@/components/ui";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import type { ProductCard as ProductCardType } from "@/types";
 
-function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
-  title: string; subtitle?: string; viewAllHref?: string; viewAllLabel?: string;
+function KSectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
+  eyebrow: string; title: string; viewAllHref?: string; viewAllLabel?: string;
 }) {
   return (
-    <div className="flex items-baseline justify-between mb-10">
-      <ScrollReveal variant="clip" className="overflow-hidden">
-        <div>
-          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{title}</h2>
-          {subtitle && <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-1">{subtitle}</p>}
-        </div>
-      </ScrollReveal>
+    <div className="flex items-end justify-between mb-[60px]" style={{ paddingBottom: "0" }}>
+      <div>
+        <p className="text-[10px] font-semibold tracking-[0.22em] uppercase mb-3" style={{ color: "#C9A44A" }}>{eyebrow}</p>
+        <h2 className="font-display font-bold leading-[1.05] tracking-[-0.01em]"
+          style={{ fontSize: "clamp(32px,3.5vw,52px)", color: "#EFE9DA" }}>{title}</h2>
+      </div>
       {viewAllHref && (
-        <ScrollReveal delay={0.2} className="hidden sm:block">
-          <Link href={viewAllHref} className="flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
-            {viewAllLabel ?? "View All"} <ArrowRight size={12} />
-          </Link>
-        </ScrollReveal>
+        <Link href={viewAllHref}
+          className="hidden sm:flex items-center gap-2 text-[11px] font-medium tracking-[0.15em] uppercase mb-1 transition-opacity hover:opacity-70"
+          style={{ color: "#C9A44A", borderBottom: "1px solid rgba(201,164,74,0.4)", paddingBottom: "3px" }}>
+          {viewAllLabel ?? "View All"} →
+        </Link>
       )}
     </div>
   );
@@ -53,13 +52,13 @@ export async function FeaturedProductsSection() {
   }
 
   return (
-    <section className="py-20 border-b border-black/8 dark:border-white/8">
-      <Container>
-        <EditorialHeader title={t("title")} subtitle={t("subtitle")} viewAllHref="/featured" viewAllLabel={t("viewAll")} />
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+    <section className="py-24" style={{ borderBottom: "1px solid rgba(239,233,218,0.08)" }}>
+      <div className="max-w-[1400px] mx-auto px-[52px] max-md:px-5">
+        <KSectionHeader eyebrow="Featured" title="Selected for You" viewAllHref="/featured" viewAllLabel="View All" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
@@ -88,13 +87,13 @@ export async function NewArrivalsSection() {
   }
 
   return (
-    <section className="py-20 border-b border-black/8 dark:border-white/8">
-      <Container>
-        <EditorialHeader title={t("title")} subtitle={t("subtitle")} viewAllHref="/new" viewAllLabel={tCommon("seeAll")} />
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+    <section className="py-24" style={{ borderBottom: "1px solid rgba(239,233,218,0.08)" }}>
+      <div className="max-w-[1400px] mx-auto px-[52px] max-md:px-5">
+        <KSectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel={tCommon("seeAll")} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
@@ -124,7 +123,7 @@ export async function BestSellersSectionServer() {
 
 export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
       {Array.from({ length: count }).map((_, i) => <ProductCardSkeleton key={i} />)}
     </div>
   );
