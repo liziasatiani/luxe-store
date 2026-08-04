@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, generateOrderNumber, parseIntParam } from "@/lib/utils";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
-import { sendOrderConfirmation } from "@/lib/email";
+import { sendOrderConfirmation, sendAdminNewOrderAlert } from "@/lib/email";
 import { resolveCoupon, calcOrderTotals, round2 } from "@/lib/pricing";
 import { createOrderSchema, type CartLineInput } from "@/lib/validations";
 
@@ -353,6 +353,15 @@ export async function POST(req: NextRequest) {
           isGuest,
         })
       ).catch((err) => console.error("[orders/POST] confirmation email failed", err));
+
+      sendAdminNewOrderAlert({
+        orderNumber: order.orderNumber,
+        orderId: order.id,
+        customerName: recipient.name,
+        customerEmail: recipient.email,
+        total: Number(order.total),
+        itemCount: order.items.length,
+      }).catch(() => {});
     }
 
     return NextResponse.json({

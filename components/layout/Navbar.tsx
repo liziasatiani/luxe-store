@@ -38,6 +38,7 @@ export function Navbar() {
       { label: "Body Care",    href: "/beauty/body-care"    },
       { label: "Perfume",      href: "/beauty/perfume"      },
       { label: "Beauty Tools", href: "/beauty/beauty-tools" },
+      { label: "Mini",         href: "/beauty/mini"         },
     ]},
     { label: t("tech"), href: "/tech", children: [
       { label: "Headphones", href: "/tech/headphones" },
@@ -59,7 +60,7 @@ export function Navbar() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b border-black/10 dark:border-white/10 transition-colors duration-300">
         {/* Announcement bar */}
         <div className="bg-black dark:bg-white text-white dark:text-black text-center py-2 text-[10px] tracking-[0.18em] uppercase font-medium">
-          New arrivals dropping five days a week
+          {t("announcement")}
         </div>
         <Container>
           <div className="flex items-center h-14 md:h-16">
@@ -129,8 +130,9 @@ export function Navbar() {
 
             {/* Right icons */}
             <div className="flex items-center gap-1 ml-auto flex-1 justify-end">
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex items-center gap-0">
                 {mounted && <CurrencySelector />}
+                <span className="text-black/20 dark:text-white/20 text-xs select-none">|</span>
                 {mounted && <LanguageSelector />}
               </div>
 

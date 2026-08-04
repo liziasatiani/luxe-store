@@ -46,7 +46,7 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, debouncedSearch]);
+  }, [page, limit, debouncedSearch, category, stockFilter]);
 
   useEffect(() => { setPage(1); }, [debouncedSearch, category, stockFilter]);
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
@@ -84,7 +84,7 @@ export default function AdminProductsPage() {
         >
           <option value="">All categories</option>
           <optgroup label="Beauty">
-            {["skincare","makeup","hair-care","body-care","perfume","beauty-tools"].map(s => (
+            {["skincare","makeup","hair-care","body-care","perfume","beauty-tools","mini"].map(s => (
               <option key={s} value={s}>{s.replace("-", " ")}</option>
             ))}
           </optgroup>

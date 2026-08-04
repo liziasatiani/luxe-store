@@ -75,7 +75,28 @@ export async function PUT(req: NextRequest) {
     if (status === "DELIVERED") updateData.deliveredAt = new Date();
     if (status === "CANCELLED") updateData.cancelledAt = new Date();
 
-    const order = await prisma.order.update({ where: { id }, data: updateData });
+    const order = await prisma.order.update({
+      where: { id },
+      data: updateData,
+      include: { user: { select: { name: true, email: true } } },
+    });
+
+    // Shipping email
+    if (status === "SHIPPED") {
+      const recipientEmail = (order as { user?: { email: string } | null }).user?.email ?? order.guestEmail;
+      const recipientName = (order as { user?: { name: string | null } | null }).user?.name ?? order.guestName ?? "Customer";
+      if (recipientEmail) {
+        const { sendShippingNotification } = await import("@/lib/email");
+        sendShippingNotification({
+          recipientName,
+          recipientEmail,
+          orderNumber: order.orderNumber,
+          orderId: order.id,
+          trackingNumber: trackingNumber ?? null,
+          trackingUrl: trackingUrl ?? null,
+        }).catch((err) => console.error("[admin/orders] shipping email failed", err));
+      }
+    }
 
     // Notification — only for registered users (guest orders have no userId)
     if (order.userId) {

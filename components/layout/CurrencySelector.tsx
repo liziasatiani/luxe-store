@@ -24,10 +24,12 @@ export function CurrencySelector() {
     <div className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1 p-1 text-black dark:text-white hover:opacity-50 transition-opacity text-sm"
+        aria-label={`Currency: ${current.label}`}
+        aria-expanded={open}
+        className="flex items-center gap-0.5 p-1 text-black dark:text-white hover:opacity-50 transition-opacity"
       >
-        <span className="text-[11px] tracking-[0.06em] uppercase font-medium">{current.symbol} {current.label}</span>
-        <ChevronDown size={12} className={cn("transition-transform", open && "rotate-180")} />
+        <span className="text-[11px] tracking-[0.1em] uppercase">{current.label}</span>
+        <ChevronDown size={10} className={cn("transition-transform", open && "rotate-180")} />
       </button>
 
       <AnimatePresence>

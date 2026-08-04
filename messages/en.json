@@ -18,7 +18,8 @@
     "orders": "Orders",
     "wishlist": "Wishlist",
     "adminPanel": "Admin Panel",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "announcement": "New arrivals dropping five days a week"
   },
   "home": {
     "hero": {
@@ -475,5 +476,15 @@
     "sku": "SKU",
     "addedToCart": "Added to cart",
     "removedFromWishlist": "Removed from wishlist"
+  },
+  "hero": {
+    "tagline": "Tech & Beauty, One Street",
+    "headline1": "Two worlds,",
+    "headline2": "one street.",
+    "description": "Everything Street pairs considered technology with considered beauty — curated, tested, and delivered together.",
+    "shopTech": "Shop Tech",
+    "shopBeauty": "Shop Beauty",
+    "statsProducts": "Products",
+    "statsBrands": "Brands"
   }
 }

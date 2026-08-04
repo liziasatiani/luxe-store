@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { newsletterSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
+import { sendNewsletterConfirmation } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const rl = await rateLimit(`newsletter:${getIP(req)}`, 3, 60 * 1000);
@@ -19,6 +20,8 @@ export async function POST(req: NextRequest) {
       update: { isActive: true, unsubscribedAt: null },
       create: { email: parsed.data.email, source: "website" },
     });
+
+    sendNewsletterConfirmation(parsed.data.email).catch(() => {});
 
     return NextResponse.json({ success: true, message: "Subscribed successfully!" });
   } catch (err) {

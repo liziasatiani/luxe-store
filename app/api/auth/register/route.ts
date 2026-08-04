@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const rl = await rateLimit(`register:${getIP(req)}`, 5, 15 * 60 * 1000);
@@ -42,6 +43,8 @@ export async function POST(req: NextRequest) {
       }
       throw err;
     }
+
+    sendWelcomeEmail({ name: user.name ?? "there", email: user.email }).catch(() => {});
 
     return NextResponse.json({ success: true, data: { user }, message: "Account created!" }, { status: 201 });
   } catch (err) {

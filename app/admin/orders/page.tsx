@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, Truck } from "lucide-react";
 import { Badge, Input, Spinner } from "@/components/ui";
 import { formatPrice, formatDate } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -35,6 +35,8 @@ export default function AdminOrdersPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [search, setSearch] = useState("");
   const [updating, setUpdating] = useState<string | null>(null);
+  const [shipModal, setShipModal] = useState<{ orderId: string; orderNumber: string } | null>(null);
+  const [tracking, setTracking] = useState({ number: "", url: "" });
   const debouncedSearch = useDebounce(search, 400);
 
   const fetchOrders = useCallback(async () => {
@@ -54,19 +56,34 @@ export default function AdminOrdersPage() {
 
   useEffect(() => { fetchOrders(); }, [fetchOrders]);
 
-  const updateStatus = async (id: string, status: string) => {
+  const updateStatus = async (id: string, status: string, trackingNumber?: string, trackingUrl?: string) => {
     setUpdating(id);
     try {
       const res = await fetch("/api/admin/orders", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status }),
+        body: JSON.stringify({ id, status, trackingNumber: trackingNumber || undefined, trackingUrl: trackingUrl || undefined }),
       });
       if (!res.ok) throw new Error("Failed");
-      toast.success("Order updated");
+      toast.success(status === "SHIPPED" ? "Order marked as shipped — notification sent" : "Order updated");
       fetchOrders();
     } catch { toast.error("Failed to update order"); }
     finally { setUpdating(null); }
+  };
+
+  const handleStatusChange = (order: Order, newStatus: string) => {
+    if (newStatus === "SHIPPED") {
+      setTracking({ number: "", url: "" });
+      setShipModal({ orderId: order.id, orderNumber: order.orderNumber });
+    } else {
+      updateStatus(order.id, newStatus);
+    }
+  };
+
+  const confirmShip = async () => {
+    if (!shipModal) return;
+    await updateStatus(shipModal.orderId, "SHIPPED", tracking.number, tracking.url);
+    setShipModal(null);
   };
 
   return (
@@ -124,7 +141,7 @@ export default function AdminOrdersPage() {
                     <td className="px-4 py-3">
                       <select
                         value={order.status}
-                        onChange={(e) => updateStatus(order.id, e.target.value)}
+                        onChange={(e) => handleStatusChange(order, e.target.value)}
                         disabled={updating === order.id}
                         className="text-xs rounded-lg border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
                       >
@@ -156,6 +173,55 @@ export default function AdminOrdersPage() {
           </div>
         )}
       </div>
+
+      {/* Shipping modal */}
+      {shipModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-surface-900 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <Truck size={18} className="text-brand-500" />
+                <h2 className="font-semibold text-surface-900 dark:text-white">Mark as Shipped</h2>
+              </div>
+              <button onClick={() => setShipModal(null)} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800">
+                <X size={16} />
+              </button>
+            </div>
+            <p className="text-sm text-surface-500 mb-5">
+              Order <span className="font-mono font-bold text-surface-900 dark:text-white">#{shipModal.orderNumber}</span> — a shipping notification will be emailed to the customer.
+            </p>
+            <div className="space-y-3">
+              <Input
+                label="Tracking Number (optional)"
+                placeholder="e.g. 1Z999AA10123456784"
+                value={tracking.number}
+                onChange={(e) => setTracking((t) => ({ ...t, number: e.target.value }))}
+              />
+              <Input
+                label="Tracking URL (optional)"
+                placeholder="https://track.carrier.com/..."
+                value={tracking.url}
+                onChange={(e) => setTracking((t) => ({ ...t, url: e.target.value }))}
+              />
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShipModal(null)}
+                className="flex-1 h-10 rounded-xl border border-surface-200 dark:border-surface-700 text-sm text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmShip}
+                disabled={updating === shipModal.orderId}
+                className="flex-1 h-10 rounded-xl bg-black dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-80 transition-opacity disabled:opacity-50"
+              >
+                {updating === shipModal.orderId ? "Sending…" : "Confirm & Notify Customer"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

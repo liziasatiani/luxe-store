@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 function getStoredLocale(): Locale {
   if (typeof document === "undefined") return "en";
   const match = document.cookie.match(new RegExp(`(?:^|; )${LOCALE_COOKIE}=([^;]*)`));
-  const val = match ? decodeURIComponent(match[1]) : "en";
-  return locales.includes(val as Locale) ? (val as Locale) : "en";
+  const val = match ? decodeURIComponent(match[1]) : "ka";
+  return locales.includes(val as Locale) ? (val as Locale) : "ka";
 }
 
 export function LanguageSelector() {
@@ -33,11 +33,12 @@ export function LanguageSelector() {
     <div className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 p-1 text-black dark:text-white hover:opacity-50 transition-opacity text-sm"
+        aria-label={`Language: ${currentLocale.toUpperCase()}`}
+        aria-expanded={open}
+        className="flex items-center gap-0.5 p-1 text-black dark:text-white hover:opacity-50 transition-opacity"
       >
-        <Globe size={16} />
-        <span>{localeFlags[currentLocale]}</span>
-        <ChevronDown size={12} className={cn("transition-transform", open && "rotate-180")} />
+        <span className="text-[11px] tracking-[0.1em] uppercase">{currentLocale.toUpperCase()}</span>
+        <ChevronDown size={10} className={cn("transition-transform", open && "rotate-180")} />
       </button>
 
       <AnimatePresence>
