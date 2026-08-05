@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 import { HeroSection } from "@/components/home/HeroSection";
-import { PressBar } from "@/components/home/PressBar";
+import { AnnouncementBar } from "@/components/home/AnnouncementBar";
 import {
   CategoriesSection,
   BestSellersSection,
@@ -61,7 +61,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
-      <PressBar />
+      <AnnouncementBar />
       <CategoriesSection categories={serializeDecimal(categories)} />
       <Suspense fallback={<div className="py-20 border-b border-black/8 dark:border-white/8"><div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"><ProductGridSkeleton /></div></div>}>
         <FeaturedProductsSection />
