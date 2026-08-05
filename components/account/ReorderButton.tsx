@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { RotateCcw, Check } from "lucide-react";
 import { useCartStore } from "@/store";
+import toast from "react-hot-toast";
 
 interface Props {
   orderId: string;
@@ -40,7 +41,7 @@ export function ReorderButton({ orderId }: Props) {
       openCart();
       setTimeout(() => setDone(false), 3000);
     } catch {
-      // silent fail
+      toast.error("Couldn't add items to cart");
     } finally {
       setLoading(false);
     }

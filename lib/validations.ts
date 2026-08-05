@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// ─── Primitives ──────────────────────────────────────────────
 /** Emails are stored and compared in canonical lowercase form. */
 const email = z
   .string()
@@ -22,7 +21,6 @@ const password = z
 /** Prisma cuid — used wherever an id arrives from an untrusted client. */
 const id = z.string().min(1).max(64);
 
-// ─── Auth ────────────────────────────────────────────────────
 export const registerSchema = z
   .object({
     name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
@@ -52,23 +50,21 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-// ─── Address ─────────────────────────────────────────────────
 export const addressSchema = z.object({
-  label: z.string().min(1),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  company: z.string().optional(),
-  line1: z.string().min(1, "Address is required"),
-  line2: z.string().optional(),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  postalCode: z.string().min(1, "Postal code is required"),
+  label: z.string().min(1).max(50),
+  firstName: z.string().min(1, "First name is required").max(100),
+  lastName: z.string().min(1, "Last name is required").max(100),
+  company: z.string().max(200).optional(),
+  line1: z.string().min(1, "Address is required").max(200),
+  line2: z.string().max(200).optional(),
+  city: z.string().min(1, "City is required").max(100),
+  state: z.string().min(1, "State is required").max(100),
+  postalCode: z.string().min(1, "Postal code is required").max(20),
   country: z.string().default("US"),
-  phone: z.string().optional(),
+  phone: z.string().max(32).optional(),
   isDefault: z.boolean().default(false),
 });
 
-// ─── Checkout ─────────────────────────────────────────────────
 export const checkoutSchema = z.object({
   addressId: z.string().optional(),
   newAddress: addressSchema.optional(),
@@ -77,13 +73,12 @@ export const checkoutSchema = z.object({
   notes: z.string().optional(),
 });
 
-// ─── Product (Admin) ──────────────────────────────────────────
 export const productSchema = z.object({
-  name: z.string().min(1, "Product name is required"),
-  sku: z.string().min(1, "SKU is required"),
-  barcode: z.string().optional(),
-  description: z.string().optional(),
-  shortDescription: z.string().optional(),
+  name: z.string().min(1, "Product name is required").max(300),
+  sku: z.string().min(1, "SKU is required").max(100),
+  barcode: z.string().max(100).optional(),
+  description: z.string().max(10000).optional(),
+  shortDescription: z.string().max(500).optional(),
   price: z.coerce.number().positive("Price must be positive"),
   comparePrice: z.coerce.number().optional().nullable(),
   costPrice: z.coerce.number().optional().nullable(),
@@ -102,12 +97,11 @@ export const productSchema = z.object({
   isNewArrival: z.boolean().default(true),
   isOnSale: z.boolean().default(false),
   isActive: z.boolean().default(true),
-  metaTitle: z.string().optional(),
-  metaDescription: z.string().optional(),
+  metaTitle: z.string().max(200).optional(),
+  metaDescription: z.string().max(500).optional(),
   tags: z.array(z.string()).default([]),
 });
 
-// ─── Review ──────────────────────────────────────────────────
 export const reviewSchema = z.object({
   productId: id,
   rating: z.coerce.number().int().min(1).max(5),
@@ -119,7 +113,6 @@ export const reviewSchema = z.object({
     .max(5000, "Review is too long"),
 });
 
-// ─── Coupon (Admin) ───────────────────────────────────────────
 export const couponSchema = z.object({
   code: z.string().min(1).toUpperCase(),
   type: z.enum(["PERCENTAGE", "FIXED_AMOUNT", "FREE_SHIPPING"]),
@@ -134,7 +127,6 @@ export const couponSchema = z.object({
   description: z.string().optional(),
 });
 
-// ─── Contact ──────────────────────────────────────────────────
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Name is required").max(100),
   email,
@@ -146,17 +138,14 @@ export const contactSchema = z.object({
     .max(5000, "Message is too long"),
 });
 
-// ─── Newsletter ──────────────────────────────────────────────
 export const newsletterSchema = z.object({ email });
 
-// ─── Profile ─────────────────────────────────────────────────
 export const profileSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   phone: z.string().trim().max(32).optional().nullable(),
   image: z.string().url().optional().nullable(),
 });
 
-// ─── Cart & Orders ───────────────────────────────────────────
 /**
  * A line item as supplied by the client. Only `productId` and `quantity` are
  * trusted — price is always re-derived from the database server-side, and the
@@ -213,7 +202,6 @@ export const createOrderSchema = z.discriminatedUnion("guest", [
   }),
 ]);
 
-// ─── Types ───────────────────────────────────────────────────
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type AddressInput = z.infer<typeof addressSchema>;

@@ -7,6 +7,7 @@ import { ProductCard, ProductCardSkeleton } from "./ProductCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import type { ProductCard as ProductCardType, ProductFilters, SortOption } from "@/types";
 
 interface ProductGridProps {
@@ -31,6 +32,7 @@ export function ProductGrid({
   showFilters = true,
   columns = 4,
 }: ProductGridProps) {
+  const t = useTranslations("filters");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<ProductCardType[]>(initialProducts ?? []);
@@ -75,9 +77,11 @@ export function ProductGrid({
 
   useEffect(() => {
     if (!initialProducts) fetchProducts(filters, 1);
-    fetch("/api/brands?limit=50")
-      .then((r) => r.json())
-      .then((d) => setBrands(d.data?.brands ?? []));
+    if (showFilters) {
+      fetch("/api/brands?limit=50")
+        .then((r) => r.json())
+        .then((d) => setBrands(d.data?.brands ?? []));
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,6 +130,7 @@ export function ProductGrid({
               onBrandToggle={handleBrandToggle}
               onFilterChange={handleFilterChange}
               onClear={() => { setFilters({}); fetchProducts({}, 1); }}
+              t={t}
             />
           </aside>
 
@@ -143,7 +148,7 @@ export function ProductGrid({
                   className="fixed left-0 top-0 bottom-0 z-50 w-80 bg-white dark:bg-black overflow-y-auto p-6 lg:hidden"
                 >
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-semibold text-lg">Filters</h3>
+                    <h3 className="font-semibold text-lg">{t("filters")}</h3>
                     <button onClick={() => setSidebarOpen(false)}><X size={20} /></button>
                   </div>
                   <FilterSidebar
@@ -152,6 +157,7 @@ export function ProductGrid({
                     onBrandToggle={handleBrandToggle}
                     onFilterChange={handleFilterChange}
                     onClear={() => { setFilters({}); setSidebarOpen(false); fetchProducts({}, 1); }}
+                    t={t}
                   />
                 </motion.aside>
               </>
@@ -169,16 +175,16 @@ export function ProductGrid({
                 className="lg:hidden flex items-center gap-2 px-4 h-10 border border-black/15 dark:border-white/15 text-[11px] tracking-[0.08em] uppercase"
               >
                 <SlidersHorizontal size={16} />
-                Filters
+                {t("filters")}
               </button>
             )}
             <p className="text-sm text-black/40 dark:text-white/40">
-              {loading ? "Loading…" : `${total.toLocaleString()} products`}
+              {loading ? t("loading") : `${total.toLocaleString()} ${t("products")}`}
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 hidden sm:block">Sort:</span>
+            <span className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 hidden sm:block">{t("sort")}:</span>
             <div className="relative">
               <select
                 value={filters.sort ?? "newest"}
@@ -201,9 +207,9 @@ export function ProductGrid({
         ) : products.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center px-4">
             <SlidersHorizontal size={56} strokeWidth={1} className="text-black/10 dark:text-white/10 mb-8" />
-            <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">No results</p>
-            <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">Nothing matches</h3>
-            <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">Try adjusting your filters or search terms to find what you&apos;re looking for.</p>
+            <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">{t("noResults")}</p>
+            <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">{t("nothingMatches")}</h3>
+            <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">{t("nothingMatchesDesc")}</p>
           </div>
         ) : (
           <>
@@ -213,7 +219,7 @@ export function ProductGrid({
             {hasMore && (
               <div className="mt-12 text-center">
                 <Button onClick={loadMore} loading={loading} variant="outline" size="lg">
-                  Load More
+                  {t("loadMore")}
                 </Button>
               </div>
             )}
@@ -230,21 +236,23 @@ function FilterSidebar({
   onBrandToggle,
   onFilterChange,
   onClear,
+  t,
 }: {
   filters: ProductFilters;
   brands: { name: string; slug: string }[];
   onBrandToggle: (slug: string) => void;
   onFilterChange: (key: keyof ProductFilters, value: unknown) => void;
   onClear: () => void;
+  t: (key: string) => string;
 }) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-[11px] tracking-[0.14em] uppercase text-black dark:text-white font-medium">Filters</h3>
-        <button onClick={onClear} className="text-[10px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">Clear all</button>
+        <h3 className="text-[11px] tracking-[0.14em] uppercase text-black dark:text-white font-medium">{t("title")}</h3>
+        <button onClick={onClear} className="text-[10px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">{t("clearAll")}</button>
       </div>
 
-      <FilterSection title="Price Range">
+      <FilterSection title={t("priceRange")}>
         <div className="flex items-center gap-2">
           <Input
             type="number"
@@ -265,7 +273,7 @@ function FilterSidebar({
       </FilterSection>
 
       {brands.length > 0 && (
-        <FilterSection title="Brand">
+        <FilterSection title={t("brand")}>
           <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
             {brands.map((b) => (
               <label key={b.slug} className="flex items-center gap-2 cursor-pointer">
@@ -282,7 +290,7 @@ function FilterSidebar({
         </FilterSection>
       )}
 
-      <FilterSection title="Availability">
+      <FilterSection title={t("availability")}>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
@@ -290,11 +298,11 @@ function FilterSidebar({
             onChange={(e) => onFilterChange("inStock", e.target.checked)}
             className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0"
           />
-          <span className="text-sm text-black/70 dark:text-white/70">In Stock Only</span>
+          <span className="text-sm text-black/70 dark:text-white/70">{t("inStockOnly")}</span>
         </label>
       </FilterSection>
 
-      <FilterSection title="Deals">
+      <FilterSection title={t("deals")}>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
@@ -302,7 +310,7 @@ function FilterSidebar({
             onChange={(e) => onFilterChange("isOnSale", e.target.checked)}
             className="w-4 h-4 border-black/20 dark:border-white/20 focus:ring-0"
           />
-          <span className="text-sm text-black/70 dark:text-white/70">On Sale</span>
+          <span className="text-sm text-black/70 dark:text-white/70">{t("onSale")}</span>
         </label>
       </FilterSection>
     </div>

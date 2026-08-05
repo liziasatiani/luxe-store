@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Star, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
@@ -30,11 +30,11 @@ interface Props {
 export function ReviewsSection({ productId, initialReviews, avgRating, reviewCount }: Props) {
   const { data: session } = useSession();
   const [sort, setSort] = useState<"newest" | "highest" | "lowest">("newest");
-  const reviews = [...initialReviews].sort((a, b) => {
+  const reviews = useMemo(() => [...initialReviews].sort((a, b) => {
     if (sort === "highest") return b.rating - a.rating;
     if (sort === "lowest") return a.rating - b.rating;
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+  }), [initialReviews, sort]);
   const [showForm, setShowForm] = useState(false);
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
@@ -45,7 +45,7 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
   const distribution: Record<number, number> = {};
   reviews.forEach((r) => { distribution[r.rating] = (distribution[r.rating] ?? 0) + 1; });
 
-  const handleSubmit = async () => {
+  const submitReview = async () => {
     if (!session) { toast.error("Sign in to leave a review"); return; }
     if (body.length < 10) { toast.error("Review must be at least 10 characters"); return; }
     setSubmitting(true);
@@ -92,8 +92,6 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
           </Button>
         </div>
       </div>
-
-      {/* Summary */}
       {reviewCount > 0 && (
         <div className="flex flex-col sm:flex-row gap-8 p-6 border border-black/8 dark:border-white/8 mb-8">
           <div className="text-center">
@@ -119,8 +117,6 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
           </div>
         </div>
       )}
-
-      {/* Write review form */}
       {showForm && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -167,11 +163,9 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
               className="w-full border border-black/15 dark:border-white/15 bg-white dark:bg-black text-black dark:text-white p-4 focus:outline-none placeholder:text-black/25 dark:placeholder:text-white/25 resize-none text-sm"
             />
           </div>
-          <Button onClick={handleSubmit} loading={submitting} variant="primary" className="!rounded-none text-[11px] tracking-[0.14em] uppercase">Submit Review</Button>
+          <Button onClick={submitReview} loading={submitting} variant="primary" className="!rounded-none text-[11px] tracking-[0.14em] uppercase">Submit Review</Button>
         </motion.div>
       )}
-
-      {/* Reviews list */}
       <div className="space-y-6">
         {reviews.length === 0 ? (
           <p className="text-black/40 dark:text-white/40 text-center py-8">No reviews yet. Be the first!</p>
@@ -182,7 +176,7 @@ export function ReviewsSection({ productId, initialReviews, avgRating, reviewCou
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-black/5 dark:bg-white/5 overflow-hidden flex items-center justify-center shrink-0">
                     {review.user.image ? (
-                      <Image src={review.user.image} alt={review.user.name ?? ""} width={32} height={32} className="object-cover" />
+                      <Image src={review.user.image} alt={review.user.name ?? "Reviewer avatar"} width={32} height={32} className="object-cover" />
                     ) : (
                       <span className="text-xs text-black/50 dark:text-white/50">{review.user.name?.[0] ?? "?"}</span>
                     )}

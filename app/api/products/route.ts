@@ -59,11 +59,8 @@ export async function GET(req: NextRequest) {
       isActive: true,
       ...(and.length && { AND: and }),
       ...(brands.length && { brand: { slug: { in: brands } } }),
-      // Both bounds must live under a single `price` key. Spreading two `price`
-      // keys into one object literal drops the first: with ?minPrice=50&maxPrice=100
-      // the `gte` was silently discarded and every product under $100 came back.
-      // This is the same collision the auditor fixed for `OR` two lines above and
-      // then reintroduced here.
+      // Both bounds must share a single `price` key; two separate keys would
+      // silently drop the first (gte/lte collision in object spread).
       ...((minPrice !== undefined || maxPrice !== undefined) && {
         price: {
           ...(minPrice !== undefined && { gte: minPrice }),

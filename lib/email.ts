@@ -1,9 +1,12 @@
 import { Resend } from "resend";
+import { formatPrice as fmt } from "@/lib/utils";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.EMAIL_FROM ?? "Everything Street <hello@everythingstreet.ge>";
 const ADMIN_EMAIL = process.env.EMAIL_ADMIN ?? "admin@everythingstreet.ge";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const WELCOME_COUPON = process.env.WELCOME_COUPON_CODE ?? "WELCOME15";
+const WELCOME_DISCOUNT = process.env.WELCOME_COUPON_PCT ?? "15";
 
 function isConfigured(): boolean {
   return !!process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== "[YOUR-RESEND-API-KEY]";
@@ -83,7 +86,7 @@ interface OrderEmailData {
 }
 
 function formatPrice(amount: number): string {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
+  return fmt(amount);
 }
 
 function buildOrderEmail(data: OrderEmailData): string {
@@ -127,8 +130,6 @@ function buildOrderEmail(data: OrderEmailData): string {
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-
-          <!-- Header -->
           <tr>
             <td style="background:#111827;border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
               <p style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">
@@ -136,8 +137,6 @@ function buildOrderEmail(data: OrderEmailData): string {
               </p>
             </td>
           </tr>
-
-          <!-- Body -->
           <tr>
             <td style="background:#ffffff;padding:40px;border-left:1px solid #E5E7EB;border-right:1px solid #E5E7EB;">
 
@@ -148,14 +147,10 @@ function buildOrderEmail(data: OrderEmailData): string {
               <p style="margin:0 0 32px;font-size:15px;color:#6B7280;line-height:1.6;">
                 We've received your order and will have it on its way soon.
               </p>
-
-              <!-- Order number pill -->
               <div style="background:#F3F4F6;border-radius:8px;padding:16px 20px;margin-bottom:32px;display:flex;justify-content:space-between;">
                 <span style="font-size:13px;color:#6B7280;">Order number</span>
                 <span style="font-size:13px;font-weight:700;color:#111827;font-family:monospace;">${orderNumber}</span>
               </div>
-
-              <!-- Items -->
               <h2 style="margin:0 0 16px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#6B7280;">Items ordered</h2>
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
                 <thead>
@@ -167,8 +162,6 @@ function buildOrderEmail(data: OrderEmailData): string {
                 </thead>
                 <tbody>${itemRows}</tbody>
               </table>
-
-              <!-- Totals -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
                 <tr>
                   <td style="font-size:14px;color:#6B7280;padding:4px 0;">Subtotal</td>
@@ -194,12 +187,9 @@ function buildOrderEmail(data: OrderEmailData): string {
               </table>
 
               ${shippingAddress ? `
-              <!-- Shipping address -->
               <h2 style="margin:0 0 12px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#6B7280;">Shipping to</h2>
               <p style="margin:0 0 32px;font-size:14px;color:#374151;line-height:1.7;">${shippingAddress}</p>
               ` : ""}
-
-              <!-- CTA -->
               <div style="text-align:center;margin-top:8px;">
                 <a href="${orderUrl}"
                   style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 32px;border-radius:8px;letter-spacing:0.02em;">
@@ -209,8 +199,6 @@ function buildOrderEmail(data: OrderEmailData): string {
 
             </td>
           </tr>
-
-          <!-- Footer -->
           <tr>
             <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 12px 12px;padding:24px 40px;text-align:center;">
               <p style="margin:0 0 4px;font-size:12px;color:#9CA3AF;">Questions? Reply to this email or visit <a href="${APP_URL}/contact" style="color:#6B7280;">our contact page</a>.</p>
@@ -227,10 +215,7 @@ function buildOrderEmail(data: OrderEmailData): string {
 }
 
 export async function sendOrderConfirmation(data: OrderEmailData): Promise<void> {
-  if (!isConfigured()) {
-    console.log(`[email] not configured — skipping order confirmation for ${data.orderNumber}`);
-    return;
-  }
+  if (!isConfigured()) return;
 
   const { error } = await resend.emails.send({
     from: FROM,
@@ -244,7 +229,6 @@ export async function sendOrderConfirmation(data: OrderEmailData): Promise<void>
   }
 }
 
-// ─── ABANDONED CART ──────────────────────────────────────────
 
 interface AbandonedCartEmailData {
   email: string;
@@ -262,7 +246,7 @@ function buildAbandonedCartEmail({ name, items }: AbandonedCartEmailData): strin
         ${item.name}${item.quantity > 1 ? ` ×${item.quantity}` : ""}
       </td>
       <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;color:#111827;text-align:right;font-variant-numeric:tabular-nums;">
-        $${(item.price * item.quantity).toFixed(2)}
+        ${formatPrice(item.price * item.quantity)}
       </td>
     </tr>`
     )
@@ -315,7 +299,8 @@ function buildAbandonedCartEmail({ name, items }: AbandonedCartEmailData): strin
           <tr>
             <td style="background:#F9FAFB;border:1px solid #E5E7EB;border-top:none;border-radius:0 0 12px 12px;padding:24px 40px;text-align:center;">
               <p style="margin:0 0 4px;font-size:12px;color:#9CA3AF;">
-                You received this because you started a checkout at <a href="${APP_URL}" style="color:#6B7280;">everythingstreet.com</a>.
+                You received this because you started a checkout at <a href="${APP_URL}" style="color:#6B7280;">everythingstreet.ge</a>.
+                If you'd rather not receive these emails, <a href="mailto:hello@everythingstreet.ge?subject=Unsubscribe" style="color:#6B7280;">unsubscribe here</a>.
               </p>
               <p style="margin:0;font-size:12px;color:#D1D5DB;">© ${new Date().getFullYear()} Everything Street. All rights reserved.</p>
             </td>
@@ -339,7 +324,6 @@ export async function sendAbandonedCartEmail(data: AbandonedCartEmailData): Prom
   if (error) console.error(`[email] abandoned cart to ${data.email}:`, error);
 }
 
-// ─── SHIPPING NOTIFICATION ───────────────────────────────────
 
 export async function sendShippingNotification(data: {
   recipientName: string;
@@ -373,7 +357,6 @@ export async function sendShippingNotification(data: {
   if (error) console.error(`[email] shipping notification to ${recipientEmail}:`, error);
 }
 
-// ─── WELCOME EMAIL ───────────────────────────────────────────
 
 export async function sendWelcomeEmail(data: {
   name: string;
@@ -385,7 +368,7 @@ export async function sendWelcomeEmail(data: {
     "Your account is ready — start exploring.",
     `<h1 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Welcome, ${data.name.split(" ")[0]}!</h1>
     <p style="margin:0 0 20px;font-size:15px;color:#6B7280;line-height:1.6;">Your Everything Street account is all set. Explore curated tech and beauty — selected, tested, and delivered together.</p>
-    <p style="margin:0 0 8px;font-size:14px;color:#374151;">As a new member, use code <strong style="background:#F3F4F6;padding:2px 8px;border-radius:4px;font-family:monospace;">WELCOME15</strong> for 15% off your first order.</p>
+    <p style="margin:0 0 8px;font-size:14px;color:#374151;">As a new member, use code <strong style="background:#F3F4F6;padding:2px 8px;border-radius:4px;font-family:monospace;">${WELCOME_COUPON}</strong> for ${WELCOME_DISCOUNT}% off your first order.</p>
     ${btn(`${APP_URL}`, "Start Shopping")}`
   );
   const { error } = await resend.emails.send({
@@ -396,7 +379,6 @@ export async function sendWelcomeEmail(data: {
   if (error) console.error(`[email] welcome to ${data.email}:`, error);
 }
 
-// ─── PASSWORD RESET ──────────────────────────────────────────
 
 export async function sendPasswordResetEmail(data: {
   name: string;
@@ -420,7 +402,6 @@ export async function sendPasswordResetEmail(data: {
   if (error) console.error(`[email] password reset to ${data.email}:`, error);
 }
 
-// ─── NEWSLETTER CONFIRMATION ─────────────────────────────────
 
 export async function sendNewsletterConfirmation(email: string): Promise<void> {
   if (!isConfigured()) return;
@@ -429,8 +410,9 @@ export async function sendNewsletterConfirmation(email: string): Promise<void> {
     "Welcome to the Everything Street inner circle.",
     `<h1 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">You're in.</h1>
     <p style="margin:0 0 20px;font-size:15px;color:#6B7280;line-height:1.6;">Thanks for subscribing. You'll be the first to know about new arrivals, exclusive offers, and beauty secrets — dropping five days a week.</p>
-    <p style="margin:0 0 8px;font-size:14px;color:#374151;">Use code <strong style="background:#F3F4F6;padding:2px 8px;border-radius:4px;font-family:monospace;">WELCOME15</strong> for 15% off your first order.</p>
-    ${btn(`${APP_URL}`, "Explore the Store")}`
+    <p style="margin:0 0 8px;font-size:14px;color:#374151;">Use code <strong style="background:#F3F4F6;padding:2px 8px;border-radius:4px;font-family:monospace;">${WELCOME_COUPON}</strong> for ${WELCOME_DISCOUNT}% off your first order.</p>
+    ${btn(`${APP_URL}`, "Explore the Store")}
+    <p style="margin:24px 0 0;font-size:12px;color:#9CA3AF;text-align:center;">You're receiving this because you subscribed at everythingstreet.ge. <a href="mailto:hello@everythingstreet.ge?subject=Unsubscribe" style="color:#9CA3AF;">Unsubscribe</a>.</p>`
   );
   const { error } = await resend.emails.send({
     from: FROM, to: email,
@@ -440,7 +422,6 @@ export async function sendNewsletterConfirmation(email: string): Promise<void> {
   if (error) console.error(`[email] newsletter confirmation to ${email}:`, error);
 }
 
-// ─── CONTACT FORM AUTO-REPLY ─────────────────────────────────
 
 export async function sendContactAutoReply(data: {
   name: string;
@@ -465,7 +446,6 @@ export async function sendContactAutoReply(data: {
   ]);
 }
 
-// ─── ADMIN NEW ORDER ALERT ───────────────────────────────────
 
 export async function sendAdminNewOrderAlert(data: {
   orderNumber: string;

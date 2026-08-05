@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, ShoppingBag, ArrowRight, Tag, X } from "lucide-react";
+import { Trash2, ShoppingBag, ArrowRight, Tag, X, Lock, RotateCcw, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container, Divider, Input, EmptyState } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
@@ -155,7 +155,7 @@ export default function CartPage() {
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-surface-500">Tax (8.5%)</span>
+                <span className="text-surface-500">{t("tax")}</span>
                 <span className="font-medium">{format(tax())}</span>
               </div>
             </div>
@@ -176,11 +176,10 @@ export default function CartPage() {
             </Link>
           </div>
 
-          {/* Trust badges */}
           <div className="flex justify-center gap-6 text-xs text-surface-400">
-            <span>🔒 Secure</span>
-            <span>↩️ Free returns</span>
-            <span>✓ Authentic</span>
+            <span className="flex items-center gap-1.5"><Lock size={11} /> {t("trustSecure")}</span>
+            <span className="flex items-center gap-1.5"><RotateCcw size={11} /> {t("trustReturns")}</span>
+            <span className="flex items-center gap-1.5"><Shield size={11} /> {t("trustAuthentic")}</span>
           </div>
         </div>
       </div>

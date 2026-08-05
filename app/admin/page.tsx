@@ -24,7 +24,7 @@ function StatCard({ title, value, change, icon: Icon, prefix = "", color = "text
         )}
       </div>
       <p className="text-2xl font-display font-bold text-surface-900 dark:text-white">
-        {prefix}{typeof value === "number" && prefix === "$" ? formatPrice(value).replace("$", "") : formatNumber(value as number)}
+        {typeof value === "number" && prefix === "$" ? formatPrice(value) : `${prefix}${formatNumber(value as number)}`}
       </p>
       <p className="text-sm text-surface-400 mt-1">{title}</p>
       {change !== undefined && <p className="text-xs text-surface-400 mt-0.5">vs last month</p>}
@@ -38,7 +38,7 @@ interface Analytics {
     totalProducts: number; lowStockProducts: number;
     revenueChange: number; ordersChange: number; customersChange: number; avgOrderValue: number;
   };
-  recentOrders: Array<{ id: string; orderNumber: string; total: number; status: string; createdAt: string; user: { name: string; email: string } }>;
+  recentOrders: Array<{ id: string; orderNumber: string; total: number; status: string; createdAt: string; user: { name: string; email: string } | null; guestName: string | null; guestEmail: string | null }>;
   topProducts: Array<{ id: string; name: string; salesCount: number; price: number; stock: number; images: Array<{ url: string }> }>;
   revenueChart: Array<{ date: string; revenue: number; orders: number }>;
 }
@@ -48,7 +48,11 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/analytics").then(r => r.json()).then(d => setData(d.data)).finally(() => setLoading(false));
+    fetch("/api/admin/analytics")
+      .then(r => r.json())
+      .then(d => setData(d.data))
+      .catch(() => setData(null))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <div className="flex justify-center py-20"><Spinner size={32} /></div>;
@@ -124,7 +128,7 @@ export default function AdminDashboard() {
               <Link key={order.id} href={`/admin/orders?id=${order.id}`} className="flex items-center justify-between gap-3 py-2 hover:bg-surface-50 dark:hover:bg-surface-800 -mx-2 px-2 rounded-xl transition-colors">
                 <div className="min-w-0">
                   <p className="text-sm font-mono font-bold text-surface-900 dark:text-white">#{order.orderNumber}</p>
-                  <p className="text-xs text-surface-400 truncate">{order.user.name} · {formatDate(order.createdAt)}</p>
+                  <p className="text-xs text-surface-400 truncate">{order.user?.name ?? order.guestName ?? "Guest"} · {formatDate(order.createdAt)}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <span className="text-sm font-medium">{formatPrice(order.total)}</span>

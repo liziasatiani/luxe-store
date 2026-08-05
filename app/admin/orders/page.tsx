@@ -8,22 +8,22 @@ import { useDebounce } from "@/hooks";
 
 interface Order {
   id: string; orderNumber: string; status: string; total: number; createdAt: string;
-  user: { name: string; email: string };
+  user: { name: string; email: string } | null;
+  guestName: string | null; guestEmail: string | null;
   items: Array<{ productName: string; quantity: number }>;
 }
 
 const STATUS_OPTIONS = [
-  { label: "All Statuses", value: "" },
-  { label: "Pending",    value: "PENDING"    },
-  { label: "Processing", value: "PROCESSING" },
-  { label: "Confirmed",  value: "CONFIRMED"  },
-  { label: "Shipped",    value: "SHIPPED"    },
-  { label: "Delivered",  value: "DELIVERED"  },
-  { label: "Cancelled",  value: "CANCELLED"  },
+  { label: "All Statuses", value: ""          },
+  { label: "Pending",      value: "PENDING"   },
+  { label: "Confirmed",    value: "CONFIRMED" },
+  { label: "Shipped",      value: "SHIPPED"   },
+  { label: "Delivered",    value: "DELIVERED" },
+  { label: "Cancelled",    value: "CANCELLED" },
 ];
 
 const STATUS_BADGE: Record<string, "warning" | "default" | "success" | "gold" | "error"> = {
-  PENDING: "warning", PROCESSING: "default", CONFIRMED: "success",
+  PENDING: "warning", CONFIRMED: "success",
   SHIPPED: "gold", DELIVERED: "success", CANCELLED: "error",
 };
 
@@ -46,9 +46,13 @@ export default function AdminOrdersPage() {
       if (statusFilter) params.set("status", statusFilter);
       if (debouncedSearch) params.set("search", debouncedSearch);
       const res = await fetch(`/api/admin/orders?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch orders");
       const data = await res.json();
       setOrders(data.data?.orders ?? []);
       setTotal(data.data?.total ?? 0);
+    } catch {
+      setOrders([]);
+      toast.error("Failed to load orders");
     } finally {
       setLoading(false);
     }
@@ -125,12 +129,15 @@ export default function AdminOrdersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-100 dark:divide-surface-800">
+                {!loading && orders.length === 0 && (
+                  <tr><td colSpan={7} className="text-center py-12 text-surface-400 text-sm">No orders found</td></tr>
+                )}
                 {orders.map((order) => (
                   <tr key={order.id} className="hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors">
                     <td className="px-4 py-3 font-mono text-sm font-bold text-surface-900 dark:text-white">#{order.orderNumber}</td>
                     <td className="px-4 py-3">
-                      <p className="text-sm text-surface-900 dark:text-white">{order.user.name}</p>
-                      <p className="text-xs text-surface-400">{order.user.email}</p>
+                      <p className="text-sm text-surface-900 dark:text-white">{order.user?.name ?? order.guestName ?? "Guest"}</p>
+                      <p className="text-xs text-surface-400">{order.user?.email ?? order.guestEmail ?? "—"}</p>
                     </td>
                     <td className="px-4 py-3 text-sm text-surface-600 dark:text-surface-400">{order.items.length}</td>
                     <td className="px-4 py-3 text-sm font-semibold">{formatPrice(order.total)}</td>

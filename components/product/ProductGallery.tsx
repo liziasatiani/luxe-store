@@ -25,8 +25,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const prev = useCallback(() => setActiveIdx((i) => (i - 1 + images.length) % images.length), [images.length]);
   const next = useCallback(() => setActiveIdx((i) => (i + 1) % images.length), [images.length]);
   const close = useCallback(() => setLightboxOpen(false), []);
-
-  // Keyboard navigation
   useEffect(() => {
     if (!lightboxOpen) return;
     const handler = (e: KeyboardEvent) => {
@@ -39,15 +37,11 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     closeBtn.current?.focus();
     return () => window.removeEventListener("keydown", handler);
   }, [lightboxOpen, prev, next, close]);
-
-  // Scroll active thumbnail into view in lightbox
   useEffect(() => {
     if (!lightboxOpen || !thumbsRef.current) return;
     const thumb = thumbsRef.current.children[activeIdx] as HTMLElement | undefined;
     thumb?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   }, [activeIdx, lightboxOpen]);
-
-  // Swipe on main gallery image
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
@@ -60,8 +54,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     touchStartX.current = null;
     touchStartY.current = null;
   };
-
-  // Swipe in lightbox — left/right to navigate, down to close
   const onLbTouchStart = (e: React.TouchEvent) => {
     lbTouchStartX.current = e.touches[0].clientX;
     lbTouchStartY.current = e.touches[0].clientY;
@@ -79,7 +71,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <>
       <div className="space-y-3">
-        {/* Main image */}
         <div
           className="relative aspect-square overflow-hidden bg-surface-50 dark:bg-surface-800 group cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
@@ -129,8 +120,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             </>
           )}
         </div>
-
-        {/* Thumbnail filmstrip */}
         {images.length > 1 && (
           <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
             {images.map((img, i) => (
@@ -151,8 +140,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           </div>
         )}
       </div>
-
-      {/* Lightbox */}
       <AnimatePresence>
         {lightboxOpen && (
           <motion.div
@@ -167,7 +154,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             onTouchStart={onLbTouchStart}
             onTouchEnd={onLbTouchEnd}
           >
-            {/* Top bar */}
             <div className="flex items-center justify-between px-5 py-4 shrink-0">
               <p className="text-[10px] tracking-[0.2em] uppercase text-white/40">
                 {activeIdx + 1} / {images.length}
@@ -186,8 +172,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 </button>
               </div>
             </div>
-
-            {/* Main image area */}
             <div className="flex-1 relative flex items-center justify-center px-16 min-h-0">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -227,8 +211,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 </>
               )}
             </div>
-
-            {/* Thumbnail filmstrip */}
             {images.length > 1 && (
               <div className="shrink-0 px-5 py-4">
                 <div ref={thumbsRef} className="flex gap-2 overflow-x-auto no-scrollbar justify-center">

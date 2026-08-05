@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown } from "lucide-react";
+import { Banknote, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown } from "lucide-react";
 import { Container, Input, Divider } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
@@ -190,7 +190,6 @@ export default function CheckoutPage() {
 
   return (
     <Container className="py-12 max-w-5xl">
-      {/* Step indicator */}
       <div className="flex items-center justify-center gap-0 mb-12">
         {stepLabels.map((label, i) => {
           const idx = i + 1;
@@ -221,15 +220,13 @@ export default function CheckoutPage() {
           );
         })}
       </div>
-
-      {/* Mobile order summary toggle */}
       <div className="lg:hidden mb-6 border border-black/10 dark:border-white/10">
         <button
           onClick={() => setSummaryOpen(o => !o)}
           className="w-full flex items-center justify-between px-4 py-3 text-sm text-black dark:text-white"
         >
           <span className="text-[10px] tracking-[0.14em] uppercase text-black/50 dark:text-white/50">
-            {summaryOpen ? "Hide order summary" : `Show order summary · ${format(total())}`}
+            {summaryOpen ? t("hideSummary") : `${t("showSummary")} · ${format(total())}`}
           </span>
           <ChevronDown size={14} className={`text-black/40 dark:text-white/40 transition-transform ${summaryOpen ? "rotate-180" : ""}`} />
         </button>
@@ -239,7 +236,7 @@ export default function CheckoutPage() {
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm gap-3">
                   <span className="text-black/60 dark:text-white/60 line-clamp-1 flex-1">{item.product.name} × {item.quantity}</span>
-                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.product.price) * item.quantity)}</span>
+                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.variant?.price ?? item.product.price) * item.quantity)}</span>
                 </div>
               ))}
             </div>
@@ -254,10 +251,9 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
         <div className="lg:col-span-3">
-          {/* ── Step 1: Shipping ── */}
           {step === 1 && (
             <div className="space-y-8">
-              <h2 className="font-display text-2xl text-black dark:text-white">Shipping Information</h2>
+              <h2 className="font-display text-2xl text-black dark:text-white">{t("shippingInfo")}</h2>
 
               {mode === "guest" && (
                 <div className="space-y-4">
@@ -294,7 +290,7 @@ export default function CheckoutPage() {
 
               {mode === "login" && (
                 <div className="space-y-3">
-                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Saved Addresses</p>
+                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("savedAddresses")}</p>
                   {addresses.length > 0 ? (
                     <>
                       {addresses.map(addr => (
@@ -343,16 +339,12 @@ export default function CheckoutPage() {
               </button>
             </div>
           )}
-
-          {/* ── Step 2: Payment ── */}
           {step === 2 && (
             <div className="space-y-8">
               <div className="flex items-center justify-between">
                 <h2 className="font-display text-2xl text-black dark:text-white">{t("payment")}</h2>
                 <button onClick={() => setStep(1)} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Edit shipping</button>
               </div>
-
-              {/* Shipping summary */}
               <div className="p-4 border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
                 <div className="flex items-center gap-2 mb-1">
                   <Truck size={14} className="text-black/40 dark:text-white/40" />
@@ -364,13 +356,11 @@ export default function CheckoutPage() {
                   <AddressSummary addresses={addresses} selectedId={selectedAddress} />
                 )}
               </div>
-
-              {/* Payment method */}
               <div className="space-y-3">
-                <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Payment Method</p>
+                <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("paymentMethod")}</p>
                 <div className="flex items-center gap-3 p-4 border border-black dark:border-white bg-black/[0.02] dark:bg-white/[0.02]">
                   <input type="radio" checked readOnly />
-                  <CreditCard size={16} className="text-black/60 dark:text-white/60" />
+                  <Banknote size={16} className="text-black/60 dark:text-white/60" />
                   <span className="text-sm text-black dark:text-white font-medium">{t("cashOnDelivery")}</span>
                   <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">Pay when received</span>
                 </div>
@@ -385,8 +375,6 @@ export default function CheckoutPage() {
             </div>
           )}
         </div>
-
-        {/* Order summary sidebar */}
         <div className="lg:col-span-2">
           <div className="sticky top-24 border border-black/10 dark:border-white/10 p-6 space-y-4">
             <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("orderSummary")}</p>
@@ -394,7 +382,7 @@ export default function CheckoutPage() {
               {items.map(item => (
                 <div key={item.id} className="flex justify-between text-sm gap-3">
                   <span className="text-black/60 dark:text-white/60 line-clamp-2 flex-1">{item.product.name} × {item.quantity}</span>
-                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.product.price) * item.quantity)}</span>
+                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.variant?.price ?? item.product.price) * item.quantity)}</span>
                 </div>
               ))}
             </div>

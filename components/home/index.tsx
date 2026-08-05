@@ -9,7 +9,6 @@ import { Container } from "@/components/ui";
 import { useCountdown } from "@/hooks";
 import type { ProductCard as ProductCardType } from "@/types";
 
-// ─── Categories Section ───────────────────────────────────────
 export function CategoriesSection({ categories }: { categories: Array<{ name: string; slug: string; image: string | null; parent?: { slug: string } | null; _count?: { products: number } }> }) {
   const t = useTranslations("home.categories");
   const ref = useRef(null);
@@ -51,7 +50,6 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
   );
 }
 
-// ─── Section heading helper ──────────────────────────────────
 function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
   title: string; subtitle?: string; viewAllHref?: string; viewAllLabel?: string;
 }) {
@@ -72,17 +70,19 @@ function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
   );
 }
 
-// ─── Featured Products Section ────────────────────────────────
 export function FeaturedProductsSection() {
   const t = useTranslations("home.featured");
   const [products, setProducts] = useState<ProductCardType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/products?featured=true&limit=8")
+    const ctrl = new AbortController();
+    fetch("/api/products?featured=true&limit=8", { signal: ctrl.signal })
       .then(r => r.json())
       .then(d => setProducts(d.data?.products ?? []))
+      .catch(err => { if (err?.name !== "AbortError") setLoading(false); })
       .finally(() => setLoading(false));
+    return () => ctrl.abort();
   }, []);
 
   return (
@@ -100,17 +100,17 @@ export function FeaturedProductsSection() {
   );
 }
 
-// ─── Flash Sale Section ───────────────────────────────────────
 const FLASH_SALE_END_KEY = "luxe-flash-sale-end";
+const FLASH_SALE_DURATION_MS = 47 * 60 * 60 * 1000 + 23 * 60 * 1000 + 15 * 1000;
 
 function getOrInitSaleEnd(): Date {
-  if (typeof window === "undefined") return new Date(Date.now() + 47 * 3600000);
+  if (typeof window === "undefined") return new Date(Date.now() + FLASH_SALE_DURATION_MS);
   const stored = localStorage.getItem(FLASH_SALE_END_KEY);
   if (stored) {
     const ts = parseInt(stored, 10);
     if (!isNaN(ts) && ts > Date.now()) return new Date(ts);
   }
-  const end = Date.now() + 47 * 3600000 + 23 * 60000 + 15000;
+  const end = Date.now() + FLASH_SALE_DURATION_MS;
   localStorage.setItem(FLASH_SALE_END_KEY, String(end));
   return new Date(end);
 }
@@ -123,9 +123,12 @@ export function FlashSaleSection() {
   const { h, m, s } = useCountdown(saleEndRef.current);
 
   useEffect(() => {
-    fetch("/api/products?onSale=true&limit=4")
+    const ctrl = new AbortController();
+    fetch("/api/products?onSale=true&limit=4", { signal: ctrl.signal })
       .then(r => r.json())
-      .then(d => setProducts(d.data?.products ?? []));
+      .then(d => setProducts(d.data?.products ?? []))
+      .catch(err => { if (err?.name !== "AbortError") console.warn("Flash sale fetch failed"); });
+    return () => ctrl.abort();
   }, []);
 
   return (
@@ -161,7 +164,6 @@ export function FlashSaleSection() {
   );
 }
 
-// ─── Best Sellers Section ─────────────────────────────────────
 export function BestSellersSection({ initialProducts = [] }: { initialProducts?: ProductCardType[] }) {
   const t = useTranslations("pages.bestSellers");
   const [products, setProducts] = useState<ProductCardType[]>(initialProducts);
@@ -220,7 +222,6 @@ export function BestSellersSection({ initialProducts = [] }: { initialProducts?:
   );
 }
 
-// ─── Brands Section ───────────────────────────────────────────
 export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: string; logo: string | null }> }) {
   const t = useTranslations("home.brands");
   return (
@@ -243,7 +244,6 @@ export function BrandsSection({ brands }: { brands: Array<{ name: string; slug: 
   );
 }
 
-// ─── Testimonials Section ─────────────────────────────────────
 const TESTIMONIALS = [
   { name: "Sofia M.", location: "New York, NY", rating: 5, text: "The La Mer moisturizer arrived in two days, sealed and exactly as described. It's my third order and the quality is always flawless." },
   { name: "James R.", location: "London, UK", rating: 5, text: "Got the Sony WH-1000XM5 at a better price than anywhere else. Genuine product, fast shipping, and customer service that actually replied." },
@@ -290,14 +290,13 @@ export function TestimonialsSection() {
   );
 }
 
-// ─── Newsletter Section ───────────────────────────────────────
 export function NewsletterSection() {
   const t = useTranslations("home.newsletter");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [emailError, setEmailError] = useState("");
 
-  const handleSubmit = async () => {
+  const subscribeNewsletter = async () => {
     setEmailError("");
     if (!email) { setEmailError("Please enter your email address"); return; }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -337,13 +336,13 @@ export function NewsletterSection() {
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleSubmit()}
+                onKeyDown={e => e.key === "Enter" && subscribeNewsletter()}
                 placeholder={t("placeholder")}
                 aria-invalid={!!emailError}
                 className="flex-1 h-12 px-5 bg-transparent border-0 text-white placeholder:text-white/25 text-sm focus:outline-none"
               />
               <button
-                onClick={handleSubmit}
+                onClick={subscribeNewsletter}
                 disabled={status === "loading"}
                 className="h-12 px-8 bg-white text-black text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-white/90 transition-colors shrink-0 disabled:opacity-50"
               >
@@ -360,14 +359,16 @@ export function NewsletterSection() {
   );
 }
 
-// ─── The Edit ────────────────────────────────────────────────
 export function TheEditSection() {
   const [products, setProducts] = useState<ProductCardType[]>([]);
 
   useEffect(() => {
-    fetch("/api/products?featured=true&limit=3&sort=best-selling")
+    const ctrl = new AbortController();
+    fetch("/api/products?featured=true&limit=3&sort=best-selling", { signal: ctrl.signal })
       .then(r => r.json())
-      .then(d => setProducts(d.data?.products ?? []));
+      .then(d => setProducts(d.data?.products ?? []))
+      .catch(err => { if (err?.name !== "AbortError") console.warn("The Edit fetch failed"); });
+    return () => ctrl.abort();
   }, []);
 
   if (products.length === 0) return null;
@@ -402,7 +403,6 @@ export function TheEditSection() {
   );
 }
 
-// ─── Homepage Recently Viewed ─────────────────────────────────
 export function HomepageRecentlyViewed() {
   const [items, setItems] = useState<ProductCardType[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -436,7 +436,6 @@ export function HomepageRecentlyViewed() {
   );
 }
 
-// ─── New Arrivals ─────────────────────────────────────────────
 export function NewArrivalsSection() {
   const t = useTranslations("pages.newArrivals");
   const tCommon = useTranslations("common");
@@ -444,10 +443,13 @@ export function NewArrivalsSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/products?newArrival=true&limit=8&sort=newest")
+    const ctrl = new AbortController();
+    fetch("/api/products?newArrival=true&limit=8&sort=newest", { signal: ctrl.signal })
       .then(r => r.json())
       .then(d => setProducts(d.data?.products ?? []))
+      .catch(err => { if (err?.name !== "AbortError") setLoading(false); })
       .finally(() => setLoading(false));
+    return () => ctrl.abort();
   }, []);
 
   return (

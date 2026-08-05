@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
-import { LayoutDashboard, Package, ShoppingCart, Users, Tag, Upload, BarChart2, Settings, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Tag, Upload, ChevronRight } from "lucide-react";
 
 const NAV = [
   { href: "/admin",           icon: LayoutDashboard, label: "Dashboard"   },

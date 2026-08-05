@@ -97,7 +97,6 @@ export async function POST(req: NextRequest) {
 
     const isGuest = input.guest === true;
 
-    // ─── Resolve products and derive prices server-side ──────────────────
     const lines = dedupeLines(input.cartItems);
     const productIds = [...new Set(lines.map((l) => l.productId))];
 
@@ -138,7 +137,6 @@ export async function POST(req: NextRequest) {
       lines.reduce((sum, l) => sum + Number(byId.get(l.productId)!.price) * l.quantity, 0)
     );
 
-    // ─── Coupon (same rule set as the preview endpoint) ──────────────────
     const { coupon, discountAmount, error: couponError } = await resolveCoupon(
       input.couponCode,
       subtotal,
@@ -150,7 +148,6 @@ export async function POST(req: NextRequest) {
 
     const totals = calcOrderTotals(subtotal, coupon, discountAmount);
 
-    // ─── Shipping snapshot ───────────────────────────────────────────────
     let shipping: {
       shippingName: string | null;
       shippingLine1: string | null;
@@ -202,7 +199,6 @@ export async function POST(req: NextRequest) {
       };
     }
 
-    // ─── Persist ─────────────────────────────────────────────────────────
     const order = await prisma.$transaction(async (tx) => {
       const guestInfo = isGuest
         ? (input as Extract<typeof input, { guest: true }>).guestInfo
@@ -307,7 +303,6 @@ export async function POST(req: NextRequest) {
       return newOrder;
     });
 
-    // ─── Confirmation email (never blocks or fails the order) ────────────
     const recipient = isGuest
       ? (() => {
           const gi = (input as Extract<typeof input, { guest: true }>).guestInfo;

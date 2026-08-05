@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/validations";
 import { slugify, serializeDecimal, parseIntParam } from "@/lib/utils";
-
-async function requireAdmin() {
-  const session = await auth();
-  const role = (session?.user as { role?: string })?.role;
-  if (!["ADMIN", "SUPER_ADMIN"].includes(role ?? "")) return null;
-  return session;
-}
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET(req: NextRequest) {
   try {
@@ -96,13 +89,16 @@ export async function PUT(req: NextRequest) {
     if (!parsed.success) return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     const data = parsed.data;
 
-    const stockStatus = (data.stock ?? 0) === 0 ? "OUT_OF_STOCK" : (data.stock ?? 0) <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK";
+    // Only recompute stockStatus when stock is explicitly included in the update.
+    const stockStatusUpdate = data.stock !== undefined
+      ? { stockStatus: (data.stock === 0 ? "OUT_OF_STOCK" : data.stock <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK") as "OUT_OF_STOCK" | "LOW_STOCK" | "IN_STOCK" }
+      : {};
 
     const product = await prisma.product.update({
       where: { id },
       data: {
         ...data,
-        stockStatus,
+        ...stockStatusUpdate,
         brandId: data.brandId || null,
         images: {
           deleteMany: {},

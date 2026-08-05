@@ -58,14 +58,11 @@ export function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b border-black/10 dark:border-white/10 transition-colors duration-300">
-        {/* Announcement bar */}
         <div className="bg-black dark:bg-white text-white dark:text-black text-center py-2 text-[10px] tracking-[0.18em] uppercase font-medium">
           {t("announcement")}
         </div>
         <Container>
           <div className="flex items-center h-14 md:h-16">
-
-            {/* Mobile: hamburger left */}
             <button
               onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -116,8 +113,6 @@ export function Navbar() {
                 </div>
               ))}
             </nav>
-
-            {/* Logo — absolutely centered on all viewports */}
             <Link
               href="/"
               onClick={closeMobileMenu}
@@ -127,8 +122,6 @@ export function Navbar() {
                 Everything Street
               </span>
             </Link>
-
-            {/* Right icons */}
             <div className="flex items-center gap-1 ml-auto flex-1 justify-end">
               <div className="hidden lg:flex items-center gap-0">
                 {mounted && <CurrencySelector />}
@@ -242,7 +235,7 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
     <div ref={ref} className="relative">
       <button onClick={() => setOpen(o => !o)} aria-label="Open account menu" aria-expanded={open} className="p-2.5 text-black dark:text-white hover:opacity-50 transition-opacity">
         {user.image ? (
-          <Image src={user.image} alt={user.name ?? ""} width={24} height={24} className="rounded-full object-cover" />
+          <Image src={user.image} alt={user.name ?? "User avatar"} width={24} height={24} className="rounded-full object-cover" />
         ) : (
           <User size={18} />
         )}

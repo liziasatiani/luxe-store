@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export async function GET() {
   try {
-    const session = await auth();
-    const role = (session?.user as { role?: string })?.role;
-    if (!["ADMIN", "SUPER_ADMIN"].includes(role ?? "")) {
+    if (!await requireAdmin()) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
@@ -33,7 +31,7 @@ export async function GET() {
       prisma.product.count({ where: { stockStatus: { in: ["LOW_STOCK", "OUT_OF_STOCK"] } } }),
       prisma.order.findMany({
         orderBy: { createdAt: "desc" }, take: 10,
-        include: { user: { select: { name: true, email: true } }, items: { take: 1 } },
+        select: { id: true, orderNumber: true, total: true, status: true, createdAt: true, guestName: true, guestEmail: true, user: { select: { name: true, email: true } }, items: { take: 1, select: { productName: true } } },
       }),
       prisma.product.findMany({
         orderBy: { salesCount: "desc" }, take: 5,

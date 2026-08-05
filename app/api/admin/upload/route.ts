@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { supabaseAdmin, STORAGE_BUCKET } from "@/lib/supabase";
 import { nanoid } from "nanoid";
+import { requireAdmin } from "@/lib/adminAuth";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
+const ALLOWED_MIME: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png":  "png",
+  "image/webp": "webp",
+  "image/gif":  "gif",
+  "image/avif": "avif",
+};
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+const CACHE_MAX_AGE = "31536000"; // 1 year in seconds
+
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  const role = (session?.user as { role?: string } | undefined)?.role;
-  if (!role || !["ADMIN", "SUPER_ADMIN"].includes(role)) {
+  if (!await requireAdmin()) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -23,20 +31,28 @@ export async function POST(req: NextRequest) {
   const urls: string[] = [];
 
   for (const file of files) {
-    const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+    const ext = ALLOWED_MIME[file.type];
+    if (!ext) {
+      return NextResponse.json({ error: "Only JPEG, PNG, WebP, GIF, and AVIF images are allowed" }, { status: 415 });
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: `File "${file.name}" exceeds the 10 MB limit` }, { status: 413 });
+    }
+
     const path = `products/${nanoid()}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const { data, error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .upload(path, buffer, {
-        contentType: file.type || "image/jpeg",
+        contentType: file.type,
         upsert: false,
-        cacheControl: "31536000",
+        cacheControl: CACHE_MAX_AGE,
       });
 
     if (error) {
-      return NextResponse.json({ error: `Upload failed: ${error.message}` }, { status: 500 });
+      return NextResponse.json({ error: "Upload failed" }, { status: 500 });
     }
 
     const { data: urlData } = supabaseAdmin.storage

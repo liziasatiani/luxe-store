@@ -1,9 +1,12 @@
 "use client";
 import { Shield, Truck, RotateCcw } from "lucide-react";
+import { FREE_SHIPPING_THRESHOLD, GEL_RATE } from "@/lib/utils";
+
+const GEL_THRESHOLD = Math.ceil(FREE_SHIPPING_THRESHOLD * GEL_RATE);
 
 const SIGNALS = [
-  { icon: Truck, text: "Free shipping over ₾200" },
-  { icon: Shield, text: "100% authentic guaranteed" },
+  { icon: Truck,    text: `Free shipping over ₾${GEL_THRESHOLD}` },
+  { icon: Shield,   text: "100% authentic guaranteed" },
   { icon: RotateCcw, text: "30-day free returns" },
 ];
 

@@ -42,12 +42,14 @@ export default async function AccountLayout({ children }: { children: React.Reac
                 </Link>
               ))}
               <div className="border-t border-surface-100 dark:border-surface-800 mt-2 pt-2">
-                <Link
-                  href="/api/auth/signout"
-                  className="flex items-center gap-3 px-5 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
-                >
-                  <LogOut size={16} /> Sign Out
-                </Link>
+                <form action="/api/auth/signout" method="POST">
+                  <button
+                    type="submit"
+                    className="w-full flex items-center gap-3 px-5 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+                  >
+                    <LogOut size={16} /> Sign Out
+                  </button>
+                </form>
               </div>
             </nav>
           </div>

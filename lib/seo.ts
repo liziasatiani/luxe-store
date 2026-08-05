@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://everythingstreet.com";
+const PRICE_VALID_DAYS = 30;
 const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Everything Street";
 
 const OG_LOCALE: Record<string, string> = {
@@ -117,7 +118,7 @@ export function buildProductSchema(product: {
         product.stock > 0
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
-      priceValidUntil: new Date(Date.now() + 30 * 86400000)
+      priceValidUntil: new Date(Date.now() + PRICE_VALID_DAYS * 86400000)
         .toISOString()
         .split("T")[0],
       seller: { "@type": "Organization", name: SITE_NAME },

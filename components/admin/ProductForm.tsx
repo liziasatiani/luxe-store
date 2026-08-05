@@ -52,6 +52,8 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
     ]).then(([cats, br]) => {
       setCategories(cats.data?.categories ?? []);
       setBrands(br.data?.brands ?? []);
+    }).catch(() => {
+      toast.error("Failed to load categories and brands");
     });
   }, []);
 
@@ -83,7 +85,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
     }
   }, []);
 
-  const handleSubmit = async () => {
+  const saveProduct = async () => {
     if (!form.name || !form.sku || !form.price || !form.categoryId) {
       toast.error("Please fill in all required fields");
       return;
@@ -128,7 +130,6 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
         initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }}
         className="bg-white dark:bg-surface-900 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-surface-100 dark:border-surface-800 sticky top-0 bg-white dark:bg-surface-900 z-10">
           <h2 className="font-semibold text-lg text-surface-900 dark:text-white">
             {product?.id ? "Edit Product" : "Add Product"}
@@ -139,7 +140,6 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
         </div>
 
         <div className="p-6 space-y-6">
-          {/* Basic */}
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <Input label="Product Name *" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Crème de la Mer 60ml" />
@@ -147,8 +147,6 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
             <Input label="SKU *" value={form.sku} onChange={(e) => set("sku", e.target.value)} placeholder="SKC-0001" />
             <Input label="Weight / Volume (g or ml)" type="number" value={form.weight} onChange={(e) => set("weight", e.target.value)} placeholder="50" />
           </div>
-
-          {/* Description */}
           <div>
             <label className={labelCls}>Description</label>
             <textarea
@@ -159,15 +157,11 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 placeholder:text-surface-400 transition-colors resize-none"
             />
           </div>
-
-          {/* Pricing */}
           <div className="grid grid-cols-3 gap-4">
             <Input label="Price *" type="number" step="0.01" value={form.price} onChange={(e) => set("price", e.target.value)} placeholder="0.00" />
             <Input label="Compare Price" type="number" step="0.01" value={form.comparePrice} onChange={(e) => set("comparePrice", e.target.value)} placeholder="0.00" />
             <Input label="Stock *" type="number" value={form.stock} onChange={(e) => set("stock", e.target.value)} placeholder="0" />
           </div>
-
-          {/* Category & Brand */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Category *</label>
@@ -186,11 +180,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               </select>
             </div>
           </div>
-
-          {/* Tags */}
           <Input label="Tags (comma separated)" value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="skincare, luxury, moisturiser" />
-
-          {/* Flags */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { key: "isFeatured",   label: "Featured"     },
@@ -209,12 +199,8 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               </label>
             ))}
           </div>
-
-          {/* Images */}
           <div>
             <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-3">Images</p>
-
-            {/* Drop zone */}
             <div
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
@@ -249,14 +235,12 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
                 </>
               )}
             </div>
-
-            {/* Uploaded image list */}
             {images.filter((i) => i.url).length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {images.filter((i) => i.url).map((img, i) => (
                   <div key={i} className="relative group rounded-xl overflow-hidden border border-surface-200 dark:border-surface-700 aspect-square">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt="" className="w-full h-full object-cover" />
+                    <img src={img.url} alt="Product image preview" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                       <button
                         onClick={() => setImages((imgs) => imgs.map((im, j) => j === i ? { ...im, isPrimary: true } : { ...im, isPrimary: false }))}
@@ -280,8 +264,6 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
                 ))}
               </div>
             )}
-
-            {/* Manual URL fallback */}
             <button
               onClick={() => setImages((i) => [...i, { url: "", isPrimary: i.filter(x => x.url).length === 0 }])}
               className="flex items-center gap-1 text-xs text-surface-400 hover:text-brand-500 mt-3 transition-colors"
@@ -314,8 +296,6 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               </div>
             )}
           </div>
-
-          {/* Specs */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-medium text-surface-700 dark:text-surface-300">Specifications</p>
@@ -349,11 +329,9 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
             </div>
           </div>
         </div>
-
-        {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-surface-100 dark:border-surface-800 sticky bottom-0 bg-white dark:bg-surface-900">
           <Button onClick={onClose} variant="outline">Cancel</Button>
-          <Button onClick={handleSubmit} loading={loading} variant="gold">
+          <Button onClick={saveProduct} loading={loading} variant="gold">
             {product?.id ? "Update Product" : "Create Product"}
           </Button>
         </div>

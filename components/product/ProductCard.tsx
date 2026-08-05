@@ -76,7 +76,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         className={cn("group", darkBg ? "bg-black" : "bg-surface-50 dark:bg-black border border-surface-200 dark:border-white/8")}
       >
         <Link href={`/products/${product.slug}`} className="block">
-          {/* Image */}
           <div className="relative overflow-hidden aspect-[3/4] bg-stone-100 dark:bg-zinc-900">
             <Image
               src={imageUrl} alt={product.name} fill
@@ -84,10 +83,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               priority={priority}
               className="object-cover transition-transform duration-700 group-hover:scale-105 img-plate"
             />
-            {/* Depth gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-
-            {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-1">
               {product.isNewArrival && (
                 <span className="bg-black text-white text-[9px] tracking-[0.14em] uppercase px-2 py-0.5">{t("newArrival")}</span>
@@ -98,15 +94,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               {product.isBestSeller && (
                 <span className="bg-white text-black text-[9px] tracking-[0.14em] uppercase px-2 py-0.5">{t("bestSeller")}</span>
               )}
-              {product.isBestSeller && (
-                <span className="bg-black/70 text-white text-[9px] tracking-[0.1em] uppercase px-2 py-0.5 flex items-center gap-1">
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  Authentic
-                </span>
-              )}
             </div>
-
-            {/* Action icons */}
             <div className="absolute top-3 right-3 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <button
                 onClick={handleWishlist}
@@ -126,15 +114,11 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
                 <ShoppingBag size={14} />
               </button>
             </div>
-
-            {/* Out of stock overlay */}
             {product.stockStatus === "OUT_OF_STOCK" && (
               <div className="absolute inset-0 bg-white/70 dark:bg-black/70 flex items-center justify-center">
                 <span className="text-[10px] tracking-[0.12em] uppercase bg-white dark:bg-black text-black dark:text-white px-3 py-1.5">{t("outOfStock")}</span>
               </div>
             )}
-
-            {/* Quick view bar */}
             <button
               onClick={(e) => { e.preventDefault(); setQuickViewSlug(product.slug); }}
               aria-label={t("quickView")}
@@ -143,8 +127,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               <Eye size={12} /> {t("quickView")}
             </button>
           </div>
-
-          {/* Info */}
           <div className="px-4 pt-3 pb-5">
             {product.brand && (
               <p className={cn("text-[10px] tracking-[0.14em] uppercase mb-1.5", textMuted)}>{product.brand.name}</p>

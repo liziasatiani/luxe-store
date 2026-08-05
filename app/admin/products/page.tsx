@@ -40,9 +40,13 @@ export default function AdminProductsPage() {
         ...(stockFilter && { stock: stockFilter }),
       });
       const res = await fetch(`/api/admin/products?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
       setProducts(data.data?.products ?? []);
       setTotal(data.data?.total ?? 0);
+    } catch {
+      setProducts([]);
+      toast.error("Failed to load products");
     } finally {
       setLoading(false);
     }
@@ -85,12 +89,12 @@ export default function AdminProductsPage() {
           <option value="">All categories</option>
           <optgroup label="Beauty">
             {["skincare","makeup","hair-care","body-care","perfume","beauty-tools","mini"].map(s => (
-              <option key={s} value={s}>{s.replace("-", " ")}</option>
+              <option key={s} value={s}>{s.replaceAll("-", " ")}</option>
             ))}
           </optgroup>
           <optgroup label="Tech">
             {["headphones","cameras","tablets","gaming","wearables","smart-home","audio","accessories"].map(s => (
-              <option key={s} value={s}>{s.replace("-", " ")}</option>
+              <option key={s} value={s}>{s.replaceAll("-", " ")}</option>
             ))}
           </optgroup>
         </select>
@@ -138,6 +142,9 @@ export default function AdminProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-100 dark:divide-surface-800">
+                {!loading && products.length === 0 && (
+                  <tr><td colSpan={7} className="text-center py-12 text-surface-400 text-sm">No products found</td></tr>
+                )}
                 {products.map(product => (
                   <tr key={product.id} className="hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors">
                     <td className="px-4 py-3">
@@ -162,7 +169,7 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <Badge variant={STOCK_BADGE[product.stockStatus as keyof typeof STOCK_BADGE] ?? "default"} size="sm">
-                        {product.stockStatus.replace("_", " ")}
+                        {product.stockStatus.replaceAll("_", " ")}
                       </Badge>
                     </td>
                     <td className="px-4 py-3">

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// ─── In-process store (single-instance fallback) ─────────────────────────────
 
 const store = new Map<string, { count: number; resetAt: number }>();
 
@@ -47,7 +46,6 @@ function inProcessRateLimit(
   return { allowed: true, remaining: limit - entry.count, resetAt: entry.resetAt };
 }
 
-// ─── Upstash Redis (distributed, used when env vars are present) ──────────────
 
 const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL ?? "";
 const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN ?? "";
@@ -115,7 +113,6 @@ async function upstashRateLimit(
   return { allowed: true, remaining: Math.max(0, limit - count), resetAt };
 }
 
-// ─── Public API ───────────────────────────────────────────────────────────────
 
 export interface RateLimitResult {
   allowed: boolean;
