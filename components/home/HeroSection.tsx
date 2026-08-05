@@ -57,7 +57,7 @@ export function HeroSection() {
           className="flex flex-wrap gap-3 justify-center"
         >
           <Link href="/tech"
-            className="inline-flex items-center h-12 px-8 bg-white text-black text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/90 transition-colors">
+            className="inline-flex items-center h-12 px-8 border border-white/30 text-white text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/10 transition-colors">
             {t("shopTech")}
           </Link>
           <Link href="/beauty"
