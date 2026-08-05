@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
@@ -23,24 +24,41 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
             <p className="text-[10px] tracking-[0.22em] uppercase text-surface-400 dark:text-white/40 mb-1">{t("subtitle")}</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 divide-x divide-surface-200 dark:divide-white/8 border border-surface-200 dark:border-white/8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.slug}
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: i * 0.04 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.06 }}
             >
               <Link
                 href={cat.parent ? `/${cat.parent.slug}/${cat.slug}` : `/${cat.slug}`}
-                className="group flex flex-col items-center justify-center gap-2 py-8 px-4 hover:bg-brand-50 dark:hover:bg-white/[0.03] transition-colors text-center"
+                className="group relative block aspect-[3/4] overflow-hidden bg-surface-100 dark:bg-surface-800"
               >
-                <p className="text-[11px] tracking-[0.14em] uppercase font-medium text-surface-700 dark:text-white group-hover:text-brand-600 dark:group-hover:opacity-60 transition-colors">
-                  {cat.name}
-                </p>
-                {cat._count && (
-                  <p className="text-[10px] text-surface-400 dark:text-white/30">{cat._count.products}</p>
+                {cat.image ? (
+                  <Image
+                    src={cat.image}
+                    alt={cat.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-surface-200 to-surface-300 dark:from-surface-700 dark:to-surface-900" />
                 )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                {cat.parent && (
+                  <span className="absolute top-3 left-3 text-[9px] tracking-[0.18em] uppercase font-medium text-white bg-black/40 backdrop-blur-sm px-2 py-1">
+                    {cat.parent.slug.charAt(0).toUpperCase() + cat.parent.slug.slice(1)}
+                  </span>
+                )}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="font-display text-xl text-white leading-tight">{cat.name}</p>
+                  {cat._count && (
+                    <p className="text-[10px] tracking-[0.1em] text-white/60 mt-1">{cat._count.products} products</p>
+                  )}
+                </div>
               </Link>
             </motion.div>
           ))}
