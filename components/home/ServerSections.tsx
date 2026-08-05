@@ -5,40 +5,41 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import type { ProductCard as ProductCardType } from "@/types";
 
-function KSectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
+function SectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
   eyebrow: string; title: string; viewAllHref?: string; viewAllLabel?: string;
 }) {
   return (
-    <div className="flex items-end justify-between mb-[60px]" style={{ paddingBottom: "0" }}>
-      <div>
-        <p className="text-[10px] font-semibold tracking-[0.22em] uppercase mb-3" style={{ color: "#C9A44A" }}>{eyebrow}</p>
-        <h2 className="font-display font-bold leading-[1.05] tracking-[-0.01em]"
-          style={{ fontSize: "clamp(32px,3.5vw,52px)", color: "#EFE9DA" }}>{title}</h2>
+    <div className="sec-meta">
+      <div className="sec-row">
+        <div>
+          <p className="sec-eyebrow">{eyebrow}</p>
+          <h2 className="sec-title">{title}</h2>
+        </div>
+        {viewAllHref && (
+          <Link href={viewAllHref} className="see-all hidden sm:flex">
+            {viewAllLabel ?? "View All"}
+          </Link>
+        )}
       </div>
-      {viewAllHref && (
-        <Link href={viewAllHref}
-          className="hidden sm:flex items-center gap-2 text-[11px] font-medium tracking-[0.15em] uppercase mb-1 transition-opacity hover:opacity-70"
-          style={{ color: "#C9A44A", borderBottom: "1px solid rgba(201,164,74,0.4)", paddingBottom: "3px" }}>
-          {viewAllLabel ?? "View All"} →
-        </Link>
-      )}
     </div>
   );
 }
+
+const PRODUCT_SELECT = {
+  id: true, name: true, slug: true, price: true, comparePrice: true,
+  stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
+  isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
+  images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
+  brand: { select: { name: true, slug: true } },
+  category: { select: { name: true, slug: true } },
+} as const;
 
 export async function FeaturedProductsSection() {
   let products: ProductCardType[] = [];
   try {
     const rows = await prisma.product.findMany({
       where: { isActive: true, isFeatured: true },
-      select: {
-        id: true, name: true, slug: true, price: true, comparePrice: true,
-        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-        brand: { select: { name: true, slug: true } },
-        category: { select: { name: true, slug: true } },
-      },
+      select: PRODUCT_SELECT,
       orderBy: [{ salesCount: "desc" }, { createdAt: "desc" }],
       take: 8,
     });
@@ -47,12 +48,14 @@ export async function FeaturedProductsSection() {
     return null;
   }
 
+  if (products.length === 0) return null;
+
   return (
-    <section className="py-24" style={{ borderBottom: "1px solid rgba(239,233,218,0.08)" }}>
-      <div className="max-w-[1400px] mx-auto px-[52px] max-md:px-5">
-        <KSectionHeader eyebrow="Featured" title="Selected for You" viewAllHref="/featured" viewAllLabel="View All" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
-          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} className="border-0" />)}
+    <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div className="wrap">
+        <SectionHeader eyebrow="Featured" title="Selected for You" viewAllHref="/featured" viewAllLabel="View All" />
+        <div className="pgrid">
+          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
         </div>
       </div>
     </section>
@@ -64,14 +67,7 @@ export async function NewArrivalsSection() {
   try {
     const rows = await prisma.product.findMany({
       where: { isActive: true, isNewArrival: true },
-      select: {
-        id: true, name: true, slug: true, price: true, comparePrice: true,
-        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-        brand: { select: { name: true, slug: true } },
-        category: { select: { name: true, slug: true } },
-      },
+      select: PRODUCT_SELECT,
       orderBy: { createdAt: "desc" },
       take: 8,
     });
@@ -81,10 +77,10 @@ export async function NewArrivalsSection() {
   }
 
   return (
-    <section className="py-24" style={{ borderBottom: "1px solid rgba(239,233,218,0.08)" }}>
-      <div className="max-w-[1400px] mx-auto px-[52px] max-md:px-5">
-        <KSectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="See All" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
+    <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div className="wrap">
+        <SectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="See All" />
+        <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
       </div>
@@ -97,14 +93,7 @@ export async function BestSellersSectionServer() {
   try {
     const rows = await prisma.product.findMany({
       where: { isActive: true, isBestSeller: true },
-      select: {
-        id: true, name: true, slug: true, price: true, comparePrice: true,
-        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-        brand: { select: { name: true, slug: true } },
-        category: { select: { name: true, slug: true } },
-      },
+      select: PRODUCT_SELECT,
       orderBy: [{ ratingAvg: "desc" }, { salesCount: "desc" }],
       take: 8,
     });
@@ -117,7 +106,7 @@ export async function BestSellersSectionServer() {
 
 export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
+    <div className="pgrid">
       {Array.from({ length: count }).map((_, i) => <ProductCardSkeleton key={i} />)}
     </div>
   );

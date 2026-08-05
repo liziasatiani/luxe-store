@@ -36,7 +36,7 @@ export function LanguageSelector() {
         aria-label={`Language: ${currentLocale.toUpperCase()}`}
         aria-expanded={open}
         className="flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.12em] uppercase rounded-full border transition-all hover:bg-brand-500/18"
-        style={{ borderColor: "rgba(201,164,74,0.4)", color: "#C9A44A" }}
+        style={{ borderColor: "var(--borderg)", color: "var(--gold)" }}
       >
         <span className="text-[11px] tracking-[0.1em] uppercase">{currentLocale.toUpperCase()}</span>
         <ChevronDown size={10} className={cn("transition-transform", open && "rotate-180")} />

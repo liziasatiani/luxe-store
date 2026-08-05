@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { HeroSection } from "@/components/home/HeroSection";
 import { StatsSection } from "@/components/home/StatsSection";
-import { GoldMarquee } from "@/components/home/GoldMarquee";
 import { EditorialPanels } from "@/components/home/EditorialPanels";
 import { BeautyEditorial } from "@/components/home/BeautyEditorial";
 import { NewsletterK } from "@/components/home/NewsletterK";
@@ -40,7 +39,6 @@ export default async function HomePage() {
         <NewArrivalsSection />
       </Suspense>
       <BeautyEditorial />
-      <GoldMarquee />
       <NewsletterK />
     </>
   );
