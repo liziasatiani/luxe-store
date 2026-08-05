@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 export const revalidate = 3600;
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Container } from "@/components/ui";
+import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
@@ -14,7 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const brand = await prisma.brand.findUnique({ where: { slug } });
   if (!brand) return {};
-  return buildMetadata({ title: brand.name, description: brand.description ?? `Shop all ${brand.name} products at Luxe Store.` });
+  const locale = await getLocale();
+  return buildMetadata({ title: brand.name, description: brand.description ?? `Shop all ${brand.name} products at Everything Street.`, locale });
 }
 
 export default async function BrandPage({ params }: Props) {

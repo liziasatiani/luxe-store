@@ -30,11 +30,11 @@ export async function GET(
       return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
     }
 
-    // Increment view count
-    await prisma.product.update({
-      where: { id: product.id },
-      data: { viewCount: { increment: 1 } },
-    });
+    // Analytics write must not sit on the response critical path, and its
+    // failure must never turn a successful product fetch into a 500.
+    void prisma.product
+      .update({ where: { id: product.id }, data: { viewCount: { increment: 1 } } })
+      .catch((err) => console.error("[product/GET] viewCount", err));
 
     // Related products
     const related = await prisma.product.findMany({
@@ -59,7 +59,7 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: { product: serializeDecimal(product), related: serializeDecimal(related) },
-    });
+    }, { headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" } });
   } catch (err) {
     console.error("[product/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch product" }, { status: 500 });

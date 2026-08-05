@@ -1,10 +1,14 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = { title: "My Orders", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { Package, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui";
+import { ReorderButton } from "@/components/account/ReorderButton";
 
 const STATUS_BADGE: Record<string, { label: string; variant: "success" | "warning" | "error" | "default" | "gold" }> = {
   PENDING:    { label: "Pending",    variant: "warning" },
@@ -35,11 +39,13 @@ export default async function OrdersPage() {
       </div>
 
       {orders.length === 0 ? (
-        <div className="text-center py-16 rounded-2xl border border-dashed border-surface-200 dark:border-surface-700">
-          <Package size={48} className="text-surface-300 dark:text-surface-600 mx-auto mb-4" />
-          <p className="text-surface-500">No orders yet. Start shopping!</p>
-          <Link href="/" className="inline-block mt-4 text-brand-500 hover:text-brand-600 text-sm font-medium">
-            Browse Products →
+        <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+          <Package size={56} strokeWidth={1} className="text-black/10 dark:text-white/10 mb-8" />
+          <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">Order history</p>
+          <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">No orders yet</h3>
+          <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">Your completed orders will appear here. Browse our collection to get started.</p>
+          <Link href="/" className="mt-8 inline-flex items-center h-11 px-8 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors">
+            Browse Products
           </Link>
         </div>
       ) : (
@@ -65,7 +71,10 @@ export default async function OrdersPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-surface-500">{order.items.length} item{order.items.length !== 1 ? "s" : ""}</p>
-                  <p className="font-semibold text-surface-900 dark:text-white">{formatPrice(order.total)}</p>
+                  <div className="flex items-center gap-3">
+                    <p className="font-semibold text-surface-900 dark:text-white">{formatPrice(order.total)}</p>
+                    <ReorderButton orderId={order.id} />
+                  </div>
                 </div>
               </Link>
             );

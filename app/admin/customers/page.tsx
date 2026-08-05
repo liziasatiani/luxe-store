@@ -2,8 +2,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { Search, ChevronLeft, ChevronRight, Mail } from "lucide-react";
 import { Input, Spinner, Badge } from "@/components/ui";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useDebounce } from "@/hooks";
+import toast from "react-hot-toast";
 
 interface Customer {
   id: string; name: string; email: string; image?: string | null;
@@ -24,9 +25,13 @@ export default function AdminCustomersPage() {
     try {
       const params = new URLSearchParams({ page: String(page), limit: "20", ...(debouncedSearch && { search: debouncedSearch }) });
       const res = await fetch(`/api/admin/customers?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch customers");
       const data = await res.json();
       setCustomers(data.data?.customers ?? []);
       setTotal(data.data?.total ?? 0);
+    } catch {
+      setCustomers([]);
+      toast.error("Failed to load customers");
     } finally {
       setLoading(false);
     }
@@ -56,6 +61,9 @@ export default function AdminCustomersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-100 dark:divide-surface-800">
+              {!loading && customers.length === 0 && (
+                <tr><td colSpan={5} className="text-center py-12 text-surface-400 text-sm">No customers found</td></tr>
+              )}
               {customers.map(c => (
                 <tr key={c.id} className="hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors">
                   <td className="px-4 py-3">

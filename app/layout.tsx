@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Cinzel, Lora } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
@@ -9,9 +9,16 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SearchModal } from "@/components/search/SearchModal";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
-import { buildMetadata } from "@/lib/seo";
+import { BottomTabBar } from "@/components/layout/BottomTabBar";
+import { PWAInit } from "@/components/PWAInit";
+import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { SplashScreen } from "@/components/ui/SplashScreen";
+import { MotionProvider } from "@/components/ui/MotionProvider";
+import { buildMetadata, buildOrganizationSchema } from "@/lib/seo";
+import { jsonLdSafe } from "@/lib/utils";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,38 +27,78 @@ const inter = Inter({
   display: "swap",
 });
 
-const playfair = Playfair_Display({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: ["400", "500"],
+  variable: "--font-cinzel",
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  ...buildMetadata(),
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-};
+const lora = Lora({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-lora",
+  display: "swap",
+});
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    ...buildMetadata({ locale }),
+    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    manifest: "/manifest.json",
+    appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Everything Street" },
+  };
+}
+
+
+export function generateViewport() {
+  return { width: "device-width", initialScale: 1, viewportFit: "cover" };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
-      <body className="bg-white dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
+    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cinzel.variable} ${lora.variable}`}>
+      <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
+        {process.env.NEXT_PUBLIC_GA_ID && !process.env.NEXT_PUBLIC_GA_ID.startsWith("G-X") && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
+            <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');` }} />
+          </>
+        )}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link rel="preload" as="image" href="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format" fetchPriority="high" />
+        <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
+      </head>
+      <body className="bg-surface-50 dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <MotionProvider>
               <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-surface-900 focus:rounded-xl focus:shadow-luxury-md focus:outline-none">
                 Skip to content
               </a>
               <Navbar />
-              <main id="main-content" className="min-h-screen">{children}</main>
+              <main id="main-content" className="min-h-screen pb-14 md:pb-0">{children}</main>
               <Footer />
+              <BottomTabBar />
               <SearchModal />
               <CartDrawer />
+              <ExitIntentCapture />
               <WishlistSync />
               <Toaster position="bottom-right" />
               <CookieConsent />
+              <PWAInit />
+              <ScrollToTop />
+              <SplashScreen />
+              </MotionProvider>
             </ThemeProvider>
           </SessionProvider>
         </NextIntlClientProvider>

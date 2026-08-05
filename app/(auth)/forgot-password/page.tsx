@@ -11,8 +11,12 @@ export default function ForgotPasswordPage() {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!email) return;
+  const requestReset = async () => {
+    const trimmed = email.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
     setLoading(true);
     try {
       await fetch("/api/auth/forgot-password", {
@@ -22,7 +26,7 @@ export default function ForgotPasswordPage() {
       });
       setSent(true);
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Couldn't send the link — check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -32,7 +36,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Luxe<span className="text-brand-500">.</span></Link>
+          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Everything Street</Link>
           <h1 className="font-display text-3xl text-surface-900 dark:text-white mt-6 mb-2">Forgot password?</h1>
           <p className="text-surface-500">Enter your email and we'll send a reset link</p>
         </div>
@@ -49,8 +53,8 @@ export default function ForgotPasswordPage() {
             </div>
           ) : (
             <div className="space-y-5">
-              <Input id="email" label="Email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && handleSubmit()} />
-              <Button onClick={handleSubmit} loading={loading} variant="gold" size="lg" fullWidth>Send Reset Link</Button>
+              <Input id="email" label="Email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && requestReset()} />
+              <Button onClick={requestReset} loading={loading} variant="gold" size="lg" fullWidth>Send Reset Link</Button>
               <Link href="/login" className="flex items-center justify-center gap-2 text-sm text-surface-500 hover:text-surface-700">
                 <ArrowLeft size={14} /> Back to login
               </Link>

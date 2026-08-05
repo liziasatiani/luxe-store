@@ -3,9 +3,10 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`register:${getIP(req)}`, 5, 15 * 60 * 1000);
+  const rl = await rateLimit(`register:${getIP(req)}`, 5, 15 * 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
@@ -23,10 +24,27 @@ export async function POST(req: NextRequest) {
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
-    const user = await prisma.user.create({
-      data: { name, email, passwordHash, emailVerified: new Date() },
-      select: { id: true, name: true, email: true },
-    });
+
+    let user;
+    try {
+      user = await prisma.user.create({
+        // `emailVerified` is set eagerly because there is no verification flow
+        // yet; revisit when one is added.
+        data: { name, email, passwordHash, emailVerified: new Date() },
+        select: { id: true, name: true, email: true },
+      });
+    } catch (err) {
+      // Two concurrent registrations can both pass the check above.
+      if (
+        typeof err === "object" && err !== null &&
+        (err as { code?: string }).code === "P2002"
+      ) {
+        return NextResponse.json({ success: false, error: "Email already registered" }, { status: 409 });
+      }
+      throw err;
+    }
+
+    sendWelcomeEmail({ name: user.name ?? "there", email: user.email }).catch(() => {});
 
     return NextResponse.json({ success: true, data: { user }, message: "Account created!" }, { status: 201 });
   } catch (err) {

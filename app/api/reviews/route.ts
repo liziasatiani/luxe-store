@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { reviewSchema } from "@/lib/validations";
+import { parseIntParam } from "@/lib/utils";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 
 export async function GET(req: NextRequest) {
@@ -9,10 +10,15 @@ export async function GET(req: NextRequest) {
     const productId = req.nextUrl.searchParams.get("productId");
     if (!productId) return NextResponse.json({ success: false, error: "productId required" }, { status: 400 });
 
+    const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 20, { min: 1, max: 50 });
+    const page = parseIntParam(req.nextUrl.searchParams.get("page"), 1, { min: 1 });
+
     const reviews = await prisma.review.findMany({
       where: { productId, isApproved: true },
       include: { user: { select: { id: true, name: true, image: true } } },
       orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
     });
 
     const stats = await prisma.review.aggregate({
@@ -35,14 +41,15 @@ export async function GET(req: NextRequest) {
         count: stats._count.rating,
         distribution: Object.fromEntries(distribution.map(d => [d.rating, d._count])),
       },
-    });
+    }, { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600" } });
   } catch (err) {
+    console.error("[reviews/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch reviews" }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
-  const rl = rateLimit(`reviews:${getIP(req)}`, 5, 60 * 1000);
+  const rl = await rateLimit(`reviews:${getIP(req)}`, 5, 60 * 1000);
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
@@ -55,14 +62,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    const { productId } = body;
-    if (!productId) return NextResponse.json({ success: false, error: "productId required" }, { status: 400 });
+    const { productId } = parsed.data;
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+      select: { id: true },
+    });
+    if (!product) {
+      return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
+    }
 
     // Check if user purchased this product
     const hasPurchased = await prisma.orderItem.findFirst({
       where: {
         productId,
-        order: { userId: session.user.id, status: { in: ["DELIVERED", "CONFIRMED"] } },
+        order: { userId: session.user.id, status: "DELIVERED" },
       },
     });
 

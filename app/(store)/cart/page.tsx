@@ -2,16 +2,20 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, ShoppingBag, ArrowRight, Tag, X } from "lucide-react";
+import { Trash2, ShoppingBag, ArrowRight, Tag, X, Lock, RotateCcw, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container, Divider, Input, EmptyState } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { getProductImageUrl } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 export default function CartPage() {
+  const t = useTranslations("cart");
   const { items, removeItem, updateQuantity, coupon, setCoupon, subtotal, discount, shipping, tax, total, itemCount } = useCartStore();
+  const { format } = useCurrency();
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
 
@@ -27,9 +31,9 @@ export default function CartPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setCoupon(data.data.coupon);
-      toast.success("Coupon applied!");
+      toast.success(t("couponApplied"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Invalid coupon");
+      toast.error(err instanceof Error ? err.message : t("invalidCoupon"));
     } finally {
       setCouponLoading(false);
     }
@@ -40,9 +44,9 @@ export default function CartPage() {
       <Container className="py-20">
         <EmptyState
           icon={<ShoppingBag size={64} />}
-          title="Your cart is empty"
-          description="Looks like you haven't added anything yet."
-          action={<Button variant="gold" size="lg" asChild><Link href="/">Start Shopping</Link></Button>}
+          title={t("empty")}
+          description={t("emptyDesc")}
+          action={<Button variant="gold" size="lg" asChild><Link href="/">{t("continueShopping")}</Link></Button>}
         />
       </Container>
     );
@@ -51,7 +55,7 @@ export default function CartPage() {
   return (
     <Container className="py-12">
       <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-8">
-        Shopping Cart <span className="text-surface-400 text-2xl">({itemCount()} items)</span>
+        {t("title")} <span className="text-surface-400 text-2xl">({itemCount()} {t("items")})</span>
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -91,7 +95,7 @@ export default function CartPage() {
                         <span className="w-10 text-center text-sm font-medium">{item.quantity}</span>
                         <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-9 h-9 flex items-center justify-center text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800">+</button>
                       </div>
-                      <span className="font-semibold text-surface-900 dark:text-white">{formatPrice(price * item.quantity)}</span>
+                      <span className="font-semibold text-surface-900 dark:text-white">{format(price * item.quantity)}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -103,7 +107,7 @@ export default function CartPage() {
         {/* Order Summary */}
         <div className="space-y-4">
           <div className="rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 p-6 space-y-4">
-            <h2 className="font-semibold text-lg text-surface-900 dark:text-white">Order Summary</h2>
+            <h2 className="font-semibold text-lg text-surface-900 dark:text-white">{t("secureCheckout")}</h2>
 
             {/* Coupon */}
             {coupon ? (
@@ -119,14 +123,14 @@ export default function CartPage() {
             ) : (
               <div className="flex gap-2">
                 <Input
-                  placeholder="Coupon code"
+                  placeholder={t("coupon")}
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value.toUpperCase())}
                   onKeyDown={e => e.key === "Enter" && applyCoupon()}
                   className="h-10 text-sm"
                 />
                 <Button onClick={applyCoupon} loading={couponLoading} variant="outline" size="sm" className="shrink-0 h-10">
-                  Apply
+                  {t("apply")}
                 </Button>
               </div>
             )}
@@ -135,48 +139,47 @@ export default function CartPage() {
 
             <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span className="text-surface-500">Subtotal</span>
-                <span className="font-medium">{formatPrice(subtotal())}</span>
+                <span className="text-surface-500">{t("subtotal")}</span>
+                <span className="font-medium">{format(subtotal())}</span>
               </div>
               {discount() > 0 && (
                 <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
-                  <span>Discount</span>
-                  <span>−{formatPrice(discount())}</span>
+                  <span>{t("discount")}</span>
+                  <span>−{format(discount())}</span>
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span className="text-surface-500">Shipping</span>
+                <span className="text-surface-500">{t("shipping")}</span>
                 <span className={shipping() === 0 ? "text-green-600 dark:text-green-400 font-medium" : "font-medium"}>
-                  {shipping() === 0 ? "FREE" : formatPrice(shipping())}
+                  {shipping() === 0 ? t("free") : format(shipping())}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-surface-500">Tax (8.5%)</span>
-                <span className="font-medium">{formatPrice(tax())}</span>
+                <span className="text-surface-500">{t("tax")}</span>
+                <span className="font-medium">{format(tax())}</span>
               </div>
             </div>
 
             <Divider />
 
             <div className="flex justify-between text-lg font-semibold">
-              <span>Total</span>
-              <span className="text-surface-900 dark:text-white">{formatPrice(total())}</span>
+              <span>{t("total")}</span>
+              <span className="text-surface-900 dark:text-white">{format(total())}</span>
             </div>
 
             <Button variant="gold" size="lg" fullWidth rightIcon={<ArrowRight size={18} />} asChild>
-              <Link href="/checkout">Proceed to Checkout</Link>
+              <Link href="/checkout">{t("checkout")}</Link>
             </Button>
 
             <Link href="/" className="block text-center text-sm text-brand-500 hover:text-brand-600">
-              ← Continue Shopping
+              ← {t("continueShopping")}
             </Link>
           </div>
 
-          {/* Trust badges */}
           <div className="flex justify-center gap-6 text-xs text-surface-400">
-            <span>🔒 Secure</span>
-            <span>↩️ Free returns</span>
-            <span>✓ Authentic</span>
+            <span className="flex items-center gap-1.5"><Lock size={11} /> {t("trustSecure")}</span>
+            <span className="flex items-center gap-1.5"><RotateCcw size={11} /> {t("trustReturns")}</span>
+            <span className="flex items-center gap-1.5"><Shield size={11} /> {t("trustAuthentic")}</span>
           </div>
         </div>
       </div>

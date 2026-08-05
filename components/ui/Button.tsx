@@ -65,9 +65,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        {loading ? <Loader2 className="animate-spin" size={16} /> : leftIcon}
-        {children}
-        {!loading && rightIcon}
+        {asChild ? children : (
+          <>
+            {loading ? <Loader2 className="animate-spin" size={16} /> : leftIcon}
+            {children}
+            {!loading && rightIcon}
+          </>
+        )}
       </Comp>
     );
   }

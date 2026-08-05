@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
-import { LayoutDashboard, Package, ShoppingCart, Users, Tag, Upload, BarChart2, Settings, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Tag, Upload, ChevronRight } from "lucide-react";
 
 const NAV = [
   { href: "/admin",           icon: LayoutDashboard, label: "Dashboard"   },
@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <aside className="w-60 shrink-0 bg-surface-950 text-white flex flex-col">
         <div className="px-5 py-6 border-b border-surface-800">
           <Link href="/" className="font-display text-xl text-white">
-            Luxe<span className="text-brand-400">.</span>
+            Everything Street
             <span className="text-xs text-surface-400 ml-2">Admin</span>
           </Link>
         </div>

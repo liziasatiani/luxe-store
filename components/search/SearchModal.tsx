@@ -1,24 +1,38 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, TrendingUp } from "lucide-react";
+import FocusTrap from "focus-trap-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUIStore } from "@/store";
 import { useSearch } from "@/hooks";
-import { formatPrice, getProductImageUrl } from "@/lib/utils";
+import { getProductImageUrl } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 import { Spinner } from "@/components/ui";
 import type { ProductCard } from "@/types";
 
-const TRENDING = ["La Mer cream", "Sony headphones", "Charlotte Tilbury", "AirPods Pro", "Dyson hair", "Tom Ford"];
+const TRENDING = ["La Mer cream", "Sony headphones", "Charlotte Tilbury", "AirPods Pro", "Dyson hair", "Tom Ford"] as const;
 
 export function SearchModal() {
   const { searchOpen, closeSearch } = useUIStore();
   const { query, setQuery, results, loading } = useSearch();
+  const [activeTab, setActiveTab] = useState<"all" | "beauty" | "tech">("all");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const filteredResults = useMemo(() => {
+    if (activeTab === "all") return results;
+    return results.filter(p => {
+      const slug = (p as ProductCard & { category: { slug: string } }).category?.slug ?? "";
+      return activeTab === "beauty"
+        ? ["beauty", "skincare", "makeup", "hair-care", "body-care", "perfume", "beauty-tools"].some(s => slug.includes(s))
+        : ["tech", "headphones", "cameras", "tablets", "gaming", "wearables", "smart-home", "audio", "accessories"].some(s => slug.includes(s));
+    });
+  }, [results, activeTab]);
 
   useEffect(() => {
     if (searchOpen) setTimeout(() => inputRef.current?.focus(), 100);
+    if (!searchOpen) setActiveTab("all");
   }, [searchOpen]);
 
   useEffect(() => {
@@ -26,7 +40,8 @@ export function SearchModal() {
       if (e.key === "Escape") closeSearch();
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        searchOpen ? closeSearch() : useUIStore.getState().openSearch();
+        if (searchOpen) closeSearch();
+        else useUIStore.getState().openSearch();
       }
     };
     document.addEventListener("keydown", handler);
@@ -45,11 +60,15 @@ export function SearchModal() {
           />
 
           {/* Modal */}
+          <FocusTrap active={searchOpen} focusTrapOptions={{ escapeDeactivates: false, allowOutsideClick: true, initialFocus: () => inputRef.current ?? false }}>
           <motion.div
             initial={{ opacity: 0, scale: 0.97, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: -10 }}
             transition={{ duration: 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search"
             className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[640px] z-50"
           >
             <div className="bg-white dark:bg-surface-900 rounded-2xl shadow-luxury-xl overflow-hidden">
@@ -76,6 +95,34 @@ export function SearchModal() {
                 </button>
               </div>
 
+              {/* Screen-reader result count announcement */}
+              <p aria-live="polite" aria-atomic="true" className="sr-only">
+                {query && !loading
+                  ? results.length > 0
+                    ? `${results.length} result${results.length === 1 ? "" : "s"} for ${query}`
+                    : `No results for ${query}`
+                  : ""}
+              </p>
+
+              {/* Category tabs — only when there are results */}
+              {query && results.length > 0 && (
+                <div className="flex gap-0 border-b border-surface-100 dark:border-surface-800 px-5">
+                  {(["all", "beauty", "tech"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`px-4 h-10 text-[10px] tracking-[0.12em] uppercase transition-colors border-b-2 -mb-px ${
+                        activeTab === tab
+                          ? "border-black dark:border-white text-black dark:text-white"
+                          : "border-transparent text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70"
+                      }`}
+                    >
+                      {tab === "all" ? `All (${results.length})` : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Results */}
               <div className="max-h-[60vh] overflow-y-auto p-4">
                 {!query ? (
@@ -96,9 +143,9 @@ export function SearchModal() {
                       ))}
                     </div>
                   </div>
-                ) : results.length > 0 ? (
+                ) : filteredResults.length > 0 ? (
                   <div className="space-y-1">
-                    {results.map((product) => (
+                    {filteredResults.map((product) => (
                       <SearchResultItem
                         key={(product as ProductCard).id}
                         product={product as ProductCard}
@@ -122,6 +169,7 @@ export function SearchModal() {
               </div>
             </div>
           </motion.div>
+          </FocusTrap>
         </>
       )}
     </AnimatePresence>
@@ -129,7 +177,8 @@ export function SearchModal() {
 }
 
 function SearchResultItem({ product, onClose }: { product: ProductCard; onClose: () => void }) {
-  const img = getProductImageUrl(product.images);
+  const { format } = useCurrency();
+  const img = getProductImageUrl(product.images, 200, 75);
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -146,7 +195,7 @@ function SearchResultItem({ product, onClose }: { product: ProductCard; onClose:
         <p className="text-xs text-surface-400">{product.brand?.name} · {product.category.name}</p>
       </div>
       <span className="text-sm font-semibold text-surface-900 dark:text-white shrink-0">
-        {formatPrice(Number(product.price))}
+        {format(Number(product.price))}
       </span>
     </Link>
   );

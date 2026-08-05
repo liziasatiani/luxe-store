@@ -15,7 +15,8 @@ import toast from "react-hot-toast";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") ?? "/";
+  const rawRedirect = searchParams.get("redirect") ?? "/";
+  const redirect = rawRedirect.startsWith("/") && !rawRedirect.startsWith("//") ? rawRedirect : "/";
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const t = useTranslations("auth.login");
@@ -43,14 +44,14 @@ function LoginForm() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Luxe<span className="text-brand-500">.</span></Link>
+          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Everything Street</Link>
           <h1 className="font-display text-3xl text-surface-900 dark:text-white mt-6 mb-2">{t("title")}</h1>
           <p className="text-surface-500">{t("subtitle")}</p>
         </div>
         <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-8 space-y-5">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <Input id="email" label={t("email")} type="email" placeholder="you@example.com" error={errors.email?.message} {...register("email")} />
-            <Input id="password" label={t("password")} type={showPw ? "text" : "password"} placeholder="••••••••" error={errors.password?.message}
+            <Input id="email" label={t("email")} type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" error={errors.email?.message} {...register("email")} />
+            <Input id="password" label={t("password")} type={showPw ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" error={errors.password?.message}
               rightIcon={<button type="button" onClick={() => setShowPw(p => !p)}>{showPw ? <EyeOff size={16} /> : <Eye size={16} />}</button>}
               {...register("password")} />
             <div className="flex justify-end">

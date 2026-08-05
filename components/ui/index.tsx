@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
-// ─── Badge ────────────────────────────────────────────────────
 interface BadgeProps {
   children: React.ReactNode;
   variant?: "default" | "gold" | "success" | "warning" | "error" | "outline";
@@ -26,19 +25,16 @@ export function Badge({ children, variant = "default", size = "sm", className }:
   );
 }
 
-// ─── Spinner ─────────────────────────────────────────────────
 export function Spinner({ size = 20, className }: { size?: number; className?: string }) {
   return <Loader2 size={size} className={cn("animate-spin text-brand-500", className)} />;
 }
 
-// ─── Skeleton ────────────────────────────────────────────────
 export function Skeleton({ className }: { className?: string }) {
   return (
     <div className={cn("animate-pulse rounded-xl bg-surface-100 dark:bg-surface-800", className)} />
   );
 }
 
-// ─── Container ────────────────────────────────────────────────
 export function Container({
   children,
   className,
@@ -55,7 +51,6 @@ export function Container({
   );
 }
 
-// ─── Divider ─────────────────────────────────────────────────
 export function Divider({ className, label }: { className?: string; label?: string }) {
   if (label) {
     return (
@@ -69,7 +64,6 @@ export function Divider({ className, label }: { className?: string; label?: stri
   return <div className={cn("h-px w-full bg-surface-200 dark:bg-surface-700", className)} />;
 }
 
-// ─── Section Header ───────────────────────────────────────────
 export function SectionHeader({
   title,
   subtitle,
@@ -95,31 +89,36 @@ export function SectionHeader({
   );
 }
 
-// ─── Empty State ─────────────────────────────────────────────
 export function EmptyState({
   icon,
+  eyebrow,
   title,
   description,
   action,
 }: {
   icon?: React.ReactNode;
+  eyebrow?: string;
   title: string;
   description?: string;
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-      {icon && <div className="mb-4 text-surface-300 dark:text-surface-600">{icon}</div>}
-      <h3 className="text-xl font-semibold text-surface-800 dark:text-surface-200">{title}</h3>
-      {description && (
-        <p className="mt-2 text-surface-500 max-w-sm">{description}</p>
+    <div className="flex flex-col items-center justify-center py-24 text-center px-4">
+      {icon && (
+        <div className="mb-8 text-black/10 dark:text-white/10">{icon}</div>
       )}
-      {action && <div className="mt-6">{action}</div>}
+      {eyebrow && (
+        <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">{eyebrow}</p>
+      )}
+      <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">{title}</h3>
+      {description && (
+        <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">{description}</p>
+      )}
+      {action && <div className="mt-8">{action}</div>}
     </div>
   );
 }
 
-// ─── Rating Stars ─────────────────────────────────────────────
 export function RatingStars({
   rating,
   count,
@@ -156,7 +155,6 @@ export function RatingStars({
   );
 }
 
-// ─── Input ────────────────────────────────────────────────────
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
@@ -164,6 +162,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   rightIcon?: React.ReactNode;
 }
 export function Input({ label, error, leftIcon, rightIcon, className, id, ...props }: InputProps) {
+  const errorId = error && id ? `${id}-error` : undefined;
   return (
     <div className="w-full">
       {label && (
@@ -177,11 +176,14 @@ export function Input({ label, error, leftIcon, rightIcon, className, id, ...pro
         )}
         <input
           id={id}
+          aria-invalid={error ? "true" : undefined}
+          aria-describedby={errorId}
           className={cn(
             "w-full h-11 rounded-xl border bg-white dark:bg-surface-900 text-surface-900 dark:text-white",
             "border-surface-200 dark:border-surface-700",
             "focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500",
             "placeholder:text-surface-400 transition-colors",
+            "text-base", // ≥16px prevents iOS auto-zoom on focus
             leftIcon && "pl-10",
             rightIcon && "pr-10",
             !leftIcon && "pl-4",
@@ -195,12 +197,11 @@ export function Input({ label, error, leftIcon, rightIcon, className, id, ...pro
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400">{rightIcon}</span>
         )}
       </div>
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && <p id={errorId} role="alert" className="mt-1 text-xs text-red-500">{error}</p>}
     </div>
   );
 }
 
-// ─── Select ───────────────────────────────────────────────────
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
@@ -235,7 +236,6 @@ export function Select({ label, error, options, className, id, ...props }: Selec
   );
 }
 
-// ─── Textarea ────────────────────────────────────────────────
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
@@ -265,7 +265,6 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
   );
 }
 
-// ─── Checkbox ────────────────────────────────────────────────
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
@@ -286,3 +285,5 @@ export function Checkbox({ label, className, id, ...props }: CheckboxProps) {
     </label>
   );
 }
+
+export { Price } from "./Price";

@@ -65,13 +65,18 @@ export default function AddressesPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this address?")) return;
-    await fetch("/api/account/addresses", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    toast.success("Address deleted");
-    fetchAddresses();
+    try {
+      const res = await fetch("/api/account/addresses", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Address deleted");
+      fetchAddresses();
+    } catch {
+      toast.error("Failed to delete address");
+    }
   };
 
   const set = (k: string, v: string | boolean) => setForm(f => ({ ...f, [k]: v }));

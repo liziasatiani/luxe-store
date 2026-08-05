@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseIntParam } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
   try {
-    const limit = parseInt(req.nextUrl.searchParams.get("limit") ?? "50");
+    const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 50, { min: 1, max: 100 });
     const featured = req.nextUrl.searchParams.get("featured") === "true";
 
     const brands = await prisma.brand.findMany({
@@ -17,7 +18,9 @@ export async function GET(req: NextRequest) {
       take: limit,
     });
 
-    return NextResponse.json({ success: true, data: { brands } });
+    return NextResponse.json({ success: true, data: { brands } }, {
+      headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
+    });
   } catch (err) {
     console.error("[brands/GET]", err);
     return NextResponse.json({ success: false, error: "Failed to fetch brands" }, { status: 500 });
