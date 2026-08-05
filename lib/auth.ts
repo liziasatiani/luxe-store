@@ -28,6 +28,7 @@ const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+  trustHost: true,
   pages: {
     signIn: "/login",
     error: "/login",
