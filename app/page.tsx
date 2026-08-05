@@ -61,7 +61,6 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
-      <AnnouncementBar />
       <CategoriesSection categories={serializeDecimal(categories)} />
       <Suspense fallback={<div className="py-20 border-b border-black/8 dark:border-white/8"><div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8"><ProductGridSkeleton /></div></div>}>
         <FeaturedProductsSection />
