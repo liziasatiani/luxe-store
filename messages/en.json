@@ -114,7 +114,8 @@
     "quantity": "Quantity",
     "selectVariant": "Select",
     "outOfStockMsg": "This item is currently out of stock. Check back soon or contact us for availability.",
-    "deliveryBy": "get it by {date}"
+    "deliveryBy": "get it by {date}",
+    "linkCopied": "Link copied to clipboard"
   },
   "cart": {
     "title": "Shopping Cart",

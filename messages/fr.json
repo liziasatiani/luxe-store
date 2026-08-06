@@ -114,7 +114,8 @@
     "quantity": "Quantité",
     "selectVariant": "Sélectionner",
     "outOfStockMsg": "Cet article est actuellement en rupture de stock. Revenez bientôt ou contactez-nous pour connaître la disponibilité.",
-    "deliveryBy": "livraison prévue le {date}"
+    "deliveryBy": "livraison prévue le {date}",
+    "linkCopied": "Lien copié dans le presse-papiers"
   },
   "cart": {
     "title": "Panier",
