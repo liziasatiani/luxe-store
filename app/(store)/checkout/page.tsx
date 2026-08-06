@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Banknote, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown } from "lucide-react";
+import { Banknote, CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown } from "lucide-react";
 import { Container, Input, Divider } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
@@ -38,6 +38,7 @@ export default function CheckoutPage() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [notes, setNotes] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY" | "STRIPE">("CASH_ON_DELIVERY");
   const [placing, setPlacing] = useState(false);
   const [guest, setGuest] = useState({
     firstName: "", lastName: "", email: "", phone: "",
@@ -99,7 +100,7 @@ export default function CheckoutPage() {
         ? {
             guest: true as const,
             guestInfo: { firstName: guest.firstName, lastName: guest.lastName, email: guest.email, phone: guest.phone },
-            paymentMethod: "CASH_ON_DELIVERY",
+            paymentMethod: paymentMethod === "STRIPE" ? "STRIPE" : "CASH_ON_DELIVERY",
             couponCode: coupon?.code,
             notes,
             shippingSnapshot: {
@@ -117,7 +118,7 @@ export default function CheckoutPage() {
         : {
             guest: false as const,
             addressId: selectedAddress,
-            paymentMethod: "CASH_ON_DELIVERY",
+            paymentMethod: paymentMethod === "STRIPE" ? "STRIPE" : "CASH_ON_DELIVERY",
             couponCode: coupon?.code,
             notes,
             cartItems,
@@ -130,10 +131,27 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? t("errors.failedOrder"));
+
+      const orderId = data.data.order.id;
+
+      if (paymentMethod === "STRIPE") {
+        const stripeRes = await fetch("/api/stripe/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId, guestEmail: mode === "guest" ? guest.email : undefined }),
+        });
+        const stripeData = await stripeRes.json();
+        if (!stripeRes.ok || !stripeData.data?.url) throw new Error(t("errors.failedOrder"));
+        placedRef.current = true;
+        clearCart();
+        window.location.href = stripeData.data.url;
+        return;
+      }
+
       placedRef.current = true;
       clearCart();
       const guestEmail = mode === "guest" ? guest.email : undefined;
-      router.push(`/checkout/success?orderId=${data.data.order.id}${guestEmail ? `&email=${encodeURIComponent(guestEmail)}` : ""}`);
+      router.push(`/checkout/success?orderId=${orderId}${guestEmail ? `&email=${encodeURIComponent(guestEmail)}` : ""}`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t("errors.failedOrder"));
     } finally {
@@ -358,18 +376,40 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-3">
                 <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("paymentMethod")}</p>
-                <div className="flex items-center gap-3 p-4 border border-black dark:border-white bg-black/[0.02] dark:bg-white/[0.02]">
-                  <input type="radio" checked readOnly />
-                  <Banknote size={16} className="text-black/60 dark:text-white/60" />
+                {/* Card / Apple Pay / Google Pay */}
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("STRIPE")}
+                  className={`w-full flex items-center gap-3 p-4 border transition-colors text-left ${paymentMethod === "STRIPE" ? "border-black dark:border-white bg-black/[0.04] dark:bg-white/[0.04]" : "border-black/20 dark:border-white/20"}`}
+                >
+                  <input type="radio" readOnly checked={paymentMethod === "STRIPE"} className="shrink-0" />
+                  <CreditCard size={16} className="text-black/60 dark:text-white/60 shrink-0" />
+                  <div className="flex-1">
+                    <span className="text-sm text-black dark:text-white font-medium">Card · Apple Pay · Google Pay</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 ml-auto">
+                    {["VISA", "MC", "AMEX"].map(p => (
+                      <span key={p} className="text-[8px] tracking-[0.1em] border border-black/20 dark:border-white/20 px-1 py-0.5 text-black/40 dark:text-white/40">{p}</span>
+                    ))}
+                  </div>
+                </button>
+                {/* Cash on Delivery */}
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("CASH_ON_DELIVERY")}
+                  className={`w-full flex items-center gap-3 p-4 border transition-colors text-left ${paymentMethod === "CASH_ON_DELIVERY" ? "border-black dark:border-white bg-black/[0.04] dark:bg-white/[0.04]" : "border-black/20 dark:border-white/20"}`}
+                >
+                  <input type="radio" readOnly checked={paymentMethod === "CASH_ON_DELIVERY"} className="shrink-0" />
+                  <Banknote size={16} className="text-black/60 dark:text-white/60 shrink-0" />
                   <span className="text-sm text-black dark:text-white font-medium">{t("cashOnDelivery")}</span>
                   <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">Pay when received</span>
-                </div>
+                </button>
               </div>
 
               <Input id="notes" label={t("orderNotes")} value={notes} onChange={e => setNotes(e.target.value)} />
 
               <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
-                {t("placeOrder")} · {format(total())}
+                {paymentMethod === "STRIPE" ? `Pay ${format(total())}` : `${t("placeOrder")} · ${format(total())}`}
               </Button>
               <p className="text-[11px] text-center text-black/30 dark:text-white/30">{t("termsNotice")}</p>
             </div>

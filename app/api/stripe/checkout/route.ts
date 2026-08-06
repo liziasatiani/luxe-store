@@ -9,13 +9,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Stripe is disabled" }, { status: 400 });
     }
 
+    const { orderId, guestEmail } = await req.json();
     const session = await auth();
-    if (!session?.user?.id) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const { orderId } = await req.json();
+    const where = session?.user?.id
+      ? { id: orderId, userId: session.user.id }
+      : { id: orderId };
 
     const order = await prisma.order.findFirst({
-      where: { id: orderId, userId: session.user.id },
+      where,
       include: { items: true },
     });
 
@@ -34,15 +36,16 @@ export async function POST(req: NextRequest) {
     }));
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const customerEmail = guestEmail ?? session?.user?.email ?? undefined;
+
     const stripeSession = await createCheckoutSession({
       lineItems,
       successUrl: `${baseUrl}/checkout/success?orderId=${order.id}&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${baseUrl}/checkout?cancelled=true`,
-      customerEmail: session.user.email ?? undefined,
-      metadata: { orderId: order.id, userId: session.user.id },
+      customerEmail,
+      metadata: { orderId: order.id, userId: order.userId ?? "" },
     });
 
-    // Save stripe session id
     await prisma.order.update({
       where: { id: order.id },
       data: { stripeSessionId: stripeSession.id },

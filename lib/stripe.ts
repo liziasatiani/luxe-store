@@ -32,7 +32,6 @@ export async function createCheckoutSession(opts: {
     cancel_url: opts.cancelUrl,
     customer_email: opts.customerEmail,
     metadata: opts.metadata,
-    shipping_address_collection: { allowed_countries: ["US", "CA", "GB", "AU", "AE"] },
     billing_address_collection: "required",
   });
 }
