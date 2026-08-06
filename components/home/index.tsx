@@ -10,8 +10,26 @@ import { Container } from "@/components/ui";
 import { useCountdown } from "@/hooks";
 import type { ProductCard as ProductCardType } from "@/types";
 
+const CATEGORY_NAMES: Record<string, string> = {
+  skincare: "home.categories.skincare",
+  makeup: "home.categories.makeup",
+  "hair-care": "home.categories.hairCare",
+  "body-care": "home.categories.bodyCare",
+  perfume: "home.categories.perfume",
+  "beauty-tools": "home.categories.beautyTools",
+  headphones: "home.categories.headphones",
+  cameras: "home.categories.cameras",
+  tablets: "home.categories.tablets",
+  gaming: "home.categories.gaming",
+  wearables: "home.categories.wearables",
+  "smart-home": "home.categories.smartHome",
+  audio: "home.categories.audio",
+  accessories: "home.categories.accessories",
+};
+
 export function CategoriesSection({ categories }: { categories: Array<{ name: string; slug: string; image: string | null; parent?: { slug: string } | null; _count?: { products: number } }> }) {
   const t = useTranslations("home.categories");
+  const tCommon = useTranslations("common");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -21,7 +39,7 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
         <div className="mb-12">
           <div className="flex items-end justify-between pb-5 border-b border-surface-200 dark:border-white/10">
             <h2 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white font-normal leading-none uppercase tracking-[0.02em]">{t("title")}</h2>
-            <p className="text-[10px] tracking-[0.22em] uppercase text-surface-400 dark:text-white/40 mb-1">{t("subtitle")}</p>
+            <p className="hidden sm:block text-[10px] tracking-[0.22em] uppercase text-surface-400 dark:text-white/40 mb-1">{t("subtitle")}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -54,9 +72,11 @@ export function CategoriesSection({ categories }: { categories: Array<{ name: st
                   </span>
                 )}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className="font-display text-xl text-white leading-tight">{cat.name}</p>
+                  <p className="font-display text-xl text-white leading-tight">
+                    {CATEGORY_NAMES[cat.slug] ? t(CATEGORY_NAMES[cat.slug].replace("home.categories.", "") as Parameters<typeof t>[0]) : cat.name}
+                  </p>
                   {cat._count && (
-                    <p className="text-[10px] tracking-[0.1em] text-white/60 mt-1">{cat._count.products} products</p>
+                    <p className="text-[10px] tracking-[0.1em] text-white/60 mt-1">{cat._count.products} {tCommon("products")}</p>
                   )}
                 </div>
               </Link>
@@ -207,6 +227,8 @@ export function BestSellersSection({ initialProducts = [] }: { initialProducts?:
       });
     return () => ctrl.abort();
   }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!loading && products.length === 0) return null;
 
   return (
     <section className="py-20 border-b border-black/8 dark:border-white/8">
