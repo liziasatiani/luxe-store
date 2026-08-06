@@ -181,7 +181,11 @@
     "shipping": "Envío",
     "free": "GRATIS",
     "errors": {
-      "required": "Por favor complete todos los campos obligatorios"
+      "required": "Por favor complete todos los campos obligatorios",
+      "selectAddress": "Por favor seleccione una dirección de envío",
+      "fieldRequired": "Requerido",
+      "invalidEmail": "Correo electrónico no válido",
+      "failedOrder": "Error al realizar el pedido"
     }
   },
   "orderSuccess": {
