@@ -86,7 +86,9 @@
       "noSpam": "Pas de spam. Désabonnez-vous à tout moment.",
       "success": "Vous êtes inscrit ! Bienvenue chez Everything Street.",
       "invalidEmail": "Veuillez entrer une adresse email valide",
-      "error": "Quelque chose s'est mal passé. Réessayez."
+      "error": "Quelque chose s'est mal passé. Réessayez.",
+      "emailRequired": "Veuillez saisir votre adresse e-mail",
+      "emailInvalid": "Veuillez saisir une adresse e-mail valide"
     }
   },
   "product": {
@@ -310,7 +312,8 @@
       "createAccount": "Créer un compte",
       "hasAccount": "Vous avez déjà un compte ?",
       "signIn": "Se connecter",
-      "success": "Compte créé ! Veuillez vous connecter."
+      "success": "Compte créé ! Veuillez vous connecter.",
+      "failed": "Inscription échouée. Veuillez réessayer."
     },
     "forgotPassword": {
       "title": "Mot de passe oublié ?",

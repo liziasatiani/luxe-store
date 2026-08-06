@@ -14,7 +14,6 @@ import {
   BestSellersSection,
   BrandsSection,
 
-  NewsletterSection,
   TheEditSection,
   HomepageRecentlyViewed,
 } from "@/components/home/index";
@@ -72,7 +71,6 @@ export default async function HomePage() {
         <NewArrivalsSection />
       </Suspense>
       <HomepageRecentlyViewed />
-      <NewsletterSection />
     </>
   );
 }

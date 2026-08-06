@@ -1,25 +1,34 @@
 "use client";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { useRef } from "react";
 
 export function HeroSection() {
   const t = useTranslations("hero");
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const textY  = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
   return (
-    <section className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
-      <Image
-        src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format"
-        alt="Luxury fashion editorial"
-        fill
-        priority
-        fetchPriority="high"
-        className="object-cover object-center opacity-50"
-        sizes="100vw"
-      />
+    <section ref={ref} className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
+      <motion.div style={{ y: imageY }} className="absolute inset-0">
+        <Image
+          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format"
+          alt="Luxury fashion editorial"
+          fill
+          priority
+          fetchPriority="high"
+          className="object-cover object-center opacity-50"
+          sizes="100vw"
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
-      <div className="relative z-10 w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+      <motion.div style={{ y: textY, opacity }} className="relative z-10 w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,7 +91,7 @@ export function HeroSection() {
             </div>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
