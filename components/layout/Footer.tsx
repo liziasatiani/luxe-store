@@ -42,7 +42,7 @@ export async function Footer() {
               <span className="font-display text-2xl tracking-[0.14em] uppercase text-white">Everything Street</span>
             </Link>
             <p className="text-sm text-white/40 leading-relaxed max-w-xs mb-6">
-              Considered technology. Considered beauty. Curated, tested, and delivered together.
+              {t("tagline")}
             </p>
             <a href="mailto:hello@everythingstreet.ge" className="flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors mb-6">
               <Mail size={14} />

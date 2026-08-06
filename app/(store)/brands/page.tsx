@@ -1,7 +1,7 @@
 export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
 import { Container, SectionHeader } from "@/components/ui";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
@@ -11,6 +11,7 @@ export async function generateMetadata() {
 }
 
 export default async function BrandsPage() {
+  const t = await getTranslations("pages.brands");
   const brands = await prisma.brand.findMany({
     where: { isActive: true },
     select: { name: true, slug: true, description: true, logo: true, website: true, _count: { select: { products: { where: { isActive: true } } } } },
@@ -22,9 +23,9 @@ export default async function BrandsPage() {
 
   return (
     <Container className="py-16">
-      <SectionHeader title="All Brands" subtitle="Curated from the world's finest houses" />
-      
-      {[{ title: "Beauty Brands", items: beautyBrands }, { title: "Tech Brands", items: techBrands }].map(group => (
+      <SectionHeader title={t("allBrands")} subtitle={t("allBrandsSubtitle")} />
+
+      {[{ title: t("beautyBrands"), items: beautyBrands }, { title: t("techBrands"), items: techBrands }].map(group => (
         <div key={group.title} className="mb-14">
           <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-6 pb-3 border-b border-surface-100 dark:border-surface-800">{group.title}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -39,7 +40,7 @@ export default async function BrandsPage() {
                 </div>
                 <div>
                   <p className="font-medium text-sm text-surface-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">{brand.name}</p>
-                  <p className="text-xs text-surface-400">{brand._count.products} products</p>
+                  <p className="text-xs text-surface-400">{brand._count.products} {t("products")}</p>
                 </div>
               </Link>
             ))}

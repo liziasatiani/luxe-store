@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import FocusTrap from "focus-trap-react";
+import { useTranslations } from "next-intl";
 
 const STORAGE_KEY = "everything-street-exit-intent-dismissed";
 const COOLDOWN_DAYS = 7;
@@ -10,6 +11,7 @@ const WELCOME_COUPON = "WELCOME15";
 const WELCOME_DISCOUNT_PCT = 15;
 
 export function ExitIntentCapture() {
+  const t = useTranslations("exitIntent");
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -74,7 +76,7 @@ export function ExitIntentCapture() {
             transition={{ duration: 0.2 }}
             role="dialog"
             aria-modal="true"
-            aria-label="Special offer"
+            aria-label={t("beforeYouGo")}
             className="relative bg-white dark:bg-black border border-black/10 dark:border-white/10 max-w-sm w-full p-8"
             onClick={(e) => e.stopPropagation()}
           >
@@ -88,25 +90,25 @@ export function ExitIntentCapture() {
 
             {status === "done" ? (
               <div className="text-center py-4">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 dark:text-white/40 mb-3">Your code</p>
-                <p className="font-display text-2xl text-black dark:text-white mb-4">You're on the list.</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 dark:text-white/40 mb-3">{t("yourCode")}</p>
+                <p className="font-display text-2xl text-black dark:text-white mb-4">{t("onList")}</p>
                 <div className="border border-dashed border-black/20 dark:border-white/20 px-6 py-3 mb-3">
-                  <p className="text-[10px] tracking-[0.12em] uppercase text-black/40 dark:text-white/40 mb-1">Use at checkout</p>
+                  <p className="text-[10px] tracking-[0.12em] uppercase text-black/40 dark:text-white/40 mb-1">{t("useAtCheckout")}</p>
                   <p className="font-mono text-xl tracking-[0.2em] font-medium text-black dark:text-white">{WELCOME_COUPON}</p>
                 </div>
-                <p className="text-xs text-black/40 dark:text-white/40">{WELCOME_DISCOUNT_PCT}% off your first order. Single use.</p>
+                <p className="text-xs text-black/40 dark:text-white/40">{t("singleUse", { pct: WELCOME_DISCOUNT_PCT })}</p>
               </div>
             ) : (
               <>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 dark:text-white/40 mb-3">Before you go</p>
-                <p className="font-display text-2xl text-black dark:text-white leading-tight mb-2">Get {WELCOME_DISCOUNT_PCT}% off your first order</p>
-                <p className="text-sm text-black/50 dark:text-white/50 mb-6">Join our list for exclusive access to new arrivals and private sales.</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 dark:text-white/40 mb-3">{t("beforeYouGo")}</p>
+                <p className="font-display text-2xl text-black dark:text-white leading-tight mb-2">{t("title", { pct: WELCOME_DISCOUNT_PCT })}</p>
+                <p className="text-sm text-black/50 dark:text-white/50 mb-6">{t("subtitle")}</p>
                 <form onSubmit={subscribeEmail} className="space-y-3">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
+                    placeholder={t("placeholder")}
                     required
                     className="w-full h-11 px-4 border border-black/15 dark:border-white/15 bg-transparent text-sm text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                   />
@@ -115,13 +117,10 @@ export function ExitIntentCapture() {
                     disabled={status === "loading"}
                     className="w-full h-11 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium disabled:opacity-60 transition-opacity"
                   >
-                    {status === "loading" ? "Subscribing…" : "Claim 15% Off"}
+                    {status === "loading" ? t("subscribing") : t("claim", { pct: WELCOME_DISCOUNT_PCT })}
                   </button>
-                  {status === "error" && <p className="text-xs text-red-500 text-center">Couldn't subscribe — try again.</p>}
+                  {status === "error" && <p className="text-xs text-red-500 text-center">{t("error")}</p>}
                 </form>
-                <button onClick={dismiss} className="block w-full text-center mt-4 text-[11px] text-black/30 dark:text-white/30 hover:text-black/60 dark:hover:text-white/60 transition-colors">
-                  No thanks
-                </button>
               </>
             )}
           </motion.div>

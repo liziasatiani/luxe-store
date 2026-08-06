@@ -83,7 +83,7 @@ export default function CheckoutPage() {
     if (!guest.state) errors.state = "Required";
     if (!guest.postalCode) errors.postalCode = "Required";
     setGuestErrors(errors);
-    if (Object.keys(errors).length > 0) { toast.error("Please fill in all required fields"); return false; }
+    if (Object.keys(errors).length > 0) { toast.error(t("errors.required")); return false; }
     return true;
   };
 
@@ -241,9 +241,9 @@ export default function CheckoutPage() {
               ))}
             </div>
             <div className="border-t border-black/8 dark:border-white/8 pt-3 space-y-1.5 text-sm">
-              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Subtotal</span><span>{format(subtotal())}</span></div>
-              <div className="flex justify-between text-black/50 dark:text-white/50"><span>Shipping</span><span>{shipping() === 0 ? "FREE" : format(shipping())}</span></div>
-              <div className="flex justify-between font-medium text-black dark:text-white pt-1"><span>Total</span><span>{format(total())}</span></div>
+              <div className="flex justify-between text-black/50 dark:text-white/50"><span>{t("subtotal")}</span><span>{format(subtotal())}</span></div>
+              <div className="flex justify-between text-black/50 dark:text-white/50"><span>{t("shipping")}</span><span>{shipping() === 0 ? t("free") : format(shipping())}</span></div>
+              <div className="flex justify-between font-medium text-black dark:text-white pt-1"><span>{t("total")}</span><span>{format(total())}</span></div>
             </div>
           </div>
         )}
@@ -389,15 +389,15 @@ export default function CheckoutPage() {
             <Divider />
             <div className="space-y-2 text-sm">
               <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>Subtotal</span><span className="text-black dark:text-white">{format(subtotal())}</span>
+                <span>{t("subtotal")}</span><span className="text-black dark:text-white">{format(subtotal())}</span>
               </div>
               {discount() > 0 && (
                 <div className="flex justify-between text-green-600">
-                  <span>Discount ({coupon?.code})</span><span>−{format(discount())}</span>
+                  <span>{t("discount", { code: coupon?.code ?? "" })}</span><span>−{format(discount())}</span>
                 </div>
               )}
               <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>Shipping</span><span className="text-black dark:text-white">{shipping() === 0 ? "FREE" : format(shipping())}</span>
+                <span>{t("shipping")}</span><span className="text-black dark:text-white">{shipping() === 0 ? t("free") : format(shipping())}</span>
               </div>
               <div className="flex justify-between text-black/60 dark:text-white/60">
                 <span>Tax</span><span className="text-black dark:text-white">{format(tax())}</span>
@@ -405,7 +405,7 @@ export default function CheckoutPage() {
             </div>
             <Divider />
             <div className="flex justify-between font-medium text-lg text-black dark:text-white">
-              <span>Total</span><span>{format(total())}</span>
+              <span>{t("total")}</span><span>{format(total())}</span>
             </div>
             <div className="flex flex-col gap-1.5 pt-1">
               {[

@@ -19,7 +19,11 @@
     "wishlist": "Wishlist",
     "adminPanel": "Admin Panel",
     "signOut": "Sign Out",
-    "announcement": "New arrivals dropping five days a week"
+    "announcement": "New arrivals dropping five days a week",
+    "home": "Home",
+    "shop": "Shop",
+    "cart": "Cart",
+    "account": "Account"
   },
   "home": {
     "hero": {
@@ -50,7 +54,8 @@
       "wearables": "Wearables",
       "smartHome": "Smart Home",
       "audio": "Audio",
-      "accessories": "Accessories"
+      "accessories": "Accessories",
+      "mini": "Mini"
     },
     "featured": {
       "title": "Featured",
@@ -104,7 +109,8 @@
     "qty": "Qty",
     "removed": "Removed",
     "trustReturns": "30-day free returns",
-    "trustAuthentic": "100% authentic — guaranteed"
+    "trustAuthentic": "100% authentic — guaranteed",
+    "trustShipping": "Free shipping on orders over ₾200"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -164,27 +170,111 @@
     "hideSummary": "Hide order summary",
     "savedAddresses": "Saved Addresses",
     "shippingInfo": "Shipping Information",
-    "paymentMethod": "Payment Method"
+    "paymentMethod": "Payment Method",
+    "discount": "Discount ({code})",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "FREE",
+    "errors": {
+      "required": "Please fill in all required fields"
+    }
   },
   "orderSuccess": {
     "title": "Order Confirmed!",
     "subtitle": "Thank you for your order. You'll receive a confirmation email shortly.",
     "orderSummary": "Order Summary",
     "trackOrder": "Track Order",
-    "continueShopping": "Continue Shopping"
+    "continueShopping": "Continue Shopping",
+    "total": "Total",
+    "completeCollection": "Complete Your Collection",
+    "viewAll": "View All",
+    "saveHistory": "Save your order history",
+    "saveHistoryDesc": "Create a free account to track this order, reorder with one click, and get early access to new arrivals.",
+    "createAccount": "Create Account"
   },
   "account": {
     "title": "My Account",
-    "profile": "Profile",
+    "profile": {
+      "title": "My Profile",
+      "subtitle": "Name, email, and phone number",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "phonePlaceholder": "+1 555 000 0000",
+      "saveChanges": "Save Changes",
+      "updated": "Profile updated!",
+      "error": "Couldn't save changes",
+      "connectionError": "Couldn't save changes — check your connection"
+    },
     "orders": "Orders",
-    "addresses": "Addresses",
+    "addresses": {
+      "title": "Addresses",
+      "subtitle": "Manage your shipping addresses",
+      "add": "Add Address",
+      "newAddress": "New Address",
+      "label": "Label",
+      "labelPlaceholder": "Home, Work...",
+      "firstName": "First Name *",
+      "lastName": "Last Name *",
+      "addressLine": "Address *",
+      "apartment": "Apartment, suite, etc.",
+      "city": "City *",
+      "state": "State *",
+      "postalCode": "Postal Code *",
+      "country": "Country",
+      "setDefault": "Set as default address",
+      "save": "Save Address",
+      "cancel": "Cancel",
+      "noAddresses": "No addresses yet.",
+      "default": "Default",
+      "confirmDelete": "Delete this address?",
+      "saved": "Address saved!",
+      "deleted": "Address deleted",
+      "errors": {
+        "required": "Please fill in all required fields",
+        "save": "Failed to save address",
+        "delete": "Failed to delete address"
+      }
+    },
     "wishlist": "Wishlist",
     "signOut": "Sign Out",
     "noOrders": "No orders yet. Start shopping!",
     "orderPlaced": "Order Placed",
     "confirmed": "Confirmed",
     "shipped": "Shipped",
-    "delivered": "Delivered"
+    "delivered": "Delivered",
+    "ordersPage": {
+      "myOrders": "My Orders",
+      "ordersTotal": "{count} orders total",
+      "orderHistory": "Order history",
+      "noOrdersTitle": "No orders yet",
+      "noOrdersDesc": "Your completed orders will appear here. Browse our collection to get started.",
+      "browseProducts": "Browse Products"
+    },
+    "orderDetail": {
+      "placed": "Placed {date}",
+      "tracking": "Tracking:",
+      "orderNumber": "Order #{number}",
+      "items": "Items",
+      "paymentSummary": "Payment Summary",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "total": "Total",
+      "free": "FREE",
+      "shippingAddress": "Shipping Address"
+    },
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "confirmed": "Confirmed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded"
+    }
   },
   "auth": {
     "login": {
@@ -220,7 +310,12 @@
       "send": "Send Reset Link",
       "back": "Back to sign in",
       "sent": "Reset link sent!",
-      "sentDesc": "Check your email for the reset link."
+      "sentDesc": "Check your email for the reset link.",
+      "sentDesc2": "Check your inbox for a password reset link.",
+      "errors": {
+        "email": "Please enter a valid email address.",
+        "failed": "Couldn't send the link — check your connection and try again."
+      }
     }
   },
   "footer": {
@@ -244,7 +339,16 @@
     "about": "About Us",
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
-    "sitemap": "Sitemap"
+    "sitemap": "Sitemap",
+    "tagline": "Considered technology. Considered beauty. Curated, tested, and delivered together.",
+    "pressbar": {
+      "returns": "Free 30-Day Returns",
+      "authentic": "100% Authentic",
+      "checkout": "Secure Checkout",
+      "shipping": "Free Shipping Over ₾200",
+      "distributors": "Authorized Distributors Only",
+      "support": "Customer Support 7 Days"
+    }
   },
   "pages": {
     "newArrivals": {
@@ -270,7 +374,11 @@
     "brands": {
       "title": "Our Brands",
       "subtitle": "Shop your favourite luxury brands.",
-      "products": "products"
+      "products": "products",
+      "allBrands": "All Brands",
+      "allBrandsSubtitle": "Curated from the world's finest houses",
+      "beautyBrands": "Beauty Brands",
+      "techBrands": "Tech Brands"
     },
     "search": {
       "title": "Search",
@@ -280,7 +388,25 @@
     },
     "about": {
       "badge": "Our Story",
-      "title": "Luxury, Curated for You"
+      "title": "Luxury, Curated for You",
+      "ourStory": "Our Story",
+      "heroTitle": "Two worlds,\none address.",
+      "heroDesc": "Everything Street was built on a single conviction: that great skincare and great technology deserve the same standard of curation, sourcing, and trust.",
+      "missionLabel": "Mission",
+      "missionTitle": "Authentic, always.",
+      "missionDesc": "We source directly from authorized distributors for every brand we carry. No grey-market supply chains. No ambiguity about provenance.",
+      "promiseLabel": "Promise",
+      "promiseTitle": "Service you can feel.",
+      "promiseDesc": "Luxury is not just the product — it's the experience around it. Secure checkout, transparent tracking, 30-day returns, and a customer team that responds in hours, not days.",
+      "statsProducts": "Curated Products",
+      "statsBrands": "Luxury Brands",
+      "whatWeStandFor": "What We Stand For",
+      "authenticityTitle": "Authenticity",
+      "authenticityDesc": "Every product is sourced from authorized partners. Counterfeits are not a risk we accept.",
+      "securityTitle": "Security",
+      "securityDesc": "256-bit SSL on every transaction. Your payment details and personal data are protected at every step.",
+      "globalTitle": "Global Reach",
+      "globalDesc": "Luxury without borders. We ship to over 50 countries — same quality, same care, wherever you are."
     },
     "sitemap": {
       "title": "Sitemap",
@@ -420,11 +546,42 @@
     },
     "shipping": {
       "title": "Shipping Policy",
-      "subtitle": "Fast, reliable delivery to your door."
+      "subtitle": "Fast, reliable delivery to your door.",
+      "freeShipping": "Free Shipping",
+      "freeShippingDesc": "On orders over ₾200",
+      "standard": "Standard",
+      "standardDesc": "3–5 business days",
+      "express": "Express",
+      "expressDesc": "1–2 business days",
+      "international": "International",
+      "internationalDesc": "7–14 business days",
+      "domesticTitle": "Domestic Shipping",
+      "domesticContent": "Standard Shipping (3–5 business days): ₾15, FREE on orders over ₾200\nExpress Shipping (1–2 business days): ₾25\n\nOrders placed before 14:00 GET are processed the same day.",
+      "internationalTitle": "International Shipping",
+      "internationalContent": "We ship to over 50 countries worldwide.\n\nCanada & Mexico: 5–7 business days\nEurope: 7–10 business days\nAsia & Middle East: 10–14 business days",
+      "dutiesTitle": "Duties & Taxes",
+      "dutiesContent": "International orders may be subject to import duties and taxes upon arrival. These charges are the responsibility of the recipient.",
+      "trackingTitle": "Order Tracking",
+      "trackingContent": "Once your order ships, you'll receive a confirmation email with a tracking number. Track anytime from your account under 'My Orders'.",
+      "lostTitle": "Lost or Damaged Packages",
+      "lostContent": "Contact us within 7 days of the expected delivery date if your package is lost or arrives damaged. We will reship or issue a full refund."
     },
     "returns": {
       "title": "Returns & Refunds",
-      "subtitle": "30-day hassle-free returns."
+      "subtitle": "30-day hassle-free returns.",
+      "overviewTitle": "Return Policy Overview",
+      "overviewContent": "We offer 30-day hassle-free returns on all products. Items must be unused and in original packaging.",
+      "eligibleTitle": "Eligible Items for Return",
+      "eligibleContent": "Items must be:\n• Unused and in the same condition as received\n• In original packaging with all tags attached\n• For beauty products: unopened and sealed",
+      "nonReturnableTitle": "Non-Returnable Items",
+      "nonReturnableContent": "• Opened beauty products\n• Personalized items\n• Digital downloads\n• Final Sale items\n• Gift cards",
+      "howToTitle": "How to Return",
+      "howToContent": "Email returns@everythingstreet.com with your order number and the item(s) you'd like to return. We'll reply within 24 hours with a prepaid return label.\n\nOnce we receive the item, your refund is processed within 3–5 business days.",
+      "refundTitle": "Refund Processing",
+      "refundContent": "Refunds are processed within 3–5 business days and appear on your payment method within 5–10 business days.",
+      "damagedTitle": "Damaged Items",
+      "damagedContent": "Contact us within 7 days of delivery with photos. We will arrange a free replacement or full refund.",
+      "needHelp": "Need help with a return?"
     },
     "privacy": {
       "title": "Privacy Policy"
@@ -500,7 +657,8 @@
     "qty": "Quantity",
     "sku": "SKU",
     "addedToCart": "Added to cart",
-    "removedFromWishlist": "Removed from wishlist"
+    "removedFromWishlist": "Removed from wishlist",
+    "home": "Home"
   },
   "hero": {
     "tagline": "Tech & Beauty, One Street",
@@ -543,5 +701,110 @@
     "nothingMatchesDesc": "Try adjusting your filters or search terms to find what you're looking for.",
     "loadMore": "Load More",
     "filters": "Filters"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Questions about your order, a product, or anything else — we reply within 24 hours.",
+    "howToReach": "How to reach us",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "openMaps": "Open in Google Maps →",
+    "chatWithUs": "Chat With Us",
+    "businessHours": "Business Hours",
+    "monFri": "Monday – Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "writeTo": "Write to us",
+    "yourName": "Your Name *",
+    "yourEmail": "Email *",
+    "subject": "Subject",
+    "message": "Message *",
+    "namePlaceholder": "Jane Smith",
+    "subjectPlaceholder": "Order inquiry, product question…",
+    "messagePlaceholder": "How can we help you?",
+    "sendMessage": "Send Message",
+    "messageSent": "Message Sent!",
+    "sentDesc": "We'll get back to you within 24 hours.",
+    "sendAnother": "Send another message",
+    "success": "Message sent! We'll reply within 24 hours.",
+    "errors": {
+      "name": "Please enter your name",
+      "email": "Please enter a valid email address",
+      "message": "Message must be at least 10 characters",
+      "failed": "Failed to send message. Try again."
+    }
+  },
+  "trackOrder": {
+    "title": "Track Your Order",
+    "subtitle": "Enter your order number and email to track your delivery.",
+    "orderNumber": "Order Number",
+    "orderNumberPlaceholder": "e.g. LXS-ABC123",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Email used when ordering",
+    "trackBtn": "Track Order",
+    "placed": "Placed {date}",
+    "tracking": "Tracking:",
+    "total": "Total",
+    "itemsOrdered": "Items Ordered",
+    "shippingTo": "Shipping To",
+    "steps": {
+      "placed": "Order Placed",
+      "confirmed": "Confirmed",
+      "shipped": "Shipped",
+      "delivered": "Delivered"
+    },
+    "errors": {
+      "orderNumber": "Please enter your order number",
+      "email": "Please enter a valid email address",
+      "notFound": "Order not found. Please check your details."
+    }
+  },
+  "reviews": {
+    "title": "Customer Reviews ({count})",
+    "noReviews": "No reviews yet. Be the first!",
+    "writeReview": "Write a Review",
+    "cancel": "Cancel",
+    "sortNewest": "Newest",
+    "sortHighest": "Highest rated",
+    "sortLowest": "Lowest rated",
+    "yourReview": "Your Review",
+    "rating": "Rating",
+    "titleField": "Title (optional)",
+    "titlePlaceholder": "Summarize your experience",
+    "reviewField": "Review *",
+    "reviewPlaceholder": "Tell others about this product…",
+    "submit": "Submit Review",
+    "verified": "Verified Purchase",
+    "reviews": "reviews",
+    "errors": {
+      "signIn": "Sign in to leave a review",
+      "minLength": "Review must be at least 10 characters",
+      "failed": "Failed to submit"
+    }
+  },
+  "exitIntent": {
+    "beforeYouGo": "Before you go",
+    "title": "Get {pct}% off your first order",
+    "subtitle": "Join our list for exclusive access to new arrivals and private sales.",
+    "placeholder": "Your email address",
+    "claim": "Claim {pct}% Off",
+    "subscribing": "Subscribing…",
+    "error": "Couldn't subscribe — try again.",
+    "yourCode": "Your code",
+    "onList": "You're on the list.",
+    "useAtCheckout": "Use at checkout",
+    "singleUse": "{pct}% off your first order. Single use."
+  },
+  "search": {
+    "placeholder": "Search products, brands, categories…",
+    "resultsFor": "{count} results for {query}",
+    "noResults": "No results for \"{query}\"",
+    "tabAll": "All",
+    "tabBeauty": "Beauty",
+    "tabTech": "Tech",
+    "viewAll": "View all results",
+    "trending": "Trending"
   }
 }

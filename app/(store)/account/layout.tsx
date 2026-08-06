@@ -6,17 +6,20 @@ import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { User, Package, MapPin, Heart, LogOut } from "lucide-react";
 import { Container } from "@/components/ui";
-
-const NAV = [
-  { href: "/account",           icon: User,    label: "Profile"   },
-  { href: "/account/orders",    icon: Package, label: "Orders"    },
-  { href: "/account/addresses", icon: MapPin,  label: "Addresses" },
-  { href: "/wishlist",          icon: Heart,   label: "Wishlist"  },
-];
+import { getTranslations } from "next-intl/server";
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session?.user) redirect("/login?redirect=/account");
+
+  const t = await getTranslations("account");
+
+  const NAV = [
+    { href: "/account",           icon: User,    label: t("profile.title") },
+    { href: "/account/orders",    icon: Package, label: t("orders")        },
+    { href: "/account/addresses", icon: MapPin,  label: t("addresses.title") },
+    { href: "/wishlist",          icon: Heart,   label: t("wishlist")      },
+  ];
 
   return (
     <Container className="py-12">
@@ -47,7 +50,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
                     type="submit"
                     className="w-full flex items-center gap-3 px-5 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
                   >
-                    <LogOut size={16} /> Sign Out
+                    <LogOut size={16} /> {t("signOut")}
                   </button>
                 </form>
               </div>

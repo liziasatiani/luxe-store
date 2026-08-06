@@ -31,25 +31,26 @@ export function Navbar() {
   const isAdmin = (user as { role?: string } | undefined)?.role === "ADMIN" ||
     (user as { role?: string } | undefined)?.role === "SUPER_ADMIN";
 
+  const tc = useTranslations("home.categories");
   const NAV_LINKS = [
     { label: t("beauty"), href: "/beauty", children: [
-      { label: "Skincare",     href: "/beauty/skincare"     },
-      { label: "Makeup",       href: "/beauty/makeup"       },
-      { label: "Hair Care",    href: "/beauty/hair-care"    },
-      { label: "Body Care",    href: "/beauty/body-care"    },
-      { label: "Perfume",      href: "/beauty/perfume"      },
-      { label: "Beauty Tools", href: "/beauty/beauty-tools" },
-      { label: "Mini",         href: "/beauty/mini"         },
+      { label: tc("skincare"),    href: "/beauty/skincare"     },
+      { label: tc("makeup"),      href: "/beauty/makeup"       },
+      { label: tc("hairCare"),    href: "/beauty/hair-care"    },
+      { label: tc("bodyCare"),    href: "/beauty/body-care"    },
+      { label: tc("perfume"),     href: "/beauty/perfume"      },
+      { label: tc("beautyTools"), href: "/beauty/beauty-tools" },
+      { label: tc("mini"),        href: "/beauty/mini"         },
     ]},
     { label: t("tech"), href: "/tech", children: [
-      { label: "Headphones", href: "/tech/headphones" },
-      { label: "Cameras",    href: "/tech/cameras"    },
-      { label: "Tablets",    href: "/tech/tablets"    },
-      { label: "Gaming",     href: "/tech/gaming"     },
-      { label: "Wearables",   href: "/tech/wearables"   },
-      { label: "Smart Home",  href: "/tech/smart-home"  },
-      { label: "Audio",       href: "/tech/audio"       },
-      { label: "Accessories", href: "/tech/accessories" },
+      { label: tc("headphones"),  href: "/tech/headphones" },
+      { label: tc("cameras"),     href: "/tech/cameras"    },
+      { label: tc("tablets"),     href: "/tech/tablets"    },
+      { label: tc("gaming"),      href: "/tech/gaming"     },
+      { label: tc("wearables"),   href: "/tech/wearables"  },
+      { label: tc("smartHome"),   href: "/tech/smart-home" },
+      { label: tc("audio"),       href: "/tech/audio"      },
+      { label: tc("accessories"), href: "/tech/accessories"},
     ]},
     { label: t("brands"), href: "/brands",  children: [] },
     { label: t("deals"),  href: "/deals",   children: [] },
