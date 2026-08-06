@@ -20,6 +20,7 @@ import { SplashScreen } from "@/components/ui/SplashScreen";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { buildMetadata, buildOrganizationSchema } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { jsonLdSafe } from "@/lib/utils";
 import "./globals.css";
 
@@ -48,7 +49,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
     ...buildMetadata({ locale }),
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    icons: {
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+        { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      ],
+      shortcut: "/favicon.svg",
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    },
     manifest: "/manifest.json",
     appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "Everything Street" },
   };
@@ -67,12 +76,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cinzel.variable} ${lora.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
-        {process.env.NEXT_PUBLIC_GA_ID && !process.env.NEXT_PUBLIC_GA_ID.startsWith("G-X") && (
-          <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
-            <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');` }} />
-          </>
-        )}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="preload" as="image" href="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format" fetchPriority="high" />
         <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
@@ -101,6 +104,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <PWAInit />
               <ScrollToTop />
               <SplashScreen />
+              <GoogleAnalytics />
               <Analytics />
               </MotionProvider>
             </ThemeProvider>

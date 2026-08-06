@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://lh3.googleusercontent.com",
-            "connect-src 'self' https://*.supabase.co https://api.resend.com https://accounts.google.com https://js.stripe.com",
+            "connect-src 'self' https://*.supabase.co https://api.resend.com https://accounts.google.com https://js.stripe.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com",
             "media-src 'self' https://www.soundhelix.com https://*.supabase.co",
             "frame-src https://js.stripe.com https://accounts.google.com",
             "object-src 'none'",

@@ -5,17 +5,41 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 const COOKIE_KEY = "luxe-cookie-consent";
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
+function loadGA() {
+  if (!GA_ID || GA_ID.startsWith("G-X")) return;
+  if (document.getElementById("ga-script")) return;
+
+  const script = document.createElement("script");
+  script.id = "ga-script";
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  script.async = true;
+  document.head.appendChild(script);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(...args: unknown[]) { window.dataLayer.push(args); }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", GA_ID);
+}
 
 export function CookieConsent() {
   const t = useTranslations("cookie");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem(COOKIE_KEY)) setVisible(true);
+    const stored = localStorage.getItem(COOKIE_KEY);
+    if (!stored) {
+      setVisible(true);
+    } else if (stored === "accepted") {
+      loadGA();
+    }
   }, []);
 
   const accept = () => {
     localStorage.setItem(COOKIE_KEY, "accepted");
+    loadGA();
     setVisible(false);
   };
 
@@ -64,4 +88,11 @@ export function CookieConsent() {
       )}
     </AnimatePresence>
   );
+}
+
+declare global {
+  interface Window {
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
+  }
 }
