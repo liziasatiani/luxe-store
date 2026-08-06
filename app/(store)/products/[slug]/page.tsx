@@ -97,8 +97,8 @@ export default async function ProductPage({ params }: Props) {
                   {p.brand.name}
                 </Link>
               )}
-              {p.isNewArrival && <Badge variant="gold">New Arrival</Badge>}
-              {p.isBestSeller && <Badge variant="default">Best Seller</Badge>}
+              {p.isNewArrival && <Badge variant="gold">{tProduct("newArrival")}</Badge>}
+              {p.isBestSeller && <Badge variant="default">{tProduct("bestSeller")}</Badge>}
               {discount > 0 && <Badge variant="error">-{discount}% Off</Badge>}
             </div>
 
@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: Props) {
 
             <div className="flex items-center gap-3">
               <RatingStars rating={Number(p.ratingAvg)} count={p.ratingCount} size={16} />
-              <a href="#reviews" className="text-sm text-surface-400 hover:text-brand-500 transition-colors">{p.ratingCount} reviews</a>
+              <a href="#reviews" className="text-sm text-surface-400 hover:text-brand-500 transition-colors">{p.ratingCount} {tProduct("reviews")}</a>
             </div>
 
             <div className="flex items-baseline gap-3">
@@ -141,13 +141,13 @@ export default async function ProductPage({ params }: Props) {
           <div className="lg:col-span-2 space-y-8">
             {p.description && (
               <div>
-                <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">About this product</h2>
+                <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">{tProduct("aboutProduct")}</h2>
                 <p className="text-surface-600 dark:text-surface-400 leading-relaxed whitespace-pre-wrap">{p.description}</p>
               </div>
             )}
             {p.specifications.length > 0 && (
               <div>
-                <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">Specifications</h2>
+                <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">{tProduct("specifications")}</h2>
                 <div className="rounded-2xl border border-surface-100 dark:border-surface-800 overflow-hidden">
                   {p.specifications.map((spec: { name: string; value: string }, i: number) => (
                     <div key={i} className={`flex items-center gap-4 px-5 py-3.5 ${i % 2 === 0 ? "bg-surface-50 dark:bg-surface-800/50" : ""}`}>

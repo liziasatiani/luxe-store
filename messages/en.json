@@ -110,7 +110,11 @@
     "removed": "Removed",
     "trustReturns": "30-day free returns",
     "trustAuthentic": "100% authentic — guaranteed",
-    "trustShipping": "Free shipping on orders over ₾200"
+    "trustShipping": "Free shipping on orders over ₾200",
+    "quantity": "Quantity",
+    "selectVariant": "Select",
+    "outOfStockMsg": "This item is currently out of stock. Check back soon or contact us for availability.",
+    "deliveryBy": "get it by {date}"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -603,6 +607,16 @@
       "title": "Page Not Found",
       "subtitle": "The page you're looking for doesn't exist.",
       "back": "Go Home"
+    },
+    "beauty": {
+      "collection": "Collection",
+      "all": "All Beauty",
+      "desc": "Luxury skincare, makeup, and fragrance from the world's most coveted brands."
+    },
+    "tech": {
+      "collection": "Collection",
+      "all": "All Tech",
+      "desc": "Premium electronics and gadgets engineered for those who demand the best."
     }
   },
   "common": {
@@ -658,7 +672,10 @@
     "sku": "SKU",
     "addedToCart": "Added to cart",
     "removedFromWishlist": "Removed from wishlist",
-    "home": "Home"
+    "home": "Home",
+    "collection": "Collection",
+    "allBeauty": "All Beauty",
+    "allTech": "All Tech"
   },
   "hero": {
     "tagline": "Tech & Beauty, One Street",
