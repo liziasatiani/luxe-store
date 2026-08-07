@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
+// K Night Market redesign
 
 function KInput({ label, error, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
   return (
