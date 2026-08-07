@@ -20,6 +20,9 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
   const [brands, setBrands] = useState<Array<{ id: string; name: string }>>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [addingBrand, setAddingBrand] = useState(false);
+  const [newBrandName, setNewBrandName] = useState("");
+  const [savingBrand, setSavingBrand] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<Array<{ url: string; isPrimary: boolean }>>(
@@ -58,6 +61,30 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
   }, []);
 
   const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
+
+  const createBrand = async () => {
+    if (!newBrandName.trim()) return;
+    setSavingBrand(true);
+    try {
+      const res = await fetch("/api/brands", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newBrandName.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to create brand");
+      const brand = data.data?.brand ?? data.brand;
+      setBrands((prev) => [...prev, { id: brand.id, name: brand.name }]);
+      set("brandId", brand.id);
+      setNewBrandName("");
+      setAddingBrand(false);
+      toast.success(`Brand "${brand.name}" created`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to create brand");
+    } finally {
+      setSavingBrand(false);
+    }
+  };
 
   const uploadFiles = useCallback(async (files: FileList | File[]) => {
     const accepted = Array.from(files).filter((f) => f.type.startsWith("image/"));
@@ -174,10 +201,47 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
             </div>
             <div>
               <label className={labelCls}>Brand</label>
-              <select value={form.brandId} onChange={(e) => set("brandId", e.target.value)} className={inputCls}>
-                <option value="">No brand</option>
-                {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-              </select>
+              {addingBrand ? (
+                <div className="flex gap-2">
+                  <input
+                    autoFocus
+                    value={newBrandName}
+                    onChange={(e) => setNewBrandName(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") createBrand(); if (e.key === "Escape") { setAddingBrand(false); setNewBrandName(""); } }}
+                    placeholder="Brand name"
+                    className={inputCls}
+                  />
+                  <button
+                    type="button"
+                    onClick={createBrand}
+                    disabled={savingBrand || !newBrandName.trim()}
+                    className="h-11 px-4 rounded-xl bg-brand-500 text-white text-sm font-medium hover:bg-brand-600 disabled:opacity-50 shrink-0"
+                  >
+                    {savingBrand ? "…" : "Save"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setAddingBrand(false); setNewBrandName(""); }}
+                    className="h-11 px-3 rounded-xl border border-surface-200 dark:border-surface-700 text-surface-500 hover:text-surface-700 shrink-0"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <select value={form.brandId} onChange={(e) => set("brandId", e.target.value)} className={inputCls}>
+                    <option value="">No brand</option>
+                    {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => setAddingBrand(true)}
+                    className="mt-1.5 flex items-center gap-1 text-xs text-brand-500 hover:text-brand-600 transition-colors"
+                  >
+                    <Plus size={12} /> Add new brand
+                  </button>
+                </>
+              )}
             </div>
           </div>
           <Input label="Tags (comma separated)" value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="skincare, luxury, moisturiser" />
