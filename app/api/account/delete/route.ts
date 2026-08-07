@@ -10,10 +10,21 @@ export async function DELETE() {
     }
     const userId = session.user.id;
 
-    // Anonymize orders rather than deleting them (preserves order history)
+    // Fetch user details before deletion to snapshot onto orders
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true, phone: true },
+    });
+
+    // Anonymize orders — preserve name/email/phone so admin can still identify them
     await prisma.order.updateMany({
       where: { userId },
-      data: { userId: null },
+      data: {
+        userId: null,
+        guestName: user?.name ?? undefined,
+        guestEmail: user?.email ?? undefined,
+        guestPhone: user?.phone ?? undefined,
+      },
     });
 
     await prisma.user.delete({ where: { id: userId } });
