@@ -189,7 +189,11 @@
       "fieldRequired": "Requerido",
       "invalidEmail": "Correo electrónico no válido",
       "failedOrder": "Error al realizar el pedido"
-    }
+    },
+    "cardPayment": "Tarjeta · Apple Pay · Google Pay",
+    "payWhenReceived": "Pagar al recibir",
+    "codUnavailable": "Solo disponible bajo ₾{max}",
+    "codUnavailableMsg": "El pago contra reembolso solo está disponible para pedidos inferiores a ₾{max}. Por favor, pague con tarjeta."
   },
   "orderSuccess": {
     "title": "¡Pedido confirmado!",
@@ -216,7 +220,16 @@
       "saveChanges": "Guardar cambios",
       "updated": "¡Perfil actualizado!",
       "error": "No se pudieron guardar los cambios",
-      "connectionError": "No se pudieron guardar los cambios — verifique su conexión"
+      "connectionError": "No se pudieron guardar los cambios — verifique su conexión",
+      "dangerZone": "Zona de peligro",
+      "dangerZoneDesc": "Una vez que elimines tu cuenta, todos tus datos serán eliminados permanentemente.",
+      "deleteAccount": "Eliminar mi cuenta",
+      "deleteConfirmTitle": "Esta acción es permanente e irreversible. Escribe ELIMINAR para confirmar.",
+      "deleteConfirmPlaceholder": "Escribe ELIMINAR para confirmar",
+      "deleteConfirmBtn": "Eliminar cuenta",
+      "deleteSuccess": "Cuenta eliminada.",
+      "deleteError": "Error al eliminar la cuenta. Por favor, inténtalo de nuevo.",
+      "cancel": "Cancelar"
     },
     "orders": "Pedidos",
     "addresses": {
