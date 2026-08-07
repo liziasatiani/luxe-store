@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Banknote, CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown } from "lucide-react";
+import { Banknote, CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown, Plus } from "lucide-react";
 import { Container, Input, Divider } from "@/components/ui";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
@@ -44,6 +44,13 @@ export default function CheckoutPage() {
   const totalGEL = total() * 2.77;
   const codAvailable = totalGEL < COD_MAX_GEL;
   const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY" | "STRIPE">("CASH_ON_DELIVERY");
+  const [addingAddress, setAddingAddress] = useState(false);
+  const [savingAddress, setSavingAddress] = useState(false);
+  const [newAddr, setNewAddr] = useState({
+    label: "", firstName: "", lastName: "", line1: "", line2: "",
+    city: "", state: "", postalCode: "", country: "GE", phone: "",
+  });
+  const setNA = (k: string, v: string) => setNewAddr(a => ({ ...a, [k]: v }));
 
   // Auto-switch to Stripe when cart exceeds COD threshold
   useEffect(() => {
@@ -72,6 +79,32 @@ export default function CheckoutPage() {
   }, [session]);
 
   if (items.length === 0 && !placedRef.current) return null;
+
+  const saveNewAddress = async () => {
+    if (!newAddr.label || !newAddr.firstName || !newAddr.lastName || !newAddr.line1 || !newAddr.city || !newAddr.state || !newAddr.postalCode) {
+      toast.error(t("errors.required")); return;
+    }
+    setSavingAddress(true);
+    try {
+      const res = await fetch("/api/account/addresses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newAddr),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      const saved = data.data?.address;
+      setAddresses(prev => [...prev, saved]);
+      setSelectedAddress(saved.id);
+      setAddingAddress(false);
+      setNewAddr({ label: "", firstName: "", lastName: "", line1: "", line2: "", city: "", state: "", postalCode: "", country: "GE", phone: "" });
+      toast.success("Address saved");
+    } catch {
+      toast.error("Failed to save address");
+    } finally {
+      setSavingAddress(false);
+    }
+  };
 
   const setG = (k: string, v: string) => {
     setGuest(g => ({ ...g, [k]: v }));
@@ -318,24 +351,43 @@ export default function CheckoutPage() {
               {mode === "login" && (
                 <div className="space-y-3">
                   <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("savedAddresses")}</p>
-                  {addresses.length > 0 ? (
-                    <>
-                      {addresses.map(addr => (
-                        <label key={addr.id} className={`flex items-start gap-3 p-4 border cursor-pointer transition-colors ${selectedAddress === addr.id ? "border-black dark:border-white bg-black/[0.03] dark:bg-white/[0.03]" : "border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"}`}>
-                          <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1" />
-                          <div>
-                            <p className="text-sm font-medium text-black dark:text-white">{addr.label} — {addr.firstName} {addr.lastName}</p>
-                            <p className="text-sm text-black/50 dark:text-white/50 mt-0.5">{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
-                          </div>
-                        </label>
-                      ))}
-                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">{t("addNewAddress")}</Link>
-                    </>
-                  ) : (
-                    <div className="p-6 border border-dashed border-black/15 dark:border-white/15 text-center">
-                      <p className="text-sm text-black/40 dark:text-white/40 mb-3">{t("noAddresses")}</p>
-                      <Link href="/account/addresses?redirect=/checkout" className="text-[11px] tracking-[0.1em] uppercase text-black dark:text-white underline">{t("addAddress")}</Link>
+                  {addresses.map(addr => (
+                    <label key={addr.id} className={`flex items-start gap-3 p-4 border cursor-pointer transition-colors ${selectedAddress === addr.id ? "border-black dark:border-white bg-black/[0.03] dark:bg-white/[0.03]" : "border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"}`}>
+                      <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1" />
+                      <div>
+                        <p className="text-sm font-medium text-black dark:text-white">{addr.label} — {addr.firstName} {addr.lastName}</p>
+                        <p className="text-sm text-black/50 dark:text-white/50 mt-0.5">{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
+                      </div>
+                    </label>
+                  ))}
+
+                  {/* Inline add address */}
+                  {addingAddress ? (
+                    <div className="border border-black/15 dark:border-white/15 p-4 space-y-3">
+                      <p className="text-[10px] tracking-[0.14em] uppercase text-black/50 dark:text-white/50">New address</p>
+                      <Input id="al" label="Label (e.g. Home)" value={newAddr.label} onChange={e => setNA("label", e.target.value)} />
+                      <div className="grid grid-cols-2 gap-3">
+                        <Input id="afn" label={t("firstName")} value={newAddr.firstName} onChange={e => setNA("firstName", e.target.value)} autoComplete="given-name" />
+                        <Input id="aln" label={t("lastName")} value={newAddr.lastName} onChange={e => setNA("lastName", e.target.value)} autoComplete="family-name" />
+                        <div className="col-span-2"><Input id="al1" label={t("address")} value={newAddr.line1} onChange={e => setNA("line1", e.target.value)} autoComplete="address-line1" /></div>
+                        <div className="col-span-2"><Input id="al2" label={t("apartment")} value={newAddr.line2} onChange={e => setNA("line2", e.target.value)} autoComplete="address-line2" /></div>
+                        <Input id="acity" label={t("city")} value={newAddr.city} onChange={e => setNA("city", e.target.value)} autoComplete="address-level2" />
+                        <Input id="astate" label={t("state")} value={newAddr.state} onChange={e => setNA("state", e.target.value)} autoComplete="address-level1" />
+                        <Input id="azip" label={t("postalCode")} value={newAddr.postalCode} onChange={e => setNA("postalCode", e.target.value)} autoComplete="postal-code" />
+                        <Input id="aphone" label={t("phone")} value={newAddr.phone} onChange={e => setNA("phone", e.target.value)} autoComplete="tel" />
+                      </div>
+                      <div className="flex gap-2 pt-1">
+                        <Button onClick={saveNewAddress} loading={savingAddress} variant="gold" size="sm">Save address</Button>
+                        <Button onClick={() => setAddingAddress(false)} variant="outline" size="sm">Cancel</Button>
+                      </div>
                     </div>
+                  ) : (
+                    <button
+                      onClick={() => setAddingAddress(true)}
+                      className="flex items-center gap-1.5 text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+                    >
+                      <Plus size={12} /> {t("addNewAddress")}
+                    </button>
                   )}
                 </div>
               )}

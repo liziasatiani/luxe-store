@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-// Set NEXT_PUBLIC_BG_MUSIC_URL in Vercel env to point to your audio file
+// Set NEXT_PUBLIC_BG_MUSIC_URL in Vercel env to swap to your own playlist track
 const MUSIC_URL =
   process.env.NEXT_PUBLIC_BG_MUSIC_URL ||
-  "https://cdn.pixabay.com/download/audio/2022/03/24/audio_2cef4b1f32.mp3?filename=ambient-piano-logo-165357.mp3";
+  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
