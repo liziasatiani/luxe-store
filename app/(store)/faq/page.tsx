@@ -3,26 +3,23 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Container } from "@/components/ui";
-import { cn } from "@/lib/utils";
 
-interface FAQItem {
-  q: string;
-  a: string;
-}
-
-interface FAQCategory {
-  title: string;
-  items: FAQItem[];
-}
+interface FAQItem { q: string; a: string }
+interface FAQCategory { title: string; items: FAQItem[] }
 
 function FAQItemRow({ q, a }: FAQItem) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-surface-100 dark:border-surface-800 last:border-0">
-      <button onClick={() => setOpen(o => !o)} className="flex items-center justify-between w-full py-4 text-left gap-4">
-        <span className="font-medium text-surface-900 dark:text-white text-sm">{q}</span>
-        <ChevronDown size={16} className={cn("text-surface-400 shrink-0 transition-transform duration-200", open && "rotate-180")} />
+    <div style={{ borderBottom: "1px solid var(--border)" }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "16px 0", textAlign: "left", gap: 16, background: "none", border: "none", cursor: "pointer" }}
+      >
+        <span style={{ fontSize: 13, fontWeight: 500, color: "var(--chalk)", lineHeight: 1.4 }}>{q}</span>
+        <ChevronDown
+          size={15}
+          style={{ color: "var(--chalk3)", flexShrink: 0, transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+        />
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -31,9 +28,9 @@ function FAQItemRow({ q, a }: FAQItem) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden"
+            style={{ overflow: "hidden" }}
           >
-            <p className="pb-4 text-sm text-surface-600 dark:text-surface-400 leading-relaxed">{a}</p>
+            <p style={{ paddingBottom: 16, fontSize: 13, color: "var(--chalk2)", lineHeight: 1.7 }}>{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -47,33 +44,40 @@ export default function FAQPage() {
 
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
-        <Container className="text-center">
-          <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">{t("title")}</h1>
-          <p className="text-surface-500 max-w-md mx-auto">{t("subtitle")}</p>
-        </Container>
+      <div className="k-page-hdr">
+        <div className="wrap" style={{ textAlign: "center" }}>
+          <p className="page-hd-eyebrow">{t("title")}</p>
+          <h1 className="page-hd-title">{t("subtitle")}</h1>
+        </div>
       </div>
 
-      <Container className="py-16 max-w-3xl">
-        <div className="space-y-10">
-          {categories.map(section => (
-            <div key={section.title}>
-              <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">{section.title}</h2>
-              <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 px-6">
-                {section.items.map(item => <FAQItemRow key={item.q} {...item} />)}
+      <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+        <div className="wrap" style={{ maxWidth: 760 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
+            {categories.map(section => (
+              <div key={section.title}>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 18, fontWeight: 700, color: "var(--chalk)", marginBottom: 20, letterSpacing: "0.02em", paddingBottom: 16, borderBottom: "1px solid var(--border)" }}>
+                  {section.title}
+                </h2>
+                <div>
+                  {section.items.map(item => <FAQItemRow key={item.q} {...item} />)}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-12 text-center p-8 rounded-2xl bg-surface-50 dark:bg-surface-900/50 border border-surface-100 dark:border-surface-800">
-          <p className="font-semibold text-surface-900 dark:text-white mb-2">{t("stillHaveQuestions")}</p>
-          <p className="text-surface-500 text-sm mb-4">{t("supportHours")}</p>
-          <a href="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-500 text-white text-sm font-medium hover:bg-brand-600 transition-colors">
-            {t("contactSupport")}
-          </a>
+          <div style={{ marginTop: 64, padding: "32px 36px", border: "1px solid var(--border)", background: "var(--s1)", textAlign: "center" }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: "var(--chalk)", marginBottom: 6, letterSpacing: "0.02em" }}>{t("stillHaveQuestions")}</p>
+            <p style={{ fontSize: 12, color: "var(--chalk2)", marginBottom: 20 }}>{t("supportHours")}</p>
+            <a
+              href="/contact"
+              style={{ display: "inline-block", padding: "12px 28px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none" }}
+            >
+              {t("contactSupport")}
+            </a>
+          </div>
         </div>
-      </Container>
+      </div>
     </>
   );
 }

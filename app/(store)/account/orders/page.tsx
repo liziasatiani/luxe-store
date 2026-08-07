@@ -7,17 +7,17 @@ import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { Package, ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui";
 import { ReorderButton } from "@/components/account/ReorderButton";
 import { getTranslations } from "next-intl/server";
 
-const STATUS_VARIANT: Record<string, "success" | "warning" | "error" | "default" | "gold"> = {
-  PENDING:    "warning",
-  PROCESSING: "default",
-  CONFIRMED:  "success",
-  SHIPPED:    "gold",
-  DELIVERED:  "success",
-  CANCELLED:  "error",
+const STATUS_COLOR: Record<string, string> = {
+  PENDING:    "#b8962e",
+  PROCESSING: "var(--chalk3)",
+  CONFIRMED:  "#4a9d6f",
+  SHIPPED:    "var(--gold)",
+  DELIVERED:  "#4a9d6f",
+  CANCELLED:  "var(--crimson)",
+  REFUNDED:   "var(--crimson)",
 };
 
 export default async function OrdersPage() {
@@ -41,48 +41,54 @@ export default async function OrdersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
       <div>
-        <h1 className="font-display text-3xl text-surface-900 dark:text-white mb-1">{t("ordersPage.myOrders")}</h1>
-        <p className="text-surface-500 text-sm">{t("ordersPage.ordersTotal", { count: orders.length })}</p>
+        <h1 style={{ fontFamily: "var(--serif)", fontSize: 26, fontWeight: 700, color: "var(--chalk)", marginBottom: 4 }}>{t("ordersPage.myOrders")}</h1>
+        <p style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("ordersPage.ordersTotal", { count: orders.length })}</p>
       </div>
 
       {orders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center px-4">
-          <Package size={56} strokeWidth={1} className="text-black/10 dark:text-white/10 mb-8" />
-          <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">{t("ordersPage.orderHistory")}</p>
-          <h3 className="font-display text-2xl md:text-3xl uppercase tracking-[0.04em] text-black dark:text-white">{t("ordersPage.noOrdersTitle")}</h3>
-          <p className="mt-4 text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">{t("ordersPage.noOrdersDesc")}</p>
-          <Link href="/" className="mt-8 inline-flex items-center h-11 px-8 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors">
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 24px", textAlign: "center" }}>
+          <Package size={48} strokeWidth={1} style={{ color: "var(--border)", marginBottom: 24 }} />
+          <p style={{ fontSize: 10, letterSpacing: "0.28em", textTransform: "uppercase", color: "var(--chalk3)", marginBottom: 12 }}>{t("ordersPage.orderHistory")}</p>
+          <h3 style={{ fontFamily: "var(--serif)", fontSize: 22, color: "var(--chalk)", letterSpacing: "0.04em" }}>{t("ordersPage.noOrdersTitle")}</h3>
+          <p style={{ marginTop: 12, fontSize: 13, color: "var(--chalk3)", maxWidth: 280, lineHeight: 1.6 }}>{t("ordersPage.noOrdersDesc")}</p>
+          <Link
+            href="/"
+            style={{ marginTop: 28, display: "inline-flex", alignItems: "center", height: 44, padding: "0 32px", background: "var(--gold)", color: "#000", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, textDecoration: "none" }}
+          >
             {t("ordersPage.browseProducts")}
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
-          {o.map((order) => {
-            const variant = STATUS_VARIANT[order.status] ?? "default";
+        <style>{`.order-row-link:hover { background: var(--s2) !important; }`}</style>
+        <div style={{ border: "1px solid var(--border)" }}>
+          {o.map((order, idx) => {
+            const statusColor = STATUS_COLOR[order.status] ?? "var(--chalk3)";
             return (
               <Link
                 key={order.id}
                 href={`/account/orders/${order.id}`}
-                className="block rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 p-5 hover:shadow-lg transition-shadow group"
+                className="order-row-link"
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
+                  padding: "16px 20px", textDecoration: "none", background: "var(--s1)",
+                  borderBottom: idx < o.length - 1 ? "1px solid var(--border)" : "none",
+                  transition: "background 0.15s",
+                }}
               >
-                <div className="flex items-start justify-between gap-4 mb-4">
-                  <div>
-                    <p className="font-mono text-sm font-bold text-surface-900 dark:text-white">#{order.orderNumber}</p>
-                    <p className="text-xs text-surface-400 mt-0.5">{formatDate(order.createdAt)}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={variant}>{tStatus(order.status)}</Badge>
-                    <ChevronRight size={16} className="text-surface-400 group-hover:text-brand-500 transition-colors" />
-                  </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontFamily: "var(--mono, monospace)", fontSize: 12, fontWeight: 700, color: "var(--chalk)", letterSpacing: "0.04em" }}>#{order.orderNumber}</p>
+                  <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 2 }}>{formatDate(order.createdAt)}</p>
                 </div>
-                <div className="flex items-center justify-between">
-                  <p className="text-sm text-surface-500">{order.items.length !== 1 ? t("ordersPage.itemsPlural", { count: order.items.length }) : t("ordersPage.items", { count: order.items.length })}</p>
-                  <div className="flex items-center gap-3">
-                    <p className="font-semibold text-surface-900 dark:text-white">{formatPrice(order.total)}</p>
-                    <ReorderButton orderId={order.id} />
-                  </div>
+                <p style={{ fontSize: 11, color: "var(--chalk2)" }}>{order.items.length !== 1 ? t("ordersPage.itemsPlural", { count: order.items.length }) : t("ordersPage.items", { count: order.items.length })}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: statusColor, padding: "3px 8px", border: `1px solid ${statusColor}`, opacity: 0.9 }}>
+                    {tStatus(order.status)}
+                  </span>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)" }}>{formatPrice(order.total)}</p>
+                  <ReorderButton orderId={order.id} />
+                  <ChevronRight size={14} style={{ color: "var(--chalk3)" }} />
                 </div>
               </Link>
             );

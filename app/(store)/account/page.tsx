@@ -1,12 +1,25 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { Input } from "@/components/ui";
-import { Button } from "@/components/ui/Button";
 import { Save, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+
+function KInput({ label, error, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
+  return (
+    <div style={{ width: "100%" }}>
+      <label style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 8 }}>{label}</label>
+      <input
+        style={{ width: "100%", padding: "11px 14px", background: "transparent", border: "1px solid var(--borderg)", color: "var(--chalk)", fontSize: 13, outline: "none", transition: "border-color 0.2s" }}
+        onFocus={e => (e.currentTarget.style.borderColor = "var(--gold)")}
+        onBlur={e => (e.currentTarget.style.borderColor = "var(--borderg)")}
+        {...props}
+      />
+      {error && <p style={{ fontSize: 11, color: "var(--crimson)", marginTop: 4 }}>{error}</p>}
+    </div>
+  );
+}
 
 export default function AccountPage() {
   const t = useTranslations("account.profile");
@@ -61,52 +74,58 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
       <div>
-        <h1 className="font-display text-3xl text-surface-900 dark:text-white mb-1">{t("title")}</h1>
-        <p className="text-surface-500 text-sm">{t("subtitle")}</p>
-      </div>
-      <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-5 max-w-lg">
-        <Input id="name" label={t("fullName")} value={name} onChange={e => setName(e.target.value)} />
-        <Input id="email" label={t("email")} value={session?.user?.email ?? ""} disabled className="opacity-60 cursor-not-allowed" />
-        <Input id="phone" label={t("phone")} value={phone} onChange={e => setPhone(e.target.value)} placeholder={t("phonePlaceholder")} />
-        <Button onClick={saveProfile} loading={loading} variant="gold" leftIcon={<Save size={16} />}>{t("saveChanges")}</Button>
+        <h1 style={{ fontFamily: "var(--serif)", fontSize: 26, fontWeight: 700, color: "var(--chalk)", marginBottom: 4 }}>{t("title")}</h1>
+        <p style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("subtitle")}</p>
       </div>
 
-      {/* Danger zone */}
-      <div className="max-w-lg">
-        <h2 className="text-sm font-medium text-surface-900 dark:text-white mb-1">{t("dangerZone")}</h2>
-        <p className="text-xs text-surface-500 mb-4">{t("dangerZoneDesc")}</p>
+      <div style={{ border: "1px solid var(--border)", padding: 24, maxWidth: 480, display: "flex", flexDirection: "column", gap: 16 }}>
+        <KInput id="name" label={t("fullName")} value={name} onChange={e => setName(e.target.value)} />
+        <KInput id="email" label={t("email")} value={session?.user?.email ?? ""} disabled style={{ width: "100%", padding: "11px 14px", background: "transparent", border: "1px solid var(--borderg)", color: "var(--chalk3)", fontSize: 13, outline: "none", opacity: 0.6, cursor: "not-allowed" }} />
+        <KInput id="phone" label={t("phone")} value={phone} onChange={e => setPhone(e.target.value)} placeholder={t("phonePlaceholder")} />
+        <button
+          onClick={saveProfile} disabled={loading}
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 20px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", border: "none", cursor: loading ? "wait" : "pointer", opacity: loading ? 0.7 : 1, alignSelf: "flex-start" }}
+        >
+          <Save size={13} /> {loading ? "…" : t("saveChanges")}
+        </button>
+      </div>
+
+      <div style={{ maxWidth: 480 }}>
+        <h2 style={{ fontSize: 11, fontWeight: 600, color: "var(--chalk)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>{t("dangerZone")}</h2>
+        <p style={{ fontSize: 12, color: "var(--chalk3)", marginBottom: 16 }}>{t("dangerZoneDesc")}</p>
         {!showDeleteConfirm ? (
           <button
             onClick={() => setShowDeleteConfirm(true)}
-            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-600 transition-colors"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--crimson)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
           >
-            <Trash2 size={14} /> {t("deleteAccount")}
+            <Trash2 size={13} /> {t("deleteAccount")}
           </button>
         ) : (
-          <div className="border border-red-200 dark:border-red-900/50 rounded-xl p-5 space-y-4 bg-red-50/50 dark:bg-red-950/20">
-            <p className="text-sm text-red-700 dark:text-red-400">{t("deleteConfirmTitle")}</p>
-            <Input
+          <div style={{ border: "1px solid var(--crimson)", padding: 20, display: "flex", flexDirection: "column", gap: 16 }}>
+            <p style={{ fontSize: 13, color: "var(--crimson)" }}>{t("deleteConfirmTitle")}</p>
+            <KInput
               id="delete-confirm"
               label=""
               value={deleteConfirmText}
               onChange={e => setDeleteConfirmText(e.target.value)}
               placeholder={t("deleteConfirmPlaceholder")}
             />
-            <div className="flex gap-3">
-              <Button
+            <div style={{ display: "flex", gap: 12 }}>
+              <button
                 onClick={deleteAccount}
-                loading={deleting}
-                disabled={deleteConfirmText !== "DELETE"}
-                className="!bg-red-600 hover:!bg-red-700 !text-white disabled:opacity-40"
-                leftIcon={<Trash2 size={14} />}
+                disabled={deleting || deleteConfirmText !== "DELETE"}
+                style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "var(--crimson)", color: "#fff", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", border: "none", cursor: (deleting || deleteConfirmText !== "DELETE") ? "not-allowed" : "pointer", opacity: deleteConfirmText !== "DELETE" ? 0.4 : 1 }}
               >
-                {t("deleteConfirmBtn")}
-              </Button>
-              <Button variant="outline" onClick={() => { setShowDeleteConfirm(false); setDeleteConfirmText(""); }}>
+                <Trash2 size={13} /> {t("deleteConfirmBtn")}
+              </button>
+              <button
+                onClick={() => { setShowDeleteConfirm(false); setDeleteConfirmText(""); }}
+                style={{ padding: "10px 18px", background: "transparent", color: "var(--chalk2)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", border: "1px solid var(--borderg)", cursor: "pointer" }}
+              >
                 {t("cancel")}
-              </Button>
+              </button>
             </div>
           </div>
         )}

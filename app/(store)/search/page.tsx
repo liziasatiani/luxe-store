@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { Container } from "@/components/ui";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { getTranslations } from "next-intl/server";
@@ -18,16 +17,27 @@ export default async function SearchPage({ searchParams }: Props) {
   const t = await getTranslations("pages.search");
   return (
     <>
-      <Container className="py-12">
-        <div className="mb-8">
-          <h1 className="font-display text-3xl text-surface-900 dark:text-white">
-            {q ? <>{t("resultsFor")} "<span className="text-brand-500">{q}</span>"</> : t("title")}
+      <div className="k-page-hdr">
+        <div className="wrap">
+          <p className="page-hd-eyebrow">{t("title")}</p>
+          <h1 className="page-hd-title">
+            {q ? (
+              <>{t("resultsFor")} <em style={{ color: "var(--gold)", fontStyle: "italic" }}>{q}</em></>
+            ) : (
+              t("title")
+            )}
           </h1>
         </div>
-        <Suspense fallback={null}>
-          <ProductGrid filters={{ search: q ?? "" }} showFilters={true} />
-        </Suspense>
-      </Container>
+      </div>
+
+      <div style={{ paddingTop: 32, paddingBottom: 96 }}>
+        <div className="wrap">
+          <Suspense fallback={null}>
+            <ProductGrid filters={{ search: q ?? "" }} showFilters={true} />
+          </Suspense>
+        </div>
+      </div>
+
       <TrustBar />
     </>
   );

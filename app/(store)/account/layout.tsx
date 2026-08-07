@@ -5,7 +5,6 @@ export const metadata: Metadata = { title: "My Account", robots: { index: false,
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { User, Package, MapPin, Heart, LogOut } from "lucide-react";
-import { Container } from "@/components/ui";
 import { getTranslations } from "next-intl/server";
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
@@ -22,43 +21,45 @@ export default async function AccountLayout({ children }: { children: React.Reac
   ];
 
   return (
-    <Container className="py-12">
-      <div className="flex flex-col lg:flex-row gap-10">
-        <aside className="lg:w-64 shrink-0">
-          <div className="rounded-2xl border border-surface-100 dark:border-surface-800 overflow-hidden">
-            <div className="bg-surface-50 dark:bg-surface-800/50 px-5 py-5 border-b border-surface-100 dark:border-surface-800">
-              <div className="w-12 h-12 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center mb-3">
-                <User size={22} className="text-brand-600 dark:text-brand-400" />
+    <div style={{ paddingTop: 40, paddingBottom: 96 }}>
+      <div className="wrap">
+        <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
+          <aside style={{ width: 220, flexShrink: 0 }}>
+            <div style={{ border: "1px solid var(--border)" }}>
+              <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid var(--border)", background: "var(--s1)" }}>
+                <div style={{ width: 36, height: 36, border: "1px solid var(--borderg)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <User size={16} style={{ color: "var(--chalk2)" }} />
+                </div>
+                <p style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)", letterSpacing: "0.02em" }}>{session.user.name}</p>
+                <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.user.email}</p>
               </div>
-              <p className="font-semibold text-surface-900 dark:text-white">{session.user.name}</p>
-              <p className="text-xs text-surface-400 truncate">{session.user.email}</p>
-            </div>
-            <nav className="py-2">
-              {NAV.map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-3 px-5 py-3 text-sm text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
-                >
-                  <item.icon size={16} />
-                  {item.label}
-                </Link>
-              ))}
-              <div className="border-t border-surface-100 dark:border-surface-800 mt-2 pt-2">
-                <form action="/api/auth/signout" method="POST">
-                  <button
-                    type="submit"
-                    className="w-full flex items-center gap-3 px-5 py-3 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+              <nav style={{ padding: "4px 0" }}>
+                {NAV.map(item => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 20px", fontSize: 12, color: "var(--chalk2)", textDecoration: "none", transition: "color 0.15s", letterSpacing: "0.04em" }}
                   >
-                    <LogOut size={16} /> {t("signOut")}
-                  </button>
-                </form>
-              </div>
-            </nav>
-          </div>
-        </aside>
-        <main className="flex-1 min-w-0">{children}</main>
+                    <item.icon size={14} style={{ flexShrink: 0, color: "var(--chalk3)" }} />
+                    {item.label}
+                  </Link>
+                ))}
+                <div style={{ borderTop: "1px solid var(--border)", marginTop: 4, paddingTop: 4 }}>
+                  <form action="/api/auth/signout" method="POST">
+                    <button
+                      type="submit"
+                      style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 20px", fontSize: 12, color: "var(--crimson)", background: "none", border: "none", cursor: "pointer", letterSpacing: "0.04em" }}
+                    >
+                      <LogOut size={14} style={{ flexShrink: 0 }} /> {t("signOut")}
+                    </button>
+                  </form>
+                </div>
+              </nav>
+            </div>
+          </aside>
+          <main style={{ flex: 1, minWidth: 0 }}>{children}</main>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 }

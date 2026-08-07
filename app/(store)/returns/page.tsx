@@ -1,4 +1,3 @@
-import { Container } from "@/components/ui";
 import { buildMetadata } from "@/lib/seo";
 import { getTranslations, getLocale } from "next-intl/server";
 
@@ -19,24 +18,35 @@ export default async function ReturnsPage() {
   ] as const;
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
-        <Container className="text-center">
-          <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">{t("title")}</h1>
-          <p className="text-surface-500">{t("subtitle")}</p>
-        </Container>
-      </div>
-      <Container className="py-16 max-w-3xl space-y-10">
-        {sections.map(s => (
-          <div key={s.titleKey}>
-            <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-3">{t(s.titleKey)}</h2>
-            <p className="text-surface-600 dark:text-surface-400 text-sm leading-relaxed whitespace-pre-line">{t(s.contentKey)}</p>
-          </div>
-        ))}
-        <div className="p-6 rounded-2xl bg-brand-50 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-800">
-          <p className="font-semibold text-brand-800 dark:text-brand-300 mb-1">{t("needHelp")}</p>
-          <p className="text-sm text-brand-700 dark:text-brand-400">Contact <a href="mailto:returns@everythingstreet.com" className="underline">returns@everythingstreet.com</a></p>
+      <div className="k-page-hdr">
+        <div className="wrap" style={{ textAlign: "center" }}>
+          <p className="page-hd-eyebrow">{t("title")}</p>
+          <h1 className="page-hd-title">{t("subtitle")}</h1>
         </div>
-      </Container>
+      </div>
+
+      <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+        <div className="wrap" style={{ maxWidth: 760 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+            {sections.map(s => (
+              <div key={s.titleKey}>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 700, color: "var(--chalk)", marginBottom: 12, letterSpacing: "0.02em" }}>{t(s.titleKey)}</h2>
+                <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, whiteSpace: "pre-line" }}>{t(s.contentKey)}</p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 56, padding: "24px 28px", border: "1px solid var(--gold)", background: "var(--s1)" }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "var(--gold)", marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>{t("needHelp")}</p>
+            <p style={{ fontSize: 13, color: "var(--chalk2)" }}>
+              Contact{" "}
+              <a href="mailto:returns@everythingstreet.com" style={{ color: "var(--chalk)", textDecoration: "underline" }}>
+                returns@everythingstreet.com
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

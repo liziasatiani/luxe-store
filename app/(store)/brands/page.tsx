@@ -1,6 +1,5 @@
 export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
-import { Container, SectionHeader } from "@/components/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -18,35 +17,59 @@ export default async function BrandsPage() {
     orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
   });
 
-  const beautyBrands = brands.filter(b => ["La Mer","Charlotte Tilbury","Drunk Elephant","NARS","Tatcha","Dior Beauty","Chanel Beauty","YSL Beauty","Tom Ford Beauty","Sulwhasoo","Sisley Paris","Augustinus Bader","Dyson Beauty","FOREO","GHD","Creed","Jo Malone","Maison Margiela"].includes(b.name));
-  const techBrands = brands.filter(b => !beautyBrands.includes(b));
+  const BEAUTY = ["La Mer","Charlotte Tilbury","Drunk Elephant","NARS","Tatcha","Dior Beauty","Chanel Beauty","YSL Beauty","Tom Ford Beauty","Sulwhasoo","Sisley Paris","Augustinus Bader","Dyson Beauty","FOREO","GHD","Creed","Jo Malone","Maison Margiela"];
+  const beautyBrands = brands.filter(b => BEAUTY.includes(b.name));
+  const techBrands   = brands.filter(b => !beautyBrands.includes(b));
+
+  const groups = [
+    { title: t("beautyBrands"), items: beautyBrands },
+    { title: t("techBrands"),   items: techBrands   },
+  ];
 
   return (
-    <Container className="py-16">
-      <SectionHeader title={t("allBrands")} subtitle={t("allBrandsSubtitle")} />
-
-      {[{ title: t("beautyBrands"), items: beautyBrands }, { title: t("techBrands"), items: techBrands }].map(group => (
-        <div key={group.title} className="mb-14">
-          <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-6 pb-3 border-b border-surface-100 dark:border-surface-800">{group.title}</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {group.items.map(brand => (
-              <Link
-                key={brand.slug}
-                href={`/brands/${brand.slug}`}
-                className="group flex flex-col items-center gap-2 p-5 rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-luxury transition-all text-center"
-              >
-                <div className="w-12 h-12 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center text-lg font-display font-bold text-surface-600 dark:text-surface-400 group-hover:text-brand-500 transition-colors">
-                  {brand.name[0]}
-                </div>
-                <div>
-                  <p className="font-medium text-sm text-surface-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">{brand.name}</p>
-                  <p className="text-xs text-surface-400">{brand._count.products} {t("products")}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+    <>
+      <style>{`.brand-card-link:hover { background: var(--s2) !important; }`}</style>
+      <div className="k-page-hdr">
+        <div className="wrap">
+          <p className="page-hd-eyebrow">{t("allBrands")}</p>
+          <h1 className="page-hd-title">{t("allBrandsSubtitle")}</h1>
         </div>
-      ))}
-    </Container>
+      </div>
+
+      <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+        <div className="wrap">
+          {groups.map(group => (
+            <div key={group.title} style={{ marginBottom: 56 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid var(--border)" }}>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 700, color: "var(--chalk)", letterSpacing: "0.02em" }}>{group.title}</h2>
+                <span style={{ fontSize: 11, color: "var(--chalk3)", letterSpacing: "0.08em" }}>{group.items.length}</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 1, border: "1px solid var(--border)" }}>
+                {group.items.map(brand => (
+                  <Link
+                    key={brand.slug}
+                    href={`/brands/${brand.slug}`}
+                    className="brand-card-link"
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+                      padding: "24px 16px", background: "var(--s1)", textDecoration: "none",
+                      textAlign: "center", transition: "background 0.15s", borderRight: "1px solid var(--border)",
+                    }}
+                  >
+                    <div style={{ width: 40, height: 40, border: "1px solid var(--borderg)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <span style={{ fontFamily: "var(--serif)", fontSize: 18, fontWeight: 700, color: "var(--chalk2)" }}>{brand.name[0]}</span>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: "var(--chalk)", letterSpacing: "0.04em", lineHeight: 1.3 }}>{brand.name}</p>
+                      <p style={{ fontSize: 10, color: "var(--chalk3)", marginTop: 3, letterSpacing: "0.06em" }}>{brand._count.products} {t("products")}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

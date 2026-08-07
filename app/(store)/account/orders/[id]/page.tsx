@@ -7,11 +7,16 @@ import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { Badge, Divider } from "@/components/ui";
 import { Package, Truck, CheckCircle, Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 interface Props { params: Promise<{ id: string }> }
+
+const STATUS_COLOR: Record<string, string> = {
+  DELIVERED:  "#4a9d6f",
+  CANCELLED:  "var(--crimson)",
+  REFUNDED:   "var(--crimson)",
+};
 
 export default async function OrderDetailPage({ params }: Props) {
   const { id } = await params;
@@ -38,7 +43,6 @@ export default async function OrderDetailPage({ params }: Props) {
   if (!order) notFound();
 
   const t = await getTranslations("account");
-
   const o = serializeDecimal(order);
 
   const STEPS = [
@@ -49,88 +53,110 @@ export default async function OrderDetailPage({ params }: Props) {
   ];
   const statusOrder = ["PENDING", "PROCESSING", "CONFIRMED", "SHIPPED", "DELIVERED"];
   const currentIdx = statusOrder.indexOf(o.status);
+  const statusColor = STATUS_COLOR[o.status] ?? "var(--gold)";
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
         <div>
-          <h1 className="font-display text-3xl text-surface-900 dark:text-white">{t("orderDetail.orderNumber", { number: o.orderNumber })}</h1>
-          <p className="text-surface-500 text-sm mt-1">{t("orderDetail.placed", { date: formatDate(o.createdAt) })}</p>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: 24, fontWeight: 700, color: "var(--chalk)" }}>{t("orderDetail.orderNumber", { number: o.orderNumber })}</h1>
+          <p style={{ fontSize: 12, color: "var(--chalk3)", marginTop: 4 }}>{t("orderDetail.placed", { date: formatDate(o.createdAt) })}</p>
         </div>
-        <Badge variant={o.status === "DELIVERED" ? "success" : o.status === "CANCELLED" ? "error" : "gold"}>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: statusColor, padding: "4px 10px", border: `1px solid ${statusColor}`, flexShrink: 0, marginTop: 4 }}>
           {o.status}
-        </Badge>
+        </span>
       </div>
 
       {!["CANCELLED", "REFUNDED"].includes(o.status) && (
-        <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6">
-          <div className="flex items-center justify-between relative">
-            <div className="absolute top-5 left-10 right-10 h-0.5 bg-surface-100 dark:bg-surface-800" />
-            <div className="absolute top-5 left-10 h-0.5 bg-brand-500 transition-all"
-              style={{ width: `${Math.max(0, (currentIdx / (STEPS.length - 1)) * 80)}%` }} />
+        <div style={{ border: "1px solid var(--border)", padding: "28px 24px", background: "var(--s1)" }}>
+          <div style={{ position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+            <div style={{ position: "absolute", top: 18, left: "6%", right: "6%", height: 1, background: "var(--border)" }} />
+            <div
+              style={{ position: "absolute", top: 18, left: "6%", height: 1, background: "var(--gold)", transition: "width 0.4s", width: `${Math.max(0, (currentIdx / (STEPS.length - 1)) * 88)}%` }}
+            />
             {STEPS.map((step, i) => {
               const done = i <= currentIdx;
               return (
-                <div key={step.key} className="flex flex-col items-center gap-2 relative z-10">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${done ? "bg-brand-500 text-white" : "bg-surface-100 dark:bg-surface-800 text-surface-400"}`}>
-                    <step.icon size={18} />
+                <div key={step.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, position: "relative", zIndex: 1 }}>
+                  <div style={{ width: 36, height: 36, border: `1px solid ${done ? "var(--gold)" : "var(--border)"}`, background: done ? "var(--gold)" : "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.3s" }}>
+                    <step.icon size={16} style={{ color: done ? "#000" : "var(--chalk3)" }} />
                   </div>
-                  <p className={`text-xs font-medium ${done ? "text-brand-500" : "text-surface-400"}`}>{step.label}</p>
+                  <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: done ? "var(--gold)" : "var(--chalk3)" }}>{step.label}</p>
                 </div>
               );
             })}
           </div>
           {o.trackingNumber && (
-            <p className="mt-4 text-sm text-surface-500">
+            <p style={{ marginTop: 20, fontSize: 12, color: "var(--chalk2)", borderTop: "1px solid var(--border)", paddingTop: 16 }}>
               {t("orderDetail.tracking")}{" "}
               {o.trackingUrl
-                ? <a href={o.trackingUrl} target="_blank" rel="noopener noreferrer" className="text-brand-500 font-mono">{o.trackingNumber}</a>
-                : <span className="text-brand-500 font-mono">{o.trackingNumber}</span>
+                ? <a href={o.trackingUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold)", fontFamily: "monospace" }}>{o.trackingNumber}</a>
+                : <span style={{ color: "var(--gold)", fontFamily: "monospace" }}>{o.trackingNumber}</span>
               }
             </p>
           )}
         </div>
       )}
 
-      <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-4">
-        <h2 className="font-semibold text-surface-900 dark:text-white">{t("orderDetail.items")}</h2>
-        {o.items.map((item) => (
-          <div key={item.id} className="flex gap-4">
-            <Link href={`/products/${item.product?.slug ?? ""}`}
-              className="relative w-16 h-16 rounded-xl overflow-hidden bg-surface-50 dark:bg-surface-800 shrink-0">
-              {item.product?.images?.[0]?.url && (
-                <Image src={item.product.images[0].url} alt={item.productName} fill className="object-cover" sizes="64px" />
-              )}
-            </Link>
-            <div className="flex-1">
-              <p className="font-medium text-sm text-surface-900 dark:text-white">{item.productName}</p>
-              {item.variantName && <p className="text-xs text-surface-400">{item.variantName}</p>}
-              <p className="text-xs text-surface-500 mt-0.5">{t("orderDetail.qty", { qty: item.quantity, price: formatPrice(item.unitPrice) })}</p>
+      <div style={{ border: "1px solid var(--border)", background: "var(--s1)" }}>
+        <div style={{ padding: "16px 20px", borderBottom: "1px solid var(--border)" }}>
+          <h2 style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk2)" }}>{t("orderDetail.items")}</h2>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {o.items.map((item, idx) => (
+            <div key={item.id} style={{ display: "flex", gap: 16, padding: "16px 20px", borderBottom: idx < o.items.length - 1 ? "1px solid var(--border)" : "none" }}>
+              <Link href={`/products/${item.product?.slug ?? ""}`} style={{ position: "relative", width: 60, height: 60, background: "var(--s2)", flexShrink: 0, overflow: "hidden", display: "block" }}>
+                {item.product?.images?.[0]?.url && (
+                  <Image src={item.product.images[0].url} alt={item.productName} fill className="object-cover" sizes="60px" />
+                )}
+              </Link>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 13, fontWeight: 500, color: "var(--chalk)" }}>{item.productName}</p>
+                {item.variantName && <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 2 }}>{item.variantName}</p>}
+                <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 4 }}>{t("orderDetail.qty", { qty: item.quantity, price: formatPrice(item.unitPrice) })}</p>
+              </div>
+              <p style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)", flexShrink: 0 }}>{formatPrice(item.totalPrice)}</p>
             </div>
-            <p className="font-semibold text-sm shrink-0">{formatPrice(item.totalPrice)}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-3">
-          <h2 className="font-semibold text-surface-900 dark:text-white">{t("orderDetail.paymentSummary")}</h2>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-surface-500">{t("orderDetail.subtotal")}</span><span>{formatPrice(o.subtotal)}</span></div>
-            {o.discountAmount > 0 && <div className="flex justify-between text-green-600"><span>{t("orderDetail.discount")}</span><span>−{formatPrice(o.discountAmount)}</span></div>}
-            <div className="flex justify-between"><span className="text-surface-500">{t("orderDetail.shipping")}</span><span>{o.shippingAmount === 0 ? t("orderDetail.free") : formatPrice(o.shippingAmount)}</span></div>
-            <div className="flex justify-between"><span className="text-surface-500">{t("orderDetail.tax")}</span><span>{formatPrice(o.taxAmount)}</span></div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div style={{ border: "1px solid var(--border)", padding: "20px", background: "var(--s1)" }}>
+          <h2 style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 16 }}>{t("orderDetail.paymentSummary")}</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("orderDetail.subtotal")}</span>
+              <span style={{ fontSize: 12, color: "var(--chalk)" }}>{formatPrice(o.subtotal)}</span>
+            </div>
+            {o.discountAmount > 0 && (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 12, color: "#4a9d6f" }}>{t("orderDetail.discount")}</span>
+                <span style={{ fontSize: 12, color: "#4a9d6f" }}>−{formatPrice(o.discountAmount)}</span>
+              </div>
+            )}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("orderDetail.shipping")}</span>
+              <span style={{ fontSize: 12, color: "var(--chalk)" }}>{o.shippingAmount === 0 ? t("orderDetail.free") : formatPrice(o.shippingAmount)}</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("orderDetail.tax")}</span>
+              <span style={{ fontSize: 12, color: "var(--chalk)" }}>{formatPrice(o.taxAmount)}</span>
+            </div>
           </div>
-          <Divider />
-          <div className="flex justify-between font-semibold"><span>{t("orderDetail.total")}</span><span>{formatPrice(o.total)}</span></div>
+          <div style={{ borderTop: "1px solid var(--border)", marginTop: 12, paddingTop: 12, display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)" }}>{t("orderDetail.total")}</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "var(--chalk)" }}>{formatPrice(o.total)}</span>
+          </div>
         </div>
+
         {o.address && (
-          <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-2">
-            <h2 className="font-semibold text-surface-900 dark:text-white">{t("orderDetail.shippingAddress")}</h2>
-            <p className="text-sm text-surface-600 dark:text-surface-400">{o.address.firstName} {o.address.lastName}</p>
-            <p className="text-sm text-surface-500">{o.address.line1}</p>
-            {o.address.line2 && <p className="text-sm text-surface-500">{o.address.line2}</p>}
-            <p className="text-sm text-surface-500">{o.address.city}, {o.address.state} {o.address.postalCode}</p>
+          <div style={{ border: "1px solid var(--border)", padding: "20px", background: "var(--s1)" }}>
+            <h2 style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 16 }}>{t("orderDetail.shippingAddress")}</h2>
+            <p style={{ fontSize: 13, fontWeight: 500, color: "var(--chalk)" }}>{o.address.firstName} {o.address.lastName}</p>
+            <p style={{ fontSize: 12, color: "var(--chalk2)", marginTop: 6 }}>{o.address.line1}</p>
+            {o.address.line2 && <p style={{ fontSize: 12, color: "var(--chalk2)" }}>{o.address.line2}</p>}
+            <p style={{ fontSize: 12, color: "var(--chalk2)" }}>{o.address.city}, {o.address.state} {o.address.postalCode}</p>
           </div>
         )}
       </div>
