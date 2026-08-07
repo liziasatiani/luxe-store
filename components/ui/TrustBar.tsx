@@ -10,12 +10,12 @@ export function TrustBar() {
     { icon: RotateCcw, text: t("trustReturns")  },
   ];
   return (
-    <div className="border-y border-black/8 dark:border-white/8 bg-white dark:bg-black">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
+    <div style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--s1)" }}>
+      <div style={{ maxWidth: 1400, margin: "0 auto", padding: "14px 52px", display: "flex", alignItems: "center", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
         {signals.map(({ icon: Icon, text }) => (
-          <div key={text} className="flex items-center gap-2">
-            <Icon size={14} className="text-black/60 dark:text-white/60 shrink-0" />
-            <span className="text-[11px] tracking-[0.08em] uppercase text-black/60 dark:text-white/60 whitespace-nowrap">{text}</span>
+          <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Icon size={13} style={{ color: "var(--chalk2)", flexShrink: 0 }} />
+            <span style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--chalk2)", whiteSpace: "nowrap" }}>{text}</span>
           </div>
         ))}
       </div>

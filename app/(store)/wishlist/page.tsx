@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { Heart } from "lucide-react";
-import { Container, EmptyState } from "@/components/ui";
-import { Button } from "@/components/ui/Button";
+import { Heart, X } from "lucide-react";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
 import { useWishlistStore } from "@/store";
 import { useTranslations } from "next-intl";
@@ -22,12 +20,7 @@ export default function WishlistPage() {
   useEffect(() => {
     if (idsKey === fetchedKey.current) return;
     fetchedKey.current = idsKey;
-
-    if (uniqueIds.length === 0) {
-      setProducts([]);
-      return;
-    }
-
+    if (uniqueIds.length === 0) { setProducts([]); return; }
     setLoading(true);
     fetch(`/api/wishlist/products?ids=${uniqueIds.join(",")}`)
       .then(r => r.json())
@@ -46,61 +39,66 @@ export default function WishlistPage() {
   }, [idsKey]);
 
   return (
-    <Container className="py-12">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-4xl text-surface-900 dark:text-white">
-          {t("title")}{" "}
-          <span className="text-surface-400 text-2xl font-normal">({uniqueIds.length})</span>
-        </h1>
-        {uniqueIds.length > 0 && (
-          <button onClick={clear} className="text-sm text-surface-400 hover:text-red-500 transition-colors">
-            {t("clearAll")}
-          </button>
-        )}
+    <>
+      {/* K-style page header */}
+      <div className="k-page-hdr">
+        <div className="wrap" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16 }}>
+          <div>
+            <p className="page-hd-eyebrow">{t("title")}</p>
+            <h1 className="page-hd-title" style={{ fontSize: "clamp(32px,4vw,56px)", marginBottom: 0 }}>
+              {t("title")}
+              <span style={{ fontFamily: "var(--sans)", fontSize: 20, fontWeight: 400, color: "var(--chalk2)", marginLeft: 14 }}>
+                ({uniqueIds.length})
+              </span>
+            </h1>
+          </div>
+          {uniqueIds.length > 0 && (
+            <button onClick={clear} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk2)", background: "none", border: "none", cursor: "pointer", transition: "color 0.2s", flexShrink: 0 }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = "var(--crimson)"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = "var(--chalk2)"}>
+              <X size={12} /> {t("clearAll")}
+            </button>
+          )}
+        </div>
       </div>
 
-      {uniqueIds.length === 0 ? (
-        <EmptyState
-          icon={<Heart size={56} strokeWidth={1} />}
-          eyebrow={t("title")}
-          title={t("nothingSaved")}
-          description={t("nothingSavedDesc")}
-          action={
-            <Button variant="gold" size="lg" asChild>
-              <Link href="/">Start Shopping</Link>
-            </Button>
-          }
-        />
-      ) : loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {uniqueIds.map(id => <ProductCardSkeleton key={id} />)}
-        </div>
-      ) : products.length === 0 ? (
-        <EmptyState
-          icon={<Heart size={56} strokeWidth={1} />}
-          eyebrow={t("title")}
-          title={t("nothingFound")}
-          description={t("nothingFoundDesc")}
-          action={
-            <Button variant="gold" size="lg" asChild>
-              <Link href="/">Continue Shopping</Link>
-            </Button>
-          }
-        />
-      ) : (
-        <>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+      <div style={{ paddingTop: 0, paddingBottom: 96 }}>
+        {uniqueIds.length === 0 ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "96px 24px", textAlign: "center" }}>
+            <Heart size={48} strokeWidth={1} style={{ color: "var(--chalk3)", marginBottom: 24 }} />
+            <h3 style={{ fontFamily: "var(--serif)", fontSize: 28, color: "var(--chalk)", marginBottom: 12 }}>{t("nothingSaved")}</h3>
+            <p style={{ fontSize: 14, color: "var(--chalk2)", marginBottom: 36 }}>{t("nothingSavedDesc")}</p>
+            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>
+              Start Shopping →
+            </Link>
           </div>
-          <div className="mt-8 p-4 rounded-2xl bg-surface-50 dark:bg-surface-800/50 text-center">
-            <p className="text-sm text-surface-500">
-              Your wishlist is saved on this device.{" "}
-              <Link href="/login" className="text-brand-500 hover:text-brand-600 font-medium">Sign in</Link>
-              {" "}to sync across devices.
-            </p>
+        ) : loading ? (
+          <div className="pgrid" style={{ borderTop: "1px solid var(--border)" }}>
+            {uniqueIds.map(id => <ProductCardSkeleton key={id} />)}
           </div>
-        </>
-      )}
-    </Container>
+        ) : products.length === 0 ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "96px 24px", textAlign: "center" }}>
+            <h3 style={{ fontFamily: "var(--serif)", fontSize: 28, color: "var(--chalk)", marginBottom: 12 }}>{t("nothingFound")}</h3>
+            <p style={{ fontSize: 14, color: "var(--chalk2)", marginBottom: 36 }}>{t("nothingFoundDesc")}</p>
+            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>
+              Continue Shopping →
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className="pgrid" style={{ borderTop: "1px solid var(--border)" }}>
+              {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+            </div>
+            <div className="wrap" style={{ paddingTop: 32 }}>
+              <p style={{ fontSize: 11, color: "var(--chalk2)", letterSpacing: "0.06em" }}>
+                Your wishlist is saved on this device.{" "}
+                <Link href="/login" style={{ color: "var(--gold)", textDecoration: "none", borderBottom: "1px solid var(--borderg)" }}>Sign in</Link>
+                {" "}to sync across devices.
+              </p>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
