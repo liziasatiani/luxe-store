@@ -3,9 +3,6 @@ import { serializeDecimal } from "@/lib/utils";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Container } from "@/components/ui";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import type { ProductCard as ProductCardType } from "@/types";
 
 function KSectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
@@ -30,7 +27,6 @@ function KSectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
 }
 
 export async function FeaturedProductsSection() {
-  const t = await getTranslations("home.featured");
   let products: ProductCardType[] = [];
   try {
     const rows = await prisma.product.findMany({
@@ -56,7 +52,7 @@ export async function FeaturedProductsSection() {
       <div className="max-w-[1400px] mx-auto px-[52px] max-md:px-5">
         <KSectionHeader eyebrow="Featured" title="Selected for You" viewAllHref="/featured" viewAllLabel="View All" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
-          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
+          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} className="border-0" />)}
         </div>
       </div>
     </section>
@@ -64,8 +60,6 @@ export async function FeaturedProductsSection() {
 }
 
 export async function NewArrivalsSection() {
-  const t = await getTranslations("pages.newArrivals");
-  const tCommon = await getTranslations("common");
   let products: ProductCardType[] = [];
   try {
     const rows = await prisma.product.findMany({
@@ -89,7 +83,7 @@ export async function NewArrivalsSection() {
   return (
     <section className="py-24" style={{ borderBottom: "1px solid rgba(239,233,218,0.08)" }}>
       <div className="max-w-[1400px] mx-auto px-[52px] max-md:px-5">
-        <KSectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel={tCommon("seeAll")} />
+        <KSectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="See All" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: "rgba(239,233,218,0.08)" }}>
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
