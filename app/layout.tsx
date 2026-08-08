@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Cinzel, Lora } from "next/font/google";
+import { Playfair_Display, Outfit, Noto_Serif_Georgian } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
@@ -24,24 +24,25 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { jsonLdSafe } from "@/lib/utils";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const cinzel = Cinzel({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-cinzel",
-  display: "swap",
-});
-
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-lora",
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const notoSerifGeorgian = Noto_Serif_Georgian({
+  subsets: ["georgian"],
+  weight: ["400", "700"],
+  variable: "--font-georgian",
   display: "swap",
 });
 
@@ -73,7 +74,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${cinzel.variable} ${lora.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${playfair.variable} ${outfit.variable} ${notoSerifGeorgian.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
@@ -85,7 +86,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="bg-surface-50 dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
               <MotionProvider>
               <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-surface-900 focus:rounded-xl focus:shadow-luxury-md focus:outline-none">
                 Skip to content

@@ -35,8 +35,8 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
   const comparePrice = product.comparePrice ? Number(product.comparePrice) : null;
   const discount = comparePrice ? formatDiscount(comparePrice, price) : 0;
 
-  const textMuted = darkBg ? "text-white/40" : "text-black/40 dark:text-white/40";
-  const textMain  = darkBg ? "text-white"    : "text-black dark:text-white";
+  const textMuted = "text-white/40";
+  const textMain  = "text-white";
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -74,10 +74,10 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: (index % 4) * 0.08 }}
-        className={cn("group", darkBg ? "bg-black" : "bg-surface-50 dark:bg-black border border-surface-200 dark:border-white/8")}
+        className={cn("group bg-surface-900 border border-white/[0.06] hover:border-white/[0.12] transition-colors")}
       >
         <Link href={`/products/${product.slug}`} className="block">
-          <div className="relative overflow-hidden aspect-[3/4] bg-stone-100 dark:bg-zinc-900">
+          <div className="relative overflow-hidden aspect-[3/4] bg-surface-800">
             <Image
               src={imageUrl} alt={product.name} fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -102,8 +102,8 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
                 aria-label={isWishlisted ? t("wishlisted") : t("addToWishlist")}
                 className={cn("w-11 h-11 flex items-center justify-center transition-colors",
                   isWishlisted
-                    ? "bg-red-600 text-white"
-                    : "bg-white dark:bg-black text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+                    ? "bg-brand-500 text-surface-950"
+                    : "bg-surface-800 text-white/70 hover:bg-brand-500 hover:text-surface-950"
                 )}>
                 <Heart size={14} fill={isWishlisted ? "currentColor" : "none"} />
               </button>
@@ -111,7 +111,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
                 onClick={handleAddToCart}
                 disabled={product.stockStatus === "OUT_OF_STOCK"}
                 aria-label={t("addToCart")}
-                className="w-11 h-11 bg-white dark:bg-black flex items-center justify-center text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40">
+                className="w-11 h-11 bg-surface-800 flex items-center justify-center text-white/70 hover:bg-brand-500 hover:text-surface-950 transition-colors disabled:opacity-40">
                 <ShoppingBag size={14} />
               </button>
             </div>
@@ -137,7 +137,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
             </h3>
             <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={11} />
             <div className="flex items-center gap-2 mt-2.5">
-              <span className={cn("text-sm font-medium", textMain)}>{format(price)}</span>
+              <span className="text-sm font-medium text-brand-400">{format(price)}</span>
               {comparePrice && comparePrice > price && (
                 <span className={cn("text-xs line-through", textMuted)}>{format(comparePrice)}</span>
               )}

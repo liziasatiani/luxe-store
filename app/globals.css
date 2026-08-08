@@ -4,7 +4,13 @@
 
 @layer base {
   :root {
-    --font-inter: 'Inter', sans-serif;
+    /* Night Market palette */
+    --nm-bg:    #07090F;
+    --nm-s1:    #0D1220;
+    --nm-s2:    #131929;
+    --nm-gold:  #C9A44A;
+    --nm-chalk: #EFE9DA;
+    --nm-border: rgba(255,255,255,0.08);
     scroll-behavior: smooth;
   }
 

@@ -36,7 +36,7 @@ export async function Footer() {
   const facebook  = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 
   return (
-    <footer className="bg-black">
+    <footer className="bg-surface-950" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
 
       {/* ── Newsletter — full-width editorial ── */}
       <div className="border-t border-white/8 overflow-hidden">
