@@ -699,14 +699,28 @@
     "allTech": "Toute la Tech"
   },
   "hero": {
-    "tagline": "Tech & Beauté, Une Rue",
+    "tagline": "Est. 2024",
     "headline1": "Deux mondes,",
     "headline2": "une rue.",
     "description": "Everything Street associe technologie réfléchie et beauté réfléchie — sélectionnée, testée et livrée ensemble.",
     "shopTech": "Explorer la Tech",
     "shopBeauty": "Découvrir la Beauté",
     "statsProducts": "Produits",
-    "statsBrands": "Marques"
+    "statsBrands": "Marques",
+    "statsRating": "Note",
+    "statsDelivery": "Livraison",
+    "techLabel": "Technologie Premium",
+    "techHeadline1": "Précision",
+    "techHeadline2": "par design",
+    "beautyLabel": "Beauté de Luxe",
+    "beautyHeadline1": "Éclat",
+    "beautyHeadline2": "raffiné",
+    "exploreTech": "Explorer la Tech",
+    "exploreBeauty": "Explorer la Beauté",
+    "techSub": "tout en un seul endroit",
+    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
+    "beautySub": "cosmétiques premium",
+    "beautySubKa": "ტექნოლოგია და სილამაზე"
   },
   "wishlist": {
     "title": "Ma liste de souhaits",

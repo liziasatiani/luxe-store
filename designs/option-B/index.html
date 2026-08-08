@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything Street — Option B: Immersive Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600&family=Noto+Sans+Georgian:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/*
+ ═══════════════════════════════════════════
+  OPTION B — "IMMERSIVE EXPLORER"
+
+  Brief:
+  - Navigation paradigm: split-world full-screen entry.
+    The homepage IS the choice — Tech left, Beauty right.
+    Users pick their world first, discover within it.
+  - Emotional register: DESIRE / DISCOVERY / EXCITEMENT
+  - North stars: Kith (lifestyle-led, cinematic),
+    Dover Street Market (chaos-as-curation),
+    early Airbnb (discovery over searching)
+
+  Design decisions:
+  - Fraunces variable optical-size serif: has genuine
+    personality — wobbly, warm, unmistakable. Not a default.
+    At large optical sizes it becomes display art.
+  - Split-screen hero signals the dual-identity immediately
+    rather than describing it in copy.
+  - Burnt sienna (#C96442) accent: energetic, warm, stands
+    out against both dark and light backgrounds.
+  - No traditional navigation bar. Floating pill that appears
+    on scroll after the hero — keeps first impression clean.
+  - Product "moments" not a grid: large editorial placements
+    with one product as the star, others as supporting cast.
+ ═══════════════════════════════════════════
+*/
+
+:root {
+  --void: #0A0908;
+  --surface: #131210;
+  --surface2: #1C1A17;
+  --chalk: #F0ECE4;
+  --chalk-dim: rgba(240,236,228,0.55);
+  --chalk-faint: rgba(240,236,228,0.15);
+  --sienna: #C96442;
+  --sienna-dark: #A04F32;
+  --teal: #3D7A6F;
+  --border: rgba(240,236,228,0.1);
+
+  --serif: 'Fraunces', 'Palatino Linotype', Georgia, serif;
+  --sans: 'Outfit', system-ui, sans-serif;
+  --georgian: 'Noto Sans Georgian', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--chalk);
+  font-family: var(--sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; width: 100%; object-fit: cover; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+
+/* ── FLOATING NAV (appears after hero) ── */
+.float-nav {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  background: rgba(10,9,8,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 52px;
+  min-width: 480px;
+}
+
+.float-nav-brand {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--chalk);
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.float-nav-sep {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.float-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+
+.float-nav-link {
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--chalk-dim);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.float-nav-link:hover { color: var(--chalk); background: var(--chalk-faint); }
+.float-nav-link.world-tech { color: var(--teal); }
+.float-nav-link.world-tech:hover { background: rgba(61,122,111,0.15); color: #5AADA0; }
+.float-nav-link.world-beauty { color: var(--sienna); }
+.float-nav-link.world-beauty:hover { background: rgba(201,100,66,0.15); color: #E07A55; }
+
+.float-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 4px;
+}
+.float-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--chalk-dim);
+  transition: all 0.2s;
+}
+.float-nav-btn:hover { background: var(--chalk-faint); color: var(--chalk); }
+.float-nav-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* ── SPLIT HERO ── */
+.split-hero {
+  height: 100svh;
+  min-height: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  cursor: crosshair;
+}
+
+.split-half {
+  position: relative;
+  overflow: hidden;
+  transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.split-half:hover { flex: 1.15; }
+
+.split-half-bg {
+  position: absolute;
+  inset: 0;
+}
+.split-half-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.split-half:hover .split-half-bg img { transform: scale(1.06); }
+
+.split-half-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,9,8,0.85) 0%, rgba(10,9,8,0.3) 50%, rgba(10,9,8,0.1) 100%);
+  transition: background 0.4s;
+}
+
+.split-half-tech .split-half-overlay {
+  background: linear-gradient(135deg, rgba(61,122,111,0.4) 0%, rgba(10,9,8,0.0) 50%),
+              linear-gradient(to top, rgba(10,9,8,0.9) 0%, rgba(10,9,8,0.2) 60%);
+}
+.split-half-beauty .split-half-overlay {
+  background: linear-gradient(225deg, rgba(201,100,66,0.4) 0%, rgba(10,9,8,0.0) 50%),
+              linear-gradient(to top, rgba(10,9,8,0.9) 0%, rgba(10,9,8,0.2) 60%);
+}
+
+.split-half-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 52px;
+}
+
+.split-world-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.split-half-tech .split-world-label { color: #5AADA0; }
+.split-half-beauty .split-world-label { color: #E07A55; }
+
+.split-world-title-ka {
+  font-family: var(--georgian);
+  font-size: clamp(2.4rem, 4vw, 4.2rem);
+  font-weight: 300;
+  line-height: 1.05;
+  margin-bottom: 8px;
+  color: white;
+}
+.split-world-title-en {
+  font-family: var(--serif);
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--chalk-dim);
+  margin-bottom: 32px;
+}
+
+.split-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  transition: all 0.25s;
+  width: fit-content;
+}
+.split-half-tech .split-cta {
+  background: rgba(61,122,111,0.2);
+  border: 1px solid rgba(90,173,160,0.4);
+  color: #5AADA0;
+}
+.split-half-tech .split-cta:hover {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+.split-half-beauty .split-cta {
+  background: rgba(201,100,66,0.2);
+  border: 1px solid rgba(224,122,85,0.4);
+  color: #E07A55;
+}
+.split-half-beauty .split-cta:hover {
+  background: var(--sienna);
+  border-color: var(--sienna);
+  color: white;
+}
+
+/* Center divider with brand */
+.split-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+}
+.split-center-brand {
+  background: rgba(10,9,8,0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  padding: 16px 28px;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chalk);
+  white-space: nowrap;
+}
+.split-center-divider {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--border), transparent);
+}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+.scroll-hint span {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+}
+.scroll-hint-line {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-hint-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--chalk-dim);
+  animation: scrollDown 1.5s ease-in-out infinite;
+}
+@keyframes scrollDown {
+  from { top: -100%; }
+  to { top: 100%; }
+}
+
+/* ── FEATURED MOMENT ── */
+.featured-moment {
+  min-height: 80vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+.moment-image {
+  position: relative;
+  overflow: hidden;
+}
+.moment-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 520px;
+}
+.moment-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--surface) 100%);
+}
+.moment-content {
+  background: var(--surface);
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.moment-category {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.moment-category::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--teal);
+}
+.moment-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--chalk);
+  margin-bottom: 20px;
+  font-optical-sizing: auto;
+}
+.moment-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--chalk-dim);
+  margin-bottom: 40px;
+  max-width: 380px;
+}
+.moment-price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.moment-price {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--chalk);
+}
+.moment-compare {
+  font-size: 14px;
+  color: var(--chalk-dim);
+  text-decoration: line-through;
+}
+.moment-ctas { display: flex; gap: 12px; }
+.btn-pill-primary {
+  padding: 14px 28px;
+  border-radius: 100px;
+  background: var(--sienna);
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-pill-primary:hover { background: var(--sienna-dark); transform: translateY(-1px); }
+.btn-pill-outline {
+  padding: 14px 28px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--chalk-dim);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+}
+.btn-pill-outline:hover { border-color: var(--chalk-dim); color: var(--chalk); }
+
+/* ── DISCOVERY GRID ── */
+.discovery-section {
+  padding: 100px 0;
+  background: var(--surface);
+}
+.discovery-header {
+  padding: 0 60px;
+  margin-bottom: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.discovery-header-text {}
+.discovery-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sienna);
+  margin-bottom: 12px;
+}
+.discovery-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  color: var(--chalk);
+  line-height: 1.2;
+}
+.discovery-title em { font-style: italic; color: var(--sienna); }
+.discovery-view-all {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.discovery-view-all:hover { color: var(--chalk); }
+.discovery-view-all::after { content: '→'; }
+
+.discovery-scroll {
+  display: flex;
+  gap: 2px;
+  padding: 0 60px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+}
+.discovery-scroll::-webkit-scrollbar { display: none; }
+
+.discovery-card {
+  flex-shrink: 0;
+  width: 320px;
+  scroll-snap-align: start;
+  background: var(--surface2);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.discovery-card:hover { transform: translateY(-4px); }
+.discovery-card-img {
+  position: relative;
+  overflow: hidden;
+}
+.discovery-card-img img {
+  aspect-ratio: 3/4;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.discovery-card:hover .discovery-card-img img { transform: scale(1.05); }
+.discovery-card-world {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.world-tech-badge { background: rgba(61,122,111,0.3); color: #5AADA0; border: 1px solid rgba(90,173,160,0.3); }
+.world-beauty-badge { background: rgba(201,100,66,0.3); color: #E07A55; border: 1px solid rgba(224,122,85,0.3); }
+.discovery-card-info {
+  padding: 20px 22px 24px;
+}
+.discovery-card-brand {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  margin-bottom: 8px;
+}
+.discovery-card-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--chalk);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.discovery-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.discovery-card-price { font-size: 15px; font-weight: 500; color: var(--chalk); }
+.discovery-card-add {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--sienna);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.discovery-card-add:hover { background: var(--sienna-dark); transform: scale(1.08); }
+.discovery-card-add svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
+
+/* ── BEAUTY MOMENT (reversed) ── */
+.beauty-moment {
+  min-height: 80vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.beauty-moment .moment-content {
+  background: var(--void);
+  padding: 80px 60px 80px 80px;
+  order: -1;
+}
+.beauty-moment .moment-image { order: 1; }
+.beauty-moment .moment-category { color: var(--sienna); }
+.beauty-moment .moment-category::before { background: var(--sienna); }
+.beauty-moment .moment-image-overlay {
+  background: linear-gradient(to left, transparent 60%, var(--void) 100%);
+}
+
+/* ── BRANDS GRID ── */
+.brands-grid-section {
+  padding: 80px 60px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.brands-grid-title {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  text-align: center;
+  margin-bottom: 48px;
+}
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.brand-grid-cell {
+  background: var(--surface);
+  padding: 28px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--chalk-dim);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.brand-grid-cell:hover {
+  background: var(--surface2);
+  color: var(--chalk);
+}
+
+/* ── JOIN CTA ── */
+.join-cta {
+  padding: 120px 60px;
+  background: var(--void);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.join-cta-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 120%, rgba(201,100,66,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.join-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sienna);
+  margin-bottom: 24px;
+}
+.join-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 400;
+  color: var(--chalk);
+  line-height: 1.1;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+.join-sub {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--chalk-dim);
+  max-width: 480px;
+  margin: 0 auto 48px;
+}
+.join-form {
+  display: flex;
+  max-width: 440px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.join-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 16px 24px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--chalk);
+  outline: none;
+}
+.join-input::placeholder { color: var(--chalk-dim); }
+.join-submit {
+  padding: 14px 24px;
+  background: var(--sienna);
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 0 100px 100px 0;
+  font-family: var(--sans);
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.join-submit:hover { background: var(--sienna-dark); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--void);
+  border-top: 1px solid var(--border);
+  padding: 60px 60px 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+.footer-brand-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--chalk);
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+}
+.footer-brand-tagline {
+  font-style: italic;
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--chalk-dim);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.footer-socials { display: flex; gap: 10px; }
+.footer-social-pill {
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--chalk-dim);
+  transition: all 0.2s;
+}
+.footer-social-pill:hover { border-color: var(--chalk-dim); color: var(--chalk); }
+.footer-col-head {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a {
+  font-size: 13px;
+  color: var(--chalk-dim);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--chalk); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-bottom p { font-size: 11px; color: var(--chalk-faint); }
+
+/* ── ANNOUNCE ── */
+.announce {
+  background: var(--sienna);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: white;
+}
+.announce span::before { content: '◆'; margin-right: 10px; opacity: 0.6; font-size: 8px; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .float-nav {
+    min-width: auto;
+    width: calc(100% - 32px);
+    top: 12px;
+    padding: 0 4px;
+    height: 46px;
+  }
+  .float-nav-sep { display: none; }
+  .float-nav-links .float-nav-link:not(.world-tech):not(.world-beauty) { display: none; }
+  .float-nav-brand { padding: 0 12px; font-size: 12px; }
+
+  .split-hero { grid-template-columns: 1fr; height: auto; }
+  .split-half { min-height: 55svh; }
+  .split-half-content { padding: 32px 28px; }
+  .split-world-title-ka { font-size: 2.4rem; }
+  .split-center { display: none; }
+
+  .featured-moment { grid-template-columns: 1fr; }
+  .moment-image img { min-height: 300px; aspect-ratio: 4/3; }
+  .moment-image-overlay { display: none; }
+  .moment-content { padding: 40px 28px; }
+  .moment-ctas { flex-direction: column; }
+
+  .discovery-section { padding: 60px 0; }
+  .discovery-header { padding: 0 28px; margin-bottom: 32px; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .discovery-scroll { padding: 0 28px; }
+  .discovery-card { width: 260px; }
+
+  .beauty-moment { grid-template-columns: 1fr; }
+  .beauty-moment .moment-content { order: 1; padding: 40px 28px; }
+  .beauty-moment .moment-image { order: -1; }
+  .beauty-moment .moment-image-overlay { display: none; }
+
+  .brands-grid-section { padding: 48px 28px; }
+  .brands-grid { grid-template-columns: repeat(3, 1fr); }
+  .brands-grid .brand-grid-cell:nth-child(n+7) { display: none; }
+
+  .join-cta { padding: 80px 28px; }
+  .join-form { flex-direction: column; border-radius: 16px; overflow: visible; background: none; border: none; gap: 12px; }
+  .join-input { border: 1px solid var(--border); border-radius: 100px; background: var(--surface); }
+  .join-submit { border-radius: 100px; padding: 16px; }
+
+  footer { padding: 48px 28px 28px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-brand { grid-column: 1 / -1; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+
+  .announce span:not(:first-child) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE -->
+<div class="announce">
+  <span>უფასო მიტანა ₾200-ზე მეტი</span>
+  <span>100% ორიგინალი პროდუქტი</span>
+  <span>30 დღის დაბრუნება</span>
+</div>
+
+<!-- FLOATING NAV -->
+<nav class="float-nav" role="navigation">
+  <span class="float-nav-brand">Everything Street</span>
+  <div class="float-nav-sep"></div>
+  <div class="float-nav-links">
+    <a href="#tech" class="float-nav-link world-tech">ტექნიკა</a>
+    <a href="#beauty" class="float-nav-link world-beauty">სილამაზე</a>
+    <a href="#" class="float-nav-link">ბრენდები</a>
+    <a href="#" class="float-nav-link">სიახლეები</a>
+  </div>
+  <div class="float-nav-actions">
+    <button class="float-nav-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+    </button>
+    <button class="float-nav-btn" aria-label="Cart" style="position:relative;">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- SPLIT HERO -->
+<section class="split-hero" aria-label="Choose your world">
+  <!-- TECH HALF -->
+  <div class="split-half split-half-tech">
+    <div class="split-half-bg">
+      <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=960&q=80&auto=format&fit=crop" alt="Technology">
+    </div>
+    <div class="split-half-overlay"></div>
+    <div class="split-half-content">
+      <div class="split-world-label">World I — Technology</div>
+      <h1 class="split-world-title-ka">ტექნიკა</h1>
+      <p class="split-world-title-en">Premium technology, curated.</p>
+      <a href="#tech" class="split-cta">
+        აღმოჩინე
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- CENTER BRAND -->
+  <div class="split-center">
+    <div class="split-center-divider"></div>
+    <div class="split-center-brand">Everything Street</div>
+    <div class="split-center-divider"></div>
+  </div>
+
+  <!-- BEAUTY HALF -->
+  <div class="split-half split-half-beauty">
+    <div class="split-half-bg">
+      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=960&q=80&auto=format&fit=crop" alt="Beauty">
+    </div>
+    <div class="split-half-overlay"></div>
+    <div class="split-half-content">
+      <div class="split-world-label">World II — Beauty</div>
+      <h1 class="split-world-title-ka">სილამაზე</h1>
+      <p class="split-world-title-en">The world's finest beauty, here.</p>
+      <a href="#beauty" class="split-cta">
+        აღმოჩინე
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>გადახვიე</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+</section>
+
+<!-- TECH FEATURED MOMENT -->
+<section id="tech" class="featured-moment">
+  <div class="moment-image">
+    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&q=80&auto=format&fit=crop" alt="Sony WH-1000XM5">
+    <div class="moment-image-overlay"></div>
+  </div>
+  <div class="moment-content">
+    <div class="moment-category">Featured — Technology</div>
+    <h2 class="moment-title">Sony WH-1000XM5<br>Wireless Noise Cancelling</h2>
+    <p class="moment-desc">
+      Industry-leading noise cancellation with 30-hour battery. The benchmark for premium audio. Now at Everything Street — authorised, original, with full Georgian warranty.
+    </p>
+    <div class="moment-price-block">
+      <span class="moment-price">₾995</span>
+      <span class="moment-compare">₾1,244</span>
+    </div>
+    <div class="moment-ctas">
+      <a href="#" class="btn-pill-primary">კალათაში დამატება</a>
+      <a href="#" class="btn-pill-outline">სრული აღწერა</a>
+    </div>
+  </div>
+</section>
+
+<!-- DISCOVERY GRID — TECH -->
+<section class="discovery-section">
+  <div class="discovery-header">
+    <div class="discovery-header-text">
+      <div class="discovery-eyebrow">Technology Edit</div>
+      <h2 class="discovery-title">ყველა რაც გჭირდება,<br><em>ერთ სივრცეში.</em></h2>
+    </div>
+    <a href="#" class="discovery-view-all">ყველა ნახვა</a>
+  </div>
+  <div class="discovery-scroll">
+    <div class="discovery-card">
+      <div class="discovery-card-img">
+        <span class="discovery-card-world world-tech-badge">Tech</span>
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=640&q=80&auto=format&fit=crop" alt="Watch">
+      </div>
+      <div class="discovery-card-info">
+        <div class="discovery-card-brand">Apple</div>
+        <div class="discovery-card-name">Watch Series 10 Stainless</div>
+        <div class="discovery-card-footer">
+          <span class="discovery-card-price">₾1,249</span>
+          <button class="discovery-card-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="discovery-card">
+      <div class="discovery-card-img">
+        <span class="discovery-card-world world-tech-badge">Tech</span>
+        <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=640&q=80&auto=format&fit=crop" alt="iPad">
+      </div>
+      <div class="discovery-card-info">
+        <div class="discovery-card-brand">Apple</div>
+        <div class="discovery-card-name">iPad Pro M4 — 11 inch</div>
+        <div class="discovery-card-footer">
+          <span class="discovery-card-price">₾2,190</span>
+          <button class="discovery-card-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="discovery-card">
+      <div class="discovery-card-img">
+        <span class="discovery-card-world world-tech-badge">Tech</span>
+        <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=640&q=80&auto=format&fit=crop" alt="Camera">
+      </div>
+      <div class="discovery-card-info">
+        <div class="discovery-card-brand">Sony</div>
+        <div class="discovery-card-name">ZV-E10 II Vlog Camera</div>
+        <div class="discovery-card-footer">
+          <span class="discovery-card-price">₾1,850</span>
+          <button class="discovery-card-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="discovery-card">
+      <div class="discovery-card-img">
+        <span class="discovery-card-world world-beauty-badge">Beauty</span>
+        <img src="https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=640&q=80&auto=format&fit=crop" alt="Perfume">
+      </div>
+      <div class="discovery-card-info">
+        <div class="discovery-card-brand">Maison Margiela</div>
+        <div class="discovery-card-name">Replica — Jazz Club EDT</div>
+        <div class="discovery-card-footer">
+          <span class="discovery-card-price">₾380</span>
+          <button class="discovery-card-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="discovery-card">
+      <div class="discovery-card-img">
+        <span class="discovery-card-world world-beauty-badge">Beauty</span>
+        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=640&q=80&auto=format&fit=crop" alt="Skincare">
+      </div>
+      <div class="discovery-card-info">
+        <div class="discovery-card-brand">La Mer</div>
+        <div class="discovery-card-name">Crème de la Mer Moisturiser</div>
+        <div class="discovery-card-footer">
+          <span class="discovery-card-price">₾680</span>
+          <button class="discovery-card-add" aria-label="Add to cart">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEAUTY MOMENT -->
+<section id="beauty" class="beauty-moment featured-moment">
+  <div class="moment-image">
+    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&q=80&auto=format&fit=crop" alt="Charlotte Tilbury">
+    <div class="moment-image-overlay"></div>
+  </div>
+  <div class="moment-content">
+    <div class="moment-category">Featured — Beauty</div>
+    <h2 class="moment-title">Charlotte Tilbury<br>Hollywood Contour Wand</h2>
+    <p class="moment-desc">
+      The sculptor's secret. Instant chiseled cheekbones, sculpted jawline — in one effortless stroke. The world's most coveted contour, now in Tbilisi.
+    </p>
+    <div class="moment-price-block">
+      <span class="moment-price">₾148</span>
+    </div>
+    <div class="moment-ctas">
+      <a href="#" class="btn-pill-primary">კალათაში დამატება</a>
+      <a href="#" class="btn-pill-outline">კოლექცია</a>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS GRID -->
+<div class="brands-grid-section">
+  <div class="brands-grid-title">Our Brands — ჩვენი ბრენდები</div>
+  <div class="brands-grid">
+    <div class="brand-grid-cell">Tatcha</div>
+    <div class="brand-grid-cell">Sony</div>
+    <div class="brand-grid-cell">Charlotte Tilbury</div>
+    <div class="brand-grid-cell">Apple</div>
+    <div class="brand-grid-cell">La Mer</div>
+    <div class="brand-grid-cell">Samsung</div>
+    <div class="brand-grid-cell">Curology</div>
+    <div class="brand-grid-cell">Dyson</div>
+    <div class="brand-grid-cell">Nanette Lepore</div>
+    <div class="brand-grid-cell">Maison Margiela</div>
+  </div>
+</div>
+
+<!-- JOIN CTA -->
+<section class="join-cta">
+  <div class="join-cta-bg"></div>
+  <div class="join-eyebrow">Exclusive Access</div>
+  <h2 class="join-title">შემოუერთდი<br>ეექსკლუზიურ წრეს.</h2>
+  <p class="join-sub">
+    First access to new drops, exclusive offers, and editorial curation. The inner circle of Everything Street.
+  </p>
+  <form class="join-form">
+    <input type="email" class="join-input" placeholder="your@email.com">
+    <button type="submit" class="join-submit">გამოწერა</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Everything Street</div>
+      <p class="footer-brand-tagline">Georgia's first dual-luxury destination.<br>Premium tech and beauty, side by side.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-pill">Instagram</a>
+        <a href="#" class="footer-social-pill">Facebook</a>
+        <a href="#" class="footer-social-pill">TikTok</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-head">Shop</div>
+      <ul class="footer-links">
+        <li><a href="#">სილამაზე</a></li>
+        <li><a href="#">ტექნიკა</a></li>
+        <li><a href="#">ბრენდები</a></li>
+        <li><a href="#">სიახლეები</a></li>
+        <li><a href="#">სიაკლები</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-head">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">კონტაქტი</a></li>
+        <li><a href="#">მიტანა</a></li>
+        <li><a href="#">დაბრუნება</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-head">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">ჩვენ შესახებ</a></li>
+        <li><a href="#">კონფიდენციალურობა</a></li>
+        <li><a href="#">პირობები</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Everything Street. All rights reserved.</p>
+    <p>Made with care in Georgia 🇬🇪</p>
+  </div>
+</footer>
+
+</body>
+</html>

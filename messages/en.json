@@ -699,14 +699,28 @@
     "allTech": "All Tech"
   },
   "hero": {
-    "tagline": "Tech & Beauty, One Street",
+    "tagline": "Est. 2024",
     "headline1": "Two worlds,",
     "headline2": "one street.",
     "description": "Everything Street pairs considered technology with considered beauty — curated, tested, and delivered together.",
     "shopTech": "Shop Tech",
     "shopBeauty": "Shop Beauty",
     "statsProducts": "Products",
-    "statsBrands": "Brands"
+    "statsBrands": "Brands",
+    "statsRating": "Rating",
+    "statsDelivery": "Delivery",
+    "techLabel": "Premium Technology",
+    "techHeadline1": "Precision",
+    "techHeadline2": "by design",
+    "beautyLabel": "Luxury Beauty",
+    "beautyHeadline1": "Radiance",
+    "beautyHeadline2": "refined",
+    "exploreTech": "Explore Tech",
+    "exploreBeauty": "Explore Beauty",
+    "techSub": "everything in one place",
+    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
+    "beautySub": "premium cosmetics",
+    "beautySubKa": "ტექნოლოგია და სილამაზე"
   },
   "wishlist": {
     "title": "My Wishlist",

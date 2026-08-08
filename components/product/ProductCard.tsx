@@ -1,11 +1,9 @@
 "use client";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag, Eye } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { RatingStars } from "@/components/ui";
 import { useCartStore, useWishlistStore } from "@/store";
 import { formatDiscount, getProductImageUrl, cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -13,16 +11,19 @@ import toast from "react-hot-toast";
 import type { ProductCard as ProductCardType } from "@/types";
 import { QuickView } from "./QuickView";
 
+const TECH_CATS = new Set(["headphones", "cameras", "tablets", "gaming", "wearables", "smart-home", "audio", "accessories"]);
+const BEAUTY_CATS = new Set(["skincare", "makeup", "hair-care", "body-care", "perfume", "beauty-tools"]);
+
 interface ProductCardProps {
   product: ProductCardType;
   index?: number;
   priority?: boolean;
   variant?: "default" | "compact" | "horizontal";
   darkBg?: boolean;
+  className?: string;
 }
 
-export function ProductCard({ product, index = 0, priority = false, variant = "default", darkBg = false }: ProductCardProps) {
-  const t = useTranslations("product");
+export function ProductCard({ product, index = 0, priority = false, variant = "default", darkBg = false, className }: ProductCardProps) {
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
   const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
@@ -35,33 +36,34 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
   const comparePrice = product.comparePrice ? Number(product.comparePrice) : null;
   const discount = comparePrice ? formatDiscount(comparePrice, price) : 0;
 
-  const textMuted = darkBg ? "text-white/40" : "text-black/40 dark:text-white/40";
-  const textMain  = darkBg ? "text-white"    : "text-black dark:text-white";
+  const catSlug = product.category?.slug ?? "";
+  const isTech = TECH_CATS.has(catSlug);
+  const isBeauty = BEAUTY_CATS.has(catSlug);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addItem(product);
-    toast.success(t("addToCart"), { icon: "🛍️", style: { borderRadius: "0" } });
+    toast.success("Added to cart", { icon: "🛍️", style: { borderRadius: "0" } });
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     toggle(product.id);
-    toast.success(isWishlisted ? t("wishlisted") : t("addToWishlist"), {
+    toast.success(isWishlisted ? "Removed from wishlist" : "Saved to wishlist", {
       icon: isWishlisted ? "💔" : "❤️", style: { borderRadius: "0" },
     });
   };
 
   if (variant === "horizontal") {
     return (
-      <Link href={`/products/${product.slug}`} className="group flex gap-4 p-4 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors">
-        <div className="relative w-20 h-20 shrink-0 bg-black/5 dark:bg-white/5 overflow-hidden">
+      <Link href={`/products/${product.slug}`} className="group flex gap-4 p-4 hover:bg-white/[0.02] transition-colors">
+        <div className="relative w-20 h-20 shrink-0 overflow-hidden" style={{ background: "var(--s1)" }}>
           <Image src={imageUrl} alt={product.name} fill className="object-cover" sizes="80px" />
         </div>
         <div className="flex-1 min-w-0 py-1">
-          <p className={cn("text-[10px] tracking-[0.1em] uppercase mb-1", textMuted)}>{product.brand?.name}</p>
-          <p className={cn("text-sm line-clamp-2 leading-snug", textMain)}>{product.name}</p>
-          <p className={cn("text-sm font-medium mt-2", textMain)}>{format(price)}</p>
+          <p className="text-[10px] tracking-[0.1em] uppercase mb-1 text-white/40">{product.brand?.name}</p>
+          <p className="text-sm line-clamp-2 leading-snug text-white">{product.name}</p>
+          <p className="text-sm font-medium mt-2 text-white">{format(price)}</p>
         </div>
       </Link>
     );
@@ -74,77 +76,65 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: (index % 4) * 0.08 }}
-        className={cn("group", darkBg ? "bg-black" : "bg-surface-50 dark:bg-black border border-surface-200 dark:border-white/8")}
+        className={cn("pcard", className)}
       >
         <Link href={`/products/${product.slug}`} className="block">
-          <div className="relative overflow-hidden aspect-[3/4] bg-stone-100 dark:bg-zinc-900">
+          {/* Image */}
+          <div className="pimg">
             <Image
               src={imageUrl} alt={product.name} fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               priority={priority}
-              className="object-cover transition-transform duration-700 group-hover:scale-105 img-plate"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-            <div className="absolute top-3 left-3 flex flex-col gap-1">
-              {product.isNewArrival && (
-                <span className="bg-black text-white text-[9px] tracking-[0.14em] uppercase px-2 py-0.5">{t("newArrival")}</span>
-              )}
-              {discount > 0 && (
-                <span className="bg-red-600 text-white text-[9px] tracking-[0.14em] uppercase px-2 py-0.5">-{discount}%</span>
-              )}
-              {product.isBestSeller && (
-                <span className="bg-white text-black text-[9px] tracking-[0.14em] uppercase px-2 py-0.5">{t("bestSeller")}</span>
-              )}
-            </div>
-            <div className="absolute top-3 right-3 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <button
-                onClick={handleWishlist}
-                aria-label={isWishlisted ? t("wishlisted") : t("addToWishlist")}
-                className={cn("w-11 h-11 flex items-center justify-center transition-colors",
-                  isWishlisted
-                    ? "bg-red-600 text-white"
-                    : "bg-white dark:bg-black text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
-                )}>
-                <Heart size={14} fill={isWishlisted ? "currentColor" : "none"} />
-              </button>
-              <button
-                onClick={handleAddToCart}
-                disabled={product.stockStatus === "OUT_OF_STOCK"}
-                aria-label={t("addToCart")}
-                className="w-11 h-11 bg-white dark:bg-black flex items-center justify-center text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40">
-                <ShoppingBag size={14} />
-              </button>
-            </div>
+
+            {/* Badges — stacked absolutely like K */}
+            {isTech && <span className="pbadge bt">Tech</span>}
+            {isBeauty && <span className="pbadge bb" style={isTech ? { top: 52 } : undefined}>Beauty</span>}
+            {product.isNewArrival && (
+              <span className="pbadge bn" style={(isTech || isBeauty) ? { top: (isTech && isBeauty) ? 86 : 52 } : undefined}>New</span>
+            )}
+            {discount > 0 && (
+              <span className="pbadge bd" style={{ top: 18 + ([isTech, isBeauty, product.isNewArrival].filter(Boolean).length) * 34 }}>
+                -{discount}%
+              </span>
+            )}
+
             {product.stockStatus === "OUT_OF_STOCK" && (
-              <div className="absolute inset-0 bg-white/70 dark:bg-black/70 flex items-center justify-center">
-                <span className="text-[10px] tracking-[0.12em] uppercase bg-white dark:bg-black text-black dark:text-white px-3 py-1.5">{t("outOfStock")}</span>
+              <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                <span className="text-[10px] tracking-[0.12em] uppercase bg-black text-white px-3 py-1.5">Out of Stock</span>
               </div>
             )}
-            <button
-              onClick={(e) => { e.preventDefault(); setQuickViewSlug(product.slug); }}
-              aria-label={t("quickView")}
-              className="absolute bottom-0 left-0 right-0 h-11 opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300 flex items-center justify-center gap-1.5 bg-black/90 text-white text-[10px] tracking-[0.12em] uppercase"
-            >
-              <Eye size={12} /> {t("quickView")}
-            </button>
           </div>
-          <div className="px-4 pt-3 pb-5">
-            {product.brand && (
-              <p className={cn("text-[10px] tracking-[0.14em] uppercase mb-1.5", textMuted)}>{product.brand.name}</p>
-            )}
-            <h3 className={cn("font-serif text-sm leading-snug line-clamp-2 mb-2", textMain)}>
-              {product.name}
-            </h3>
-            <RatingStars rating={Number(product.ratingAvg)} count={product.ratingCount} size={11} />
-            <div className="flex items-center gap-2 mt-2.5">
-              <span className={cn("text-sm font-medium", textMain)}>{format(price)}</span>
+
+          {/* Body */}
+          <div className="pbody">
+            {product.brand && <div className="pbrand">{product.brand.name}</div>}
+            <div className="pname line-clamp-2">{product.name}</div>
+            <div className="prow">
+              <span className="pprice">{format(price)}</span>
               {comparePrice && comparePrice > price && (
-                <span className={cn("text-xs line-through", textMuted)}>{format(comparePrice)}</span>
+                <span className="pold">{format(comparePrice)}</span>
               )}
             </div>
             {product.stockStatus === "LOW_STOCK" && (
-              <p className="text-[10px] tracking-[0.08em] uppercase text-red-500 mt-1">{t("lowStock")}</p>
+              <p className="text-[10px] tracking-[0.08em] uppercase text-red-500 mb-3">Low Stock</p>
             )}
+            <div className="pacts">
+              <button
+                onClick={handleAddToCart}
+                disabled={product.stockStatus === "OUT_OF_STOCK"}
+                className="btn-cart"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={handleWishlist}
+                aria-label={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+                className={cn("btn-wish", isWishlisted && "wishlisted")}
+              >
+                <Heart size={15} fill={isWishlisted ? "currentColor" : "none"} />
+              </button>
+            </div>
           </div>
         </Link>
       </motion.div>
@@ -156,13 +146,13 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
 
 export function ProductCardSkeleton() {
   return (
-    <div className="animate-pulse bg-white dark:bg-black">
-      <div className="aspect-[3/4] bg-black/5 dark:bg-white/5" />
-      <div className="px-4 py-4 space-y-2">
-        <div className="h-2.5 w-16 bg-black/8 dark:bg-white/8" />
-        <div className="h-3.5 w-full bg-black/8 dark:bg-white/8" />
-        <div className="h-3.5 w-2/3 bg-black/8 dark:bg-white/8" />
-        <div className="h-4 w-20 bg-black/8 dark:bg-white/8 mt-1" />
+    <div className="animate-pulse" style={{ background: "var(--bg)" }}>
+      <div className="aspect-[3/4]" style={{ background: "var(--s1)" }} />
+      <div style={{ padding: "22px 26px 28px" }}>
+        <div className="h-2.5 w-16 mb-2 rounded" style={{ background: "var(--border)" }} />
+        <div className="h-5 w-full mb-1.5 rounded" style={{ background: "var(--border)" }} />
+        <div className="h-5 w-2/3 mb-4 rounded" style={{ background: "var(--border)" }} />
+        <div className="h-6 w-20 rounded" style={{ background: "var(--border)" }} />
       </div>
     </div>
   );
