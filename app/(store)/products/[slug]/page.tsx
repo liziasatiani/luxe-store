@@ -62,8 +62,7 @@ export default async function ProductPage({ params }: Props) {
 
   if (!product) notFound();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const p = serializeDecimal(product) as any;
+  const p = serializeDecimal(product);
   const discount = p.comparePrice ? formatDiscount(Number(p.comparePrice), Number(p.price)) : 0;
   const stockInfo = getStockLabel(p.stock);
 

@@ -9,11 +9,26 @@ export type ProductWithRelations = Product & {
   reviews?: ReviewWithUser[];
 };
 
-export type ProductCard = Pick<Product, "id" | "name" | "slug" | "price" | "comparePrice" | "isFeatured" | "isBestSeller" | "isNewArrival" | "isOnSale" | "stockStatus" | "stock" | "ratingAvg" | "ratingCount" | "brandId"> & {
+// All numeric fields are plain numbers — Decimal is always serialized before reaching the client.
+export interface ProductCard {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  comparePrice: number | null;
+  isFeatured: boolean;
+  isBestSeller: boolean;
+  isNewArrival: boolean;
+  isOnSale: boolean;
+  stockStatus: Product["stockStatus"];
+  stock: number;
+  ratingAvg: number;
+  ratingCount: number;
+  brandId: string | null;
   images: Pick<ProductImage, "url" | "isPrimary" | "altText">[];
   brand: Pick<Brand, "name" | "slug"> | null;
   category: Pick<Category, "name" | "slug">;
-};
+}
 
 export type ReviewWithUser = Review & {
   user: Pick<User, "id" | "name" | "image">;

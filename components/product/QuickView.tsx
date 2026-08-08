@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge, RatingStars, Spinner } from "@/components/ui";
 import { useCartStore, useWishlistStore } from "@/store";
 import { getProductImageUrl, cn } from "@/lib/utils";
+import type { ProductCard } from "@/types";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
@@ -17,13 +18,7 @@ interface QuickViewProps {
   onClose: () => void;
 }
 
-interface QuickViewProduct {
-  id: string; name: string; slug: string; price: number; comparePrice?: number | null;
-  stock: number; stockStatus: string; ratingAvg?: number; ratingCount?: number;
-  isBestSeller?: boolean; isNewArrival?: boolean;
-  images: Array<{ url: string; altText?: string | null }>;
-  brand?: { name: string } | null;
-  category?: { name: string } | null;
+type QuickViewProduct = ProductCard & {
   description?: string | null;
   variants?: Array<{ id: string; name: string; value: string; price?: number | null; stock: number }>;
 }
@@ -61,8 +56,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
 
   const handleAddToCart = () => {
     if (!product) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    addItem(product as any, qty);
+    addItem(product, qty);
     toast.success(t("addToCart"), { icon: "🛍️" });
     onClose();
   };

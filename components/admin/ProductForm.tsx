@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import { X, Plus, Trash2, UploadCloud, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
@@ -303,8 +304,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {images.filter((i) => i.url).map((img, i) => (
                   <div key={i} className="relative group rounded-xl overflow-hidden border border-surface-200 dark:border-surface-700 aspect-square">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt="Product image preview" className="w-full h-full object-cover" />
+                    <Image src={img.url} alt="Product image preview" fill className="object-cover" sizes="(max-width: 640px) 50vw, 33vw" unoptimized={img.url.startsWith("blob:")} />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                       <button
                         onClick={() => setImages((imgs) => imgs.map((im, j) => j === i ? { ...im, isPrimary: true } : { ...im, isPrimary: false }))}

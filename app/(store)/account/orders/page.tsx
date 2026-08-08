@@ -59,8 +59,7 @@ export default async function OrdersPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {o.map((order: any) => {
+          {o.map((order) => {
             const variant = STATUS_VARIANT[order.status] ?? "default";
             return (
               <Link
