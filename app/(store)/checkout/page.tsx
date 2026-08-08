@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Banknote, CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown, Plus } from "lucide-react";
-import { Container, Input, Divider } from "@/components/ui";
-import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
 import { isValidEmail } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -20,10 +18,29 @@ interface Address {
 type CheckoutMode = "choose" | "guest" | "login";
 type Step = 1 | 2;
 
+function KInput({ label, error, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
+  return (
+    <div style={{ width: "100%" }}>
+      {label && <label style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 6 }}>{label}</label>}
+      <input
+        style={{ width: "100%", padding: "10px 13px", background: "transparent", border: `1px solid ${error ? "var(--crimson)" : "var(--borderg)"}`, color: "var(--chalk)", fontSize: 13, outline: "none", transition: "border-color 0.2s" }}
+        onFocus={e => { if (!error) e.currentTarget.style.borderColor = "var(--gold)"; }}
+        onBlur={e => { e.currentTarget.style.borderColor = error ? "var(--crimson)" : "var(--borderg)"; }}
+        {...props}
+      />
+      {error && <p style={{ fontSize: 11, color: "var(--crimson)", marginTop: 3 }}>{error}</p>}
+    </div>
+  );
+}
+
+function KDivider() {
+  return <div style={{ height: 1, background: "var(--border)", margin: "4px 0" }} />;
+}
+
 function AddressSummary({ addresses, selectedId }: { addresses: Address[]; selectedId: string }) {
   const a = addresses.find(x => x.id === selectedId);
   if (!a) return null;
-  return <p className="text-sm text-black dark:text-white">{a.firstName} {a.lastName} · {a.line1}, {a.city}, {a.state}</p>;
+  return <p style={{ fontSize: 13, color: "var(--chalk)" }}>{a.firstName} {a.lastName} · {a.line1}, {a.city}, {a.state}</p>;
 }
 
 export default function CheckoutPage() {
@@ -52,10 +69,10 @@ export default function CheckoutPage() {
   });
   const setNA = (k: string, v: string) => setNewAddr(a => ({ ...a, [k]: v }));
 
-  // Auto-switch to Stripe when cart exceeds COD threshold
   useEffect(() => {
     if (!codAvailable) setPaymentMethod("STRIPE");
   }, [codAvailable]);
+
   const [guest, setGuest] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     line1: "", line2: "", city: "", state: "", postalCode: "", country: "US",
@@ -201,341 +218,350 @@ export default function CheckoutPage() {
     }
   };
 
-  // Mode selection screen
+  /* ── Mode selection ─────────────────────────────────────────── */
   if (!session && mode === "choose") {
     return (
-      <Container className="py-16 max-w-lg">
-        <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-2 text-center">{t("title")}</h1>
-        <p className="text-center text-sm text-surface-400 mb-10">How would you like to continue?</p>
-        <div className="space-y-3">
-          <button onClick={() => setMode("guest")}
-            className="w-full p-6 border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black text-left">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full border border-white/20 dark:border-black/20 flex items-center justify-center">
-                <User size={18} />
+      <div style={{ paddingTop: 64, paddingBottom: 96 }}>
+        <div className="wrap" style={{ maxWidth: 480 }}>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: 32, fontWeight: 700, color: "var(--chalk)", marginBottom: 8, textAlign: "center" }}>{t("title")}</h1>
+          <p style={{ textAlign: "center", fontSize: 13, color: "var(--chalk3)", marginBottom: 40 }}>How would you like to continue?</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <button
+              onClick={() => setMode("guest")}
+              style={{ width: "100%", padding: 24, background: "var(--chalk)", color: "var(--bg)", border: "1px solid var(--chalk)", textAlign: "left", cursor: "pointer" }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <div style={{ width: 40, height: 40, border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <User size={18} />
+                </div>
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>{t("continueAsGuest")}</p>
+                  <p style={{ fontSize: 11, opacity: 0.6, marginTop: 3 }}>No account required · Fast checkout</p>
+                </div>
               </div>
-              <div>
-                <p className="font-medium text-[13px] tracking-[0.06em] uppercase">{t("continueAsGuest")}</p>
-                <p className="text-[12px] text-white/60 dark:text-black/60 mt-0.5">No account required · Fast checkout</p>
-              </div>
+            </button>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "4px 0" }}>
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+              <span style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--chalk3)" }}>or</span>
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
-          </button>
-          <div className="flex items-center gap-4 py-1">
-            <div className="flex-1 h-px bg-surface-200 dark:bg-surface-700" />
-            <span className="text-[11px] tracking-[0.1em] uppercase text-surface-400">or</span>
-            <div className="flex-1 h-px bg-surface-200 dark:bg-surface-700" />
+
+            <button
+              onClick={() => router.push("/login?redirect=/checkout")}
+              style={{ width: "100%", padding: 24, background: "transparent", border: "1px solid var(--borderg)", textAlign: "left", cursor: "pointer", transition: "border-color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--chalk)")}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--borderg)")}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <div style={{ width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <LogIn size={18} style={{ color: "var(--chalk2)" }} />
+                </div>
+                <div>
+                  <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk)" }}>{t("signIn")}</p>
+                  <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 3 }}>Faster checkout · Order tracking · Saved addresses</p>
+                </div>
+              </div>
+            </button>
+
+            <p style={{ textAlign: "center", fontSize: 11, color: "var(--chalk3)", paddingTop: 8 }}>
+              New here?{" "}
+              <Link href="/register?redirect=/checkout" style={{ color: "var(--chalk2)", textDecoration: "underline" }}>Create an account</Link>
+            </p>
           </div>
-          <button onClick={() => router.push("/login?redirect=/checkout")}
-            className="w-full p-6 border border-surface-200 dark:border-surface-700 hover:border-black dark:hover:border-white transition-colors text-left">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 flex items-center justify-center text-surface-500 dark:text-surface-400">
-                <LogIn size={18} />
-              </div>
-              <div>
-                <p className="text-[13px] tracking-[0.06em] uppercase font-medium text-surface-900 dark:text-white">{t("signIn")}</p>
-                <p className="text-[12px] text-surface-400 mt-0.5">Faster checkout · Order tracking · Saved addresses</p>
-              </div>
-            </div>
-          </button>
-          <p className="text-center text-xs text-surface-400 pt-2">
-            New here?{" "}
-            <Link href="/register?redirect=/checkout" className="underline hover:text-surface-900 dark:hover:text-white transition-colors">Create an account</Link>
-          </p>
         </div>
-      </Container>
+      </div>
     );
   }
 
   const stepLabels = [t("shippingAddress"), t("payment")];
 
   return (
-    <Container className="py-12 max-w-5xl">
-      <div className="flex items-center justify-center gap-0 mb-12">
-        {stepLabels.map((label, i) => {
-          const idx = i + 1;
-          const done = idx < step;
-          const active = idx === step;
-          return (
-            <div key={label} className="flex items-center">
-              <button
-                onClick={() => done ? setStep(idx as Step) : undefined}
-                disabled={!done}
-                className="flex flex-col items-center gap-1.5 disabled:cursor-default"
-              >
-                <div className={`w-8 h-8 flex items-center justify-center text-[11px] font-medium transition-colors
-                  ${done ? "bg-black dark:bg-white text-white dark:text-black cursor-pointer" :
-                    active ? "border-2 border-black dark:border-white text-black dark:text-white" :
-                    "border border-black/20 dark:border-white/20 text-black/30 dark:text-white/30"}`}>
-                  {done ? <Check size={14} /> : idx}
-                </div>
-                <span className={`text-[10px] tracking-[0.12em] uppercase font-medium
-                  ${active ? "text-black dark:text-white" : done ? "text-black/60 dark:text-white/60" : "text-black/30 dark:text-white/30"}`}>
-                  {label}
-                </span>
-              </button>
-              {i < stepLabels.length - 1 && (
-                <div className={`w-20 sm:w-32 h-px mx-4 mb-5 transition-colors ${done ? "bg-black dark:bg-white" : "bg-black/15 dark:bg-white/15"}`} />
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <div className="lg:hidden mb-6 border border-black/10 dark:border-white/10">
-        <button
-          onClick={() => setSummaryOpen(o => !o)}
-          className="w-full flex items-center justify-between px-4 py-3 text-sm text-black dark:text-white"
-        >
-          <span className="text-[10px] tracking-[0.14em] uppercase text-black/50 dark:text-white/50">
-            {summaryOpen ? t("hideSummary") : `${t("showSummary")} · ${format(total())}`}
-          </span>
-          <ChevronDown size={14} className={`text-black/40 dark:text-white/40 transition-transform ${summaryOpen ? "rotate-180" : ""}`} />
-        </button>
-        {summaryOpen && (
-          <div className="px-4 pb-4 space-y-3 border-t border-black/8 dark:border-white/8">
-            <div className="space-y-2 pt-3 max-h-40 overflow-y-auto">
-              {items.map(item => (
-                <div key={item.id} className="flex justify-between text-sm gap-3">
-                  <span className="text-black/60 dark:text-white/60 line-clamp-1 flex-1">{item.product.name} × {item.quantity}</span>
-                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.variant?.price ?? item.product.price) * item.quantity)}</span>
-                </div>
-              ))}
-            </div>
-            <div className="border-t border-black/8 dark:border-white/8 pt-3 space-y-1.5 text-sm">
-              <div className="flex justify-between text-black/50 dark:text-white/50"><span>{t("subtotal")}</span><span>{format(subtotal())}</span></div>
-              <div className="flex justify-between text-black/50 dark:text-white/50"><span>{t("shipping")}</span><span>{shipping() === 0 ? t("free") : format(shipping())}</span></div>
-              <div className="flex justify-between font-medium text-black dark:text-white pt-1"><span>{t("total")}</span><span>{format(total())}</span></div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-        <div className="lg:col-span-3">
-          {step === 1 && (
-            <div className="space-y-8">
-              <h2 className="font-display text-2xl text-black dark:text-white">{t("shippingInfo")}</h2>
-
-              {mode === "guest" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">Contact</p>
-                    <button onClick={() => setMode("choose")} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Change</button>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Input id="firstName" label={t("firstName")} autoComplete="given-name" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
-                    <Input id="lastName" label={t("lastName")} autoComplete="family-name" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
-                    <div className="col-span-2">
-                      <Input id="email" label={t("email")} type="email" autoComplete="email" inputMode="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
-                    </div>
-                    <div className="col-span-2">
-                      <Input id="phone" label={t("phone")} autoComplete="tel" inputMode="tel" value={guest.phone} onChange={e => setG("phone", e.target.value)} />
-                    </div>
-                  </div>
-
-                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 pt-2">{t("address")}</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="col-span-2">
-                      <Input id="line1" label={t("address")} autoComplete="address-line1" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
-                    </div>
-                    <div className="col-span-2">
-                      <Input id="line2" label={t("apartment")} autoComplete="address-line2" value={guest.line2} onChange={e => setG("line2", e.target.value)} />
-                    </div>
-                    <Input id="city" label={t("city")} autoComplete="address-level2" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
-                    <Input id="state" label={t("state")} autoComplete="address-level1" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
-                    <Input id="postalCode" label={t("postalCode")} autoComplete="postal-code" inputMode="numeric" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
-                    <Input id="country" label={t("country")} autoComplete="country-name" value={guest.country} onChange={e => setG("country", e.target.value)} />
-                  </div>
-                </div>
-              )}
-
-              {mode === "login" && (
-                <div className="space-y-3">
-                  <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("savedAddresses")}</p>
-                  {addresses.map(addr => (
-                    <label key={addr.id} className={`flex items-start gap-3 p-4 border cursor-pointer transition-colors ${selectedAddress === addr.id ? "border-black dark:border-white bg-black/[0.03] dark:bg-white/[0.03]" : "border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30"}`}>
-                      <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1" />
-                      <div>
-                        <p className="text-sm font-medium text-black dark:text-white">{addr.label} — {addr.firstName} {addr.lastName}</p>
-                        <p className="text-sm text-black/50 dark:text-white/50 mt-0.5">{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
-                      </div>
-                    </label>
-                  ))}
-
-                  {/* Inline add address */}
-                  {addingAddress ? (
-                    <div className="border border-black/15 dark:border-white/15 p-4 space-y-3">
-                      <p className="text-[10px] tracking-[0.14em] uppercase text-black/50 dark:text-white/50">New address</p>
-                      <Input id="al" label="Label (e.g. Home)" value={newAddr.label} onChange={e => setNA("label", e.target.value)} />
-                      <div className="grid grid-cols-2 gap-3">
-                        <Input id="afn" label={t("firstName")} value={newAddr.firstName} onChange={e => setNA("firstName", e.target.value)} autoComplete="given-name" />
-                        <Input id="aln" label={t("lastName")} value={newAddr.lastName} onChange={e => setNA("lastName", e.target.value)} autoComplete="family-name" />
-                        <div className="col-span-2"><Input id="al1" label={t("address")} value={newAddr.line1} onChange={e => setNA("line1", e.target.value)} autoComplete="address-line1" /></div>
-                        <div className="col-span-2"><Input id="al2" label={t("apartment")} value={newAddr.line2} onChange={e => setNA("line2", e.target.value)} autoComplete="address-line2" /></div>
-                        <Input id="acity" label={t("city")} value={newAddr.city} onChange={e => setNA("city", e.target.value)} autoComplete="address-level2" />
-                        <Input id="astate" label={t("state")} value={newAddr.state} onChange={e => setNA("state", e.target.value)} autoComplete="address-level1" />
-                        <Input id="azip" label={t("postalCode")} value={newAddr.postalCode} onChange={e => setNA("postalCode", e.target.value)} autoComplete="postal-code" />
-                        <Input id="aphone" label={t("phone")} value={newAddr.phone} onChange={e => setNA("phone", e.target.value)} autoComplete="tel" />
-                      </div>
-                      <div className="flex gap-2 pt-1">
-                        <Button onClick={saveNewAddress} loading={savingAddress} variant="gold" size="sm">Save address</Button>
-                        <Button onClick={() => setAddingAddress(false)} variant="outline" size="sm">Cancel</Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setAddingAddress(true)}
-                      className="flex items-center gap-1.5 text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
-                    >
-                      <Plus size={12} /> {t("addNewAddress")}
-                    </button>
-                  )}
-                </div>
-              )}
-
-              <button
-                onClick={async () => {
-                  if (!validateStep1()) return;
-                  setStep(2);
-                  // Save cart for abandoned cart recovery
-                  const email = mode === "guest" ? guest.email : session?.user?.email;
-                  const name = mode === "guest" ? `${guest.firstName} ${guest.lastName}`.trim() : session?.user?.name ?? undefined;
-                  if (email) {
-                    const cartSnapshot = items.map(i => ({
-                      name: i.product.name,
-                      price: Number(i.product.price),
-                      quantity: i.quantity,
-                    }));
-                    fetch("/api/checkout/save-cart", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ email, name, cartItems: cartSnapshot }),
-                    }).catch(() => {});
-                  }
-                }}
-                className="w-full h-12 flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.16em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
-              >
-                {t("payment")} <ChevronRight size={14} />
-              </button>
-            </div>
-          )}
-          {step === 2 && (
-            <div className="space-y-8">
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-2xl text-black dark:text-white">{t("payment")}</h2>
-                <button onClick={() => setStep(1)} className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">← Edit shipping</button>
-              </div>
-              <div className="p-4 border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
-                <div className="flex items-center gap-2 mb-1">
-                  <Truck size={14} className="text-black/40 dark:text-white/40" />
-                  <p className="text-[10px] tracking-[0.14em] uppercase text-black/40 dark:text-white/40">Shipping to</p>
-                </div>
-                {mode === "guest" ? (
-                  <p className="text-sm text-black dark:text-white">{guest.firstName} {guest.lastName} · {guest.line1}, {guest.city}, {guest.state} {guest.postalCode}</p>
-                ) : (
-                  <AddressSummary addresses={addresses} selectedId={selectedAddress} />
-                )}
-              </div>
-              <div className="space-y-3">
-                <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("paymentMethod")}</p>
-                {/* Card / Apple Pay / Google Pay */}
+    <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+      <div className="wrap" style={{ maxWidth: 1100 }}>
+        {/* Step indicator */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginBottom: 48 }}>
+          {stepLabels.map((label, i) => {
+            const idx = i + 1;
+            const done = idx < step;
+            const active = idx === step;
+            return (
+              <div key={label} style={{ display: "flex", alignItems: "center" }}>
                 <button
-                  type="button"
-                  onClick={() => setPaymentMethod("STRIPE")}
-                  className={`w-full flex items-center gap-3 p-4 border transition-colors text-left ${paymentMethod === "STRIPE" ? "border-black dark:border-white bg-black/[0.04] dark:bg-white/[0.04]" : "border-black/20 dark:border-white/20"}`}
+                  onClick={() => done ? setStep(idx as Step) : undefined}
+                  disabled={!done}
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, background: "none", border: "none", cursor: done ? "pointer" : "default", padding: 0 }}
                 >
-                  <input type="radio" readOnly checked={paymentMethod === "STRIPE"} className="shrink-0" />
-                  <CreditCard size={16} className="text-black/60 dark:text-white/60 shrink-0" />
-                  <div className="flex-1">
-                    <span className="text-sm text-black dark:text-white font-medium">{t("cardPayment")}</span>
+                  <div style={{
+                    width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 500, transition: "all 0.2s",
+                    background: done ? "var(--chalk)" : "transparent",
+                    color: done ? "var(--bg)" : active ? "var(--chalk)" : "var(--chalk3)",
+                    border: done ? "1px solid var(--chalk)" : active ? "2px solid var(--chalk)" : "1px solid var(--border)",
+                  }}>
+                    {done ? <Check size={13} /> : idx}
                   </div>
-                  <div className="flex items-center gap-1.5 ml-auto">
-                    {["VISA", "MC", "AMEX"].map(p => (
-                      <span key={p} className="text-[8px] tracking-[0.1em] border border-black/20 dark:border-white/20 px-1 py-0.5 text-black/40 dark:text-white/40">{p}</span>
-                    ))}
-                  </div>
-                </button>
-                {/* Cash on Delivery */}
-                <button
-                  type="button"
-                  onClick={() => codAvailable && setPaymentMethod("CASH_ON_DELIVERY")}
-                  disabled={!codAvailable}
-                  className={`w-full flex items-center gap-3 p-4 border transition-colors text-left ${
-                    !codAvailable
-                      ? "border-black/10 dark:border-white/10 opacity-40 cursor-not-allowed"
-                      : paymentMethod === "CASH_ON_DELIVERY"
-                        ? "border-black dark:border-white bg-black/[0.04] dark:bg-white/[0.04]"
-                        : "border-black/20 dark:border-white/20"
-                  }`}
-                >
-                  <input type="radio" readOnly checked={paymentMethod === "CASH_ON_DELIVERY"} disabled={!codAvailable} className="shrink-0" />
-                  <Banknote size={16} className="text-black/60 dark:text-white/60 shrink-0" />
-                  <span className="text-sm text-black dark:text-white font-medium">{t("cashOnDelivery")}</span>
-                  <span className="ml-auto text-[10px] tracking-[0.08em] uppercase text-black/30 dark:text-white/30">
-                    {codAvailable ? t("payWhenReceived") : t("codUnavailable", { max: COD_MAX_GEL })}
+                  <span style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600, color: active ? "var(--chalk)" : done ? "var(--chalk2)" : "var(--chalk3)" }}>
+                    {label}
                   </span>
                 </button>
-                {!codAvailable && (
-                  <p className="text-[11px] text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                    <span>⚠</span> {t("codUnavailableMsg", { max: COD_MAX_GEL })}
-                  </p>
+                {i < stepLabels.length - 1 && (
+                  <div style={{ width: 80, height: 1, margin: "0 16px", marginBottom: 20, background: done ? "var(--chalk)" : "var(--border)", transition: "background 0.3s" }} />
                 )}
               </div>
+            );
+          })}
+        </div>
 
-              <Input id="notes" label={t("orderNotes")} value={notes} onChange={e => setNotes(e.target.value)} />
-
-              <Button onClick={placeOrder} loading={placing} variant="gold" size="lg" fullWidth leftIcon={<Lock size={16} />}>
-                {paymentMethod === "STRIPE" ? `Pay ${format(total())}` : `${t("placeOrder")} · ${format(total())}`}
-              </Button>
-              <p className="text-[11px] text-center text-black/30 dark:text-white/30">{t("termsNotice")}</p>
+        {/* Mobile summary toggle */}
+        <div className="lg:hidden" style={{ marginBottom: 24, border: "1px solid var(--border)" }}>
+          <button
+            onClick={() => setSummaryOpen(o => !o)}
+            style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "none", border: "none", cursor: "pointer" }}
+          >
+            <span style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>
+              {summaryOpen ? t("hideSummary") : `${t("showSummary")} · ${format(total())}`}
+            </span>
+            <ChevronDown size={14} style={{ color: "var(--chalk3)", transition: "transform 0.2s", transform: summaryOpen ? "rotate(180deg)" : "none" }} />
+          </button>
+          {summaryOpen && (
+            <div style={{ padding: "0 16px 16px", borderTop: "1px solid var(--border)" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingTop: 12, maxHeight: 160, overflowY: "auto" }}>
+                {items.map(item => (
+                  <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                    <span style={{ fontSize: 12, color: "var(--chalk2)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.product.name} × {item.quantity}</span>
+                    <span style={{ fontSize: 12, fontWeight: 500, flexShrink: 0, color: "var(--chalk)" }}>{format(Number(item.variant?.price ?? item.product.price) * item.quantity)}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ borderTop: "1px solid var(--border)", paddingTop: 12, marginTop: 12, display: "flex", flexDirection: "column", gap: 6 }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("subtotal")}</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{format(subtotal())}</span></div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("shipping")}</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{shipping() === 0 ? t("free") : format(shipping())}</span></div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 4 }}><span style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)" }}>{t("total")}</span><span style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)" }}>{format(total())}</span></div>
+              </div>
             </div>
           )}
         </div>
-        <div className="lg:col-span-2">
-          <div className="sticky top-24 border border-black/10 dark:border-white/10 p-6 space-y-4">
-            <p className="text-[10px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40">{t("orderSummary")}</p>
-            <div className="space-y-3 max-h-52 overflow-y-auto">
-              {items.map(item => (
-                <div key={item.id} className="flex justify-between text-sm gap-3">
-                  <span className="text-black/60 dark:text-white/60 line-clamp-2 flex-1">{item.product.name} × {item.quantity}</span>
-                  <span className="font-medium shrink-0 text-black dark:text-white">{format(Number(item.variant?.price ?? item.product.price) * item.quantity)}</span>
-                </div>
-              ))}
-            </div>
-            <Divider />
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>{t("subtotal")}</span><span className="text-black dark:text-white">{format(subtotal())}</span>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 40 }} className="lg:grid-checkout">
+          <style>{`@media(min-width:1024px){.lg\\:grid-checkout{grid-template-columns:3fr 2fr;}}`}</style>
+
+          {/* Main form */}
+          <div>
+            {step === 1 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, color: "var(--chalk)" }}>{t("shippingInfo")}</h2>
+
+                {mode === "guest" && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>Contact</p>
+                      <button onClick={() => setMode("choose")} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>← Change</button>
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                      <KInput id="firstName" label={t("firstName")} autoComplete="given-name" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
+                      <KInput id="lastName" label={t("lastName")} autoComplete="family-name" value={guest.lastName} onChange={e => setG("lastName", e.target.value)} error={guestErrors.lastName} />
+                      <div style={{ gridColumn: "span 2" }}>
+                        <KInput id="email" label={t("email")} type="email" autoComplete="email" inputMode="email" value={guest.email} onChange={e => setG("email", e.target.value)} error={guestErrors.email} />
+                      </div>
+                      <div style={{ gridColumn: "span 2" }}>
+                        <KInput id="phone" label={t("phone")} autoComplete="tel" inputMode="tel" value={guest.phone} onChange={e => setG("phone", e.target.value)} />
+                      </div>
+                    </div>
+
+                    <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)", paddingTop: 8 }}>{t("address")}</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                      <div style={{ gridColumn: "span 2" }}>
+                        <KInput id="line1" label={t("address")} autoComplete="address-line1" value={guest.line1} onChange={e => setG("line1", e.target.value)} error={guestErrors.line1} />
+                      </div>
+                      <div style={{ gridColumn: "span 2" }}>
+                        <KInput id="line2" label={t("apartment")} autoComplete="address-line2" value={guest.line2} onChange={e => setG("line2", e.target.value)} />
+                      </div>
+                      <KInput id="city" label={t("city")} autoComplete="address-level2" value={guest.city} onChange={e => setG("city", e.target.value)} error={guestErrors.city} />
+                      <KInput id="state" label={t("state")} autoComplete="address-level1" value={guest.state} onChange={e => setG("state", e.target.value)} error={guestErrors.state} />
+                      <KInput id="postalCode" label={t("postalCode")} autoComplete="postal-code" inputMode="numeric" value={guest.postalCode} onChange={e => setG("postalCode", e.target.value)} error={guestErrors.postalCode} />
+                      <KInput id="country" label={t("country")} autoComplete="country-name" value={guest.country} onChange={e => setG("country", e.target.value)} />
+                    </div>
+                  </div>
+                )}
+
+                {mode === "login" && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                    <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("savedAddresses")}</p>
+                    {addresses.map(addr => (
+                      <label key={addr.id} style={{
+                        display: "flex", alignItems: "flex-start", gap: 12, padding: 16, cursor: "pointer",
+                        border: `1px solid ${selectedAddress === addr.id ? "var(--chalk)" : "var(--borderg)"}`,
+                        background: selectedAddress === addr.id ? "var(--s2)" : "transparent",
+                        transition: "border-color 0.15s",
+                      }}>
+                        <input type="radio" name="address" value={addr.id} checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} style={{ marginTop: 2, accentColor: "var(--gold)" }} />
+                        <div>
+                          <p style={{ fontSize: 13, fontWeight: 500, color: "var(--chalk)" }}>{addr.label} — {addr.firstName} {addr.lastName}</p>
+                          <p style={{ fontSize: 12, color: "var(--chalk3)", marginTop: 3 }}>{addr.line1}, {addr.city}, {addr.state} {addr.postalCode}</p>
+                        </div>
+                      </label>
+                    ))}
+
+                    {addingAddress ? (
+                      <div style={{ border: "1px solid var(--borderg)", padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+                        <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>New address</p>
+                        <KInput id="al" label="Label (e.g. Home)" value={newAddr.label} onChange={e => setNA("label", e.target.value)} />
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                          <KInput id="afn" label={t("firstName")} value={newAddr.firstName} onChange={e => setNA("firstName", e.target.value)} autoComplete="given-name" />
+                          <KInput id="aln" label={t("lastName")} value={newAddr.lastName} onChange={e => setNA("lastName", e.target.value)} autoComplete="family-name" />
+                          <div style={{ gridColumn: "span 2" }}><KInput id="al1" label={t("address")} value={newAddr.line1} onChange={e => setNA("line1", e.target.value)} autoComplete="address-line1" /></div>
+                          <div style={{ gridColumn: "span 2" }}><KInput id="al2" label={t("apartment")} value={newAddr.line2} onChange={e => setNA("line2", e.target.value)} autoComplete="address-line2" /></div>
+                          <KInput id="acity" label={t("city")} value={newAddr.city} onChange={e => setNA("city", e.target.value)} autoComplete="address-level2" />
+                          <KInput id="astate" label={t("state")} value={newAddr.state} onChange={e => setNA("state", e.target.value)} autoComplete="address-level1" />
+                          <KInput id="azip" label={t("postalCode")} value={newAddr.postalCode} onChange={e => setNA("postalCode", e.target.value)} autoComplete="postal-code" />
+                          <KInput id="aphone" label={t("phone")} value={newAddr.phone} onChange={e => setNA("phone", e.target.value)} autoComplete="tel" />
+                        </div>
+                        <div style={{ display: "flex", gap: 10 }}>
+                          <button onClick={saveNewAddress} disabled={savingAddress} style={{ padding: "9px 18px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", border: "none", cursor: savingAddress ? "wait" : "pointer", opacity: savingAddress ? 0.7 : 1 }}>
+                            {savingAddress ? "…" : "Save address"}
+                          </button>
+                          <button onClick={() => setAddingAddress(false)} style={{ padding: "9px 18px", background: "transparent", color: "var(--chalk2)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", border: "1px solid var(--borderg)", cursor: "pointer" }}>
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setAddingAddress(true)}
+                        style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                      >
+                        <Plus size={12} /> {t("addNewAddress")}
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                <button
+                  onClick={async () => {
+                    if (!validateStep1()) return;
+                    setStep(2);
+                    const email = mode === "guest" ? guest.email : session?.user?.email;
+                    const name = mode === "guest" ? `${guest.firstName} ${guest.lastName}`.trim() : session?.user?.name ?? undefined;
+                    if (email) {
+                      const cartSnapshot = items.map(i => ({ name: i.product.name, price: Number(i.product.price), quantity: i.quantity }));
+                      fetch("/api/checkout/save-cart", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, name, cartItems: cartSnapshot }) }).catch(() => {});
+                    }
+                  }}
+                  style={{ width: "100%", height: 48, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "var(--chalk)", color: "var(--bg)", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", fontWeight: 700, border: "none", cursor: "pointer" }}
+                >
+                  {t("payment")} <ChevronRight size={14} />
+                </button>
               </div>
-              {discount() > 0 && (
-                <div className="flex justify-between text-green-600">
-                  <span>{t("discount", { code: coupon?.code ?? "" })}</span><span>−{format(discount())}</span>
+            )}
+
+            {step === 2 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <h2 style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, color: "var(--chalk)" }}>{t("payment")}</h2>
+                  <button onClick={() => setStep(1)} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>← Edit shipping</button>
                 </div>
-              )}
-              <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>{t("shipping")}</span><span className="text-black dark:text-white">{shipping() === 0 ? t("free") : format(shipping())}</span>
-              </div>
-              <div className="flex justify-between text-black/60 dark:text-white/60">
-                <span>Tax</span><span className="text-black dark:text-white">{format(tax())}</span>
-              </div>
-            </div>
-            <Divider />
-            <div className="flex justify-between font-medium text-lg text-black dark:text-white">
-              <span>{t("total")}</span><span>{format(total())}</span>
-            </div>
-            <div className="flex flex-col gap-1.5 pt-1">
-              {[
-                { icon: Lock, text: "256-bit SSL encryption" },
-                { icon: Truck, text: "Free shipping over ₾200" },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2">
-                  <Icon size={12} className="text-black/30 dark:text-white/30 shrink-0" />
-                  <span className="text-[11px] text-black/40 dark:text-white/40">{text}</span>
+
+                <div style={{ padding: 16, border: "1px solid var(--borderg)", background: "var(--s1)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                    <Truck size={13} style={{ color: "var(--chalk3)" }} />
+                    <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>Shipping to</p>
+                  </div>
+                  {mode === "guest" ? (
+                    <p style={{ fontSize: 13, color: "var(--chalk)" }}>{guest.firstName} {guest.lastName} · {guest.line1}, {guest.city}, {guest.state} {guest.postalCode}</p>
+                  ) : (
+                    <AddressSummary addresses={addresses} selectedId={selectedAddress} />
+                  )}
                 </div>
-              ))}
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("paymentMethod")}</p>
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod("STRIPE")}
+                    style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: 16, textAlign: "left", cursor: "pointer", transition: "border-color 0.15s", background: paymentMethod === "STRIPE" ? "var(--s2)" : "transparent", border: `1px solid ${paymentMethod === "STRIPE" ? "var(--chalk)" : "var(--borderg)"}` }}
+                  >
+                    <input type="radio" readOnly checked={paymentMethod === "STRIPE"} style={{ accentColor: "var(--gold)", flexShrink: 0 }} />
+                    <CreditCard size={15} style={{ color: "var(--chalk2)", flexShrink: 0 }} />
+                    <span style={{ fontSize: 13, color: "var(--chalk)", fontWeight: 500, flex: 1 }}>{t("cardPayment")}</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      {["VISA", "MC", "AMEX"].map(p => (
+                        <span key={p} style={{ fontSize: 8, letterSpacing: "0.1em", border: "1px solid var(--borderg)", padding: "2px 4px", color: "var(--chalk3)" }}>{p}</span>
+                      ))}
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => codAvailable && setPaymentMethod("CASH_ON_DELIVERY")}
+                    disabled={!codAvailable}
+                    style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: 16, textAlign: "left", cursor: codAvailable ? "pointer" : "not-allowed", opacity: !codAvailable ? 0.4 : 1, transition: "border-color 0.15s", background: paymentMethod === "CASH_ON_DELIVERY" ? "var(--s2)" : "transparent", border: `1px solid ${paymentMethod === "CASH_ON_DELIVERY" ? "var(--chalk)" : "var(--borderg)"}` }}
+                  >
+                    <input type="radio" readOnly checked={paymentMethod === "CASH_ON_DELIVERY"} disabled={!codAvailable} style={{ accentColor: "var(--gold)", flexShrink: 0 }} />
+                    <Banknote size={15} style={{ color: "var(--chalk2)", flexShrink: 0 }} />
+                    <span style={{ fontSize: 13, color: "var(--chalk)", fontWeight: 500 }}>{t("cashOnDelivery")}</span>
+                    <span style={{ marginLeft: "auto", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)" }}>
+                      {codAvailable ? t("payWhenReceived") : t("codUnavailable", { max: COD_MAX_GEL })}
+                    </span>
+                  </button>
+                  {!codAvailable && (
+                    <p style={{ fontSize: 11, color: "#d97706", display: "flex", alignItems: "center", gap: 6 }}>
+                      <span>⚠</span> {t("codUnavailableMsg", { max: COD_MAX_GEL })}
+                    </p>
+                  )}
+                </div>
+
+                <KInput id="notes" label={t("orderNotes")} value={notes} onChange={e => setNotes(e.target.value)} />
+
+                <button
+                  onClick={placeOrder}
+                  disabled={placing}
+                  style={{ width: "100%", height: 52, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "var(--gold)", color: "#000", fontSize: 12, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", border: "none", cursor: placing ? "wait" : "pointer", opacity: placing ? 0.7 : 1 }}
+                >
+                  <Lock size={14} />
+                  {placing ? "…" : paymentMethod === "STRIPE" ? `Pay ${format(total())}` : `${t("placeOrder")} · ${format(total())}`}
+                </button>
+                <p style={{ fontSize: 11, textAlign: "center", color: "var(--chalk3)" }}>{t("termsNotice")}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Order summary sidebar */}
+          <div>
+            <div style={{ position: "sticky", top: 96, border: "1px solid var(--border)", padding: 24, background: "var(--s1)", display: "flex", flexDirection: "column", gap: 16 }}>
+              <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("orderSummary")}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 208, overflowY: "auto" }}>
+                {items.map(item => (
+                  <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                    <span style={{ fontSize: 12, color: "var(--chalk2)", flex: 1, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.product.name} × {item.quantity}</span>
+                    <span style={{ fontSize: 12, fontWeight: 500, flexShrink: 0, color: "var(--chalk)" }}>{format(Number(item.variant?.price ?? item.product.price) * item.quantity)}</span>
+                  </div>
+                ))}
+              </div>
+              <KDivider />
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("subtotal")}</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{format(subtotal())}</span></div>
+                {discount() > 0 && (
+                  <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "#4a9d6f" }}>{t("discount", { code: coupon?.code ?? "" })}</span><span style={{ fontSize: 12, color: "#4a9d6f" }}>−{format(discount())}</span></div>
+                )}
+                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("shipping")}</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{shipping() === 0 ? t("free") : format(shipping())}</span></div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>Tax</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{format(tax())}</span></div>
+              </div>
+              <KDivider />
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 14, fontWeight: 600, color: "var(--chalk)" }}>{t("total")}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "var(--chalk)" }}>{format(total())}</span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, paddingTop: 4 }}>
+                {[{ icon: Lock, text: "256-bit SSL encryption" }, { icon: Truck, text: "Free shipping over ₾200" }].map(({ icon: Icon, text }) => (
+                  <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <Icon size={11} style={{ color: "var(--chalk3)", flexShrink: 0 }} />
+                    <span style={{ fontSize: 11, color: "var(--chalk3)" }}>{text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </Container>
+    </div>
   );
 }

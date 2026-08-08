@@ -61,6 +61,7 @@ export default async function OrdersPage() {
           </Link>
         </div>
       ) : (
+        <>
         <style>{`.order-row-link:hover { background: var(--s2) !important; }`}</style>
         <div style={{ border: "1px solid var(--border)" }}>
           {o.map((order, idx) => {
@@ -94,6 +95,7 @@ export default async function OrdersPage() {
             );
           })}
         </div>
+        </>
       )}
     </div>
   );
