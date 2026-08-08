@@ -54,123 +54,135 @@ export function SearchModal() {
     <AnimatePresence>
       {searchOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.7)" }}
             onClick={closeSearch}
           />
 
-          {/* Modal */}
           <FocusTrap active={searchOpen} focusTrapOptions={{ escapeDeactivates: false, allowOutsideClick: true, initialFocus: () => inputRef.current ?? false }}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.97, y: -10 }}
-            transition={{ duration: 0.2 }}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Search"
-            className="fixed top-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[640px] z-50"
-          >
-            <div className="bg-white dark:bg-surface-900 rounded-2xl shadow-luxury-xl overflow-hidden">
-              {/* Input */}
-              <div className="flex items-center gap-3 px-5 h-16 border-b border-surface-100 dark:border-surface-800">
-                {loading ? <Spinner size={20} /> : <Search size={20} className="text-surface-400 shrink-0" />}
-                <input
-                  ref={inputRef}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={t("placeholder")}
-                  className="flex-1 text-base bg-transparent text-surface-900 dark:text-white placeholder:text-surface-400 focus:outline-none"
-                />
-                {query && (
-                  <button onClick={() => setQuery("")} className="text-surface-400 hover:text-surface-700 dark:hover:text-surface-200">
-                    <X size={18} />
-                  </button>
-                )}
-                <button
-                  onClick={closeSearch}
-                  className="hidden md:flex items-center gap-1 px-2 py-1 rounded-lg bg-surface-100 dark:bg-surface-800 text-xs text-surface-400"
-                >
-                  ESC
-                </button>
-              </div>
-
-              {/* Screen-reader result count announcement */}
-              <p aria-live="polite" aria-atomic="true" className="sr-only">
-                {query && !loading
-                  ? results.length > 0
-                    ? t("resultsFor", { count: results.length, query })
-                    : t("noResults", { query })
-                  : ""}
-              </p>
-
-              {/* Category tabs — only when there are results */}
-              {query && results.length > 0 && (
-                <div className="flex gap-0 border-b border-surface-100 dark:border-surface-800 px-5">
-                  {(["all", "beauty", "tech"] as const).map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`px-4 h-10 text-[10px] tracking-[0.12em] uppercase transition-colors border-b-2 -mb-px ${
-                        activeTab === tab
-                          ? "border-black dark:border-white text-black dark:text-white"
-                          : "border-transparent text-black/40 dark:text-white/40 hover:text-black/70 dark:hover:text-white/70"
-                      }`}
-                    >
-                      {tab === "all" ? `${t("tabAll")} (${results.length})` : tab === "beauty" ? t("tabBeauty") : t("tabTech")}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.18 }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Search"
+              style={{
+                position: "fixed", top: 16, left: 16, right: 16,
+                maxWidth: 620, margin: "0 auto", zIndex: 50,
+              }}
+            >
+              <div style={{ background: "var(--s1)", border: "1px solid var(--border)", overflow: "hidden" }}>
+                {/* Input */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "0 20px", height: 60, borderBottom: "1px solid var(--border)" }}>
+                  {loading
+                    ? <Spinner size={18} />
+                    : <Search size={18} style={{ color: "var(--chalk3)", flexShrink: 0 }} />
+                  }
+                  <input
+                    ref={inputRef}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={t("placeholder")}
+                    style={{ flex: 1, fontSize: 14, background: "transparent", color: "var(--chalk)", border: "none", outline: "none" }}
+                  />
+                  {query && (
+                    <button onClick={() => setQuery("")} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--chalk3)", display: "flex", padding: 4 }}>
+                      <X size={16} />
                     </button>
-                  ))}
+                  )}
+                  <button
+                    onClick={closeSearch}
+                    style={{ display: "flex", alignItems: "center", padding: "3px 7px", border: "1px solid var(--borderg)", background: "transparent", fontSize: 10, letterSpacing: "0.08em", color: "var(--chalk3)", cursor: "pointer" }}
+                  >
+                    ESC
+                  </button>
                 </div>
-              )}
 
-              {/* Results */}
-              <div className="max-h-[60vh] overflow-y-auto p-4">
-                {!query ? (
-                  <div>
-                    <p className="text-xs font-medium text-surface-400 uppercase tracking-wider mb-3 px-1">
-                      {t("trending")}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {TRENDING.map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => setQuery(t)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-50 dark:bg-surface-800 text-sm text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
-                        >
-                          <TrendingUp size={12} className="text-brand-400" />
-                          {t}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : filteredResults.length > 0 ? (
-                  <div className="space-y-1">
-                    {filteredResults.map((product) => (
-                      <SearchResultItem
-                        key={(product as ProductCard).id}
-                        product={product as ProductCard}
-                        onClose={closeSearch}
-                      />
+                <p aria-live="polite" aria-atomic="true" className="sr-only">
+                  {query && !loading
+                    ? results.length > 0
+                      ? t("resultsFor", { count: results.length, query })
+                      : t("noResults", { query })
+                    : ""}
+                </p>
+
+                {/* Category tabs */}
+                {query && results.length > 0 && (
+                  <div style={{ display: "flex", borderBottom: "1px solid var(--border)", padding: "0 20px" }}>
+                    {(["all", "beauty", "tech"] as const).map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        style={{
+                          padding: "0 16px", height: 40, fontSize: 10, letterSpacing: "0.12em",
+                          textTransform: "uppercase", background: "none", border: "none", cursor: "pointer",
+                          borderBottom: `2px solid ${activeTab === tab ? "var(--gold)" : "transparent"}`,
+                          color: activeTab === tab ? "var(--gold)" : "var(--chalk3)",
+                          marginBottom: -1, transition: "color 0.15s",
+                        }}
+                      >
+                        {tab === "all" ? `${t("tabAll")} (${results.length})` : tab === "beauty" ? t("tabBeauty") : t("tabTech")}
+                      </button>
                     ))}
-                    <Link
-                      href={`/search?q=${encodeURIComponent(query)}`}
-                      onClick={closeSearch}
-                      className="flex items-center justify-center gap-2 h-11 mt-2 text-sm text-brand-500 hover:text-brand-600 font-medium"
-                    >
-                      {t("viewAll")} <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-surface-400 text-sm">{t("noResults", { query })}</p>
-                    <p className="text-surface-300 dark:text-surface-500 text-xs mt-1">Try different keywords</p>
                   </div>
                 )}
+
+                {/* Results */}
+                <div style={{ maxHeight: "60vh", overflowY: "auto", padding: 16 }}>
+                  {!query ? (
+                    <div>
+                      <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)", marginBottom: 12 }}>
+                        {t("trending")}
+                      </p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                        {TRENDING.map((term) => (
+                          <button
+                            key={term}
+                            onClick={() => setQuery(term)}
+                            style={{
+                              display: "flex", alignItems: "center", gap: 6,
+                              padding: "7px 12px", border: "1px solid var(--borderg)",
+                              background: "transparent", color: "var(--chalk2)", fontSize: 12,
+                              cursor: "pointer", transition: "border-color 0.15s, color 0.15s",
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.color = "var(--chalk)"; }}
+                            onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--borderg)"; e.currentTarget.style.color = "var(--chalk2)"; }}
+                          >
+                            <TrendingUp size={11} style={{ color: "var(--gold)" }} />
+                            {term}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : filteredResults.length > 0 ? (
+                    <div>
+                      {filteredResults.map((product) => (
+                        <SearchResultItem
+                          key={(product as ProductCard).id}
+                          product={product as ProductCard}
+                          onClose={closeSearch}
+                        />
+                      ))}
+                      <Link
+                        href={`/search?q=${encodeURIComponent(query)}`}
+                        onClick={closeSearch}
+                        style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, height: 44, marginTop: 8, fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", textDecoration: "none", borderTop: "1px solid var(--border)" }}
+                      >
+                        {t("viewAll")} <ArrowRight size={12} />
+                      </Link>
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: "center", padding: "32px 0" }}>
+                      <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("noResults", { query })}</p>
+                      <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 6 }}>Try different keywords</p>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
           </FocusTrap>
         </>
       )}
@@ -185,18 +197,20 @@ function SearchResultItem({ product, onClose }: { product: ProductCard; onClose:
     <Link
       href={`/products/${product.slug}`}
       onClick={onClose}
-      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors group"
+      style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 8px", textDecoration: "none", borderBottom: "1px solid var(--border)", transition: "background 0.12s" }}
+      onMouseEnter={e => (e.currentTarget.style.background = "var(--s2)")}
+      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
     >
-      <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-surface-100 dark:bg-surface-800 shrink-0">
+      <div style={{ position: "relative", width: 48, height: 48, background: "var(--s2)", flexShrink: 0, overflow: "hidden" }}>
         <Image src={img} alt={product.name} fill className="object-cover" sizes="48px" />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-surface-900 dark:text-white line-clamp-1 group-hover:text-brand-500 transition-colors">
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{ fontSize: 13, fontWeight: 500, color: "var(--chalk)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {product.name}
         </p>
-        <p className="text-xs text-surface-400">{product.brand?.name} · {product.category.name}</p>
+        <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 2 }}>{product.brand?.name} · {product.category.name}</p>
       </div>
-      <span className="text-sm font-semibold text-surface-900 dark:text-white shrink-0">
+      <span style={{ fontSize: 13, fontWeight: 600, color: "var(--chalk)", flexShrink: 0 }}>
         {format(Number(product.price))}
       </span>
     </Link>
