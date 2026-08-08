@@ -127,28 +127,31 @@ export function isValidEmail(email: string): boolean {
 }
 
 
-/**
- * Recursively converts Prisma `Decimal` values to plain numbers so results can
- * cross the server/client boundary.
- *
- * Anything that is not a plain object or array is returned untouched. This
- * matters for `Date`: it is an object with no own enumerable properties, so
- * naively spreading it through `Object.entries` collapses it to `{}` and
- * destroys every timestamp in the payload.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function serializeDecimal(obj: any): any {
-  if (obj === null || obj === undefined) return obj;
-  if (typeof obj !== "object") return obj;
-  if (Array.isArray(obj)) return obj.map(serializeDecimal);
-  if (obj instanceof Date) return obj;
-  if (typeof obj.toNumber === "function") return obj.toNumber();
-  // Only walk plain objects; leave class instances (Buffer, Map, …) intact.
+type DecimalLike = { toNumber(): number };
+
+// Maps Prisma Decimal → number throughout a type tree; leaves Date, primitives, and other objects intact.
+export type Serialized<T> =
+  T extends null | undefined ? T :
+  T extends Date ? T :
+  T extends DecimalLike ? number :
+  T extends readonly (infer U)[] ? Serialized<U>[] :
+  T extends object ? { [K in keyof T]: Serialized<T[K]> } :
+  T;
+
+// Converts Prisma Decimal values to plain numbers for server→client serialization.
+// Dates are returned untouched — spreading them through Object.entries collapses them to {}.
+export function serializeDecimal<T>(obj: T): Serialized<T> {
+  if (obj === null || obj === undefined) return obj as Serialized<T>;
+  if (typeof obj !== "object") return obj as Serialized<T>;
+  if (Array.isArray(obj)) return obj.map(serializeDecimal) as Serialized<T>;
+  if (obj instanceof Date) return obj as Serialized<T>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (typeof (obj as any).toNumber === "function") return (obj as any).toNumber() as Serialized<T>;
   const proto = Object.getPrototypeOf(obj);
-  if (proto !== Object.prototype && proto !== null) return obj;
+  if (proto !== Object.prototype && proto !== null) return obj as Serialized<T>;
   return Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [k, serializeDecimal(v)])
-  );
+  ) as Serialized<T>;
 }
 
 /** Parses a positive integer query param, falling back when absent or invalid. */

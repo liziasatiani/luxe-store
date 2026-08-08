@@ -224,7 +224,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         i === activeIdx ? "border-white" : "border-white/20 hover:border-white/50"
                       )}
                     >
-                      <Image src={img.url} alt="" fill className="object-cover" sizes="48px" />
+                      <Image src={img.url} alt={`Product image ${i + 1}`} fill className="object-cover" sizes="48px" />
                     </button>
                   ))}
                 </div>

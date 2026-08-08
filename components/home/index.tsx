@@ -166,7 +166,7 @@ export function FlashSaleSection() {
     fetch("/api/products?onSale=true&limit=4", { signal: ctrl.signal })
       .then(r => r.json())
       .then(d => setProducts(d.data?.products ?? []))
-      .catch(err => { if (err?.name !== "AbortError") console.warn("Flash sale fetch failed"); });
+      .catch(() => {});
     return () => ctrl.abort();
   }, []);
 
@@ -413,7 +413,7 @@ export function TheEditSection() {
     fetch("/api/products?featured=true&limit=3&sort=best-selling", { signal: ctrl.signal })
       .then(r => r.json())
       .then(d => setProducts(d.data?.products ?? []))
-      .catch(err => { if (err?.name !== "AbortError") console.warn("The Edit fetch failed"); });
+      .catch(() => {});
     return () => ctrl.abort();
   }, []);
 

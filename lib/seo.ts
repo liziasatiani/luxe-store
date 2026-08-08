@@ -98,7 +98,7 @@ export function buildProductSchema(product: {
   ratingCount: number;
   stock: number;
   sku: string;
-  reviews?: Array<{ rating: number; comment: string | null; createdAt: string | Date; user?: { name: string | null } | null }>;
+  reviews?: Array<{ rating: number; body: string | null; createdAt: string | Date; user?: { name: string | null } | null }>;
 }) {
   return {
     "@context": "https://schema.org",
@@ -137,7 +137,7 @@ export function buildProductSchema(product: {
       "@type": "Review",
       reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
       author: { "@type": "Person", name: r.user?.name ?? "Verified Buyer" },
-      reviewBody: r.comment ?? "",
+      reviewBody: r.body ?? "",
       datePublished: new Date(r.createdAt).toISOString().split("T")[0],
     })),
   };

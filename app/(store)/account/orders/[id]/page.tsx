@@ -39,8 +39,7 @@ export default async function OrderDetailPage({ params }: Props) {
 
   const t = await getTranslations("account");
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const o = serializeDecimal(order) as any;
+  const o = serializeDecimal(order);
 
   const STEPS = [
     { key: "PENDING",   icon: Clock,       label: t("status.pending")   },
@@ -95,8 +94,7 @@ export default async function OrderDetailPage({ params }: Props) {
 
       <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6 space-y-4">
         <h2 className="font-semibold text-surface-900 dark:text-white">{t("orderDetail.items")}</h2>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        {o.items.map((item: any) => (
+        {o.items.map((item) => (
           <div key={item.id} className="flex gap-4">
             <Link href={`/products/${item.product?.slug ?? ""}`}
               className="relative w-16 h-16 rounded-xl overflow-hidden bg-surface-50 dark:bg-surface-800 shrink-0">
