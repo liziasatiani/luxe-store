@@ -716,7 +716,11 @@
     "beautyHeadline1": "Radiance",
     "beautyHeadline2": "refined",
     "exploreTech": "Explore Tech",
-    "exploreBeauty": "Explore Beauty"
+    "exploreBeauty": "Explore Beauty",
+    "techSub": "everything in one place",
+    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
+    "beautySub": "premium cosmetics",
+    "beautySubKa": "ტექნოლოგია და სილამაზე"
   },
   "wishlist": {
     "title": "My Wishlist",

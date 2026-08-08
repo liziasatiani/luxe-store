@@ -73,8 +73,8 @@ export async function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-2 pr-0 md:pr-8">
             <Link href="/" className="inline-block mb-7">
-              <span className="font-display text-lg tracking-[0.18em] uppercase text-white/90">
-                Everything Street
+              <span className="font-display text-[21px] font-bold tracking-[0.02em] text-white/90">
+                Everything <em className="not-italic italic font-bold" style={{ color: "#C9A44A" }}>Street</em>
               </span>
             </Link>
             <p className="text-[12px] leading-[1.8] text-white/35 mb-7 max-w-[220px]">

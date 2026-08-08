@@ -91,8 +91,8 @@ export function Navbar() {
 
           {/* Center: logo */}
           <Link href="/" onClick={closeMobileMenu} className="flex items-center justify-center">
-            <span className="font-display text-sm md:text-base tracking-[0.12em] uppercase text-white whitespace-nowrap">
-              Everything Street
+            <span className="font-display text-[20px] font-bold tracking-[0.02em] text-white whitespace-nowrap">
+              Everything <em className="not-italic italic font-bold" style={{ color: "#C9A44A" }}>Street</em>
             </span>
           </Link>
 
@@ -127,7 +127,8 @@ export function Navbar() {
               <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
             ) : (
               <Link href="/login"
-                className="hidden md:block ml-2 text-[10px] tracking-[0.14em] uppercase font-medium text-white/70 hover:text-white transition-colors">
+                className="hidden md:block ml-2 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.1em] uppercase rounded-full border transition-all hover:bg-brand-500/18"
+                style={{ borderColor: "rgba(201,164,74,0.4)", color: "#C9A44A" }}>
                 {t("signIn")}
               </Link>
             ))}

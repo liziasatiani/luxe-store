@@ -716,7 +716,11 @@
     "beautyHeadline1": "Resplandor",
     "beautyHeadline2": "refinado",
     "exploreTech": "Explorar Tech",
-    "exploreBeauty": "Explorar Belleza"
+    "exploreBeauty": "Explorar Belleza",
+    "techSub": "todo en un solo lugar",
+    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
+    "beautySub": "cosméticos premium",
+    "beautySubKa": "ტექნოლოგია და სილამაზე"
   },
   "wishlist": {
     "title": "Mi lista de deseos",

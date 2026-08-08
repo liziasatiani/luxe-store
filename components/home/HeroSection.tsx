@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -8,157 +9,112 @@ export function HeroSection() {
   const t = useTranslations("hero");
 
   return (
-    <section className="relative w-full min-h-[100svh] overflow-hidden flex flex-col md:flex-row">
+    <section className="relative w-full min-h-[100svh] flex flex-col md:flex-row" style={{ background: "#07090F" }}>
+
       {/* Tech — left panel */}
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative flex-1 min-h-[50svh] md:min-h-[100svh] group overflow-hidden"
-      >
+      <div className="relative flex-1 min-h-[55svh] md:min-h-[100svh] group overflow-hidden cursor-pointer">
         <Image
-          src="https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=1200&q=80&auto=format"
+          src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&q=85&auto=format"
           alt="Premium technology"
           fill
           priority
           fetchPriority="high"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+          className="object-cover object-center brightness-[0.28] transition-[filter,transform] duration-700 group-hover:brightness-[0.38] group-hover:scale-[1.04]"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        {/* Dark overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#07090F]/90 via-[#07090F]/40 to-[#07090F]/20" />
-        {/* Divider line center-right */}
-        <div className="hidden md:block absolute top-0 right-0 bottom-0 w-px bg-white/[0.08]" />
+        {/* Bottom shade */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(0deg,rgba(7,9,15,.85) 0%,transparent 55%)" }} />
+        {/* Tech tint on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "linear-gradient(135deg,rgba(0,229,255,.18) 0%,transparent 70%)" }} />
+        {/* Center divider */}
+        <div className="hidden md:block absolute top-0 right-0 bottom-0 w-px" style={{ background: "rgba(239,233,218,0.12)" }} />
 
-        <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 lg:p-16">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-[9px] tracking-[0.3em] uppercase text-white/40 mb-4"
-          >
-            {t("techLabel", { fallback: "Premium Technology" })}
-          </motion.p>
-          <motion.h2
+        <div className="absolute inset-0 flex flex-col justify-end" style={{ padding: "72px 56px" }}>
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="font-display font-light text-white leading-[0.95] tracking-tight mb-6"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
+            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            {t("techHeadline1", { fallback: "Precision" })}
-            <br />
-            <span className="italic font-normal text-brand-400">
-              {t("techHeadline2", { fallback: "by design" })}
-            </span>
-          </motion.h2>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.55 }}
-          >
-            <Link
-              href="/tech"
-              className="inline-flex items-center gap-3 text-[10px] tracking-[0.22em] uppercase font-medium text-white/80 hover:text-white group/link transition-colors"
+            <div className="flex items-center gap-2.5 mb-4" style={{ color: "#00E5FF" }}>
+              <span className="inline-block w-[22px] h-px" style={{ background: "#00E5FF" }} />
+              <span className="text-[10px] font-semibold tracking-[0.22em] uppercase">Technology</span>
+            </div>
+            <h2 className="font-display font-bold text-white leading-[0.95] tracking-[-0.02em] mb-3.5"
+              style={{ fontSize: "clamp(40px,5.5vw,80px)" }}>
+              {t("techHeadline1", { fallback: "Next" })}<br />
+              <span className="italic">{t("techHeadline2", { fallback: "Generation" })}</span>
+            </h2>
+            <p className="font-georgian text-white/55 mb-7" style={{ fontSize: "clamp(20px,2.8vw,36px)", fontWeight: 400, lineHeight: 1.2 }}>
+              {t("techSubKa", { fallback: "ყველაფერი ერთ ქუჩაზე" })}
+            </p>
+            <p className="text-[13px] text-white/60 max-w-[280px] leading-[1.65] mb-8">
+              Sony, Samsung, Apple — {t("techSub", { fallback: "everything in one place" })}
+            </p>
+            <Link href="/tech"
+              className="inline-flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase text-white border rounded-[1px] transition-all duration-250"
+              style={{ padding: "13px 28px", background: "rgba(255,255,255,0.06)", backdropFilter: "blur(8px)", borderColor: "rgba(255,255,255,0.3)" }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "#00E5FF"; el.style.borderColor = "#00E5FF"; el.style.color = "#000"; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(255,255,255,0.06)"; el.style.borderColor = "rgba(255,255,255,0.30)"; el.style.color = "#fff"; }}
             >
-              {t("exploreTech", { fallback: "Explore Tech" })}
-              <span className="w-8 h-px bg-white/40 group-hover/link:w-12 group-hover/link:bg-white transition-all duration-300" />
+              Shop Tech →
             </Link>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Center brand watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none text-center">
+        <span className="font-display text-[13px] font-normal tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.25em" }}>
+          Everything Street
+        </span>
+      </div>
 
       {/* Beauty — right panel */}
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative flex-1 min-h-[50svh] md:min-h-[100svh] group overflow-hidden"
-      >
+      <div className="relative flex-1 min-h-[55svh] md:min-h-[100svh] group overflow-hidden cursor-pointer">
         <Image
-          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&q=80&auto=format"
+          src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=900&q=85&auto=format"
           alt="Luxury beauty"
           fill
           priority
           fetchPriority="high"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+          className="object-cover object-center brightness-[0.28] transition-[filter,transform] duration-700 group-hover:brightness-[0.38] group-hover:scale-[1.04]"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#07090F]/90 via-[#07090F]/40 to-[#07090F]/20" />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(0deg,rgba(7,9,15,.85) 0%,transparent 55%)" }} />
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "linear-gradient(135deg,rgba(255,51,102,.18) 0%,transparent 70%)" }} />
 
-        <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12 lg:p-16">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.45 }}
-            className="text-[9px] tracking-[0.3em] uppercase text-white/40 mb-4"
-          >
-            {t("beautyLabel", { fallback: "Luxury Beauty" })}
-          </motion.p>
-          <motion.h2
+        <div className="absolute inset-0 flex flex-col justify-end" style={{ padding: "72px 56px" }}>
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-            className="font-display font-light text-white leading-[0.95] tracking-tight mb-6"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            {t("beautyHeadline1", { fallback: "Radiance" })}
-            <br />
-            <span className="italic font-normal text-brand-400">
-              {t("beautyHeadline2", { fallback: "refined" })}
-            </span>
-          </motion.h2>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            <Link
-              href="/beauty"
-              className="inline-flex items-center gap-3 text-[10px] tracking-[0.22em] uppercase font-medium text-white/80 hover:text-white group/link transition-colors"
+            <div className="flex items-center gap-2.5 mb-4" style={{ color: "#FF3366" }}>
+              <span className="inline-block w-[22px] h-px" style={{ background: "#FF3366" }} />
+              <span className="text-[10px] font-semibold tracking-[0.22em] uppercase">Beauty</span>
+            </div>
+            <h2 className="font-display font-bold text-white leading-[0.95] tracking-[-0.02em] mb-3.5"
+              style={{ fontSize: "clamp(40px,5.5vw,80px)" }}>
+              {t("beautyHeadline1", { fallback: "The Art" })}<br />
+              <span className="italic">{t("beautyHeadline2", { fallback: "of Beauty" })}</span>
+            </h2>
+            <p className="font-georgian text-white/55 mb-7" style={{ fontSize: "clamp(20px,2.8vw,36px)", fontWeight: 400, lineHeight: 1.2 }}>
+              {t("beautySubKa", { fallback: "ტექნოლოგია და სილამაზე" })}
+            </p>
+            <p className="text-[13px] text-white/60 max-w-[280px] leading-[1.65] mb-8">
+              Charlotte Tilbury, La Mer, Chanel — {t("beautySub", { fallback: "premium cosmetics" })}
+            </p>
+            <Link href="/beauty"
+              className="inline-flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase text-white border rounded-[1px] transition-all duration-250"
+              style={{ padding: "13px 28px", background: "rgba(255,255,255,0.06)", backdropFilter: "blur(8px)", borderColor: "rgba(255,255,255,0.3)" }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "#FF3366"; el.style.borderColor = "#FF3366"; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(255,255,255,0.06)"; el.style.borderColor = "rgba(255,255,255,0.30)"; }}
             >
-              {t("exploreBeauty", { fallback: "Explore Beauty" })}
-              <span className="w-8 h-px bg-white/40 group-hover/link:w-12 group-hover/link:bg-white transition-all duration-300" />
+              Shop Beauty →
             </Link>
           </motion.div>
         </div>
-      </motion.div>
-
-      {/* Center brand mark */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.7 }}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
-      >
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-px h-12 bg-white/20" />
-          <span className="text-[8px] tracking-[0.4em] uppercase text-white/30 bg-[#07090F]/60 px-3 py-1">
-            {t("tagline", { fallback: "Est. 2024" })}
-          </span>
-          <div className="w-px h-12 bg-white/20" />
-        </div>
-      </motion.div>
-
-      {/* Stats row */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.9 }}
-        className="absolute bottom-0 left-0 right-0 z-10 hidden md:grid grid-cols-4 border-t border-white/[0.08]"
-      >
-        {[
-          { value: "230+", label: t("statsProducts", { fallback: "Products" }), cls: "text-brand-400" },
-          { value: "148",  label: t("statsBrands",   { fallback: "Brands"   }), cls: "text-brand-400" },
-          { value: "4.9★", label: t("statsRating",   { fallback: "Rating"   }), cls: "text-surface-50" },
-          { value: "2–3d", label: t("statsDelivery", { fallback: "Delivery" }), cls: "text-surface-50" },
-        ].map((stat) => (
-          <div key={stat.label} className="flex flex-col items-center justify-center py-5 border-r last:border-r-0 border-white/[0.08]">
-            <p className={`font-display text-2xl font-light ${stat.cls}`}>{stat.value}</p>
-            <p className="text-[9px] tracking-[0.2em] uppercase text-white/40 mt-1">{stat.label}</p>
-          </div>
-        ))}
-      </motion.div>
+      </div>
     </section>
   );
 }

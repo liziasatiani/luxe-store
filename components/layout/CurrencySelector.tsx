@@ -26,7 +26,8 @@ export function CurrencySelector() {
         onClick={() => setOpen(o => !o)}
         aria-label={`Currency: ${current.label}`}
         aria-expanded={open}
-        className="flex items-center gap-0.5 p-1 text-black dark:text-white hover:opacity-50 transition-opacity"
+        className="flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.12em] uppercase rounded-full border text-brand-500 transition-all hover:bg-brand-500/18"
+        style={{ borderColor: "rgba(201,164,74,0.4)", color: "#C9A44A" }}
       >
         <span className="text-[11px] tracking-[0.1em] uppercase">{current.label}</span>
         <ChevronDown size={10} className={cn("transition-transform", open && "rotate-180")} />
@@ -41,17 +42,16 @@ export function CurrencySelector() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 top-full mt-3 w-32 bg-white dark:bg-black border border-black/10 dark:border-white/10 py-1 z-50"
+              className="absolute left-0 top-full mt-2 w-32 py-1 z-50 rounded-sm"
+              style={{ background: "rgba(7,9,15,0.96)", border: "1px solid rgba(201,164,74,0.25)", backdropFilter: "blur(20px)" }}
             >
               {CURRENCIES.map((c) => (
                 <button
                   key={c.code}
                   onClick={() => { setCurrency(c.code); setOpen(false); }}
                   className={cn(
-                    "flex items-center gap-3 w-full px-4 py-2.5 text-[11px] tracking-[0.06em] uppercase transition-colors",
-                    c.code === currency
-                      ? "text-black dark:text-white"
-                      : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                    "flex items-center gap-3 w-full px-4 py-2.5 text-[11px] font-semibold tracking-[0.12em] uppercase transition-colors",
+                    c.code === currency ? "text-brand-500" : "text-white/55 hover:text-white"
                   )}
                 >
                   <span>{c.symbol}</span>
