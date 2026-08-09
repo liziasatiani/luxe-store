@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
+import { Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import { useClickOutside } from "@/hooks";
@@ -129,8 +129,12 @@ export function Navbar() {
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-            <Link href="/cart" aria-label="Shopping bag" className="nav-icon">
-              <ShoppingBag size={16} />
+            <Link href="/cart" aria-label="Shopping cart" className="nav-icon">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
+                <path d="M2 2h1.5l2 7h7l1.5-5H4.5" />
+                <circle cx="6.5" cy="13" r="1" />
+                <circle cx="11.5" cy="13" r="1" />
+              </svg>
               {mounted && count > 0 && (
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
