@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everything Street — Option C: Utility Precision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Georgian:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/*
+ ═══════════════════════════════════════════
+  OPTION C — "UTILITY PRECISION"
+
+  Brief:
+  - Navigation paradigm: persistent left sidebar on desktop
+    showing categories + filters, always accessible.
+    Products are above the fold — no hero theatrics.
+    The user who knows what they want gets there in 2 clicks.
+  - Emotional register: TRUST / EFFICIENCY / CONFIDENCE
+  - North stars: Linear.app (information density with elegance),
+    SSENSE (typographic restraint, product-first grid),
+    Vercel Dashboard (navigation that never gets in the way)
+
+  Design decisions:
+  - Syne: geometric, slightly wide, very legible at small sizes.
+    Its weight 800 at large sizes is a genuine design statement —
+    structural headlines that don't feel decorative.
+  - Pure white + near-black: no creative colour on the canvas.
+    The product photography IS the colour.
+  - Forest green (#166534 / #15803D): used only for interactive
+    states, CTAs, and badges. One accent, used sparingly.
+  - Sidebar navigation: the product categories and filters are
+    always visible. No mode-switching. Pure utility.
+  - Mono labels for data: prices, stock, SKU labels use
+    JetBrains Mono — signals precision and trust.
+  - Touch targets: all interactive elements minimum 44px.
+ ═══════════════════════════════════════════
+*/
+
+:root {
+  --white: #FFFFFF;
+  --surface: #FAFAFA;
+  --surface2: #F4F4F5;
+  --border: #E4E4E7;
+  --border-strong: #D4D4D8;
+  --ink: #09090B;
+  --ink-2: #3F3F46;
+  --ink-3: #71717A;
+  --ink-4: #A1A1AA;
+  --green: #15803D;
+  --green-light: #DCFCE7;
+  --green-dark: #166534;
+  --red: #DC2626;
+  --red-light: #FEE2E2;
+
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --display: 'Syne', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --georgian: 'Noto Sans Georgian', sans-serif;
+
+  --sidebar-w: 248px;
+  --header-h: 56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; width: 100%; object-fit: cover; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+
+/* ── TOP HEADER ── */
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 0;
+}
+
+.header-brand {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 20px;
+  border-right: 1px solid var(--border);
+}
+.brand-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.brand-mark span {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.05em;
+}
+.header-brand-name {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.header-brand-sub {
+  font-size: 10px;
+  color: var(--ink-4);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+.header-search {
+  flex: 1;
+  margin: 0 20px;
+  position: relative;
+}
+.header-search-input {
+  width: 100%;
+  max-width: 520px;
+  height: 36px;
+  padding: 0 12px 0 36px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.header-search-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(21,128,61,0.08);
+}
+.header-search-input::placeholder { color: var(--ink-4); }
+.header-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-4);
+}
+.header-search-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.header-action-btn {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.header-action-btn:hover { border-color: var(--border-strong); color: var(--ink); background: var(--surface); }
+.header-action-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; flex-shrink: 0; }
+.header-action-btn.primary {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+.header-action-btn.primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
+.cart-count {
+  background: var(--ink);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--mono);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ── LAYOUT ── */
+.layout {
+  margin-top: var(--header-h);
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  background: var(--white);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar-section {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-section-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 12px;
+}
+
+/* Category nav */
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-2);
+  transition: all 0.12s;
+  cursor: pointer;
+  min-height: 36px;
+}
+.sidebar-nav-item:hover { background: var(--surface); color: var(--ink); }
+.sidebar-nav-item.active {
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-weight: 500;
+}
+.sidebar-nav-item-left { display: flex; align-items: center; gap: 8px; }
+.sidebar-nav-item svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; flex-shrink: 0; }
+.sidebar-nav-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-4);
+  background: var(--surface2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.sidebar-nav-item.active .sidebar-nav-count {
+  background: rgba(21,128,61,0.15);
+  color: var(--green);
+}
+
+/* Sub-items */
+.sidebar-sub { padding-left: 22px; display: flex; flex-direction: column; gap: 1px; margin-top: 2px; }
+.sidebar-sub-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all 0.12s;
+  min-height: 32px;
+}
+.sidebar-sub-item:hover { background: var(--surface); color: var(--ink); }
+.sidebar-sub-item.active { color: var(--green); background: var(--green-light); }
+
+/* Price filter */
+.price-range {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.price-range-track {
+  position: relative;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 8px 0;
+}
+.price-range-fill {
+  position: absolute;
+  left: 20%;
+  right: 10%;
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+}
+.price-range-thumb {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.price-range-thumb:first-of-type { left: 20%; }
+.price-range-thumb:last-of-type { left: 90%; }
+.price-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* Brand filter */
+.brand-filter { display: flex; flex-direction: column; gap: 2px; }
+.brand-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  cursor: pointer;
+  min-height: 32px;
+}
+.brand-filter-item label { font-size: 12px; color: var(--ink-2); cursor: pointer; flex: 1; }
+.brand-filter-item input[type="checkbox"] { accent-color: var(--green); width: 14px; height: 14px; flex-shrink: 0; }
+.brand-filter-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-4);
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  background: var(--white);
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* Announce inside main */
+.main-announce {
+  background: var(--green);
+  color: white;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.main-announce span { opacity: 0.85; }
+.main-announce span::before { content: '—'; margin-right: 8px; opacity: 0.5; }
+
+/* Content header */
+.content-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.content-header-left {}
+.content-breadcrumb {
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+}
+.content-breadcrumb a { color: var(--ink-3); transition: color 0.15s; }
+.content-breadcrumb a:hover { color: var(--green); }
+.content-breadcrumb span { color: var(--ink-4); }
+.content-title {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.content-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-left: 8px;
+  font-weight: 400;
+}
+.content-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.sort-select {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-2);
+  outline: none;
+  cursor: pointer;
+}
+.view-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.view-toggle-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-4);
+  transition: all 0.12s;
+  background: white;
+}
+.view-toggle-btn:hover { color: var(--ink-2); background: var(--surface); }
+.view-toggle-btn.active { background: var(--surface2); color: var(--ink); }
+.view-toggle-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+/* Featured banner */
+.featured-banner {
+  margin: 20px 24px;
+  background: var(--ink);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.featured-banner-content {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.featured-banner-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 12px;
+}
+.featured-banner-title {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.featured-banner-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.featured-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--green);
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  width: fit-content;
+  transition: background 0.15s;
+  letter-spacing: 0.02em;
+}
+.featured-banner-cta:hover { background: var(--green-dark); }
+.featured-banner-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+.featured-banner-image { position: relative; overflow: hidden; }
+.featured-banner-image img { width: 100%; height: 100%; object-fit: cover; min-height: 180px; }
+
+/* Product grid */
+.product-grid {
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+
+.product-item {
+  background: white;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+  position: relative;
+}
+.product-item:hover { z-index: 2; box-shadow: 0 0 0 1px var(--border-strong), 0 4px 16px rgba(0,0,0,0.06); }
+
+.product-item-image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  background: var(--surface);
+}
+.product-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.product-item:hover .product-item-image img { transform: scale(1.04); }
+.product-item-quick-add {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--ink);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 10px;
+  text-align: center;
+  transform: translateY(100%);
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.product-item:hover .product-item-quick-add { transform: translateY(0); }
+
+.product-item-badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 3px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.badge-sale { background: var(--red-light); color: var(--red); }
+.badge-new { background: var(--green-light); color: var(--green-dark); }
+.badge-hot { background: var(--ink); color: white; }
+
+.wishlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.product-item:hover .wishlist-btn { opacity: 1; }
+.wishlist-btn:hover { border-color: var(--border-strong); }
+.wishlist-btn svg { width: 13px; height: 13px; stroke: var(--ink-3); fill: none; stroke-width: 1.5; }
+
+.product-item-info { padding: 12px 14px 16px; }
+.product-item-brand {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 4px;
+}
+.product-item-name {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.product-item-pricing {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.product-price {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.product-compare {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  text-decoration: line-through;
+}
+.product-discount {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+  background: var(--red-light);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+/* Pagination / load more */
+.load-more-bar {
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pagination-info {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.load-more-btn {
+  height: 36px;
+  padding: 0 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: all 0.15s;
+  background: white;
+}
+.load-more-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  padding: 0 24px;
+  margin-bottom: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.trust-item {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.trust-item:last-child { border-right: none; }
+.trust-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--green-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.trust-icon svg { width: 16px; height: 16px; stroke: var(--green-dark); fill: none; stroke-width: 1.5; }
+.trust-title { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.trust-desc { font-size: 11px; color: var(--ink-4); line-height: 1.4; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.5);
+}
+.footer-inner {
+  padding: 48px 24px 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  max-width: 100%;
+}
+.footer-brand-word {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.footer-brand-desc {
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.35);
+  max-width: 240px;
+  margin-bottom: 24px;
+}
+.footer-col-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 16px;
+}
+.footer-col-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-col-links a {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  transition: color 0.15s;
+}
+.footer-col-links a:hover { color: rgba(255,255,255,0.85); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-bottom p { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.2); }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; --header-h: 52px; }
+
+  .top-header { padding: 0 16px; gap: 12px; }
+  .header-brand { width: auto; border-right: none; padding-right: 0; }
+  .header-brand-sub { display: none; }
+  .header-search { margin: 0; flex: 1; }
+  .header-action-btn:not(.primary) { display: none; }
+  .header-action-btn.primary span { display: none; }
+  .header-action-btn.primary { padding: 0 12px; }
+
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+
+  .main-announce { font-size: 11px; gap: 0; padding: 8px 16px; }
+  .main-announce span:not(:first-child) { display: none; }
+  .main-announce span::before { display: none; }
+
+  .content-header { padding: 14px 16px; flex-wrap: wrap; }
+  .content-title { font-size: 18px; }
+
+  .featured-banner { margin: 12px 16px; grid-template-columns: 1fr; border-radius: 8px; }
+  .featured-banner-content { padding: 24px 20px; }
+  .featured-banner-image { display: none; }
+  .featured-banner-title { font-size: 1.5rem; }
+
+  .product-grid { padding: 12px 16px; grid-template-columns: repeat(2, 1fr); gap: 1px; }
+  .product-item-quick-add { display: none; }
+
+  .load-more-bar { padding: 16px; flex-direction: column; gap: 12px; text-align: center; }
+
+  .trust-bar { grid-template-columns: 1fr 1fr; padding: 0 16px; }
+  .trust-item { padding: 16px 12px; border-right: none; border-bottom: 1px solid var(--border); }
+  .trust-item:nth-child(odd) { border-right: 1px solid var(--border); }
+  .trust-item:nth-last-child(-n+2) { border-bottom: none; }
+
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; padding: 32px 16px 20px; }
+  .footer-brand { grid-column: 1 / -1; }
+  .footer-bottom { flex-direction: column; gap: 4px; padding: 14px 16px; }
+
+  /* Mobile bottom nav replacement for sidebar */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: white;
+    border-top: 1px solid var(--border);
+    padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  }
+  .mobile-bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px;
+    color: var(--ink-4);
+    transition: color 0.15s;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .mobile-bottom-nav a.active { color: var(--green); }
+  .mobile-bottom-nav a svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  body { padding-bottom: 60px; }
+}
+@media (min-width: 769px) {
+  .mobile-bottom-nav { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+  <div class="header-brand">
+    <div class="brand-mark"><span>ES</span></div>
+    <div>
+      <div class="header-brand-name">Everything Street</div>
+      <div class="header-brand-sub">Tech + Beauty</div>
+    </div>
+  </div>
+
+  <div class="header-search">
+    <span class="header-search-icon">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+    </span>
+    <input type="search" class="header-search-input" placeholder="ძებნა — headphones, skincare, Sony...">
+  </div>
+
+  <div class="header-actions">
+    <button class="header-action-btn">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>სია</span>
+    </button>
+    <button class="header-action-btn">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>ანგარიში</span>
+    </button>
+    <button class="header-action-btn primary">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>კალათა</span>
+      <span class="cart-count">2</span>
+    </button>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Filters and navigation">
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">კატეგორიები</div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-nav-item active">
+          <div class="sidebar-nav-item-left">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            ტექნიკა
+          </div>
+          <span class="sidebar-nav-count">142</span>
+        </div>
+        <div class="sidebar-sub">
+          <div class="sidebar-sub-item active">ყურსასმენები <span>28</span></div>
+          <div class="sidebar-sub-item">კამერები <span>19</span></div>
+          <div class="sidebar-sub-item">ტაბლეტები <span>12</span></div>
+          <div class="sidebar-sub-item">სმარტ სახლი <span>34</span></div>
+          <div class="sidebar-sub-item">საათები <span>22</span></div>
+          <div class="sidebar-sub-item">გეიმინგი <span>27</span></div>
+        </div>
+
+        <div class="sidebar-nav-item">
+          <div class="sidebar-nav-item-left">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            სილამაზე
+          </div>
+          <span class="sidebar-nav-count">218</span>
+        </div>
+        <div class="sidebar-sub">
+          <div class="sidebar-sub-item">სკინქეარი <span>67</span></div>
+          <div class="sidebar-sub-item">მაკიაჟი <span>55</span></div>
+          <div class="sidebar-sub-item">სუნამო <span>38</span></div>
+          <div class="sidebar-sub-item">თმის მოვლა <span>29</span></div>
+          <div class="sidebar-sub-item">სხეულის მოვლა <span>29</span></div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">ფასი</div>
+      <div class="price-range">
+        <div class="price-range-track">
+          <div class="price-range-fill"></div>
+          <div class="price-range-thumb"></div>
+          <div class="price-range-thumb"></div>
+        </div>
+        <div class="price-range-labels">
+          <span>₾50</span>
+          <span>₾3,500</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">ბრენდები</div>
+      <div class="brand-filter">
+        <div class="brand-filter-item">
+          <input type="checkbox" id="b-apple" checked>
+          <label for="b-apple">Apple</label>
+          <span class="brand-filter-count">24</span>
+        </div>
+        <div class="brand-filter-item">
+          <input type="checkbox" id="b-sony" checked>
+          <label for="b-sony">Sony</label>
+          <span class="brand-filter-count">18</span>
+        </div>
+        <div class="brand-filter-item">
+          <input type="checkbox" id="b-samsung">
+          <label for="b-samsung">Samsung</label>
+          <span class="brand-filter-count">15</span>
+        </div>
+        <div class="brand-filter-item">
+          <input type="checkbox" id="b-tatcha">
+          <label for="b-tatcha">Tatcha</label>
+          <span class="brand-filter-count">12</span>
+        </div>
+        <div class="brand-filter-item">
+          <input type="checkbox" id="b-ct">
+          <label for="b-ct">Charlotte Tilbury</label>
+          <span class="brand-filter-count">9</span>
+        </div>
+        <div class="brand-filter-item">
+          <input type="checkbox" id="b-dyson">
+          <label for="b-dyson">Dyson</label>
+          <span class="brand-filter-count">8</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">სტატუსი</div>
+      <div class="sidebar-nav">
+        <div class="sidebar-nav-item" style="font-size:12px;">
+          <div class="sidebar-nav-item-left">სიახლეები</div>
+          <span class="sidebar-nav-count">43</span>
+        </div>
+        <div class="sidebar-nav-item" style="font-size:12px;">
+          <div class="sidebar-nav-item-left">ფასდაკლება</div>
+          <span class="sidebar-nav-count">67</span>
+        </div>
+        <div class="sidebar-nav-item" style="font-size:12px;">
+          <div class="sidebar-nav-item-left">ბესთსელერები</div>
+          <span class="sidebar-nav-count">28</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <div class="main-announce">
+      <span>უფასო მიტანა ₾200+ შეკვეთებზე</span>
+      <span>100% ავტორიზებული პროდუქტი</span>
+      <span>30 დღის დაბრუნების გარანტია</span>
+    </div>
+
+    <div class="content-header">
+      <div class="content-header-left">
+        <div class="content-breadcrumb">
+          <a href="#">მაღაზია</a>
+          <span>/</span>
+          <a href="#">ტექნიკა</a>
+          <span>/</span>
+          ყურსასმენები
+        </div>
+        <div class="content-title">
+          ყურსასმენები
+          <span class="content-count">28 პროდუქტი</span>
+        </div>
+      </div>
+      <div class="content-header-right">
+        <select class="sort-select">
+          <option>რეკომენდებული</option>
+          <option>ფასი: დაბლიდან</option>
+          <option>ფასი: მაღლიდან</option>
+          <option>სიახლე</option>
+          <option>რეიტინგი</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-toggle-btn active" aria-label="Grid view">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-toggle-btn" aria-label="List view">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Banner -->
+    <div class="featured-banner">
+      <div class="featured-banner-content">
+        <div class="featured-banner-label">Featured Drop — Sony Audio</div>
+        <div class="featured-banner-title">WH-1000XM5<br>Industry Standard.</div>
+        <div class="featured-banner-sub">Best-in-class noise cancellation. 30-hour battery. Full Georgian warranty.</div>
+        <a href="#" class="featured-banner-cta">
+          ახლავე ყიდვა — ₾995
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="featured-banner-image">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80&auto=format&fit=crop" alt="Sony WH-1000XM5">
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid">
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <div class="product-item-badges"><span class="badge badge-hot">Bestseller</span></div>
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80&auto=format&fit=crop" alt="Sony WH-1000XM5">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Sony</div>
+          <div class="product-item-name">WH-1000XM5 Wireless Noise Cancelling</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾995</span>
+            <span class="product-compare">₾1,244</span>
+            <span class="product-discount">-20%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <div class="product-item-badges"><span class="badge badge-new">New</span></div>
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&q=80&auto=format&fit=crop" alt="Apple AirPods">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Apple</div>
+          <div class="product-item-name">AirPods Pro 2nd Gen — USB-C</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾1,099</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=500&q=80&auto=format&fit=crop" alt="Bose QC45">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Bose</div>
+          <div class="product-item-name">QuietComfort 45 Bluetooth</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾890</span>
+            <span class="product-compare">₾1,050</span>
+            <span class="product-discount">-15%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <div class="product-item-badges"><span class="badge badge-sale">-25%</span></div>
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80&auto=format&fit=crop" alt="Samsung Buds">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Samsung</div>
+          <div class="product-item-name">Galaxy Buds3 Pro — Titanium</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾620</span>
+            <span class="product-compare">₾826</span>
+            <span class="product-discount">-25%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=500&q=80&auto=format&fit=crop" alt="Dyson headphones">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Dyson</div>
+          <div class="product-item-name">Zone Air-Purifying Headphones</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾2,190</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <div class="product-item-badges"><span class="badge badge-new">New</span></div>
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=500&q=80&auto=format&fit=crop" alt="JBL Flip">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">JBL</div>
+          <div class="product-item-name">Flip 6 Portable Bluetooth Speaker</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾380</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <div class="product-item-badges"><span class="badge badge-sale">-10%</span></div>
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&q=80&auto=format&fit=crop" alt="Sony Earbuds">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Sony</div>
+          <div class="product-item-name">LinkBuds S — Truly Wireless NC</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾579</span>
+            <span class="product-compare">₾644</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-item">
+        <div class="product-item-image">
+          <button class="wishlist-btn" aria-label="Add to wishlist"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+          <img src="https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?w=500&q=80&auto=format&fit=crop" alt="Beats">
+          <div class="product-item-quick-add">კალათაში დამატება</div>
+        </div>
+        <div class="product-item-info">
+          <div class="product-item-brand">Beats</div>
+          <div class="product-item-name">Studio Pro Wireless Headphones</div>
+          <div class="product-item-pricing">
+            <span class="product-price">₾780</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="load-more-bar">
+      <div class="pagination-info">1–8 of 28 products</div>
+      <button class="load-more-btn">მეტის ჩვენება (20 remaining)</button>
+    </div>
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar">
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div>
+          <div class="trust-title">უფასო მიტანა</div>
+          <div class="trust-desc">₾200+ ყველა შეკვეთაზე</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg>
+        </div>
+        <div>
+          <div class="trust-title">100% ორიგინალი</div>
+          <div class="trust-desc">ავტორიზებული დილერი</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div>
+          <div class="trust-title">30 დღის დაბრუნება</div>
+          <div class="trust-desc">უპრობლემოდ, ყოველთვის</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.44 2 2 0 0 1 3.58 2.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="trust-title">24/7 მხარდაჭერა</div>
+          <div class="trust-desc">ქართული სერვისი</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-word">Everything Street</div>
+      <p class="footer-brand-desc">Georgia's authorised source for premium technology and beauty. Original products, guaranteed.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Shop</div>
+      <div class="footer-col-links">
+        <a href="#">სილამაზე</a>
+        <a href="#">ტექნიკა</a>
+        <a href="#">ბრენდები</a>
+        <a href="#">სიახლეები</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Help</div>
+      <div class="footer-col-links">
+        <a href="#">FAQ</a>
+        <a href="#">კონტაქტი</a>
+        <a href="#">მიტანა</a>
+        <a href="#">დაბრუნება</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <div class="footer-col-links">
+        <a href="#">ჩვენ შესახებ</a>
+        <a href="#">კონფიდენციალურობა</a>
+        <a href="#">პირობები</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Everything Street. All rights reserved.</p>
+    <p>Georgia 🇬🇪</p>
+  </div>
+</footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+  <a href="#" class="active">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    მთავარი
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+    ტექნიკა
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    სილამაზე
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
+    ძებნა
+  </a>
+  <a href="#">
+    <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+    კალათა
+  </a>
+</nav>
+
+</body>
+</html>

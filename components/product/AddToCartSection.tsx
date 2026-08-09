@@ -1,9 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Heart, Share2, ShoppingBag, Zap, Shield, RotateCcw, Truck } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
-import { cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -19,14 +18,12 @@ interface Variant {
 }
 
 interface Props {
-  product: ProductCard & {
-    variants?: Variant[];
-  };
+  product: ProductCard & { variants?: Variant[] };
 }
 
 function getDeliveryEstimate(locale = "en"): string {
   const now = new Date();
-  const day = now.getDay(); // 0=Sun, 6=Sat
+  const day = now.getDay();
   const daysToAdd = day === 0 ? 2 : day === 5 ? 3 : day === 6 ? 2 : 2;
   const d = new Date(now);
   d.setDate(d.getDate() + daysToAdd);
@@ -50,10 +47,7 @@ export function AddToCartSection({ product }: Props) {
   useEffect(() => {
     const el = buttonsRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setStickyVisible(!entry.isIntersecting),
-      { threshold: 0 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setStickyVisible(!entry.isIntersecting), { threshold: 0 });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
@@ -65,183 +59,139 @@ export function AddToCartSection({ product }: Props) {
   }, {});
 
   const handleAddToCart = () => {
-    addItem(
-      product,
-      qty,
-      selectedVariant
-        ? { name: selectedVariant.name, value: selectedVariant.value, price: selectedVariant.price }
-        : undefined
-    );
+    addItem(product, qty, selectedVariant ? { name: selectedVariant.name, value: selectedVariant.value, price: selectedVariant.price } : undefined);
     toast.success(`${product.name} added to cart`, { icon: "🛍️" });
     openCart();
   };
 
   const handleBuyNow = () => {
-    addItem(
-      product,
-      qty,
-      selectedVariant
-        ? { name: selectedVariant.name, value: selectedVariant.value, price: selectedVariant.price }
-        : undefined
-    );
+    addItem(product, qty, selectedVariant ? { name: selectedVariant.name, value: selectedVariant.value, price: selectedVariant.price } : undefined);
     router.push("/checkout");
   };
 
   const handleShare = async () => {
     try {
-      if (navigator.share) {
-        await navigator.share({ title: product.name, url: window.location.href });
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success(t("linkCopied"));
-      }
-    } catch {
-      // User cancelled share or clipboard unavailable
-    }
+      if (navigator.share) await navigator.share({ title: product.name, url: window.location.href });
+      else { await navigator.clipboard.writeText(window.location.href); toast.success(t("linkCopied")); }
+    } catch { /* cancelled */ }
   };
 
   return (
-    <div className="space-y-5">
-      {Object.entries(variantGroups).map(([groupName, variants]) => {
-        const groupId = `variant-group-${groupName.toLowerCase().replace(/\s+/g, "-")}`;
-        return (
-        <div key={groupName}>
-          <p id={groupId} className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">
-            {groupName}: <span className="text-black dark:text-white">{selectedVariant?.name === groupName ? selectedVariant.value : t("selectVariant")}</span>
+    <div>
+      {/* Variant groups */}
+      {Object.entries(variantGroups).map(([groupName, variants]) => (
+        <div key={groupName} style={{ marginBottom: 24 }}>
+          <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>
+            {groupName}: <span style={{ color: "var(--chalk)" }}>{selectedVariant?.name === groupName ? selectedVariant.value : t("selectVariant")}</span>
           </p>
-          <div role="radiogroup" aria-labelledby={groupId} className="flex flex-wrap gap-2">
-            {variants.map((v) => (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {variants.map(v => (
               <button
                 key={v.id}
-                role="radio"
-                aria-checked={selectedVariant?.id === v.id}
-                aria-disabled={v.stock === 0}
                 onClick={() => { if (v.stock !== 0) setSelectedVariant(v); }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (v.stock !== 0) setSelectedVariant(v); }
-                }}
                 disabled={v.stock === 0}
-                className={cn(
-                  "px-4 py-2 text-sm border transition-colors",
-                  selectedVariant?.id === v.id
-                    ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
-                    : "border-black/15 dark:border-white/15 text-black dark:text-white hover:border-black/40 dark:hover:border-white/40",
-                  v.stock === 0 && "opacity-40 cursor-not-allowed line-through"
-                )}
+                style={{
+                  padding: "8px 16px",
+                  fontSize: 13,
+                  border: `1px solid ${selectedVariant?.id === v.id ? "var(--gold)" : "var(--borderg)"}`,
+                  background: selectedVariant?.id === v.id ? "var(--gold)" : "transparent",
+                  color: selectedVariant?.id === v.id ? "#000" : "var(--chalk2)",
+                  borderRadius: 1,
+                  cursor: v.stock === 0 ? "not-allowed" : "pointer",
+                  opacity: v.stock === 0 ? 0.4 : 1,
+                  transition: "all 0.15s",
+                }}
               >
                 {v.value}
               </button>
             ))}
           </div>
         </div>
-        );
-      })}
+      ))}
 
-      <div>
-        <p className="text-[10px] tracking-[0.12em] uppercase text-black/50 dark:text-white/50 mb-2">{t("quantity")}</p>
-        <div className="flex items-center w-fit border border-black/15 dark:border-white/15">
-          <button
-            onClick={() => setQty(q => Math.max(1, q - 1))}
-            aria-label="Decrease quantity"
-            className="w-11 h-11 flex items-center justify-center text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-          >−</button>
-          <span className="w-12 text-center text-sm text-black dark:text-white border-x border-black/15 dark:border-white/15" aria-live="polite" aria-atomic="true">{qty}</span>
-          <button
-            onClick={() => setQty(q => Math.min(product.stock, q + 1))}
-            disabled={qty >= product.stock}
-            aria-label="Increase quantity"
-            className="w-11 h-11 flex items-center justify-center text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors disabled:opacity-40"
-          >+</button>
+      {/* Quantity — K .dqty */}
+      <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{t("quantity")}</p>
+      <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 1, width: "fit-content", marginBottom: 26 }}>
+        <button
+          onClick={() => setQty(q => Math.max(1, q - 1))}
+          aria-label="Decrease quantity"
+          style={{ width: 46, height: 46, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 200, color: "var(--chalk2)", transition: "background 0.15s, color 0.15s" }}
+          onMouseEnter={e => { const el = e.currentTarget; el.style.background = "var(--s2)"; el.style.color = "var(--chalk)"; }}
+          onMouseLeave={e => { const el = e.currentTarget; el.style.background = "transparent"; el.style.color = "var(--chalk2)"; }}
+        >−</button>
+        <div style={{ width: 58, height: 46, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--sans)", fontSize: 15, fontWeight: 500, borderLeft: "1px solid var(--border)", borderRight: "1px solid var(--border)", color: "var(--chalk)" }} aria-live="polite">
+          {qty}
         </div>
+        <button
+          onClick={() => setQty(q => Math.min(product.stock, q + 1))}
+          disabled={qty >= product.stock}
+          aria-label="Increase quantity"
+          style={{ width: 46, height: 46, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 200, color: "var(--chalk2)", transition: "background 0.15s, color 0.15s", opacity: qty >= product.stock ? 0.4 : 1 }}
+          onMouseEnter={e => { if (qty < product.stock) { const el = e.currentTarget; el.style.background = "var(--s2)"; el.style.color = "var(--chalk)"; } }}
+          onMouseLeave={e => { const el = e.currentTarget; el.style.background = "transparent"; el.style.color = "var(--chalk2)"; }}
+        >+</button>
       </div>
 
-      <div ref={buttonsRef} className="flex gap-3">
+      {/* Action buttons */}
+      <div ref={buttonsRef}>
+        {/* Add to cart — K .dadd */}
         <button
           onClick={handleAddToCart}
           disabled={outOfStock}
-          className="flex-1 h-12 flex items-center justify-center gap-2 border border-black dark:border-white text-black dark:text-white text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40"
+          style={{ width: "100%", padding: 16, background: "var(--gold)", color: "#000", fontFamily: "var(--sans)", fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", borderRadius: 1, marginBottom: 11, transition: "opacity 0.2s", opacity: outOfStock ? 0.4 : 1, cursor: outOfStock ? "not-allowed" : "pointer" }}
+          onMouseEnter={e => { if (!outOfStock) (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = outOfStock ? "0.4" : "1"; }}
         >
-          <ShoppingBag size={16} />
           {outOfStock ? t("outOfStock") : t("addToCart")}
         </button>
+
+        {/* Wishlist — K .dwish */}
         <button
-          onClick={handleBuyNow}
-          disabled={outOfStock}
-          className="flex-1 h-12 flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors disabled:opacity-40"
+          onClick={() => { toggle(product.id); toast.success(isWishlisted ? t("removed") : t("addToWishlist")); }}
+          style={{ width: "100%", padding: 15, border: "1px solid var(--borderg)", borderRadius: 1, fontFamily: "var(--sans)", fontSize: 12, fontWeight: 400, letterSpacing: "0.12em", textTransform: "uppercase", color: isWishlisted ? "var(--gold)" : "var(--chalk2)", background: isWishlisted ? "var(--gold3)" : "transparent", transition: "all 0.2s", cursor: "pointer" }}
+          onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "var(--gold)"; el.style.color = "var(--gold)"; el.style.background = "var(--gold3)"; }}
+          onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "var(--borderg)"; el.style.color = isWishlisted ? "var(--gold)" : "var(--chalk2)"; el.style.background = isWishlisted ? "var(--gold3)" : "transparent"; }}
         >
-          <Zap size={16} />
-          {t("buyNow")}
+          {isWishlisted ? t("wishlisted") : t("addToWishlist")}
         </button>
       </div>
 
-      {outOfStock && (
-        <p className="text-[11px] tracking-[0.08em] text-black/50 dark:text-white/50 border border-black/10 dark:border-white/10 p-4 text-center">
-          {t("outOfStockMsg")}
-        </p>
-      )}
-
-      {/* Inline trust signals */}
-      <div className="flex flex-col gap-1.5 pt-1">
-        {[
-          { icon: Truck,      text: `${t("trustShipping")} — ${t("deliveryBy", { date: getDeliveryEstimate(locale) })}` },
-          { icon: RotateCcw,  text: t("trustReturns"), href: "/returns" },
-          { icon: Shield,     text: t("trustAuthentic") },
-        ].map(({ icon: Icon, text, href }) => (
-          <div key={text} className="flex items-center gap-2">
-            <Icon size={13} className="text-black/40 dark:text-white/40 shrink-0" />
-            {href ? (
-              <Link href={href} className="text-[11px] text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white underline-offset-2 hover:underline transition-colors">{text}</Link>
-            ) : (
-              <span className="text-[11px] text-black/50 dark:text-white/50">{text}</span>
-            )}
-          </div>
-        ))}
+      {/* Share */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 20 }}>
+        <button
+          onClick={handleShare}
+          style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "var(--chalk2)", letterSpacing: "0.08em", transition: "color 0.2s" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--chalk)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--chalk2)"; }}
+        >
+          <Share2 size={13} />
+          {t("share")}
+        </button>
       </div>
 
-      {/* Sticky mobile add-to-cart bar — visible only when main buttons scroll off screen */}
+      {/* Mobile sticky bar */}
       {stickyVisible && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white dark:bg-black border-t border-black/10 dark:border-white/10 px-4 py-3 flex items-center gap-3 safe-area-inset-bottom">
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] tracking-[0.1em] uppercase text-black/40 dark:text-white/40 truncate">{product.name}</p>
-            <p className="text-sm font-medium text-black dark:text-white">
-              {format(selectedVariant?.price ?? Number(product.price))}
-            </p>
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50, background: "var(--bg)", borderTop: "1px solid var(--border)", padding: "12px 16px", display: "flex", alignItems: "center", gap: 12 }} className="md:hidden">
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk2)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{product.name}</p>
+            <p style={{ fontSize: 14, fontWeight: 500, color: "var(--chalk)" }}>{format(selectedVariant?.price ?? Number(product.price))}</p>
           </div>
           <button
             onClick={handleAddToCart}
             disabled={outOfStock}
-            className="h-11 px-5 flex items-center gap-2 border border-black dark:border-white text-black dark:text-white text-[10px] tracking-[0.14em] uppercase font-medium disabled:opacity-40"
+            style={{ height: 44, padding: "0 20px", background: "var(--gold)", color: "#000", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", borderRadius: 1, opacity: outOfStock ? 0.4 : 1 }}
           >
-            <ShoppingBag size={14} />
             {outOfStock ? t("outOfStock") : t("addToCart")}
           </button>
           <button
             onClick={handleBuyNow}
             disabled={outOfStock}
-            className="h-11 px-5 flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[10px] tracking-[0.14em] uppercase font-medium disabled:opacity-40"
+            style={{ height: 44, padding: "0 20px", border: "1px solid var(--borderg)", color: "var(--chalk2)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", borderRadius: 1, opacity: outOfStock ? 0.4 : 1 }}
           >
             {t("buyNow")}
           </button>
         </div>
       )}
-
-      <div className="flex items-center gap-3 pt-2">
-        <button
-          onClick={() => { toggle(product.id); toast.success(isWishlisted ? t("removed") : t("addToWishlist")); }}
-          className={cn(
-            "flex items-center gap-2 text-sm transition-colors",
-            isWishlisted ? "text-red-500" : "text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white"
-          )}
-        >
-          <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} />
-          {isWishlisted ? t("wishlisted") : t("addToWishlist")}
-        </button>
-        <span className="text-black/20 dark:text-white/20">|</span>
-        <button onClick={handleShare} className="flex items-center gap-2 text-sm text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors">
-          <Share2 size={16} />
-          {t("share")}
-        </button>
-      </div>
     </div>
   );
 }

@@ -3,47 +3,43 @@ import { serializeDecimal } from "@/lib/utils";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Container } from "@/components/ui";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import type { ProductCard as ProductCardType } from "@/types";
 
-function EditorialHeader({ title, subtitle, viewAllHref, viewAllLabel }: {
-  title: string; subtitle?: string; viewAllHref?: string; viewAllLabel?: string;
+function SectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
+  eyebrow: string; title: string; viewAllHref?: string; viewAllLabel?: string;
 }) {
   return (
-    <div className="flex items-baseline justify-between mb-10">
-      <ScrollReveal variant="clip" className="overflow-hidden">
+    <div className="sec-meta">
+      <div className="sec-row">
         <div>
-          <h2 className="font-display text-2xl md:text-3xl text-black dark:text-white font-normal uppercase tracking-[0.04em]">{title}</h2>
-          {subtitle && <p className="text-[11px] tracking-[0.08em] uppercase text-black/40 dark:text-white/40 mt-1">{subtitle}</p>}
+          <p className="sec-eyebrow">{eyebrow}</p>
+          <h2 className="sec-title">{title}</h2>
         </div>
-      </ScrollReveal>
-      {viewAllHref && (
-        <ScrollReveal delay={0.2} className="hidden sm:block">
-          <Link href={viewAllHref} className="flex items-center gap-1 text-[11px] tracking-[0.1em] uppercase text-black dark:text-white hover:opacity-50 transition-opacity">
-            {viewAllLabel ?? "View All"} <ArrowRight size={12} />
+        {viewAllHref && (
+          <Link href={viewAllHref} className="see-all hidden sm:flex">
+            {viewAllLabel ?? "View All"}
           </Link>
-        </ScrollReveal>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 
+const PRODUCT_SELECT = {
+  id: true, name: true, slug: true, price: true, comparePrice: true,
+  stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
+  isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
+  images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
+  brand: { select: { name: true, slug: true } },
+  category: { select: { name: true, slug: true } },
+} as const;
+
 export async function FeaturedProductsSection() {
-  const t = await getTranslations("home.featured");
   let products: ProductCardType[] = [];
   try {
     const rows = await prisma.product.findMany({
       where: { isActive: true, isFeatured: true },
-      select: {
-        id: true, name: true, slug: true, price: true, comparePrice: true,
-        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-        brand: { select: { name: true, slug: true } },
-        category: { select: { name: true, slug: true } },
-      },
+      select: PRODUCT_SELECT,
       orderBy: [{ salesCount: "desc" }, { createdAt: "desc" }],
       take: 8,
     });
@@ -52,33 +48,26 @@ export async function FeaturedProductsSection() {
     return null;
   }
 
+  if (products.length === 0) return null;
+
   return (
-    <section className="py-20 border-b border-black/8 dark:border-white/8">
-      <Container>
-        <EditorialHeader title={t("title")} subtitle={t("subtitle")} viewAllHref="/featured" viewAllLabel={t("viewAll")} />
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+    <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div className="wrap">
+        <SectionHeader eyebrow="Featured" title="Selected for You" viewAllHref="/featured" viewAllLabel="View All" />
+        <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
 
 export async function NewArrivalsSection() {
-  const t = await getTranslations("pages.newArrivals");
-  const tCommon = await getTranslations("common");
   let products: ProductCardType[] = [];
   try {
     const rows = await prisma.product.findMany({
       where: { isActive: true, isNewArrival: true },
-      select: {
-        id: true, name: true, slug: true, price: true, comparePrice: true,
-        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-        brand: { select: { name: true, slug: true } },
-        category: { select: { name: true, slug: true } },
-      },
+      select: PRODUCT_SELECT,
       orderBy: { createdAt: "desc" },
       take: 8,
     });
@@ -88,13 +77,13 @@ export async function NewArrivalsSection() {
   }
 
   return (
-    <section className="py-20 border-b border-black/8 dark:border-white/8">
-      <Container>
-        <EditorialHeader title={t("title")} subtitle={t("subtitle")} viewAllHref="/new" viewAllLabel={tCommon("seeAll")} />
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+    <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div className="wrap">
+        <SectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="See All" />
+        <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
@@ -104,14 +93,7 @@ export async function BestSellersSectionServer() {
   try {
     const rows = await prisma.product.findMany({
       where: { isActive: true, isBestSeller: true },
-      select: {
-        id: true, name: true, slug: true, price: true, comparePrice: true,
-        stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
-        isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
-        images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },
-        brand: { select: { name: true, slug: true } },
-        category: { select: { name: true, slug: true } },
-      },
+      select: PRODUCT_SELECT,
       orderBy: [{ ratingAvg: "desc" }, { salesCount: "desc" }],
       take: 8,
     });
@@ -124,7 +106,7 @@ export async function BestSellersSectionServer() {
 
 export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-black/8 dark:divide-white/8 border border-black/8 dark:border-white/8">
+    <div className="pgrid">
       {Array.from({ length: count }).map((_, i) => <ProductCardSkeleton key={i} />)}
     </div>
   );

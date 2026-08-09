@@ -1,97 +1,120 @@
 "use client";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { useRef } from "react";
+import { useLocale } from "next-intl";
+
+const COPY = {
+  ka: {
+    techTag: "Technology",
+    techTitle: "ახალი\nჯენერა-\nცია",
+    techSub: "ყველაფერი\nერთ ქუჩაზე",
+    techDesc: "Sony, Samsung, Apple — ყველაფერი ერთ ადგილზე",
+    techCta: "ტექნოლოგია →",
+    beautyTag: "Beauty",
+    beautyTitle: "სილამა-\nზის\nხელოვნება",
+    beautySub: "ტექნოლოგია\nდა სილამაზე",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — პრემიუმ კოსმეტიკა",
+    beautyCta: "სილამაზე →",
+  },
+  en: {
+    techTag: "Technology",
+    techTitle: "Next\nGenera-\ntion",
+    techSub: "Everything\non one street",
+    techDesc: "Sony, Samsung, Apple — everything in one place",
+    techCta: "Shop Tech →",
+    beautyTag: "Beauty",
+    beautyTitle: "The Art\nof\nBeauty",
+    beautySub: "Technology\n& Beauty",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — premium cosmetics",
+    beautyCta: "Shop Beauty →",
+  },
+  fr: {
+    techTag: "Technology",
+    techTitle: "Prochaine\nGénéra-\ntion",
+    techSub: "Tout sur\nune rue",
+    techDesc: "Sony, Samsung, Apple — tout en un seul endroit",
+    techCta: "Voir Tech →",
+    beautyTag: "Beauty",
+    beautyTitle: "L'Art\nde la\nBeauté",
+    beautySub: "Technologie\net Beauté",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — cosmétiques premium",
+    beautyCta: "Voir Beauté →",
+  },
+  es: {
+    techTag: "Technology",
+    techTitle: "Próxima\nGenera-\nción",
+    techSub: "Todo en\nuna calle",
+    techDesc: "Sony, Samsung, Apple — todo en un solo lugar",
+    techCta: "Ver Tech →",
+    beautyTag: "Beauty",
+    beautyTitle: "El Arte\nde la\nBelleza",
+    beautySub: "Tecnología\ny Belleza",
+    beautyDesc: "Charlotte Tilbury, La Mer, Chanel — cosméticos premium",
+    beautyCta: "Ver Belleza →",
+  },
+} as const;
+
+type Locale = keyof typeof COPY;
 
 export function HeroSection() {
-  const t = useTranslations("hero");
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const textY  = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const locale = useLocale() as Locale;
+  const c = COPY[locale] ?? COPY.en;
 
   return (
-    <section ref={ref} className="relative min-h-[88vh] flex items-center bg-black overflow-hidden">
-      <motion.div style={{ y: imageY }} className="absolute inset-0">
-        <Image
-          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format"
-          alt="Luxury fashion editorial"
-          fill
-          priority
-          fetchPriority="high"
-          className="object-cover object-center opacity-50"
-          sizes="100vw"
-        />
-      </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+    <section className="hero">
+      {/* Tech panel */}
+      <Link href="/tech" className="hero-half hero-tech">
+        <div className="hero-bg">
+          <Image
+            src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&q=85&auto=format"
+            alt="Premium technology"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+        <div className="hero-shade" />
+        <div className="hero-tint" />
+        <div className="hero-content">
+          <div className="hero-tag">{c.techTag}</div>
+          <h2 className="hero-title">{c.techTitle}</h2>
+          <p className="hero-title-ka">{c.techSub}</p>
+          <p className="hero-sub">{c.techDesc}</p>
+          <span className="hero-cta">{c.techCta}</span>
+        </div>
+      </Link>
 
-      <motion.div style={{ y: textY, opacity }} className="relative z-10 w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-[10px] tracking-[0.28em] uppercase text-white/60 mb-8"
-        >
-          {t("tagline")}
-        </motion.p>
+      <div className="hero-divider" />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display font-light text-white leading-[0.95] tracking-tight mb-8"
-          style={{ fontSize: "clamp(3rem, 9vw, 7rem)" }}
-        >
-          {t("headline1")}
-          <br />
-          <span className="font-serif italic font-normal text-brand-300">{t("headline2")}</span>
-        </motion.h1>
+      {/* Beauty panel */}
+      <Link href="/beauty" className="hero-half hero-beauty">
+        <div className="hero-bg">
+          <Image
+            src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=900&q=85&auto=format"
+            alt="Luxury beauty"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+        <div className="hero-shade" />
+        <div className="hero-tint" />
+        <div className="hero-content delay">
+          <div className="hero-tag">{c.beautyTag}</div>
+          <h2 className="hero-title">{c.beautyTitle}</h2>
+          <p className="hero-title-ka">{c.beautySub}</p>
+          <p className="hero-sub">{c.beautyDesc}</p>
+          <span className="hero-cta">{c.beautyCta}</span>
+        </div>
+      </Link>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm md:text-base text-white/65 max-w-md mx-auto leading-relaxed mb-12 tracking-wide"
-        >
-          {t("description")}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-wrap gap-3 justify-center"
-        >
-          <Link href="/tech"
-            className="inline-flex items-center h-12 px-8 border border-white/30 text-white text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/10 transition-colors">
-            {t("shopTech")}
-          </Link>
-          <Link href="/beauty"
-            className="inline-flex items-center h-12 px-8 border border-white/30 text-white text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-white/5 transition-colors">
-            {t("shopBeauty")}
-          </Link>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex justify-center gap-12 mt-20 border-t border-white/8 pt-10"
-        >
-          {[
-            { value: "230+", label: t("statsProducts") },
-            { value: "148",  label: t("statsBrands")   },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="font-display text-2xl md:text-3xl text-white font-light">{stat.value}</p>
-              <p className="text-[10px] tracking-[0.12em] uppercase text-white/60 mt-1">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
-      </motion.div>
+      <div className="hero-center">
+        <div className="hero-brand">Everything Street</div>
+      </div>
     </section>
   );
 }

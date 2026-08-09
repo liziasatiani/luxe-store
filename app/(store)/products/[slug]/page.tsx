@@ -1,10 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
-
-export const revalidate = 3600;
 import { serializeDecimal, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
-import { Price } from "@/components/ui";
 import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";
@@ -13,13 +10,14 @@ import { AddToCartSection } from "@/components/product/AddToCartSection";
 import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
 import { TrackView } from "@/components/product/TrackView";
-import { Badge, RatingStars, Container } from "@/components/ui";
-import { Truck, RotateCcw, ShieldCheck, Lock } from "lucide-react";
-import { TrustBar } from "@/components/ui/TrustBar";
-import { PressBar } from "@/components/home/PressBar";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
+import { RatingStars } from "@/components/ui";
+import { Price } from "@/components/ui";
 import Link from "next/link";
+import { ProductBreadcrumb } from "@/components/product/ProductBreadcrumb";
 import type { Metadata } from "next";
+
+export const revalidate = 3600;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -64,7 +62,6 @@ export default async function ProductPage({ params }: Props) {
 
   const p = serializeDecimal(product);
   const discount = p.comparePrice ? formatDiscount(Number(p.comparePrice), Number(p.price)) : 0;
-  const stockInfo = getStockLabel(p.stock);
 
   const tProduct = await getTranslations("product");
   const tCommon = await getTranslations("common");
@@ -81,113 +78,101 @@ export default async function ProductPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildProductSchema({ ...p, brand: p.brand, reviews: p.reviews })) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildBreadcrumbSchema(breadcrumbs)) }} />
 
-      <TrustBar />
-      <PressBar />
-      <Container className="py-8">
-        <Breadcrumbs items={breadcrumbs} />
+      {/* K .dlayout — 2-col grid, full viewport */}
+      <div className="dlayout" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", maxWidth: 1400, margin: "0 auto", paddingTop: "var(--nav-h)", minHeight: "calc(100vh - var(--nav-h))" }}>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-8">
-          <ProductGallery images={p.images} productName={p.name} />
+        {/* Left: sticky gallery */}
+        <ProductGallery images={p.images} productName={p.name} />
 
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 flex-wrap">
-              {p.brand && (
-                <Link href={`/brands/${p.brand.slug}`} className="text-sm font-medium text-brand-500 hover:text-brand-600 uppercase tracking-wider">
-                  {p.brand.name}
-                </Link>
-              )}
-              {p.isNewArrival && <Badge variant="gold">{tProduct("newArrival")}</Badge>}
-              {p.isBestSeller && <Badge variant="default">{tProduct("bestSeller")}</Badge>}
-              {discount > 0 && <Badge variant="error">-{discount}% Off</Badge>}
+        {/* Right: .dinfo — scrollable info panel */}
+        <div style={{ padding: "60px 56px", overflowY: "auto", borderLeft: "1px solid var(--border)" }}>
+
+          {/* .dcrumb */}
+          <ProductBreadcrumb crumbs={breadcrumbs} />
+
+          {/* .dbrand */}
+          {p.brand && (
+            <Link href={`/brands/${p.brand.slug}`} style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 12 }}>
+              {p.brand.name}
+            </Link>
+          )}
+
+          {/* .dname */}
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(26px,2.5vw,40px)", fontWeight: 700, lineHeight: 1.1, marginBottom: 22, color: "var(--chalk)" }}>
+            {p.name}
+          </h1>
+
+          {/* Rating */}
+          <div style={{ marginBottom: 5 }}>
+            <RatingStars rating={Number(p.ratingAvg)} count={p.ratingCount} size={13} />
+          </div>
+          <a href="#reviews" style={{ fontSize: 12, color: "var(--chalk2)", display: "block", marginBottom: 32, transition: "color 0.2s" }}>
+            {p.ratingCount} {tProduct("reviews")}
+          </a>
+
+          {/* .dprice */}
+          <div style={{ fontFamily: "var(--sans)", fontSize: 38, fontWeight: 500, marginBottom: 7, color: "var(--chalk)" }}>
+            <Price amount={Number(p.price)} />
+          </div>
+          {p.comparePrice && Number(p.comparePrice) > Number(p.price) && (
+            <div style={{ fontSize: 16, color: "var(--chalk2)", textDecoration: "line-through", marginBottom: 36 }}>
+              <Price amount={Number(p.comparePrice)} />
             </div>
+          )}
 
-            <h1 className="font-display text-3xl md:text-4xl text-black dark:text-white leading-tight">{p.name}</h1>
-
-            <div className="flex items-center gap-3">
-              <RatingStars rating={Number(p.ratingAvg)} count={p.ratingCount} size={16} />
-              <a href="#reviews" className="text-sm text-surface-400 hover:text-brand-500 transition-colors">{p.ratingCount} {tProduct("reviews")}</a>
-            </div>
-
-            <div className="flex items-baseline gap-3">
-              <Price amount={Number(p.price)} className="font-display text-4xl text-surface-900 dark:text-white" />
-              {p.comparePrice && Number(p.comparePrice) > Number(p.price) && (
-                <Price amount={Number(p.comparePrice)} className="text-xl text-surface-400 line-through" />
-              )}
-            </div>
-
-            <p className={`text-sm font-medium ${stockInfo.color}`}>{stockInfo.label}</p>
-
-            {p.shortDescription && (
-              <p className="text-surface-600 dark:text-surface-400 leading-relaxed">{p.shortDescription}</p>
+          {/* Badges */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
+            {p.isNewArrival && (
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 1 }}>New</span>
             )}
-
-            <AddToCartSection product={p} />
-
-            {p.specifications.length > 4 && (
-              <div className="rounded-2xl border border-surface-100 dark:border-surface-800 overflow-hidden">
-                {p.specifications.slice(0, 4).map((spec: { name: string; value: string }, i: number) => (
-                  <div key={i} className={`flex items-center gap-4 px-5 py-3 ${i % 2 === 0 ? "bg-surface-50 dark:bg-surface-800/50" : ""}`}>
-                    <span className="text-sm text-surface-500 w-32 shrink-0">{spec.name}</span>
-                    <span className="text-sm text-surface-900 dark:text-white font-medium">{spec.value}</span>
-                  </div>
-                ))}
-              </div>
+            {discount > 0 && (
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "#dc2626", color: "#fff", borderRadius: 1 }}>-{discount}%</span>
             )}
           </div>
-        </div>
 
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-8">
-            {p.description && (
-              <div>
-                <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">{tProduct("aboutProduct")}</h2>
-                <p className="text-surface-600 dark:text-surface-400 leading-relaxed whitespace-pre-wrap">{p.description}</p>
-              </div>
-            )}
-            {p.specifications.length > 0 && (
-              <div>
-                <h2 className="font-display text-2xl text-surface-900 dark:text-white mb-4">{tProduct("specifications")}</h2>
-                <div className="rounded-2xl border border-surface-100 dark:border-surface-800 overflow-hidden">
-                  {p.specifications.map((spec: { name: string; value: string }, i: number) => (
-                    <div key={i} className={`flex items-center gap-4 px-5 py-3.5 ${i % 2 === 0 ? "bg-surface-50 dark:bg-surface-800/50" : ""}`}>
-                      <span className="text-sm text-surface-500 w-40 shrink-0">{spec.name}</span>
-                      <span className="text-sm text-surface-900 dark:text-white">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-          <div>
-            <div className="border border-black/8 dark:border-white/8 p-5 space-y-4">
-              {[
-                { icon: <Truck size={15} />, label: tProduct("trustShipping"), href: "/shipping" },
-                { icon: <RotateCcw size={15} />, label: tProduct("trustReturns"), href: "/returns" },
-                { icon: <ShieldCheck size={15} />, label: tProduct("trustAuthentic"), href: null },
-                { icon: <Lock size={15} />, label: "256-bit SSL secure checkout", href: null },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3 text-sm text-black/50 dark:text-white/50">
-                  <span className="shrink-0 text-black/30 dark:text-white/30">{item.icon}</span>
-                  {item.href
-                    ? <Link href={item.href} className="hover:text-black dark:hover:text-white transition-colors">{item.label}</Link>
-                    : item.label
-                  }
+          <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "0 0 32px" }} />
+
+          {/* Add to cart section */}
+          <AddToCartSection product={p} />
+
+          <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "32px 0" }} />
+
+          {/* Description */}
+          {(p.shortDescription || p.description) && (
+            <div style={{ marginBottom: 32 }}>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("aboutProduct")}</p>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75 }}>
+                {p.shortDescription ?? p.description}
+              </p>
+            </div>
+          )}
+
+          {/* Specifications */}
+          {p.specifications.length > 0 && (
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 16 }}>{tProduct("specifications")}</p>
+              {p.specifications.map((spec: { name: string; value: string }, i: number) => (
+                <div key={i} style={{ display: "flex", padding: "13px 0", borderBottom: "1px solid var(--border)", gap: 16 }}>
+                  <span style={{ fontSize: 12, color: "var(--chalk2)", minWidth: 130, flexShrink: 0 }}>{spec.name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 400, color: "var(--chalk)" }}>{spec.value}</span>
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
+      </div>
 
-        <div id="reviews" className="mt-16">
+      {/* Reviews + related — full width below the grid */}
+      <div style={{ maxWidth: 1400, margin: "0 auto", padding: "80px 52px", borderTop: "1px solid var(--border)" }}>
+        <div id="reviews">
           <Suspense fallback={null}>
             <ReviewsSection productId={p.id} initialReviews={p.reviews} avgRating={Number(p.ratingAvg)} reviewCount={p.ratingCount} />
           </Suspense>
         </div>
-
         <Suspense fallback={<RelatedProductsSkeleton />}>
           <RelatedProducts productId={p.id} categoryId={p.categoryId} price={Number(p.price)} />
         </Suspense>
-      </Container>
+      </div>
 
       <TrackView product={p} />
       <RecentlyViewed currentProductId={p.id} />

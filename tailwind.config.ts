@@ -10,59 +10,62 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary Brand — Classical amber gold
+        // Primary Brand — Night Market Gold
         brand: {
-          50:  "#fdf7ee",
-          100: "#f8ecd5",
-          200: "#eed5a1",
-          300: "#e0b867",
-          400: "#cb9a40",
-          500: "#b68235",
-          600: "#9b6b29",
-          700: "#7d5421",
-          800: "#633f1a",
-          900: "#4f3017",
-          950: "#2c190a",
+          50:  "#fdf8ed",
+          100: "#f8ecce",
+          200: "#f0d99c",
+          300: "#e4c064",
+          400: "#d4a843",
+          500: "#C9A44A",  // Night Market gold
+          600: "#a8802a",
+          700: "#866119",
+          800: "#664a13",
+          900: "#4a360e",
+          950: "#2a1e07",
         },
-        // Neutrals — Classical warm parchment
+        // Neutrals — Night Market dark palette
         surface: {
           0:   "#ffffff",
-          50:  "#f3f2f2",
-          100: "#eae9e9",
-          200: "#d8d6d3",
-          300: "#c2bfba",
-          400: "#a09c95",
-          500: "#7e7a73",
-          600: "#5c5954",
-          700: "#413f3b",
-          800: "#2d2b28",
-          900: "#201f1d",
-          950: "#121110",
+          50:  "#EFE9DA",  // chalk
+          100: "#E8E1D0",
+          200: "#D5CCBB",
+          300: "#B8AD9E",
+          400: "#8A8070",
+          500: "#5E5750",
+          600: "#3D3830",
+          700: "#2A2520",
+          800: "#1A1720",  // s2
+          900: "#0D1220",  // s1
+          950: "#07090F",  // bg deep
         },
-        // Accent — rose gold
+        // Accent — crimson for beauty category
         accent: {
-          50:  "#fff1f1",
-          100: "#ffe0e0",
-          200: "#ffbfbf",
-          300: "#ff9494",
-          400: "#f96068",
-          500: "#ee2d3a",
-          600: "#d01328",
-          700: "#ad0e26",
-          800: "#8f1024",
-          900: "#771224",
+          50:  "#fff0f3",
+          100: "#ffe0e6",
+          200: "#ffc0cc",
+          300: "#ff8fa3",
+          400: "#ff5272",
+          500: "#FF3366",
+          600: "#d01040",
+          700: "#ad0e33",
+          800: "#8f1030",
+          900: "#77112d",
           950: "#42030e",
         },
+        // Tech accent
+        tech: "#00E5FF",
         // Success / Error / Warning
         success: "#16a34a",
         warning: "#ca8a04",
-        error: "#dc2626",
+        error:   "#dc2626",
       },
       fontFamily: {
-        display: ["var(--font-cinzel)", "Georgia", "serif"],
-        serif:   ["var(--font-lora)", "Georgia", "serif"],
-        sans:    ["var(--font-inter)", "system-ui", "sans-serif"],
-        mono:    ["monospace"],
+        display:  ["var(--font-playfair)", "Georgia", "serif"],
+        serif:    ["var(--font-playfair)", "Georgia", "serif"],
+        sans:     ["var(--font-outfit)", "system-ui", "sans-serif"],
+        georgian: ["var(--font-georgian)", "serif"],
+        mono:     ["monospace"],
       },
       fontSize: {
         "2xs": ["0.625rem", { lineHeight: "0.875rem" }],
@@ -134,6 +137,7 @@ const config: Config = {
         "float":       "float 4s ease-in-out infinite",
         "pulse-slow":  "pulse 3s ease-in-out infinite",
         "spin-slow":   "spin 8s linear infinite",
+        "marquee":     "marquee 32s linear infinite",
       },
       keyframes: {
         fadeIn:  { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
@@ -141,6 +145,7 @@ const config: Config = {
         slideIn: { "0%": { opacity: "0", transform: "translateX(-16px)" }, "100%": { opacity: "1", transform: "translateX(0)" } },
         shimmer: { "0%": { backgroundPosition: "-200% 0" }, "100%": { backgroundPosition: "200% 0" } },
         float:   { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-8px)" } },
+        marquee: { "0%": { transform: "translateX(0)" }, "100%": { transform: "translateX(-50%)" } },
       },
       transitionTimingFunction: {
         "luxury": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
