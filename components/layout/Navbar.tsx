@@ -139,7 +139,7 @@ export function Navbar() {
             <button onClick={openSearch} aria-label="Open search" className="nav-icon">
               <Search size={16} />
             </button>
-            <Link href="/wishlist" aria-label="Wishlist" className="nav-icon hidden md:flex">
+            <Link href="/wishlist" aria-label="Wishlist" className="nav-icon nav-icon-desktop">
               <Heart size={16} />
               {mounted && wishlistIds.length > 0 && (
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
@@ -159,9 +159,10 @@ export function Navbar() {
             {mounted && (user ? (
               <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
             ) : (
-              <Link href="/login" className="signin-btn hidden md:block">
-                {t("signIn")}
-              </Link>
+              <>
+                <Link href="/login" className="signin-btn nav-icon-desktop">{t("signIn")}</Link>
+                <Link href="/login" className="nav-icon nav-icon-mobile" aria-label={t("signIn")}><User size={17} /></Link>
+              </>
             ))}
           </div>
 
@@ -193,15 +194,28 @@ export function Navbar() {
                   ))}
                 </div>
               ))}
-              <div className="pt-6">
+              <div className="pt-6 flex flex-col gap-1">
                 {user ? (
-                  <button onClick={() => { signOut(); closeMobileMenu(); }}
-                    className="flex items-center gap-3 h-11 text-[11px] tracking-[0.1em] uppercase text-red-400 w-full">
-                    <LogOut size={16} /> {t("signOut")}
-                  </button>
+                  <>
+                    {[
+                      { href: "/account",        icon: User,            label: t("myAccount") },
+                      { href: "/account/orders", icon: Package,         label: t("orders")    },
+                      { href: "/wishlist",        icon: Heart,           label: t("wishlist")  },
+                      ...(isAdmin ? [{ href: "/admin", icon: LayoutDashboard, label: t("adminPanel") }] : []),
+                    ].map(item => (
+                      <Link key={item.href} href={item.href} onClick={closeMobileMenu}
+                        className="flex items-center gap-3 h-11 text-[11px] tracking-[0.1em] uppercase text-white/70">
+                        <item.icon size={15} /> {item.label}
+                      </Link>
+                    ))}
+                    <button onClick={() => { signOut(); closeMobileMenu(); }}
+                      className="flex items-center gap-3 h-11 text-[11px] tracking-[0.1em] uppercase text-red-400 w-full mt-2 border-t border-white/[0.08] pt-4">
+                      <LogOut size={15} /> {t("signOut")}
+                    </button>
+                  </>
                 ) : (
                   <Link href="/login" onClick={closeMobileMenu}
-                    className="flex items-center justify-center h-11 border border-brand-500 text-brand-500 text-[10px] tracking-[0.18em] uppercase font-medium hover:bg-brand-500/10 transition-colors">
+                    className="flex items-center justify-center h-11 border border-white/20 text-white text-[10px] tracking-[0.18em] uppercase font-medium">
                     {t("signIn")}
                   </Link>
                 )}
