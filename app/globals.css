@@ -37,7 +37,7 @@
     scroll-behavior: smooth;
   }
 
-  [data-theme="light"] {
+  :root:not(.dark) {
     --bg: #F4F0E8;
     --s1: #EDE7D8;
     --s2: #E5DDCC;
