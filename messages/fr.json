@@ -66,8 +66,8 @@
       "title": "Vente Flash",
       "subtitle": "Offres à durée limitée",
       "hrs": "H",
-      "min": "MIN",
-      "sec": "SEC"
+      "min": "min",
+      "sec": "s"
     },
     "brands": {
       "title": "Nos Marques",
@@ -705,7 +705,6 @@
     "allTech": "Toute la Tech"
   },
   "hero": {
-    "tagline": "Est. 2024",
     "headline1": "Deux mondes,",
     "headline2": "une rue.",
     "description": "Everything Street associe technologie réfléchie et beauté réfléchie — sélectionnée, testée et livrée ensemble.",
@@ -724,9 +723,7 @@
     "exploreTech": "Explorer la Tech",
     "exploreBeauty": "Explorer la Beauté",
     "techSub": "tout en un seul endroit",
-    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
-    "beautySub": "cosmétiques premium",
-    "beautySubKa": "ტექნოლოგია და სილამაზე"
+    "beautySub": "cosmétiques premium"
   },
   "wishlist": {
     "title": "Ma liste de souhaits",
@@ -858,7 +855,7 @@
   "search": {
     "placeholder": "Rechercher produits, marques, catégories…",
     "resultsFor": "{count} résultats pour {query}",
-    "noResults": "Aucun résultat pour {query}",
+    "noResults": "Aucun résultat pour \"{query}\"",
     "tabAll": "Tout",
     "tabBeauty": "Beauté",
     "tabTech": "Tech",

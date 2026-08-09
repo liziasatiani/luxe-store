@@ -705,7 +705,6 @@
     "allTech": "Toda la Tecnología"
   },
   "hero": {
-    "tagline": "Est. 2024",
     "headline1": "Dos mundos,",
     "headline2": "una calle.",
     "description": "Everything Street combina tecnología cuidada con belleza cuidada — seleccionadas, probadas y entregadas juntas.",
@@ -724,9 +723,7 @@
     "exploreTech": "Explorar Tech",
     "exploreBeauty": "Explorar Belleza",
     "techSub": "todo en un solo lugar",
-    "techSubKa": "ყველაფერი ერთ ქუჩაზე",
-    "beautySub": "cosméticos premium",
-    "beautySubKa": "ტექნოლოგია და სილამაზე"
+    "beautySub": "cosméticos premium"
   },
   "wishlist": {
     "title": "Mi lista de deseos",
@@ -858,7 +855,7 @@
   "search": {
     "placeholder": "Buscar productos, marcas, categorías…",
     "resultsFor": "{count} resultados para {query}",
-    "noResults": "Sin resultados para {query}",
+    "noResults": "Sin resultados para \"{query}\"",
     "tabAll": "Todo",
     "tabBeauty": "Belleza",
     "tabTech": "Tech",
