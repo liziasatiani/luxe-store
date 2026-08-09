@@ -2,10 +2,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, ShoppingBag, ArrowRight, Tag, X, Lock, RotateCcw, Shield } from "lucide-react";
+import { Trash2, Tag, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Container, Divider, Input, EmptyState } from "@/components/ui";
-import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store";
 import { getProductImageUrl } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -41,148 +39,152 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <Container className="py-20">
-        <EmptyState
-          icon={<ShoppingBag size={64} />}
-          title={t("empty")}
-          description={t("emptyDesc")}
-          action={<Button variant="gold" size="lg" asChild><Link href="/">{t("continueShopping")}</Link></Button>}
-        />
-      </Container>
+      <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center", padding: "80px 24px" }}>
+          <p style={{ fontSize: 9, letterSpacing: "0.28em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 20 }}>{t("title")}</p>
+          <h2 style={{ fontFamily: "var(--serif)", fontSize: "clamp(28px,3vw,44px)", fontWeight: 700, color: "var(--chalk)", marginBottom: 12 }}>{t("empty")}</h2>
+          <p style={{ fontSize: 13, color: "var(--chalk2)", marginBottom: 36 }}>{t("emptyDesc")}</p>
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", transition: "0.2s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "var(--gold)"; (e.currentTarget as HTMLElement).style.color = "#000"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "var(--gold)"; }}>
+            {t("continueShopping")} →
+          </Link>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Container className="py-12">
-      <h1 className="font-display text-4xl text-surface-900 dark:text-white mb-8">
-        {t("title")} <span className="text-surface-400 text-2xl">({itemCount()} {t("items")})</span>
-      </h1>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Items */}
-        <div className="lg:col-span-2 space-y-4">
-          <AnimatePresence initial={false}>
-            {items.map((item) => {
-              const img = getProductImageUrl(item.product.images);
-              const price = Number(item.variant?.price ?? item.product.price);
-              return (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="flex gap-4 p-5 rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900"
-                >
-                  <Link href={`/products/${item.product.slug}`} className="relative w-24 h-24 rounded-xl overflow-hidden bg-surface-50 dark:bg-surface-800 shrink-0">
-                    <Image src={img} alt={item.product.name} fill className="object-cover" sizes="96px" />
-                  </Link>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <p className="text-xs text-surface-400 mb-0.5">{item.product.brand?.name}</p>
-                        <Link href={`/products/${item.product.slug}`} className="font-medium text-surface-900 dark:text-white hover:text-brand-500 transition-colors line-clamp-2 text-sm">
-                          {item.product.name}
-                        </Link>
-                        {item.variant && <p className="text-xs text-surface-400 mt-1">{item.variant.name}: {item.variant.value}</p>}
-                      </div>
-                      <button onClick={() => { removeItem(item.id); toast.success("Item removed"); }} className="text-surface-400 hover:text-error transition-colors shrink-0">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center gap-1 rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
-                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-9 h-9 flex items-center justify-center text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800">−</button>
-                        <span className="w-10 text-center text-sm font-medium">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="w-9 h-9 flex items-center justify-center text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800">+</button>
-                      </div>
-                      <span className="font-semibold text-surface-900 dark:text-white">{format(price * item.quantity)}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+    <>
+      {/* Page header */}
+      <div className="k-page-hdr">
+        <div className="wrap">
+          <p className="page-hd-eyebrow">{t("title")}</p>
+          <h1 className="page-hd-title">{itemCount()} {t("items")}</h1>
         </div>
+      </div>
 
-        {/* Order Summary */}
-        <div className="space-y-4">
-          <div className="rounded-2xl border border-surface-100 dark:border-surface-800 bg-white dark:bg-surface-900 p-6 space-y-4">
-            <h2 className="font-semibold text-lg text-surface-900 dark:text-white">{t("secureCheckout")}</h2>
+      <div className="wrap" style={{ paddingTop: 56, paddingBottom: 96 }}>
+        <div className="cart-layout" style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 48, alignItems: "start" }}>
+
+          {/* Items */}
+          <div>
+            <AnimatePresence initial={false}>
+              {items.map((item) => {
+                const img = getProductImageUrl(item.product.images);
+                const price = Number(item.variant?.price ?? item.product.price);
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, height: 0 }}
+                    style={{ display: "flex", gap: 24, padding: "28px 0", borderBottom: "1px solid var(--border)" }}
+                  >
+                    <Link href={`/products/${item.product.slug}`} style={{ position: "relative", width: 100, height: 120, flexShrink: 0, overflow: "hidden", background: "var(--s1)", display: "block" }}>
+                      <Image src={img} alt={item.product.name} fill className="object-cover" sizes="100px" />
+                    </Link>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                        <div>
+                          {item.product.brand && <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 5 }}>{item.product.brand.name}</p>}
+                          <Link href={`/products/${item.product.slug}`} style={{ fontFamily: "var(--serif)", fontSize: 16, color: "var(--chalk)", textDecoration: "none", display: "block" }}>
+                            {item.product.name}
+                          </Link>
+                          {item.variant && <p style={{ fontSize: 12, color: "var(--chalk2)", marginTop: 4 }}>{item.variant.name}: {item.variant.value}</p>}
+                        </div>
+                        <button onClick={() => { removeItem(item.id); toast.success("Removed"); }} style={{ color: "var(--chalk2)", background: "none", border: "none", cursor: "pointer", padding: 4, flexShrink: 0 }}>
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 20 }}>
+                        <div style={{ display: "flex", border: "1px solid var(--border)", alignItems: "center" }}>
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", color: "var(--chalk2)", cursor: "pointer", fontSize: 16 }}>−</button>
+                          <span style={{ width: 36, textAlign: "center", fontSize: 13, color: "var(--chalk)" }}>{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", color: "var(--chalk2)", cursor: "pointer", fontSize: 16 }}>+</button>
+                        </div>
+                        <span style={{ fontSize: 18, fontWeight: 500, color: "var(--chalk)" }}>{format(price * item.quantity)}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+
+            <div style={{ paddingTop: 28 }}>
+              <Link href="/" style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", textDecoration: "none", borderBottom: "1px solid var(--borderg)", paddingBottom: 3 }}>
+                ← {t("continueShopping")}
+              </Link>
+            </div>
+          </div>
+
+          {/* Order summary */}
+          <div style={{ border: "1px solid var(--border)", padding: 32, position: "sticky", top: "calc(var(--nav-h) + 24px)" }}>
+            <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 28 }}>{t("secureCheckout")}</p>
 
             {/* Coupon */}
             {coupon ? (
-              <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
-                <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
-                  <Tag size={14} />
-                  <span className="text-sm font-medium">{coupon.code}</span>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", border: "1px solid rgba(74,222,128,0.3)", background: "rgba(74,222,128,0.06)", marginBottom: 24 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#4ade80" }}>
+                  <Tag size={12} />
+                  <span style={{ fontWeight: 600, letterSpacing: "0.05em" }}>{coupon.code}</span>
                 </div>
-                <button onClick={() => { setCoupon(null); setCouponCode(""); }} className="text-green-600 dark:text-green-400 hover:text-green-800">
-                  <X size={14} />
+                <button onClick={() => { setCoupon(null); setCouponCode(""); }} style={{ background: "none", border: "none", cursor: "pointer", color: "#4ade80", display: "flex" }}>
+                  <X size={13} />
                 </button>
               </div>
             ) : (
-              <div className="flex gap-2">
-                <Input
+              <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+                <input
                   placeholder={t("coupon")}
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value.toUpperCase())}
                   onKeyDown={e => e.key === "Enter" && applyCoupon()}
-                  className="h-10 text-sm"
+                  style={{ flex: 1, padding: "10px 14px", background: "transparent", border: "1px solid var(--borderg)", color: "var(--chalk)", fontSize: 12, outline: "none", letterSpacing: "0.06em" }}
                 />
-                <Button onClick={applyCoupon} loading={couponLoading} variant="outline" size="sm" className="shrink-0 h-10">
+                <button onClick={applyCoupon} disabled={couponLoading}
+                  style={{ padding: "10px 16px", border: "1px solid var(--borderg)", color: "var(--gold)", background: "transparent", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", whiteSpace: "nowrap", opacity: couponLoading ? 0.5 : 1 }}>
                   {t("apply")}
-                </Button>
+                </button>
               </div>
             )}
 
-            <Divider />
-
-            <div className="space-y-2.5">
-              <div className="flex justify-between text-sm">
-                <span className="text-surface-500">{t("subtotal")}</span>
-                <span className="font-medium">{format(subtotal())}</span>
-              </div>
-              {discount() > 0 && (
-                <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
-                  <span>{t("discount")}</span>
-                  <span>−{format(discount())}</span>
+            {/* Totals */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
+              {[
+                { label: t("subtotal"), value: format(subtotal()) },
+                ...(discount() > 0 ? [{ label: t("discount"), value: `−${format(discount())}`, green: true }] : []),
+                { label: t("shipping"), value: shipping() === 0 ? t("free") : format(shipping()), green: shipping() === 0 },
+                { label: t("tax"), value: format(tax()) },
+              ].map(row => (
+                <div key={row.label} style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
+                  <span style={{ color: "var(--chalk2)" }}>{row.label}</span>
+                  <span style={{ color: (row as { green?: boolean }).green ? "#4ade80" : "var(--chalk)", fontWeight: 500 }}>{row.value}</span>
                 </div>
-              )}
-              <div className="flex justify-between text-sm">
-                <span className="text-surface-500">{t("shipping")}</span>
-                <span className={shipping() === 0 ? "text-green-600 dark:text-green-400 font-medium" : "font-medium"}>
-                  {shipping() === 0 ? t("free") : format(shipping())}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-surface-500">{t("tax")}</span>
-                <span className="font-medium">{format(tax())}</span>
-              </div>
+              ))}
+            </div>
+            <div style={{ borderTop: "1px solid var(--border)", paddingTop: 16, marginBottom: 24, display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "var(--chalk)" }}>{t("total")}</span>
+              <span style={{ fontSize: 18, fontWeight: 600, color: "var(--chalk)" }}>{format(total())}</span>
             </div>
 
-            <Divider />
-
-            <div className="flex justify-between text-lg font-semibold">
-              <span>{t("total")}</span>
-              <span className="text-surface-900 dark:text-white">{format(total())}</span>
-            </div>
-
-            <Button variant="gold" size="lg" fullWidth rightIcon={<ArrowRight size={18} />} asChild>
-              <Link href="/checkout">{t("checkout")}</Link>
-            </Button>
-
-            <Link href="/" className="block text-center text-sm text-brand-500 hover:text-brand-600">
-              ← {t("continueShopping")}
+            <Link href="/checkout"
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, width: "100%", padding: "14px 24px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", transition: "0.2s" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "0.88"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
+            >
+              {t("checkout")} <ArrowRight size={14} />
             </Link>
-          </div>
-
-          <div className="flex justify-center gap-6 text-xs text-surface-400">
-            <span className="flex items-center gap-1.5"><Lock size={11} /> {t("trustSecure")}</span>
-            <span className="flex items-center gap-1.5"><RotateCcw size={11} /> {t("trustReturns")}</span>
-            <span className="flex items-center gap-1.5"><Shield size={11} /> {t("trustAuthentic")}</span>
           </div>
         </div>
       </div>
-    </Container>
+
+      {/* Mobile stack override */}
+      <style>{`
+        @media (max-width: 860px) {
+          .cart-layout { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </>
   );
 }

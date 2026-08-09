@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 interface Subcategory {
   name: string;
@@ -8,7 +7,7 @@ interface Subcategory {
 }
 
 interface Props {
-  basePath: string; // e.g. "/beauty" or "/tech"
+  basePath: string;
   all: { label: string; href: string; active: boolean };
   subcategories: Subcategory[];
   activeSlug?: string;
@@ -16,19 +15,17 @@ interface Props {
 
 export function SubcategoryNav({ basePath, all, subcategories, activeSlug }: Props) {
   return (
-    <div className="border-b border-black/8 dark:border-white/8 mb-10 -mx-4 px-4 sm:mx-0 sm:px-0">
-      <div className="flex overflow-x-auto gap-0 scrollbar-hide -mb-px">
-        {/* All tab */}
+    <div style={{ borderBottom: "1px solid var(--border)", marginBottom: 48 }}>
+      <div style={{ display: "flex", overflowX: "auto", gap: 0 }}>
         <Link
           href={all.href}
-          className={cn(
-            "shrink-0 flex flex-col items-center justify-center px-6 py-5 border-b-2 transition-colors group",
-            all.active
-              ? "border-black dark:border-white text-black dark:text-white"
-              : "border-transparent text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20"
-          )}
+          style={{
+            flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            padding: "16px 24px", borderBottom: `2px solid ${all.active ? "var(--gold)" : "transparent"}`,
+            textDecoration: "none", transition: "border-color 0.2s",
+          }}
         >
-          <span className="font-display text-[11px] tracking-[0.18em] uppercase">{all.label}</span>
+          <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 600, color: all.active ? "var(--gold)" : "var(--chalk2)", transition: "color 0.2s" }}>{all.label}</span>
         </Link>
 
         {subcategories.map((sc) => {
@@ -37,15 +34,14 @@ export function SubcategoryNav({ basePath, all, subcategories, activeSlug }: Pro
             <Link
               key={sc.slug}
               href={`${basePath}/${sc.slug}`}
-              className={cn(
-                "shrink-0 flex flex-col items-center justify-center px-6 py-5 border-b-2 transition-colors group",
-                active
-                  ? "border-black dark:border-white text-black dark:text-white"
-                  : "border-transparent text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20"
-              )}
+              style={{
+                flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                padding: "16px 24px", borderBottom: `2px solid ${active ? "var(--gold)" : "transparent"}`,
+                textDecoration: "none", transition: "border-color 0.2s",
+              }}
             >
-              <span className="font-display text-[11px] tracking-[0.18em] uppercase whitespace-nowrap">{sc.name}</span>
-              <span className="text-[9px] tracking-[0.08em] mt-1 opacity-50">{sc.count}</span>
+              <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 600, color: active ? "var(--gold)" : "var(--chalk2)", whiteSpace: "nowrap", transition: "color 0.2s" }}>{sc.name}</span>
+              <span style={{ fontSize: 9, letterSpacing: "0.06em", marginTop: 3, color: "var(--chalk3)" }}>{sc.count}</span>
             </Link>
           );
         })}

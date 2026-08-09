@@ -1,11 +1,24 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, ArrowLeft } from "lucide-react";
-import { Input } from "@/components/ui";
-import { Button } from "@/components/ui/Button";
+import { ArrowLeft, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
+
+function KInput({ label, error, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string }) {
+  return (
+    <div style={{ width: "100%" }}>
+      <label style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 8 }}>{label}</label>
+      <input
+        style={{ width: "100%", padding: "12px 16px", background: "transparent", border: "1px solid var(--borderg)", color: "var(--chalk)", fontSize: 14, outline: "none", transition: "border-color 0.2s" }}
+        onFocus={e => (e.currentTarget.style.borderColor = "var(--gold)")}
+        onBlur={e => (e.currentTarget.style.borderColor = "var(--borderg)")}
+        {...props}
+      />
+      {error && <p style={{ fontSize: 11, color: "var(--crimson)", marginTop: 4 }}>{error}</p>}
+    </div>
+  );
+}
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth.forgotPassword");
@@ -35,30 +48,43 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <Link href="/" className="font-display text-3xl text-surface-900 dark:text-white">Everything Street</Link>
-          <h1 className="font-display text-3xl text-surface-900 dark:text-white mt-6 mb-2">{t("title")}</h1>
-          <p className="text-surface-500">{t("subtitle")}</p>
+    <div style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px", background: "var(--bg)" }}>
+      <div style={{ width: "100%", maxWidth: 420 }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <Link href="/" style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, color: "var(--chalk)", textDecoration: "none" }}>
+            Everything <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Street</em>
+          </Link>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginTop: 28, marginBottom: 8 }}>{t("title")}</h1>
+          <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("subtitle")}</p>
         </div>
-        <div className="bg-white dark:bg-surface-900 rounded-3xl shadow-luxury-lg border border-surface-100 dark:border-surface-800 p-8">
+
+        <div style={{ border: "1px solid var(--border)", padding: 36 }}>
           {sent ? (
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto">
-                <Mail size={32} className="text-green-500" />
+            <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+              <div style={{ width: 52, height: 52, border: "1px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Mail size={22} style={{ color: "var(--gold)" }} />
               </div>
-              <p className="text-surface-700 dark:text-surface-300">{t("sentDesc2")}</p>
-              <Link href="/login" className="inline-flex items-center gap-2 text-brand-500 hover:text-brand-600 text-sm">
-                <ArrowLeft size={14} /> {t("back")}
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.6 }}>{t("sentDesc2")}</p>
+              <Link href="/login" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk2)", textDecoration: "none" }}>
+                <ArrowLeft size={13} /> {t("back")}
               </Link>
             </div>
           ) : (
-            <div className="space-y-5">
-              <Input id="email" label={t("email")} type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} onKeyDown={e => e.key === "Enter" && requestReset()} />
-              <Button onClick={requestReset} loading={loading} variant="gold" size="lg" fullWidth>{t("send")}</Button>
-              <Link href="/login" className="flex items-center justify-center gap-2 text-sm text-surface-500 hover:text-surface-700">
-                <ArrowLeft size={14} /> {t("back")}
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <KInput
+                label={t("email")} id="email" type="email"
+                placeholder="you@example.com" value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && requestReset()}
+              />
+              <button
+                onClick={requestReset} disabled={loading}
+                style={{ width: "100%", padding: "14px 24px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", border: "none", cursor: loading ? "wait" : "pointer", opacity: loading ? 0.7 : 1, transition: "0.2s" }}
+              >
+                {loading ? "…" : t("send")}
+              </button>
+              <Link href="/login" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk2)", textDecoration: "none" }}>
+                <ArrowLeft size={13} /> {t("back")}
               </Link>
             </div>
           )}

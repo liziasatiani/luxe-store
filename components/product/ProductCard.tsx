@@ -61,9 +61,9 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
           <Image src={imageUrl} alt={product.name} fill className="object-cover" sizes="80px" />
         </div>
         <div className="flex-1 min-w-0 py-1">
-          <p className="text-[10px] tracking-[0.1em] uppercase mb-1 text-white/40">{product.brand?.name}</p>
-          <p className="text-sm line-clamp-2 leading-snug text-white">{product.name}</p>
-          <p className="text-sm font-medium mt-2 text-white">{format(price)}</p>
+          <p className="text-[10px] tracking-[0.1em] uppercase mb-1" style={{ color: "var(--chalk2)" }}>{product.brand?.name}</p>
+          <p className="text-sm line-clamp-2 leading-snug" style={{ color: "var(--chalk)" }}>{product.name}</p>
+          <p className="text-sm font-medium mt-2" style={{ color: "var(--chalk)" }}>{format(price)}</p>
         </div>
       </Link>
     );

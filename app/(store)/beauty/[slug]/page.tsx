@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { Container } from "@/components/ui";
 import { SubcategoryNav } from "@/components/ui/SubcategoryNav";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -42,23 +41,25 @@ export default async function BeautySubcategoryPage({ params }: Props) {
 
   return (
     <>
-      <div className="border-b border-black/8 dark:border-white/8 py-16">
-        <Container className="text-center">
-          <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-4">{tNav("beauty")}</p>
-          <h1 className="font-display text-5xl md:text-6xl text-black dark:text-white font-light mb-4">{category.name}</h1>
-          <p className="text-sm text-black/40 dark:text-white/40 max-w-md mx-auto">{category._count.products} {tCommon("products")}</p>
-        </Container>
+      <div className="k-page-hdr">
+        <div className="wrap">
+          <p className="page-hd-eyebrow">{tNav("beauty")}</p>
+          <h1 className="page-hd-title">{category.name}</h1>
+          <p className="page-hd-desc">{category._count.products} {tCommon("products")}</p>
+        </div>
       </div>
 
-      <Container className="py-12">
-        <SubcategoryNav
-          basePath="/beauty"
-          all={{ label: t("all"), href: "/beauty", active: false }}
-          subcategories={subcategories.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products }))}
-          activeSlug={slug}
-        />
-        <ProductGrid filters={{ categorySlug: slug }} />
-      </Container>
+      <div style={{ paddingTop: 32, paddingBottom: 96 }}>
+        <div className="wrap">
+          <SubcategoryNav
+            basePath="/beauty"
+            all={{ label: t("all"), href: "/beauty", active: false }}
+            subcategories={subcategories.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products }))}
+            activeSlug={slug}
+          />
+          <ProductGrid filters={{ categorySlug: slug }} />
+        </div>
+      </div>
       <TrustBar />
     </>
   );

@@ -91,7 +91,7 @@ export function Navbar() {
         id="nav"
         className={[scrolled && "solid", annVisible && "ann-shown"].filter(Boolean).join(" ") || undefined}
       >
-          {/* Left: hamburger (mobile) | currency+lang (desktop) */}
+          {/* Left: hamburger (mobile) | nav links (desktop) */}
           <div className="nav-left">
             <button
               onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
@@ -101,11 +101,22 @@ export function Navbar() {
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
-            <div className="hidden lg:flex items-center" style={{ gap: "20px" }}>
-              {mounted && <CurrencySelector />}
-              <span className="nav-sep" />
-              {mounted && <LanguageSelector />}
-            </div>
+            <nav className="nav-links" aria-label="Main navigation">
+              {NAV_LINKS.map((link) => (
+                link.children?.length ? (
+                  <div key={link.href} className="nav-link-group">
+                    <Link href={link.href} className="nav-link">{link.label}</Link>
+                    <div className="nav-dropdown">
+                      {link.children.map((child) => (
+                        <Link key={child.href} href={child.href} className="nav-dropdown-link">{child.label}</Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link key={link.href} href={link.href} className="nav-link">{link.label}</Link>
+                )
+              ))}
+            </nav>
           </div>
 
           {/* Center: logo */}
@@ -113,8 +124,13 @@ export function Navbar() {
             Everything <em>Street</em>
           </Link>
 
-          {/* Right: icons + sign in */}
+          {/* Right: currency+lang (desktop) + icons + sign in */}
           <div className="nav-right">
+            <div className="hidden lg:flex items-center" style={{ gap: "16px", marginRight: "8px" }}>
+              {mounted && <CurrencySelector />}
+              <span className="nav-sep" />
+              {mounted && <LanguageSelector />}
+            </div>
             {mounted && (
               <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme" className="nav-icon">
                 {theme === "dark" ? <Sun size={15} strokeWidth={1.5} /> : <Moon size={15} strokeWidth={1.5} />}
