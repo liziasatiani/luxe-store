@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard } from "lucide-react";
+import { ShoppingBag, Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import { useClickOutside } from "@/hooks";
 import { useCartStore, useUIStore, useWishlistStore } from "@/store";
@@ -13,18 +14,23 @@ import { CurrencySelector } from "@/components/layout/CurrencySelector";
 
 export function Navbar() {
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
   const { openSearch, openMobileMenu, mobileMenuOpen, closeMobileMenu } = useUIStore();
   const { itemCount } = useCartStore();
   const wishlistIds = useWishlistStore(s => s.ids);
-  const [megaMenu, setMegaMenu] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [annVisible, setAnnVisible] = useState(false);
   const t = useTranslations("nav");
 
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 10);
+      setAnnVisible(y > 120);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -60,125 +66,85 @@ export function Navbar() {
     { label: t("new"),    href: "/new",     children: [] },
   ];
 
+  const ANN_ITEMS = [
+    "Free 48h Delivery in Tbilisi",
+    "100% Authentic Products",
+    "30-Day Returns",
+    "Secure Checkout",
+    "New Arrivals Weekly",
+    "Exclusive Brand Drops",
+  ];
+
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-400 ease-[cubic-bezier(.4,0,.2,1)] ${
-          scrolled
-            ? "bg-[rgba(7,9,15,0.88)] backdrop-blur-[24px] border-b border-white/[0.08]"
-            : "bg-transparent border-b border-transparent"
-        }`}
-      >
-        {/* K-design 3-column grid: [left: currency/lang] [center: logo] [right: icons] */}
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center h-14 md:h-16 px-4 sm:px-6 lg:px-8 max-w-screen-2xl mx-auto">
+      {/* Announcement bar */}
+      <div className={`ann-bar${annVisible ? " visible" : ""}`} id="annBar">
+        <div className="ann-track" id="annTrack">
+          {[...ANN_ITEMS, ...ANN_ITEMS].flatMap((item, i) => [
+            <span key={`item-${i}`} className="ann-item">{item}</span>,
+            <span key={`sep-${i}`} className="ann-sep">·</span>,
+          ])}
+        </div>
+      </div>
 
+      <header
+        id="nav"
+        className={[scrolled && "solid", annVisible && "ann-shown"].filter(Boolean).join(" ") || undefined}
+      >
           {/* Left: hamburger (mobile) | currency+lang (desktop) */}
-          <div className="flex items-center gap-3">
+          <div className="nav-left">
             <button
               onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
-              className="lg:hidden p-2 -ml-2 text-white/80 hover:text-white transition-colors"
+              className="nav-icon lg:hidden"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
-            <div className="hidden lg:flex items-center gap-0">
+            <div className="hidden lg:flex items-center" style={{ gap: "20px" }}>
               {mounted && <CurrencySelector />}
-              <span className="text-white/20 text-xs select-none mx-1">|</span>
+              <span className="nav-sep" />
               {mounted && <LanguageSelector />}
             </div>
           </div>
 
           {/* Center: logo */}
-          <Link href="/" onClick={closeMobileMenu} className="flex items-center justify-center">
-            <span className="font-display text-[20px] font-bold tracking-[0.02em] text-white whitespace-nowrap">
-              Everything <em className="not-italic italic font-bold" style={{ color: "#C9A44A" }}>Street</em>
-            </span>
+          <Link href="/" onClick={closeMobileMenu} className="nav-logo">
+            Everything <em>Street</em>
           </Link>
 
-          {/* Right: search + wishlist + cart + account */}
-          <div className="flex items-center gap-0.5 justify-end">
-            <button onClick={openSearch} aria-label="Open search"
-              className="p-2.5 text-white/70 hover:text-white transition-colors">
-              <Search size={18} />
+          {/* Right: icons + sign in */}
+          <div className="nav-right">
+            {mounted && (
+              <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme" className="nav-icon">
+                {theme === "dark" ? <Sun size={15} strokeWidth={1.5} /> : <Moon size={15} strokeWidth={1.5} />}
+              </button>
+            )}
+            <button onClick={openSearch} aria-label="Open search" className="nav-icon">
+              <Search size={16} />
             </button>
-
-            <Link href="/wishlist" aria-label="Wishlist"
-              className="relative hidden md:flex p-2.5 text-white/70 hover:text-white transition-colors">
-              <Heart size={18} />
+            <Link href="/wishlist" aria-label="Wishlist" className="nav-icon hidden md:flex">
+              <Heart size={16} />
               {mounted && wishlistIds.length > 0 && (
-                <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-brand-500 text-[8px] flex items-center justify-center font-bold text-surface-950">
-                  {wishlistIds.length > 9 ? "9+" : wishlistIds.length}
-                </span>
+                <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-
-            <Link href="/cart" aria-label="Shopping bag"
-              className="relative p-2.5 text-white/70 hover:text-white transition-colors">
-              <ShoppingBag size={18} />
+            <Link href="/cart" aria-label="Shopping bag" className="nav-icon">
+              <ShoppingBag size={16} />
               {mounted && count > 0 && (
-                <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-brand-500 text-[8px] flex items-center justify-center font-bold text-surface-950">
-                  {count > 9 ? "9+" : count}
-                </span>
+                <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-
+            {mounted && <span className="nav-sep" />}
             {mounted && (user ? (
               <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
             ) : (
-              <Link href="/login"
-                className="hidden md:block ml-2 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.1em] uppercase rounded-full border transition-all hover:bg-brand-500/18"
-                style={{ borderColor: "rgba(201,164,74,0.4)", color: "#C9A44A" }}>
+              <Link href="/login" className="signin-btn hidden md:block">
                 {t("signIn")}
               </Link>
             ))}
           </div>
-        </div>
 
-        {/* Desktop mega nav — subtle second row on scroll */}
-        <AnimatePresence>
-          {scrolled && (
-            <motion.nav
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="hidden lg:flex justify-center gap-8 pb-2.5 border-t border-white/[0.04] overflow-hidden"
-            >
-              {NAV_LINKS.map((link) => (
-                <div key={link.href} className="relative"
-                  onMouseEnter={() => link.children?.length ? setMegaMenu(link.href) : undefined}
-                  onMouseLeave={() => setMegaMenu(null)}
-                >
-                  <Link
-                    href={link.href}
-                    className="text-[10px] tracking-[0.18em] uppercase font-medium text-white/60 hover:text-white transition-colors pt-2.5 block"
-                  >
-                    {link.label}
-                  </Link>
-                  <AnimatePresence>
-                    {megaMenu === link.href && link.children?.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
-                        transition={{ duration: 0.15 }}
-                        role="menu"
-                        className="absolute top-full left-0 mt-1 w-44 bg-[rgba(7,9,15,0.96)] border border-white/10 py-2 z-50"
-                      >
-                        {link.children.map((child) => (
-                          <Link key={child.href} href={child.href} role="menuitem"
-                            className="block px-4 py-2 text-[10px] tracking-[0.1em] uppercase text-white/50 hover:text-white transition-colors"
-                            onClick={() => setMegaMenu(null)}>
-                            {child.label}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </motion.nav>
-          )}
-        </AnimatePresence>
       </header>
 
       {/* Mobile full-screen menu */}
@@ -225,8 +191,6 @@ export function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Spacer so page content doesn't go under fixed nav */}
-      <div className="h-14 md:h-16" />
     </>
   );
 }

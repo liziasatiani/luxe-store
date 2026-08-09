@@ -92,9 +92,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 Skip to content
               </a>
               <Navbar />
-              <main id="main-content" className="min-h-screen pb-14 md:pb-0">{children}</main>
+              <main id="main-content" className="min-h-screen">{children}</main>
               <Footer />
-              <BottomTabBar />
               <SearchModal />
               <CartDrawer />
               <ExitIntentCapture />

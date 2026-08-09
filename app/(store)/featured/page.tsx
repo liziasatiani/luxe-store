@@ -1,6 +1,5 @@
 export const revalidate = 3600;
 import { Suspense } from "react";
-import { Container, Spinner } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { buildMetadata } from "@/lib/seo";
 import { getTranslations, getLocale } from "next-intl/server";
@@ -11,21 +10,18 @@ export async function generateMetadata() {
 }
 
 export default async function FeaturedPage() {
-  const t = await getTranslations("pages.featured");
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
-        <Container className="text-center">
-          <div className="text-sm text-brand-500 font-medium uppercase tracking-widest mb-3">{t("badge")}</div>
-          <h1 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white mb-4">{t("title")}</h1>
-          <p className="text-surface-500 max-w-md mx-auto">{t("subtitle")}</p>
-        </Container>
+      <div style={{ padding: "calc(var(--nav-h) + 60px) 52px 48px", maxWidth: 1400, margin: "0 auto", borderBottom: "1px solid var(--border)" }}>
+        <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(48px,7vw,96px)", fontWeight: 700, lineHeight: 0.95, letterSpacing: "-0.03em", color: "var(--chalk)" }}>
+          <em style={{ fontStyle: "italic", color: "var(--gold)" }}>Selected</em> for You
+        </h1>
       </div>
-      <Container className="py-12">
-        <Suspense fallback={<div className="flex justify-center py-20"><Spinner size={32} /></div>}>
+      <div style={{ maxWidth: 1400, margin: "0 auto" }}>
+        <Suspense fallback={null}>
           <ProductGrid filters={{ isFeatured: true }} />
         </Suspense>
-      </Container>
+      </div>
     </>
   );
 }
