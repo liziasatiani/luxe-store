@@ -1,4 +1,3 @@
-import { Container } from "@/components/ui";
 import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -12,14 +11,14 @@ const SECTIONS = [
   {
     title: "Shop",
     links: [
-      { label: "All Beauty",    href: "/beauty"   },
+      { label: "All Beauty",    href: "/beauty"              },
       { label: "Skincare",      href: "/beauty/skincare"     },
       { label: "Makeup",        href: "/beauty/makeup"       },
       { label: "Hair Care",     href: "/beauty/hair-care"    },
       { label: "Body Care",     href: "/beauty/body-care"    },
       { label: "Perfume",       href: "/beauty/perfume"      },
       { label: "Beauty Tools",  href: "/beauty/beauty-tools" },
-      { label: "All Tech",      href: "/tech"     },
+      { label: "All Tech",      href: "/tech"                },
       { label: "Headphones",    href: "/tech/headphones"     },
       { label: "Cameras",       href: "/tech/cameras"        },
       { label: "Tablets",       href: "/tech/tablets"        },
@@ -33,23 +32,23 @@ const SECTIONS = [
   {
     title: "Discover",
     links: [
-      { label: "New Arrivals",  href: "/new"       },
-      { label: "Best Sellers",  href: "/best"      },
-      { label: "Featured",      href: "/featured"  },
-      { label: "Deals & Sales", href: "/deals"     },
-      { label: "All Brands",    href: "/brands"    },
+      { label: "New Arrivals",  href: "/new"      },
+      { label: "Best Sellers",  href: "/best"     },
+      { label: "Featured",      href: "/featured" },
+      { label: "Deals & Sales", href: "/deals"    },
+      { label: "All Brands",    href: "/brands"   },
     ],
   },
   {
     title: "Account",
     links: [
-      { label: "Sign In",       href: "/login"             },
-      { label: "Create Account",href: "/register"          },
-      { label: "My Account",    href: "/account"           },
-      { label: "My Orders",     href: "/account/orders"    },
-      { label: "My Addresses",  href: "/account/addresses" },
-      { label: "My Wishlist",   href: "/wishlist"          },
-      { label: "Track Order",   href: "/track-order"       },
+      { label: "Sign In",        href: "/login"             },
+      { label: "Create Account", href: "/register"          },
+      { label: "My Account",     href: "/account"           },
+      { label: "My Orders",      href: "/account/orders"    },
+      { label: "My Addresses",   href: "/account/addresses" },
+      { label: "My Wishlist",    href: "/wishlist"          },
+      { label: "Track Order",    href: "/track-order"       },
     ],
   },
   {
@@ -64,9 +63,9 @@ const SECTIONS = [
   {
     title: "Company",
     links: [
-      { label: "About Us",      href: "/about"   },
-      { label: "Privacy Policy",href: "/privacy" },
-      { label: "Terms of Use",  href: "/terms"   },
+      { label: "About Us",       href: "/about"   },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Use",   href: "/terms"   },
     ],
   },
 ];
@@ -74,30 +73,40 @@ const SECTIONS = [
 export default function SitemapPage() {
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
-        <Container className="text-center">
-          <h1 className="font-display text-5xl text-surface-900 dark:text-white mb-3">Sitemap</h1>
-          <p className="text-surface-500">Find everything on Everything Street</p>
-        </Container>
-      </div>
-      <Container className="py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
-          {SECTIONS.map(section => (
-            <div key={section.title}>
-              <h2 className="font-semibold text-surface-900 dark:text-white mb-5 text-sm uppercase tracking-wider">{section.title}</h2>
-              <ul className="space-y-3">
-                {section.links.map(link => (
-                  <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-surface-500 hover:text-brand-500 transition-colors">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <div className="k-page-hdr">
+        <div className="wrap">
+          <p className="page-hd-eyebrow">Navigation</p>
+          <h1 className="page-hd-title">Sitemap</h1>
+          <p style={{ fontSize: 14, color: "var(--chalk3)", marginTop: 12 }}>Find everything on Everything Street</p>
         </div>
-      </Container>
+      </div>
+      <div style={{ paddingTop: 64, paddingBottom: 96 }}>
+        <div className="wrap">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "48px 32px" }}>
+            {SECTIONS.map(section => (
+              <div key={section.title}>
+                <h2 style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 20, paddingBottom: 12, borderBottom: "1px solid var(--border)" }}>
+                  {section.title}
+                </h2>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+                  {section.links.map(link => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        style={{ fontSize: 13, color: "var(--chalk3)", textDecoration: "none", transition: "color 0.15s" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "var(--chalk)")}
+                        onMouseLeave={e => (e.currentTarget.style.color = "var(--chalk3)")}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

@@ -1,24 +1,24 @@
-import { Container } from "@/components/ui";
-
 export default function BrandLoading() {
   return (
-    <Container className="py-12 animate-pulse">
-      <div className="flex items-center gap-6 mb-12">
-        <div className="w-20 h-20 bg-surface-100 dark:bg-surface-800 rounded-full" />
-        <div className="space-y-2">
-          <div className="h-8 w-48 bg-surface-100 dark:bg-surface-800 rounded" />
-          <div className="h-4 w-64 bg-surface-100 dark:bg-surface-800 rounded" />
+    <div className="wrap" style={{ paddingTop: 48, paddingBottom: 96 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 48 }}>
+        <div style={{ width: 64, height: 64, background: "var(--s2)", border: "1px solid var(--border)", animation: "pulse 1.5s ease-in-out infinite", flexShrink: 0 }} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ height: 24, width: 180, background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+          <div style={{ height: 14, width: 240, background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="lg-grid-4">
+        <style>{`@media(min-width:1024px){.lg-grid-4{grid-template-columns:repeat(4,1fr);}}`}</style>
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="space-y-3">
-            <div className="aspect-square bg-surface-100 dark:bg-surface-800 rounded-xl" />
-            <div className="h-4 w-3/4 bg-surface-100 dark:bg-surface-800 rounded" />
-            <div className="h-4 w-1/2 bg-surface-100 dark:bg-surface-800 rounded" />
+          <div key={i} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ aspectRatio: "1", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+            <div style={{ height: 12, width: "75%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+            <div style={{ height: 12, width: "50%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
           </div>
         ))}
       </div>
-    </Container>
+      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}`}</style>
+    </div>
   );
 }

@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { Container } from "@/components/ui";
 import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import { ExternalLink } from "lucide-react";
@@ -30,26 +29,36 @@ export default async function BrandPage({ params }: Props) {
 
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
-        <Container className="text-center">
-          <div className="w-20 h-20 rounded-full bg-white dark:bg-surface-800 shadow-lg flex items-center justify-center mx-auto mb-5 text-3xl font-display font-bold text-surface-700 dark:text-surface-300">
-            {brand.name[0]}
+      <div className="k-page-hdr">
+        <div className="wrap" style={{ textAlign: "center" }}>
+          <div style={{ width: 64, height: 64, border: "1px solid var(--borderg)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+            <span style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)" }}>{brand.name[0]}</span>
           </div>
-          <h1 className="font-display text-4xl md:text-5xl text-surface-900 dark:text-white mb-3">{brand.name}</h1>
-          {brand.description && <p className="text-surface-500 max-w-lg mx-auto mb-4">{brand.description}</p>}
-          <div className="flex items-center justify-center gap-4">
-            <span className="text-sm text-surface-400">{brand._count.products} products</span>
+          <p className="page-hd-eyebrow">{brand.name}</p>
+          <h1 className="page-hd-title" style={{ fontSize: "clamp(28px, 5vw, 48px)" }}>{brand.name}</h1>
+          {brand.description && (
+            <p style={{ fontSize: 14, color: "var(--chalk3)", marginTop: 12, maxWidth: 480, margin: "12px auto 0", lineHeight: 1.7 }}>{brand.description}</p>
+          )}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginTop: 16 }}>
+            <span style={{ fontSize: 12, color: "var(--chalk3)", letterSpacing: "0.06em" }}>{brand._count.products} products</span>
             {brand.website && (
-              <a href={brand.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-600">
-                Visit Brand <ExternalLink size={14} />
+              <a
+                href={brand.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: "var(--gold)", textDecoration: "none", letterSpacing: "0.06em" }}
+              >
+                Visit Brand <ExternalLink size={12} />
               </a>
             )}
           </div>
-        </Container>
+        </div>
       </div>
-      <Container className="py-12">
-        <ProductGrid filters={{ brandSlugs: [slug] }} />
-      </Container>
+      <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+        <div className="wrap">
+          <ProductGrid filters={{ brandSlugs: [slug] }} />
+        </div>
+      </div>
     </>
   );
 }

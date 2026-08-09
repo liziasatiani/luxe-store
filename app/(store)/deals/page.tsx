@@ -1,5 +1,4 @@
 export const revalidate = 3600;
-import { Container } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
@@ -13,19 +12,22 @@ export async function generateMetadata() {
 export default function DealsPage() {
   return (
     <>
-      <div className="bg-gradient-to-r from-surface-950 via-surface-900 to-surface-950 py-14">
-        <Container className="text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-500/20 border border-brand-500/30 mb-5">
-            <Tag size={14} className="text-brand-400" />
-            <span className="text-sm text-brand-300 font-medium">Limited Time Offers</span>
+      <div className="k-page-hdr">
+        <div className="wrap" style={{ textAlign: "center" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16, padding: "4px 12px", border: "1px solid var(--crimson)", color: "var(--crimson)" }}>
+            <Tag size={11} />
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" }}>Limited Time Offers</span>
           </div>
-          <h1 className="font-display text-5xl md:text-6xl text-white mb-4">Deals & Sales</h1>
-          <p className="text-surface-400 max-w-md mx-auto">Luxury at a price you'll love. New deals added every day.</p>
-        </Container>
+          <p className="page-hd-eyebrow">Deals &amp; Sales</p>
+          <h1 className="page-hd-title">Luxury at a price you&apos;ll love</h1>
+          <p style={{ fontSize: 14, color: "var(--chalk3)", marginTop: 12 }}>New deals added every day.</p>
+        </div>
       </div>
-      <Container className="py-12">
-        <ProductGrid filters={{ isOnSale: true }} />
-      </Container>
+      <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+        <div className="wrap">
+          <ProductGrid filters={{ isOnSale: true }} />
+        </div>
+      </div>
     </>
   );
 }

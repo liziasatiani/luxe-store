@@ -1,6 +1,6 @@
 export const revalidate = 3600;
 import { Suspense } from "react";
-import { Container, Spinner } from "@/components/ui";
+import { Spinner } from "@/components/ui";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { buildMetadata } from "@/lib/seo";
 import { getTranslations, getLocale } from "next-intl/server";
@@ -14,18 +14,20 @@ export default async function BestSellersPage() {
   const t = await getTranslations("pages.bestSellers");
   return (
     <>
-      <div className="bg-surface-50 dark:bg-surface-900/50 border-b border-surface-100 dark:border-surface-800 py-14">
-        <Container className="text-center">
-          <div className="text-sm text-brand-500 font-medium uppercase tracking-widest mb-3">{t("badge")}</div>
-          <h1 className="font-display text-5xl md:text-6xl text-surface-900 dark:text-white mb-4">{t("title")}</h1>
-          <p className="text-surface-500 max-w-md mx-auto">{t("subtitle")}</p>
-        </Container>
+      <div className="k-page-hdr">
+        <div className="wrap">
+          <p className="page-hd-eyebrow">{t("badge")}</p>
+          <h1 className="page-hd-title">{t("title")}</h1>
+          <p style={{ fontSize: 14, color: "var(--chalk3)", marginTop: 12, maxWidth: 400, margin: "12px auto 0" }}>{t("subtitle")}</p>
+        </div>
       </div>
-      <Container className="py-12">
-        <Suspense fallback={<div className="flex justify-center py-20"><Spinner size={32} /></div>}>
-          <ProductGrid filters={{ isBestSeller: true, sort: "best-selling" }} />
-        </Suspense>
-      </Container>
+      <div style={{ paddingTop: 48, paddingBottom: 96 }}>
+        <div className="wrap">
+          <Suspense fallback={<div style={{ display: "flex", justifyContent: "center", padding: "80px 0" }}><Spinner size={32} /></div>}>
+            <ProductGrid filters={{ isBestSeller: true, sort: "best-selling" }} />
+          </Suspense>
+        </div>
+      </div>
     </>
   );
 }

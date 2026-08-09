@@ -1,22 +1,19 @@
-import { Container, Skeleton } from "@/components/ui";
-
 export default function Loading() {
   return (
-    <Container className="py-12 max-w-2xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Skeleton className="aspect-square w-full rounded-3xl" />
-        <div className="space-y-4 py-4">
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-8 w-full" />
-          <Skeleton className="h-8 w-3/4" />
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-6 w-32" />
-          <div className="space-y-2 pt-4">
-            <Skeleton className="h-11 w-full" />
-            <Skeleton className="h-11 w-full" />
-          </div>
+    <div className="wrap" style={{ paddingTop: 48, paddingBottom: 96, maxWidth: 900 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 48 }} className="lg-grid-2">
+        <style>{`@media(min-width:1024px){.lg-grid-2{grid-template-columns:1fr 1fr;}}`}</style>
+        <div style={{ aspectRatio: "1", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, paddingTop: 16 }}>
+          <div style={{ height: 10, width: 80, background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+          <div style={{ height: 28, width: "75%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+          <div style={{ height: 20, width: "40%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+          <div style={{ height: 80, width: "100%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
+          <div style={{ height: 48, width: "100%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite", marginTop: 8 }} />
+          <div style={{ height: 48, width: "100%", background: "var(--s2)", animation: "pulse 1.5s ease-in-out infinite" }} />
         </div>
       </div>
-    </Container>
+      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}`}</style>
+    </div>
   );
 }
