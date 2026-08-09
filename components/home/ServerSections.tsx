@@ -79,7 +79,7 @@ export async function NewArrivalsSection() {
   return (
     <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="wrap">
-        <SectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="See All" />
+        <SectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="View All" />
         <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
