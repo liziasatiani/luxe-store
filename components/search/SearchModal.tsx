@@ -56,7 +56,7 @@ export function SearchModal() {
         <>
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.7)" }}
+            style={{ position: "fixed", inset: 0, zIndex: 210, background: "rgba(0,0,0,0.7)" }}
             onClick={closeSearch}
           />
 
@@ -71,7 +71,7 @@ export function SearchModal() {
               aria-label="Search"
               style={{
                 position: "fixed", top: 16, left: 16, right: 16,
-                maxWidth: 620, margin: "0 auto", zIndex: 50,
+                maxWidth: 620, margin: "0 auto", zIndex: 211,
               }}
             >
               <div style={{ background: "var(--s1)", border: "1px solid var(--border)", overflow: "hidden" }}>
