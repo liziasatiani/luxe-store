@@ -417,7 +417,7 @@ textarea:focus-visible,
 .epanel:hover .ep-link { border-color: var(--gold); }
 
 /* Hero — matches K's .hero structure */
-.hero { min-height: 100svh; display: grid; grid-template-columns: 1fr 1fr; position: relative; margin-top: calc(-1 * var(--nav-h)); }
+.hero { min-height: calc(100svh + var(--nav-h)); display: grid; grid-template-columns: 1fr 1fr; position: relative; margin-top: calc(-1 * var(--nav-h)); }
 .hero-half { position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 72px 56px; cursor: pointer; text-decoration: none; color: inherit; }
 .hero-bg { position: absolute; inset: 0; filter: brightness(0.28); transition: filter 0.6s, transform 0.8s cubic-bezier(.4,0,.2,1); }
 .hero-half:hover .hero-bg { filter: brightness(0.38); transform: scale(1.04); }
