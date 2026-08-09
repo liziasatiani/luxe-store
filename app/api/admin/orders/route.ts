@@ -79,7 +79,6 @@ export async function PUT(req: NextRequest) {
       include: { user: { select: { name: true, email: true } } },
     });
 
-    // Shipping email
     if (status === "SHIPPED") {
       const recipientEmail = (order as { user?: { email: string } | null }).user?.email ?? order.guestEmail;
       const recipientName = (order as { user?: { name: string | null } | null }).user?.name ?? order.guestName ?? "Customer";
@@ -96,7 +95,6 @@ export async function PUT(req: NextRequest) {
       }
     }
 
-    // Notify registered users on meaningful status transitions only
     const NOTIFY_STATUSES = ["CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
     if (order.userId && NOTIFY_STATUSES.includes(status as typeof NOTIFY_STATUSES[number])) {
       const notifType = status === "SHIPPED" ? "ORDER_SHIPPED" : status === "DELIVERED" ? "ORDER_DELIVERED" : status === "CANCELLED" ? "ORDER_CANCELLED" : "ORDER_PLACED";

@@ -72,7 +72,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Product not found" }, { status: 404 });
     }
 
-    // Check if user purchased this product
     const hasPurchased = await prisma.orderItem.findFirst({
       where: {
         productId,
@@ -85,7 +84,6 @@ export async function POST(req: NextRequest) {
     });
     if (existing) return NextResponse.json({ success: false, error: "You've already reviewed this product" }, { status: 400 });
 
-    // Auto-approve setting
     const setting = await prisma.siteSetting.findUnique({ where: { key: "review_auto_approve" } });
     const autoApprove = setting?.value === "true";
 

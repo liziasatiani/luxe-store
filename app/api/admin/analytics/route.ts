@@ -39,7 +39,6 @@ export async function GET() {
       }),
     ]);
 
-    // Revenue chart — last 30 days
     const revenueChart = await prisma.$queryRaw<Array<{ date: string; revenue: number; orders: bigint }>>`
       SELECT 
         DATE(created_at)::text as date,

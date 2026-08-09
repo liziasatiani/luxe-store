@@ -42,6 +42,7 @@ export function Navbar() {
 
   const count = mounted ? itemCount() : 0;
   const user = session?.user;
+  // temp fix, revisit before launch — session typing doesn't extend properly with NextAuth v5
   const isAdmin = (user as { role?: string } | undefined)?.role === "ADMIN" ||
     (user as { role?: string } | undefined)?.role === "SUPER_ADMIN";
   const NAV_LINKS = [
@@ -80,7 +81,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* Announcement bar */}
       <div className={`ann-bar${annVisible ? " visible" : ""}`} id="annBar">
         <div className="ann-track" id="annTrack">
           {[...ANN_ITEMS, ...ANN_ITEMS].flatMap((item, i) => [
@@ -94,7 +94,6 @@ export function Navbar() {
         id="nav"
         className={[scrolled && "solid", annVisible && "ann-shown"].filter(Boolean).join(" ") || undefined}
       >
-          {/* Left: hamburger (mobile) | nav links (desktop) */}
           <div className="nav-left">
             <button
               onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
@@ -122,12 +121,10 @@ export function Navbar() {
             </nav>
           </div>
 
-          {/* Center: logo */}
           <Link href="/" onClick={closeMobileMenu} className="nav-logo">
             Everything <em>Street</em>
           </Link>
 
-          {/* Right: currency+lang (desktop) + icons + sign in */}
           <div className="nav-right">
             <div className="hidden lg:flex items-center" style={{ gap: "16px", marginRight: "8px" }}>
               {mounted && <CurrencySelector />}
@@ -171,7 +168,6 @@ export function Navbar() {
 
       </header>
 
-      {/* Mobile full-screen menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

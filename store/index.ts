@@ -39,6 +39,7 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (product, quantity = 1, variant) => {
         set((state) => {
+          // was using productId only but variants broke this
           const existingIdx = state.items.findIndex(
             (i) =>
               i.productId === product.id &&

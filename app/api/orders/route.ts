@@ -17,7 +17,7 @@ function stockStatusFor(remaining: number) {
   return "IN_STOCK" as const;
 }
 
-/** Collapses repeated product/variant pairs so stock is decremented once. */
+// pulled out of POST when this logic needed to be called twice
 function dedupeLines(lines: CartLineInput[]): CartLineInput[] {
   const merged = new Map<string, CartLineInput>();
   for (const line of lines) {
@@ -242,8 +242,7 @@ export async function POST(req: NextRequest) {
         const product = byId.get(line.productId)!;
         if (!product.trackStock) continue;
 
-        // Conditional update is the concurrency guard: if a racing order took
-        // the last units, `count` is 0 and the whole transaction rolls back.
+        // race guard — if concurrent order grabbed the last units this returns 0 and rolls back
         const updated = await tx.product.updateMany({
           where: { id: line.productId, stock: { gte: line.quantity } },
           data: {
@@ -256,11 +255,7 @@ export async function POST(req: NextRequest) {
             `${product.name} is no longer available in the requested quantity`
           );
         }
-        // `product.stock` is the snapshot read before the transaction, so
-        // deriving the status from it writes a stale value whenever a
-        // concurrent order also moved stock — the conditional updateMany above
-        // guards the decrement but not this follow-up write. Read the real
-        // post-decrement figure instead.
+        // the snapshot we read before the tx is already stale by this point — re-read the live stock value
         const fresh = await tx.product.findUnique({
           where: { id: line.productId },
           select: { stock: true },
@@ -277,12 +272,6 @@ export async function POST(req: NextRequest) {
       }
 
       if (coupon) {
-        // `resolveCoupon` checks usageCount against usageLimit outside the
-        // transaction, so N concurrent orders all read the same pre-increment
-        // count and every one of them passes — a limited coupon could be
-        // redeemed an unbounded number of times. Re-assert the ceiling as a
-        // conditional write; 0 rows means the limit was taken in the interim
-        // and the whole order rolls back.
         const claimed = await tx.coupon.updateMany({
           where: {
             id: coupon.id,
@@ -303,6 +292,7 @@ export async function POST(req: NextRequest) {
       return newOrder;
     });
 
+    // TODO: clean this up when we refactor orders
     const recipient = isGuest
       ? (() => {
           const gi = (input as Extract<typeof input, { guest: true }>).guestInfo;
@@ -312,7 +302,6 @@ export async function POST(req: NextRequest) {
           .findUnique({ where: { id: userId! }, select: { name: true, email: true } })
           .then((u) => (u?.email ? { name: u.name ?? "Customer", email: u.email } : null));
 
-    // Mark any abandoned cart for this email as ordered
     if (recipient) {
       void prisma.abandonedCart.updateMany({
         where: { email: recipient.email, orderedAt: null },

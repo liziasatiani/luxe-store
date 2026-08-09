@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
             },
           });
 
-          // Send notification
           const order = await prisma.order.findUnique({ where: { id: orderId } });
           if (order?.userId) {
             await prisma.notification.create({

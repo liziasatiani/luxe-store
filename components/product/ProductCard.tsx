@@ -79,7 +79,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         className={cn("pcard", className)}
       >
         <Link href={`/products/${product.slug}`} className="block">
-          {/* Image */}
           <div className="pimg">
             <Image
               src={imageUrl} alt={product.name} fill
@@ -87,7 +86,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               priority={priority}
             />
 
-            {/* Badges — stacked absolutely like K */}
             {isTech && <span className="pbadge bt">Tech</span>}
             {isBeauty && <span className="pbadge bb" style={isTech ? { top: 52 } : undefined}>Beauty</span>}
             {product.isNewArrival && (
@@ -106,7 +104,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
             )}
           </div>
 
-          {/* Body */}
           <div className="pbody">
             {product.brand && <div className="pbrand">{product.brand.name}</div>}
             <div className="pname line-clamp-2">{product.name}</div>

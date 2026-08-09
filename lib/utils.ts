@@ -53,13 +53,13 @@ export function formatRelativeTime(date: Date | string): string {
   const now = new Date();
   const diff = now.getTime() - d.getTime();
   const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
+  const mins = Math.floor(seconds / 60);
+  const hours = Math.floor(mins / 60);
   const days = Math.floor(hours / 24);
   if (days > 30) return formatDate(d);
   if (days > 0) return `${days}d ago`;
   if (hours > 0) return `${hours}h ago`;
-  if (minutes > 0) return `${minutes}m ago`;
+  if (mins > 0) return `${mins}m ago`;
   return "just now";
 }
 
@@ -91,12 +91,10 @@ export function getProductImageUrl(
     return "/placeholder.png";
   const primary = images.find((i) => i.isPrimary);
   const url = primary?.url ?? images[0]?.url ?? "/placeholder.png";
-  // Apply Supabase Storage image transforms for Supabase-hosted images
   if (url.includes("supabase") && url.includes("/storage/")) {
     const sep = url.includes("?") ? "&" : "?";
     return `${url}${sep}width=${width}&quality=${quality}&format=webp`;
   }
-  // Apply Unsplash image optimisation params (WebP + resize + quality)
   // Only add params not already present to avoid duplicates in stored URLs
   if (url.includes("unsplash.com")) {
     const parsed = new URL(url);
@@ -138,7 +136,6 @@ export type Serialized<T> =
   T extends object ? { [K in keyof T]: Serialized<T[K]> } :
   T;
 
-// Converts Prisma Decimal values to plain numbers for server→client serialization.
 // Dates are returned untouched — spreading them through Object.entries collapses them to {}.
 export function serializeDecimal<T>(obj: T): Serialized<T> {
   if (obj === null || obj === undefined) return obj as Serialized<T>;

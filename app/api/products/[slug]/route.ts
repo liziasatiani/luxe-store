@@ -36,7 +36,6 @@ export async function GET(
       .update({ where: { id: product.id }, data: { viewCount: { increment: 1 } } })
       .catch((err) => console.error("[product/GET] viewCount", err));
 
-    // Related products
     const related = await prisma.product.findMany({
       where: {
         isActive: true,

@@ -30,7 +30,7 @@
       "badge": "Tech & Belleza, Una Calle",
       "title": "Dos mundos,",
       "titleGold": "una calle.",
-      "subtitle": "Everything Street reúne tecnología pensada y belleza cuidada — seleccionadas, probadas y entregadas juntas.",
+      "subtitle": "Everything Street une tecnología inteligente con belleza de calidad — seleccionadas, probadas y entregadas juntas.",
       "shopBeauty": "Comprar Belleza",
       "exploreTech": "Explorar Tech",
       "stats": {
@@ -146,7 +146,7 @@
   "checkout": {
     "title": "Finalizar pedido",
     "continueAsGuest": "Continuar como invitado",
-    "guestSubtitle": "Sin necesidad de cuenta — solo rellena tus datos",
+    "guestSubtitle": "Sin necesidad de cuenta — simplemente completa tus datos",
     "signIn": "Iniciar sesión",
     "signInSubtitle": "Inicia sesión para un pago más rápido",
     "createAccount": "Crear una",

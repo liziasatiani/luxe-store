@@ -99,7 +99,6 @@ export async function importProducts(
 ): Promise<ImportResult> {
   const result: ImportResult = { succeeded: 0, failed: 0, errors: [] };
 
-  // Cache lookups
   const categories = await prisma.category.findMany();
   const brands = await prisma.brand.findMany();
 
@@ -129,7 +128,6 @@ export async function importProducts(
       if (!row.name) throw new Error("Name is required");
       if (!row.price || row.price <= 0) throw new Error("Valid price required");
 
-      // Resolve category
       const catKey = (row.subcategory ?? row.category ?? "").toLowerCase();
       const categoryId =
         catBySlug[slugify(catKey)] ??
@@ -137,7 +135,6 @@ export async function importProducts(
         categories[0]?.id;
       if (!categoryId) throw new Error("No categories in database");
 
-      // Resolve brand
       const brandKey = (row.brand ?? "").toLowerCase();
       let brandId: string | undefined =
         brandKey ? brandByName[brandKey] : undefined;

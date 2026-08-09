@@ -237,6 +237,7 @@ interface AbandonedCartEmailData {
 }
 
 function buildAbandonedCartEmail({ name, items }: AbandonedCartEmailData): string {
+  // TODO: add back when we have reviews API — show rating stars per item
   const itemRows = items
     .slice(0, 5)
     .map(
@@ -367,7 +368,7 @@ export async function sendWelcomeEmail(data: {
     "Welcome to Everything Street",
     "Your account is ready — start exploring.",
     `<h1 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Welcome, ${data.name.split(" ")[0]}!</h1>
-    <p style="margin:0 0 20px;font-size:15px;color:#6B7280;line-height:1.6;">Your Everything Street account is all set. Explore curated tech and beauty — selected, tested, and delivered together.</p>
+    <p style="margin:0 0 20px;font-size:15px;color:#6B7280;line-height:1.6;">Your Everything Street account is all set. Browse our selection of tech and beauty products — all hand-picked and verified by our team.</p>
     <p style="margin:0 0 8px;font-size:14px;color:#374151;">As a new member, use code <strong style="background:#F3F4F6;padding:2px 8px;border-radius:4px;font-family:monospace;">${WELCOME_COUPON}</strong> for ${WELCOME_DISCOUNT}% off your first order.</p>
     ${btn(`${APP_URL}`, "Start Shopping")}`
   );
@@ -470,7 +471,7 @@ export async function sendAdminNewOrderAlert(data: {
   );
   const { error } = await resend.emails.send({
     from: FROM, to: ADMIN_EMAIL,
-    subject: `New order ${data.orderNumber} — $${data.total.toFixed(2)}`,
+    subject: `New order: ${data.orderNumber}`,
     html,
   });
   if (error) console.error(`[email] admin order alert:`, error);

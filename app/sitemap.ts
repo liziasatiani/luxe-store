@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://everythingstreet.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL,                 lastModified: new Date(), changeFrequency: "daily",   priority: 1.0 },
     { url: `${BASE_URL}/beauty`,     lastModified: new Date(), changeFrequency: "daily",   priority: 0.9 },

@@ -11,7 +11,6 @@ export async function GET(req: NextRequest) {
   const ABANDON_DELAY_MS = 60 * 60 * 1000;
   const oneHourAgo = new Date(Date.now() - ABANDON_DELAY_MS);
 
-  // Find carts created > 1hr ago, not yet notified, and no order placed
   const abandoned = await prisma.abandonedCart.findMany({
     where: {
       createdAt: { lt: oneHourAgo },

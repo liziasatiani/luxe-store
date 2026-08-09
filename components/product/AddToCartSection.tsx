@@ -55,6 +55,7 @@ export function AddToCartSection({ product }: Props) {
 
   const handleBuyNow = () => {
     addItem(product, qty, selectedVariant ? { name: selectedVariant.name, value: selectedVariant.value, price: selectedVariant.price } : undefined);
+    // no toast here — the redirect is fast enough that it would just flash
     router.push("/checkout");
   };
 

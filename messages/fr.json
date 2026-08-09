@@ -80,7 +80,7 @@
     "newsletter": {
       "badge": "Offres exclusives",
       "title": "Rejoignez le cercle privé",
-      "subtitle": "Découvrez en avant-première les nouveautés, les offres exclusives et les secrets beauté.",
+      "subtitle": "Découvrez en avant-première les nouveautés, les offres exclusives et les secrets de beauté.",
       "placeholder": "Entrez votre adresse email",
       "subscribe": "S'abonner",
       "noSpam": "Pas de spam. Désabonnez-vous à tout moment.",
@@ -115,7 +115,7 @@
     "trustShipping": "Livraison gratuite dès ₾200",
     "quantity": "Quantité",
     "selectVariant": "Sélectionner",
-    "outOfStockMsg": "Cet article est actuellement en rupture de stock. Revenez bientôt ou contactez-nous pour connaître la disponibilité.",
+    "outOfStockMsg": "Cet article est actuellement en rupture de stock. Revenez prochainement ou contactez-nous pour vous informer sur la disponibilité.",
     "deliveryBy": "livraison prévue le {date}",
     "linkCopied": "Lien copié dans le presse-papiers"
   },
@@ -146,7 +146,7 @@
   "checkout": {
     "title": "Passer commande",
     "continueAsGuest": "Continuer en tant qu'invité",
-    "guestSubtitle": "Pas besoin de compte — remplissez simplement vos coordonnées",
+    "guestSubtitle": "Pas besoin de compte — il vous suffit de renseigner vos informations",
     "signIn": "Se connecter",
     "signInSubtitle": "Connectez-vous pour un paiement plus rapide",
     "createAccount": "En créer un",

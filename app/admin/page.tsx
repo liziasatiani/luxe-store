@@ -67,7 +67,6 @@ export default function AdminDashboard() {
         <p className="text-surface-500 text-sm mt-1">Welcome back! Here's what's happening this month.</p>
       </div>
 
-      {/* Low stock alert */}
       {summary.lowStockProducts > 0 && (
         <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
           <AlertTriangle size={18} className="text-yellow-600 dark:text-yellow-400 shrink-0" />
@@ -78,7 +77,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Stats grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard title="Revenue (this month)" value={summary.totalRevenue} change={summary.revenueChange} icon={DollarSign} prefix="$" color="text-brand-500" />
         <StatCard title="Orders (this month)" value={summary.totalOrders} change={summary.ordersChange} icon={ShoppingBag} color="text-blue-500" />
@@ -86,7 +84,6 @@ export default function AdminDashboard() {
         <StatCard title="Avg Order Value" value={summary.avgOrderValue} icon={TrendingUp} prefix="$" color="text-green-500" />
       </div>
 
-      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6">
           <h2 className="font-semibold text-surface-900 dark:text-white mb-5">Revenue (Last 30 Days)</h2>
@@ -115,9 +112,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Orders */}
         <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-semibold text-surface-900 dark:text-white">Recent Orders</h2>
@@ -141,7 +136,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Top Products */}
         <div className="bg-white dark:bg-surface-900 rounded-2xl border border-surface-100 dark:border-surface-800 p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-semibold text-surface-900 dark:text-white">Top Products</h2>

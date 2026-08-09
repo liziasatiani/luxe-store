@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
     const stringIds = ids.filter((id): id is string => typeof id === "string");
 
-    // Verify products exist
     const validProducts = await prisma.product.findMany({
       where: { id: { in: stringIds.slice(0, 200) }, isActive: true },
       select: { id: true },
@@ -28,7 +27,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Return the full merged set of IDs from DB
     const dbItems = await prisma.wishlistItem.findMany({
       where: { userId: session.user.id },
       select: { productId: true },

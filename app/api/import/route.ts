@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Unsupported file type. Use CSV, Excel, or JSON." }, { status: 400 });
     }
 
-    // Create import job
     const job = await prisma.importJob.create({
       data: {
         fileName: file.name,
@@ -34,7 +33,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Parse file
     let rows;
     const buffer = await file.arrayBuffer();
     if (ext === "csv") {
@@ -47,7 +45,6 @@ export async function POST(req: NextRequest) {
 
     await prisma.importJob.update({ where: { id: job.id }, data: { totalRows: rows.length } });
 
-    // Run import
     const result = await importProducts(rows, job.id);
 
     return NextResponse.json({
@@ -95,7 +92,6 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // List import jobs
     const jobs = await prisma.importJob.findMany({
       orderBy: { createdAt: "desc" },
       take: 20,

@@ -20,7 +20,6 @@ export function LanguageSelector() {
 
   const switchLocale = (newLocale: Locale) => {
     setOpen(false);
-    // Set cookie for 1 year
     const expires = new Date();
     expires.setFullYear(expires.getFullYear() + 1);
     document.cookie = `${LOCALE_COOKIE}=${newLocale}; path=/; expires=${expires.toUTCString()}; SameSite=Lax`;
