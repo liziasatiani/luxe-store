@@ -1,5 +1,7 @@
+"use client";
 import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
   Shop: [
@@ -23,8 +25,11 @@ const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
 };
 
 export function Footer() {
+  const pathname = usePathname();
   const instagram = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
   const facebook  = process.env.NEXT_PUBLIC_FACEBOOK_URL;
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer>

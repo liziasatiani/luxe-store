@@ -7,12 +7,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { useClickOutside } from "@/hooks";
 import { useCartStore, useUIStore, useWishlistStore } from "@/store";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
 import { CurrencySelector } from "@/components/layout/CurrencySelector";
 
 export function Navbar() {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
   const { openSearch, openMobileMenu, mobileMenuOpen, closeMobileMenu } = useUIStore();
@@ -22,6 +24,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [annVisible, setAnnVisible] = useState(false);
   const t = useTranslations("nav");
+
+  if (pathname.startsWith("/admin")) return null;
 
   useEffect(() => { setMounted(true); }, []);
 
