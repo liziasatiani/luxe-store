@@ -40,8 +40,8 @@ export default async function ReturnsPage() {
             <p style={{ fontSize: 13, fontWeight: 600, color: "var(--gold)", marginBottom: 6, letterSpacing: "0.06em", textTransform: "uppercase" }}>{t("needHelp")}</p>
             <p style={{ fontSize: 13, color: "var(--chalk2)" }}>
               Contact{" "}
-              <a href="mailto:returns@everythingstreet.com" style={{ color: "var(--chalk)", textDecoration: "underline" }}>
-                returns@everythingstreet.com
+              <a href="mailto:returns@everythingstreet.ge" style={{ color: "var(--chalk)", textDecoration: "underline" }}>
+                returns@everythingstreet.ge
               </a>
             </p>
           </div>
