@@ -16,12 +16,15 @@ export default async function ShippingPage() {
     { icon: Globe,   label: t("international"),  desc: t("internationalDesc")},
   ];
   const sections = [
-    { title: t("domesticTitle"),      content: t("domesticContent")      },
-    { title: t("internationalTitle"), content: t("internationalContent") },
-    { title: t("dutiesTitle"),        content: t("dutiesContent")        },
-    { title: t("trackingTitle"),      content: t("trackingContent")      },
-    { title: t("lostTitle"),          content: t("lostContent")          },
-  ];
+    { titleKey: "processingTitle",        contentKey: "processingContent"        },
+    { titleKey: "domesticTitle",          contentKey: "domesticContent"          },
+    { titleKey: "internationalTitle",     contentKey: "internationalContent"     },
+    { titleKey: "dutiesTitle",            contentKey: "dutiesContent"            },
+    { titleKey: "beautyRestrictionsTitle",contentKey: "beautyRestrictionsContent"},
+    { titleKey: "techRestrictionsTitle",  contentKey: "techRestrictionsContent"  },
+    { titleKey: "trackingTitle",          contentKey: "trackingContent"          },
+    { titleKey: "lostTitle",              contentKey: "lostContent"              },
+  ] as const;
   return (
     <>
       <div className="k-page-hdr">
@@ -45,9 +48,9 @@ export default async function ShippingPage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
             {sections.map(section => (
-              <div key={section.title}>
-                <h2 style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 700, color: "var(--chalk)", marginBottom: 12, letterSpacing: "0.02em" }}>{section.title}</h2>
-                <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, whiteSpace: "pre-line" }}>{section.content}</p>
+              <div key={section.titleKey} style={{ borderTop: "1px solid var(--border)", paddingTop: 28 }}>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 700, color: "var(--chalk)", marginBottom: 12, letterSpacing: "0.02em" }}>{t(section.titleKey)}</h2>
+                <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, whiteSpace: "pre-line" }}>{t(section.contentKey)}</p>
               </div>
             ))}
           </div>

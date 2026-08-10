@@ -16,10 +16,11 @@ const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
     { label: "Careers",  href: "/careers" },
   ],
   Support: [
-    { label: "Shipping & Delivery", href: "/shipping" },
-    { label: "Returns Policy",      href: "/returns"  },
-    { label: "Authenticity",        href: "/about"    },
-    { label: "Privacy Policy",      href: "/privacy"  },
+    { label: "Shipping & Delivery", href: "/shipping"       },
+    { label: "Returns & Refunds",   href: "/returns"        },
+    { label: "Terms & Conditions",  href: "/terms"          },
+    { label: "Privacy Policy",      href: "/privacy"        },
+    { label: "Cookie Policy",       href: "/cookie-policy"  },
   ],
 };
 
