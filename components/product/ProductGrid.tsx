@@ -257,17 +257,19 @@ function FilterSidebar({
           <Input
             type="number"
             placeholder="Min"
+            min={0}
             value={filters.minPrice ?? ""}
             className="h-9 text-sm"
-            onChange={(e) => onFilterChange("minPrice", e.target.value ? Number(e.target.value) : undefined)}
+            onChange={(e) => onFilterChange("minPrice", e.target.value ? Math.max(0, Number(e.target.value)) : undefined)}
           />
           <span className="text-black/30 dark:text-white/30">—</span>
           <Input
             type="number"
             placeholder="Max"
+            min={0}
             value={filters.maxPrice ?? ""}
             className="h-9 text-sm"
-            onChange={(e) => onFilterChange("maxPrice", e.target.value ? Number(e.target.value) : undefined)}
+            onChange={(e) => onFilterChange("maxPrice", e.target.value ? Math.max(0, Number(e.target.value)) : undefined)}
           />
         </div>
       </FilterSection>
