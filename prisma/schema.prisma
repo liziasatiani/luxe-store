@@ -235,8 +235,11 @@ model Product {
   slug        String  @unique
   sku         String  @unique
   barcode     String?
-  description String? @db.Text
+  description      String? @db.Text
   shortDescription String?
+  howToUse         String? @db.Text
+  ingredients      String? @db.Text
+  inTheBox         String? @db.Text
 
   // Pricing
   price        Decimal @db.Decimal(10, 2)

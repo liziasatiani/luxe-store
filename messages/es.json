@@ -1,8 +1,8 @@
 {
   "cookie": {
     "title": "Usamos cookies",
-    "body": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra",
-    "privacy": "Política de privacidad",
+    "body": "Usamos cookies analíticas para mejorar tu experiencia. Consulta nuestra",
+    "cookiePolicy": "Política de cookies",
     "decline": "Rechazar",
     "accept": "Aceptar"
   },
@@ -117,7 +117,16 @@
     "selectVariant": "Seleccionar",
     "outOfStockMsg": "Este artículo está actualmente agotado. Vuelva pronto o contáctenos para consultar disponibilidad.",
     "deliveryBy": "entrega estimada el {date}",
-    "linkCopied": "Enlace copiado al portapapeles"
+    "linkCopied": "Enlace copiado al portapapeles",
+    "howToUse": "Modo de uso",
+    "ingredients": "Ingredientes",
+    "inTheBox": "Contenido de la caja",
+    "brand": "Marca",
+    "category": "Categoría",
+    "availability": "Disponibilidad",
+    "returnPolicy": "Política de devolución",
+    "returnPolicyValue": "Devoluciones en 14 días",
+    "outOfStockLabel": "Sin stock"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -765,7 +774,8 @@
     "nothingMatches": "Nada coincide",
     "nothingMatchesDesc": "Intenta ajustar tus filtros o términos de búsqueda.",
     "loadMore": "Cargar más",
-    "filters": "Filtros"
+    "filters": "Filtros",
+    "category": "Categoría"
   },
   "contact": {
     "title": "Contáctenos",

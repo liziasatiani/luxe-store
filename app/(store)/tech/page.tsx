@@ -1,7 +1,6 @@
 export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { SubcategoryNav } from "@/components/ui/SubcategoryNav";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
@@ -34,12 +33,13 @@ export default async function TechPage() {
 
       <div style={{ paddingTop: 32, paddingBottom: 96 }}>
         <div className="wrap">
-          <SubcategoryNav
-            basePath="/tech"
-            all={{ label: t("all"), href: "/tech", active: true }}
+          <ProductGrid
+            filters={{ categorySlug: "tech" }}
             subcategories={subcategories.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products }))}
+            subcategoryBasePath="/tech"
+            allCategoryLabel={t("all")}
+            allCategoryHref="/tech"
           />
-          <ProductGrid filters={{ categorySlug: "tech" }} />
         </div>
       </div>
       <TrustBar />

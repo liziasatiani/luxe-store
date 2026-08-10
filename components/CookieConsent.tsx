@@ -64,8 +64,8 @@ export function CookieConsent() {
             <p className="text-[11px] tracking-[0.08em] uppercase font-medium text-black dark:text-white mb-1">{t("title")}</p>
             <p className="text-xs text-black/50 dark:text-white/50 leading-relaxed mb-4">
               {t("body")}{" "}
-              <Link href="/privacy" className="underline hover:opacity-60 transition-opacity">
-                {t("privacy")}
+              <Link href="/cookie-policy" className="underline hover:opacity-60 transition-opacity">
+                {t("cookiePolicy")}
               </Link>
               .
             </p>

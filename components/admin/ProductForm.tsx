@@ -36,6 +36,9 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
     name:         String(product?.name ?? ""),
     sku:          String(product?.sku ?? ""),
     description:  String(product?.description ?? ""),
+    howToUse:     String(product?.howToUse ?? ""),
+    ingredients:  String(product?.ingredients ?? ""),
+    inTheBox:     String(product?.inTheBox ?? ""),
     price:        String(product?.price ?? ""),
     comparePrice: String(product?.comparePrice ?? ""),
     stock:        String(product?.stock ?? "0"),
@@ -129,6 +132,9 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
         brandId: form.brandId || null,
         tags: form.tags ? form.tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
         images: images.filter((i) => i.url),
+        howToUse: form.howToUse || null,
+        ingredients: form.ingredients || null,
+        inTheBox: form.inTheBox || null,
         specifications: specs.filter((s) => s.name && s.value),
         ...(product?.id ? { id: product.id } : {}),
       };
@@ -184,6 +190,38 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
               placeholder="Full product description…"
               className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 placeholder:text-surface-400 transition-colors resize-none"
             />
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <label className={labelCls}>How to Use <span className="text-surface-400 font-normal">(beauty products)</span></label>
+              <textarea
+                value={form.howToUse}
+                onChange={(e) => set("howToUse", e.target.value)}
+                rows={3}
+                placeholder="Apply to clean, dry skin. Massage in circular motions…"
+                className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 placeholder:text-surface-400 transition-colors resize-none"
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Ingredients <span className="text-surface-400 font-normal">(beauty products)</span></label>
+              <textarea
+                value={form.ingredients}
+                onChange={(e) => set("ingredients", e.target.value)}
+                rows={3}
+                placeholder="Aqua, Glycerin, Niacinamide…"
+                className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 placeholder:text-surface-400 transition-colors resize-none"
+              />
+            </div>
+            <div>
+              <label className={labelCls}>What&apos;s in the Box <span className="text-surface-400 font-normal">(tech products)</span></label>
+              <textarea
+                value={form.inTheBox}
+                onChange={(e) => set("inTheBox", e.target.value)}
+                rows={2}
+                placeholder="1x Device, 1x USB-C Cable, 1x User Manual…"
+                className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 placeholder:text-surface-400 transition-colors resize-none"
+              />
+            </div>
           </div>
           <div className="grid grid-cols-3 gap-4">
             <Input label="Price *" type="number" step="0.01" value={form.price} onChange={(e) => set("price", e.target.value)} placeholder="0.00" />

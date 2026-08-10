@@ -44,3 +44,4 @@ public/uploads/
 # local project docs
 CLAUDE.md
 AUDIT_REPORT.md
+.env*

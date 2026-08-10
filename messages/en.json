@@ -1,8 +1,8 @@
 {
   "cookie": {
     "title": "We use cookies",
-    "body": "We use cookies to improve your experience. By continuing, you agree to our",
-    "privacy": "Privacy Policy",
+    "body": "We use analytics cookies to improve your experience. Read our",
+    "cookiePolicy": "Cookie Policy",
     "decline": "Decline",
     "accept": "Accept"
   },
@@ -117,7 +117,16 @@
     "selectVariant": "Select",
     "outOfStockMsg": "This item is currently out of stock. Check back soon or contact us for availability.",
     "deliveryBy": "get it by {date}",
-    "linkCopied": "Link copied to clipboard"
+    "linkCopied": "Link copied to clipboard",
+    "howToUse": "How to Use",
+    "ingredients": "Ingredients",
+    "inTheBox": "What's in the Box",
+    "brand": "Brand",
+    "category": "Category",
+    "availability": "Availability",
+    "returnPolicy": "Return Policy",
+    "returnPolicyValue": "14-day returns",
+    "outOfStockLabel": "Out of Stock"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -765,7 +774,8 @@
     "nothingMatches": "Nothing matches",
     "nothingMatchesDesc": "Try adjusting your filters or search terms to find what you're looking for.",
     "loadMore": "Load More",
-    "filters": "Filters"
+    "filters": "Filters",
+    "category": "Category"
   },
   "contact": {
     "title": "Get In Touch",

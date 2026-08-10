@@ -1,8 +1,8 @@
 {
   "cookie": {
     "title": "Nous utilisons des cookies",
-    "body": "Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre",
-    "privacy": "Politique de confidentialité",
+    "body": "Nous utilisons des cookies analytiques pour améliorer votre expérience. Consultez notre",
+    "cookiePolicy": "Politique des cookies",
     "decline": "Refuser",
     "accept": "Accepter"
   },
@@ -117,7 +117,16 @@
     "selectVariant": "Sélectionner",
     "outOfStockMsg": "Cet article est actuellement en rupture de stock. Revenez prochainement ou contactez-nous pour vous informer sur la disponibilité.",
     "deliveryBy": "livraison prévue le {date}",
-    "linkCopied": "Lien copié dans le presse-papiers"
+    "linkCopied": "Lien copié dans le presse-papiers",
+    "howToUse": "Comment utiliser",
+    "ingredients": "Ingrédients",
+    "inTheBox": "Contenu de la boîte",
+    "brand": "Marque",
+    "category": "Catégorie",
+    "availability": "Disponibilité",
+    "returnPolicy": "Politique de retour",
+    "returnPolicyValue": "Retours sous 14 jours",
+    "outOfStockLabel": "Rupture de stock"
   },
   "cart": {
     "title": "Panier",
@@ -765,7 +774,8 @@
     "nothingMatches": "Aucune correspondance",
     "nothingMatchesDesc": "Essayez d'ajuster vos filtres ou termes de recherche.",
     "loadMore": "Charger plus",
-    "filters": "Filtres"
+    "filters": "Filtres",
+    "category": "Catégorie"
   },
   "contact": {
     "title": "Contactez-nous",

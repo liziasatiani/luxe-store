@@ -60,7 +60,8 @@ export default async function ProductPage({ params }: Props) {
 
   if (!product) notFound();
 
-  const p = serializeDecimal(product);
+  const _p = serializeDecimal(product);
+  const p = _p as typeof _p & { howToUse?: string | null; ingredients?: string | null; inTheBox?: string | null };
   const discount = p.comparePrice ? formatDiscount(Number(p.comparePrice), Number(p.price)) : 0;
 
   const tProduct = await getTranslations("product");
@@ -146,6 +147,45 @@ export default async function ProductPage({ params }: Props) {
               </p>
             </div>
           )}
+
+          {/* How to Use — beauty */}
+          {p.howToUse && (
+            <div style={{ marginBottom: 32 }}>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("howToUse")}</p>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{p.howToUse}</p>
+            </div>
+          )}
+
+          {/* Ingredients — beauty */}
+          {p.ingredients && (
+            <div style={{ marginBottom: 32 }}>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("ingredients")}</p>
+              <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, opacity: 0.85 }}>{p.ingredients}</p>
+            </div>
+          )}
+
+          {/* What's in the Box — tech */}
+          {p.inTheBox && (
+            <div style={{ marginBottom: 32 }}>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("inTheBox")}</p>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{p.inTheBox}</p>
+            </div>
+          )}
+
+          {/* Info strip — always shown */}
+          <div style={{ marginBottom: 32 }}>
+            {[
+              { label: tProduct("brand"),        value: p.brand?.name },
+              { label: tProduct("category"),     value: p.category?.name ?? p.category.name },
+              { label: tProduct("availability"), value: p.stockStatus === "IN_STOCK" ? tProduct("inStock") : p.stockStatus === "LOW_STOCK" ? "Low Stock" : tProduct("outOfStockLabel"), gold: p.stockStatus !== "OUT_OF_STOCK" },
+              { label: tProduct("returnPolicy"), value: tProduct("returnPolicyValue") },
+            ].filter(r => r.value).map((row, i) => (
+              <div key={i} style={{ display: "flex", padding: "13px 0", borderBottom: "1px solid var(--border)", gap: 16 }}>
+                <span style={{ fontSize: 12, color: "var(--chalk2)", minWidth: 130, flexShrink: 0 }}>{row.label}</span>
+                <span style={{ fontSize: 13, color: row.gold ? "var(--gold)" : "var(--chalk)" }}>{row.value}</span>
+              </div>
+            ))}
+          </div>
 
           {/* Specifications */}
           {p.specifications.length > 0 && (

@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { ProductCard, ProductCardSkeleton } from "./ProductCard";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui";
@@ -10,11 +11,18 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import type { ProductCard as ProductCardType, ProductFilters, SortOption } from "@/types";
 
+interface Subcategory { name: string; slug: string; count: number }
+
 interface ProductGridProps {
   initialProducts?: ProductCardType[];
   filters?: ProductFilters;
   showFilters?: boolean;
   columns?: 2 | 3 | 4;
+  subcategories?: Subcategory[];
+  subcategoryBasePath?: string;
+  activeSubcategorySlug?: string;
+  allCategoryLabel?: string;
+  allCategoryHref?: string;
 }
 
 const SORT_KEYS: { key: string; value: SortOption }[] = [
@@ -31,6 +39,11 @@ export function ProductGrid({
   filters: initialFilters,
   showFilters = true,
   columns = 4,
+  subcategories,
+  subcategoryBasePath,
+  activeSubcategorySlug,
+  allCategoryLabel,
+  allCategoryHref,
 }: ProductGridProps) {
   const t = useTranslations("filters");
   const router = useRouter();
@@ -124,6 +137,24 @@ export function ProductGrid({
       {showFilters && (
         <>
           <aside className="hidden lg:block w-64 shrink-0">
+            {subcategories && subcategories.length > 0 && subcategoryBasePath && (
+              <div className="border-b border-black/8 dark:border-white/8 pb-5 mb-6">
+                <p className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white mb-3">{t("category")}</p>
+                <div className="space-y-1">
+                  {allCategoryHref && (
+                    <Link href={allCategoryHref} className={cn("flex items-center justify-between py-1.5 text-sm transition-colors", !activeSubcategorySlug ? "text-black dark:text-white font-medium" : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")}>
+                      <span>{allCategoryLabel ?? "All"}</span>
+                    </Link>
+                  )}
+                  {subcategories.map((sc) => (
+                    <Link key={sc.slug} href={`${subcategoryBasePath}/${sc.slug}`} className={cn("flex items-center justify-between py-1.5 text-sm transition-colors", activeSubcategorySlug === sc.slug ? "text-black dark:text-white font-medium" : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")}>
+                      <span>{sc.name}</span>
+                      <span className="text-[11px] text-black/30 dark:text-white/30">{sc.count}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
             <FilterSidebar
               filters={filters}
               brands={brands}
@@ -151,6 +182,24 @@ export function ProductGrid({
                     <h3 className="font-semibold text-lg">{t("filters")}</h3>
                     <button onClick={() => setSidebarOpen(false)}><X size={20} /></button>
                   </div>
+                  {subcategories && subcategories.length > 0 && subcategoryBasePath && (
+                    <div className="border-b border-black/8 dark:border-white/8 pb-5 mb-6">
+                      <p className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white mb-3">{t("category")}</p>
+                      <div className="space-y-1">
+                        {allCategoryHref && (
+                          <Link href={allCategoryHref} className={cn("flex items-center justify-between py-1.5 text-sm transition-colors", !activeSubcategorySlug ? "text-black dark:text-white font-medium" : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")}>
+                            <span>{allCategoryLabel ?? "All"}</span>
+                          </Link>
+                        )}
+                        {subcategories.map((sc) => (
+                          <Link key={sc.slug} href={`${subcategoryBasePath}/${sc.slug}`} className={cn("flex items-center justify-between py-1.5 text-sm transition-colors", activeSubcategorySlug === sc.slug ? "text-black dark:text-white font-medium" : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")}>
+                            <span>{sc.name}</span>
+                            <span className="text-[11px] text-black/30 dark:text-white/30">{sc.count}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <FilterSidebar
                     filters={filters}
                     brands={brands}

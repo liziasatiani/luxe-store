@@ -123,7 +123,7 @@ export function Navbar() {
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-            {mounted && user && <span className="nav-sep" />}
+            <span className="nav-sep" />
             {mounted && (user ? (
               <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
             ) : (
