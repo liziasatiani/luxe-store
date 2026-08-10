@@ -13,8 +13,7 @@ const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
   Company: [
     { label: "About Us", href: "/about"   },
     { label: "Contact",  href: "/contact" },
-    { label: "Press",    href: "/about"   },
-    { label: "Careers",  href: "/about"   },
+    { label: "Careers",  href: "/careers" },
   ],
   Support: [
     { label: "Shipping & Delivery", href: "/shipping" },
