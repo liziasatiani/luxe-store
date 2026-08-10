@@ -63,10 +63,7 @@ function LoginForm() {
     <div style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px", background: "var(--bg)" }}>
       <div style={{ width: "100%", maxWidth: 420 }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <Link href="/" style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, color: "var(--chalk)", textDecoration: "none", letterSpacing: "0.02em" }}>
-            Everything <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Street</em>
-          </Link>
-          <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginTop: 28, marginBottom: 8 }}>{t("title")}</h1>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginBottom: 8 }}>{t("title")}</h1>
           <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("subtitle")}</p>
         </div>
 
