@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, ArrowRight, TrendingUp } from "lucide-react";
 import FocusTrap from "focus-trap-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useUIStore } from "@/store";
 import { useSearch } from "@/hooks";
@@ -21,6 +22,14 @@ export function SearchModal() {
   const { query, setQuery, results, loading } = useSearch();
   const [activeTab, setActiveTab] = useState<"all" | "beauty" | "tech">("all");
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const handleEnter = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+      closeSearch();
+    }
+  }, [query, router, closeSearch]);
 
   const filteredResults = useMemo(() => {
     if (activeTab === "all") return results;
@@ -85,6 +94,7 @@ export function SearchModal() {
                     ref={inputRef}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleEnter}
                     placeholder={t("placeholder")}
                     style={{ flex: 1, fontSize: 14, background: "transparent", color: "var(--chalk)", border: "none", outline: "none" }}
                   />
@@ -93,12 +103,6 @@ export function SearchModal() {
                       <X size={16} />
                     </button>
                   )}
-                  <button
-                    onClick={closeSearch}
-                    style={{ display: "flex", alignItems: "center", padding: "3px 7px", border: "1px solid var(--borderg)", background: "transparent", fontSize: 10, letterSpacing: "0.08em", color: "var(--chalk3)", cursor: "pointer" }}
-                  >
-                    ESC
-                  </button>
                 </div>
 
                 <p aria-live="polite" aria-atomic="true" className="sr-only">
