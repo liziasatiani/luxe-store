@@ -260,6 +260,7 @@ function FilterSidebar({
             min={0}
             value={filters.minPrice ?? ""}
             className="h-9 text-sm"
+            onKeyDown={(e) => { if (e.key === "-" || e.key === "e" || e.key === "E") e.preventDefault(); }}
             onChange={(e) => onFilterChange("minPrice", e.target.value ? Math.max(0, Number(e.target.value)) : undefined)}
           />
           <span className="text-black/30 dark:text-white/30">—</span>
@@ -269,6 +270,7 @@ function FilterSidebar({
             min={0}
             value={filters.maxPrice ?? ""}
             className="h-9 text-sm"
+            onKeyDown={(e) => { if (e.key === "-" || e.key === "e" || e.key === "E") e.preventDefault(); }}
             onChange={(e) => onFilterChange("maxPrice", e.target.value ? Math.max(0, Number(e.target.value)) : undefined)}
           />
         </div>
