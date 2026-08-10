@@ -47,6 +47,14 @@ export function Navbar() {
     { label: t("brands"), href: "/brands" },
   ];
 
+  const MOBILE_NAV_LINKS = [
+    { label: t("beauty"),  href: "/beauty"  },
+    { label: t("tech"),    href: "/tech"    },
+    { label: t("new"),     href: "/new"     },
+    { label: t("brands"),  href: "/brands"  },
+    { label: t("deals"),   href: "/deals"   },
+  ];
+
   const ANN_ITEMS = [
     "Free 48h Delivery in Tbilisi",
     "100% Authentic Products",
@@ -145,7 +153,7 @@ export function Navbar() {
                 {mounted && <CurrencySelector />}
                 {mounted && <LanguageSelector />}
               </div>
-              {NAV_LINKS.map((link) => (
+              {MOBILE_NAV_LINKS.map((link) => (
                 <div key={link.href} className="border-b border-white/[0.06]">
                   <Link href={link.href} onClick={closeMobileMenu}
                     className="flex items-center h-12 text-[12px] tracking-[0.14em] uppercase font-medium text-white">
