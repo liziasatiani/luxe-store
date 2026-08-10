@@ -432,7 +432,7 @@
       "securityTitle": "Sécurité",
       "securityDesc": "SSL 256 bits sur chaque transaction. Vos données sont protégées.",
       "globalTitle": "Portée mondiale",
-      "globalDesc": "Le luxe sans frontières. Nous livrons dans plus de 50 pays."
+      "globalDesc": "Le luxe sans frontières. Nous livrons à l'international — même qualité, même soin, où que vous soyez."
     },
     "sitemap": {
       "title": "Plan du site",
@@ -501,7 +501,7 @@
             },
             {
               "q": "Livrez-vous à l'international ?",
-              "a": "Oui, nous livrons dans plus de 50 pays. Les frais d'expédition et les délais varient selon la destination. Des droits de douane et taxes peuvent s'appliquer."
+              "a": "Oui, nous livrons à l'international dans une sélection de pays en Europe, au Moyen-Orient et au-delà. Les frais et délais varient selon la destination. Des droits de douane et taxes peuvent s'appliquer."
             }
           ]
         },
@@ -589,7 +589,7 @@
       "domesticTitle": "Livraison nationale",
       "domesticContent": "Livraison standard (3–5 jours ouvrés) : ₾15, GRATUIT dès ₾200\nLivraison express (1–2 jours ouvrés) : ₾25\n\nLes commandes avant 14h GET sont traitées le jour même.",
       "internationalTitle": "Livraison internationale",
-      "internationalContent": "Nous livrons dans plus de 50 pays.\n\nCanada et Mexique : 5–7 jours ouvrés\nEurope : 7–10 jours ouvrés\nAsie et Moyen-Orient : 10–14 jours ouvrés",
+      "internationalContent": "Nous livrons dans une sélection de pays en Europe, au Moyen-Orient et au-delà.\n\nTurquie et pays de la CEI : 4–6 jours ouvrés\nEurope et Royaume-Uni : 7–10 jours ouvrés\nMoyen-Orient : 7–10 jours ouvrés\nAmérique du Nord et Asie : 10–14 jours ouvrés",
       "dutiesTitle": "Droits et taxes",
       "dutiesContent": "Les commandes internationales peuvent être soumises à des droits d'importation à l'arrivée. Ces frais sont à la charge du destinataire.",
       "trackingTitle": "Suivi de commande",
@@ -607,7 +607,7 @@
       "nonReturnableTitle": "Articles non retournables",
       "nonReturnableContent": "• Produits de beauté ouverts\n• Articles personnalisés\n• Téléchargements numériques\n• Vente finale\n• Cartes cadeaux",
       "howToTitle": "Comment retourner",
-      "howToContent": "Envoyez un e-mail à returns@everythingstreet.com avec votre numéro de commande. Nous répondrons sous 24h avec une étiquette de retour.\n\nVotre remboursement est traité sous 3–5 jours ouvrés.",
+      "howToContent": "Envoyez un e-mail à returns@everythingstreet.ge avec votre numéro de commande. Nous répondrons sous 24h avec les instructions de retour.\n\nVotre remboursement est traité sous 3–5 jours ouvrés.",
       "refundTitle": "Traitement du remboursement",
       "refundContent": "Les remboursements sont traités sous 3–5 jours ouvrés et apparaissent sous 5–10 jours ouvrés.",
       "damagedTitle": "Articles endommagés",

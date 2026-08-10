@@ -432,7 +432,7 @@
       "securityTitle": "Security",
       "securityDesc": "256-bit SSL on every transaction. Your payment details and personal data are protected at every step.",
       "globalTitle": "Global Reach",
-      "globalDesc": "Luxury without borders. We ship to over 50 countries — same quality, same care, wherever you are."
+      "globalDesc": "Luxury without borders. We ship internationally — same quality, same care, wherever you are."
     },
     "sitemap": {
       "title": "Sitemap",
@@ -501,7 +501,7 @@
             },
             {
               "q": "Do you ship internationally?",
-              "a": "Yes, we ship to over 50 countries worldwide. Shipping costs and delivery times vary by destination. Duties and taxes may apply."
+              "a": "Yes, we ship internationally to select countries across Europe, the Middle East, and beyond. Shipping costs and delivery times vary by destination. Duties and taxes may apply."
             }
           ]
         },
@@ -589,7 +589,7 @@
       "domesticTitle": "Domestic Shipping",
       "domesticContent": "Standard Shipping (3–5 business days): ₾15, FREE on orders over ₾200\nExpress Shipping (1–2 business days): ₾25\n\nOrders placed before 14:00 GET are processed the same day.",
       "internationalTitle": "International Shipping",
-      "internationalContent": "We ship to over 50 countries worldwide.\n\nCanada & Mexico: 5–7 business days\nEurope: 7–10 business days\nAsia & Middle East: 10–14 business days",
+      "internationalContent": "We ship to select countries across Europe, the Middle East, and beyond.\n\nTurkey & CIS countries: 4–6 business days\nEurope & UK: 7–10 business days\nMiddle East: 7–10 business days\nNorth America & Asia: 10–14 business days",
       "dutiesTitle": "Duties & Taxes",
       "dutiesContent": "International orders may be subject to import duties and taxes upon arrival. These charges are the responsibility of the recipient.",
       "trackingTitle": "Order Tracking",
@@ -607,7 +607,7 @@
       "nonReturnableTitle": "Non-Returnable Items",
       "nonReturnableContent": "• Opened beauty products\n• Personalized items\n• Digital downloads\n• Final Sale items\n• Gift cards",
       "howToTitle": "How to Return",
-      "howToContent": "Email returns@everythingstreet.com with your order number and the item(s) you'd like to return. We'll reply within 24 hours with a prepaid return label.\n\nOnce we receive the item, your refund is processed within 3–5 business days.",
+      "howToContent": "Email returns@everythingstreet.ge with your order number and the item(s) you'd like to return. We'll reply within 24 hours with return instructions.\n\nOnce we receive the item, your refund is processed within 3–5 business days.",
       "refundTitle": "Refund Processing",
       "refundContent": "Refunds are processed within 3–5 business days and appear on your payment method within 5–10 business days.",
       "damagedTitle": "Damaged Items",

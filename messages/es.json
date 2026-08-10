@@ -432,7 +432,7 @@
       "securityTitle": "Seguridad",
       "securityDesc": "SSL 256 bits en cada transacción. Sus datos están protegidos.",
       "globalTitle": "Alcance global",
-      "globalDesc": "Lujo sin fronteras. Enviamos a más de 50 países."
+      "globalDesc": "Lujo sin fronteras. Enviamos internacionalmente — la misma calidad, el mismo cuidado, donde quiera que estés."
     },
     "sitemap": {
       "title": "Mapa del sitio",
@@ -501,7 +501,7 @@
             },
             {
               "q": "¿Envían a nivel internacional?",
-              "a": "Sí, enviamos a más de 50 países de todo el mundo. Los costes y plazos de envío varían según el destino. Pueden aplicarse aranceles e impuestos."
+              "a": "Sí, enviamos internacionalmente a países seleccionados de Europa, Oriente Medio y más allá. Los costes y plazos varían según el destino. Pueden aplicarse aranceles e impuestos."
             }
           ]
         },
@@ -589,7 +589,7 @@
       "domesticTitle": "Envío nacional",
       "domesticContent": "Envío estándar (3–5 días hábiles): ₾15, GRATIS en pedidos superiores a ₾200\nEnvío exprés (1–2 días hábiles): ₾25\n\nLos pedidos antes de las 14:00 GET se procesan el mismo día.",
       "internationalTitle": "Envío internacional",
-      "internationalContent": "Enviamos a más de 50 países.\n\nCanadá y México: 5–7 días hábiles\nEuropa: 7–10 días hábiles\nAsia y Oriente Medio: 10–14 días hábiles",
+      "internationalContent": "Enviamos a países seleccionados de Europa, Oriente Medio y más allá.\n\nTurquía y países de la CEI: 4–6 días hábiles\nEuropa y Reino Unido: 7–10 días hábiles\nOriente Medio: 7–10 días hábiles\nAmérica del Norte y Asia: 10–14 días hábiles",
       "dutiesTitle": "Aranceles e impuestos",
       "dutiesContent": "Los pedidos internacionales pueden estar sujetos a aranceles de importación a la llegada. Estos cargos son responsabilidad del destinatario.",
       "trackingTitle": "Seguimiento de pedidos",
@@ -607,7 +607,7 @@
       "nonReturnableTitle": "Artículos no retornables",
       "nonReturnableContent": "• Productos de belleza abiertos\n• Artículos personalizados\n• Descargas digitales\n• Venta final\n• Tarjetas de regalo",
       "howToTitle": "Cómo devolver",
-      "howToContent": "Envíe un correo a returns@everythingstreet.com con su número de pedido. Le responderemos en 24 horas con etiqueta de devolución.\n\nSu reembolso se procesa en 3–5 días hábiles.",
+      "howToContent": "Envíe un correo a returns@everythingstreet.ge con su número de pedido. Le responderemos en 24 horas con las instrucciones de devolución.\n\nSu reembolso se procesa en 3–5 días hábiles.",
       "refundTitle": "Procesamiento de reembolso",
       "refundContent": "Los reembolsos se procesan en 3–5 días hábiles y aparecen en 5–10 días hábiles.",
       "damagedTitle": "Artículos dañados",
