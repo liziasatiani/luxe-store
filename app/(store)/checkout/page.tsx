@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Banknote, CreditCard, Truck, Lock, User, LogIn, ChevronRight, Check, ChevronDown, Plus } from "lucide-react";
-import { useCartStore } from "@/store";
+import { useCartStore, useCurrencyStore } from "@/store";
 import { isValidEmail } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
@@ -49,6 +49,7 @@ export default function CheckoutPage() {
   const { data: session } = useSession();
   const { items, subtotal, discount, shipping, tax, total, coupon, clearCart } = useCartStore();
   const { format } = useCurrency();
+  const { rates } = useCurrencyStore();
   const [mode, setMode] = useState<CheckoutMode>("choose");
   const [step, setStep] = useState<Step>(1);
   const [summaryOpen, setSummaryOpen] = useState(false);
@@ -58,7 +59,7 @@ export default function CheckoutPage() {
   const [placing, setPlacing] = useState(false);
 
   const COD_MAX_GEL = 100;
-  const totalGEL = total() * 2.77;
+  const totalGEL = total() * rates.USD_GEL;
   const codAvailable = totalGEL < COD_MAX_GEL;
   const [paymentMethod, setPaymentMethod] = useState<"CASH_ON_DELIVERY" | "STRIPE">("CASH_ON_DELIVERY");
   const [addingAddress, setAddingAddress] = useState(false);

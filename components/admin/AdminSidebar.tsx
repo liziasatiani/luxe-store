@@ -3,17 +3,18 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Package, ShoppingCart, Users, Tag, Upload,
+  LayoutDashboard, Package, ShoppingCart, Users, Tag, Upload, Settings,
   ChevronRight, ArrowLeft, Menu, X,
 } from "lucide-react";
 
 const NAV = [
-  { href: "/admin",           icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/products",  icon: Package,         label: "Products"  },
-  { href: "/admin/orders",    icon: ShoppingCart,    label: "Orders"    },
-  { href: "/admin/customers", icon: Users,           label: "Customers" },
-  { href: "/admin/coupons",   icon: Tag,             label: "Coupons"   },
-  { href: "/admin/import",    icon: Upload,          label: "Import"    },
+  { href: "/admin",            icon: LayoutDashboard, label: "Dashboard" },
+  { href: "/admin/products",   icon: Package,         label: "Products"  },
+  { href: "/admin/orders",     icon: ShoppingCart,    label: "Orders"    },
+  { href: "/admin/customers",  icon: Users,           label: "Customers" },
+  { href: "/admin/coupons",    icon: Tag,             label: "Coupons"   },
+  { href: "/admin/import",     icon: Upload,          label: "Import"    },
+  { href: "/admin/settings",   icon: Settings,        label: "Settings"  },
 ];
 
 function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {

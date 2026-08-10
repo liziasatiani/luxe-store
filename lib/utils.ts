@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const GEL_RATE = 2.77; // 1 USD = 2.77 GEL
+export const GEL_RATE_FALLBACK = 2.77;
 
 export function formatPrice(
   amount: number | string | null | undefined,
@@ -21,10 +21,10 @@ export function formatPrice(
   }).format(num);
 }
 
-export function formatGEL(amount: number | string | null | undefined): string {
+export function formatGEL(amount: number | string | null | undefined, rate = GEL_RATE_FALLBACK): string {
   const num = typeof amount === "string" ? parseFloat(amount) : (amount ?? 0);
   if (isNaN(num)) return "₾0.00";
-  return "₾" + (num * GEL_RATE).toFixed(2);
+  return "₾" + (num * rate).toFixed(2);
 }
 
 export function formatDiscount(original: number, sale: number): number {

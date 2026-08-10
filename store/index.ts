@@ -197,16 +197,30 @@ export const useUIStore = create<UIStore>((set) => ({
   closeMobileMenu: () => set({ mobileMenuOpen: false }),
 }));
 
-type Currency = "USD" | "GEL";
+type Currency = "USD" | "GEL" | "EUR";
+
+interface ExchangeRates {
+  USD_GEL: number;
+  EUR_GEL: number;
+  USD_EUR: number;
+}
+
+const DEFAULT_RATES: ExchangeRates = { USD_GEL: 2.77, EUR_GEL: 3.00, USD_EUR: 0.92 };
+
 interface CurrencyStore {
   currency: Currency;
+  rates: ExchangeRates;
   setCurrency: (c: Currency) => void;
+  setRates: (r: ExchangeRates) => void;
 }
+
 export const useCurrencyStore = create<CurrencyStore>()(
   persist(
     (set) => ({
       currency: "GEL",
+      rates: DEFAULT_RATES,
       setCurrency: (currency) => set({ currency }),
+      setRates: (rates) => set({ rates }),
     }),
     { name: STORAGE_KEY_CURRENCY, storage: createJSONStorage(() => localStorage) }
   )

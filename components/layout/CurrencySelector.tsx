@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const CURRENCIES = [
   { code: "GEL" as const, label: "GEL", symbol: "₾" },
   { code: "USD" as const, label: "USD", symbol: "$" },
+  { code: "EUR" as const, label: "EUR", symbol: "€" },
 ];
 
 export function CurrencySelector() {
