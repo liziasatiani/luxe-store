@@ -4,7 +4,7 @@ import { Plus, Trash2, Tag, Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input, Badge, Spinner } from "@/components/ui";
-import { formatPrice, formatDate } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 interface Coupon {

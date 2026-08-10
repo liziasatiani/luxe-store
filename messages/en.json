@@ -394,7 +394,8 @@
     "deals": {
       "title": "Deals & Sales",
       "subtitle": "Luxury at a price you'll love.",
-      "badge": "Limited Time"
+      "badge": "Limited Time",
+      "description": "New deals added every day."
     },
     "brands": {
       "title": "Our Brands",
@@ -435,7 +436,12 @@
     },
     "sitemap": {
       "title": "Sitemap",
-      "subtitle": "Find everything on Everything Street"
+      "subtitle": "Find everything on Everything Street",
+      "sectionShop": "Shop",
+      "sectionDiscover": "Discover",
+      "sectionAccount": "Account",
+      "sectionHelp": "Help",
+      "sectionCompany": "Company"
     },
     "trackOrder": {
       "title": "Track Your Order",

@@ -181,7 +181,7 @@ export async function importProducts(
           width: row.width ?? null,
           height: row.height ?? null,
           isFeatured: row.featured ?? false,
-          isOnSale: row.sale ?? false,
+          isOnSale: row.comparePrice != null && row.comparePrice > row.price ? true : (row.sale ?? false),
           isNewArrival: row.newArrival ?? true,
           tags: row.tags ? row.tags.split(",").map((t) => t.trim()) : [],
           images: row.images

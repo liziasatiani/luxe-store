@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     return NextResponse.json({ success: true, data: { products: serializeDecimal(products), total, page, totalPages: Math.ceil(total / limit) } });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to fetch products" }, { status: 500 });
   }
 }
@@ -56,12 +56,14 @@ export async function POST(req: NextRequest) {
     const slug = existing ? `${baseSlug}-${Date.now()}` : baseSlug;
 
     const stockStatus = data.stock === 0 ? "OUT_OF_STOCK" : data.stock <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK";
+    const isOnSale = data.comparePrice != null && Number(data.comparePrice) > Number(data.price);
 
     const product = await prisma.product.create({
       data: {
         ...parsed.data,
         slug,
         stockStatus,
+        isOnSale,
         brandId: data.brandId || null,
         images: { create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ ...img, sortOrder: i, isPrimary: i === 0 })) },
         specifications: { create: specifications.map((s: { name: string; value: string }, i: number) => ({ ...s, sortOrder: i })) },
@@ -94,11 +96,16 @@ export async function PUT(req: NextRequest) {
       ? { stockStatus: (data.stock === 0 ? "OUT_OF_STOCK" : data.stock <= (data.lowStockAt ?? 5) ? "LOW_STOCK" : "IN_STOCK") as "OUT_OF_STOCK" | "LOW_STOCK" | "IN_STOCK" }
       : {};
 
+    const isOnSaleUpdate = data.comparePrice !== undefined || data.price !== undefined
+      ? { isOnSale: data.comparePrice != null && Number(data.comparePrice) > Number(data.price) }
+      : {};
+
     const product = await prisma.product.update({
       where: { id },
       data: {
         ...data,
         ...stockStatusUpdate,
+        ...isOnSaleUpdate,
         brandId: data.brandId || null,
         images: {
           deleteMany: {},
@@ -112,7 +119,7 @@ export async function PUT(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true, data: { product: serializeDecimal(product) } });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to update product" }, { status: 500 });
   }
 }
@@ -125,7 +132,7 @@ export async function DELETE(req: NextRequest) {
     await prisma.product.update({ where: { id }, data: { isActive: false } });
 
     return NextResponse.json({ success: true, message: "Product deactivated" });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to delete product" }, { status: 500 });
   }
 }

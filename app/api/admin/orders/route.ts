@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     return NextResponse.json({ success: true, data: { orders: serializeDecimal(orders), total, page, totalPages: Math.ceil(total / limit) } });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to fetch orders" }, { status: 500 });
   }
 }
@@ -113,7 +113,7 @@ export async function PUT(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, data: { order: serializeDecimal(order) } });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to update order" }, { status: 500 });
   }
 }

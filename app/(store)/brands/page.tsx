@@ -13,13 +13,22 @@ export default async function BrandsPage() {
   const t = await getTranslations("pages.brands");
   const brands = await prisma.brand.findMany({
     where: { isActive: true },
-    select: { name: true, slug: true, description: true, logo: true, website: true, _count: { select: { products: { where: { isActive: true } } } } },
+    select: {
+      name: true, slug: true, description: true, logo: true, website: true,
+      _count: { select: { products: { where: { isActive: true } } } },
+      products: {
+        where: { isActive: true },
+        select: { category: { select: { slug: true } } },
+        take: 3,
+      },
+    },
     orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
   });
 
-  const BEAUTY = ["La Mer","Charlotte Tilbury","Drunk Elephant","NARS","Tatcha","Dior Beauty","Chanel Beauty","YSL Beauty","Tom Ford Beauty","Sulwhasoo","Sisley Paris","Augustinus Bader","Dyson Beauty","FOREO","GHD","Creed","Jo Malone","Maison Margiela"];
-  const beautyBrands = brands.filter(b => BEAUTY.includes(b.name));
-  const techBrands   = brands.filter(b => !beautyBrands.includes(b));
+  const BEAUTY_SLUGS = new Set(["skincare","makeup","hair-care","body-care","perfume","beauty-tools","mini","beauty"]);
+  const isBeauty = (b: typeof brands[0]) => b.products.some(p => p.category && BEAUTY_SLUGS.has(p.category.slug));
+  const beautyBrands = brands.filter(isBeauty);
+  const techBrands   = brands.filter(b => !isBeauty(b));
 
   const groups = [
     { title: t("beautyBrands"), items: beautyBrands },

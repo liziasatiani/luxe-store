@@ -593,6 +593,20 @@ model NewsletterSubscriber {
   @@map("newsletter_subscribers")
 }
 
+// ─── CONTACT MESSAGES ────────────────────────────────────────
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("contact_messages")
+}
+
 // ─── PRODUCT IMPORT ──────────────────────────────────────────
 
 model ImportJob {

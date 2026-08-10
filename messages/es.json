@@ -394,7 +394,8 @@
     "deals": {
       "title": "Ofertas y Rebajas",
       "subtitle": "Lujo a un precio que te encantará.",
-      "badge": "Tiempo limitado"
+      "badge": "Tiempo limitado",
+      "description": "Nuevas ofertas añadidas cada día."
     },
     "brands": {
       "title": "Nuestras Marcas",
@@ -435,7 +436,12 @@
     },
     "sitemap": {
       "title": "Mapa del sitio",
-      "subtitle": "Encuentra todo en Everything Street"
+      "subtitle": "Encuentra todo en Everything Street",
+      "sectionShop": "Tienda",
+      "sectionDiscover": "Descubrir",
+      "sectionAccount": "Cuenta",
+      "sectionHelp": "Ayuda",
+      "sectionCompany": "Empresa"
     },
     "trackOrder": {
       "title": "Rastrear tu pedido",

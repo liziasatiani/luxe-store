@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
-import { serializeDecimal, formatDiscount, getStockLabel, jsonLdSafe } from "@/lib/utils";
+import { serializeDecimal, formatDiscount, jsonLdSafe } from "@/lib/utils";
 import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata, buildProductSchema, buildBreadcrumbSchema } from "@/lib/seo";
 import { ProductGallery } from "@/components/product/ProductGallery";

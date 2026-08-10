@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/validations";
 import { rateLimit, getIP, rateLimitResponse } from "@/lib/rateLimit";
 import { sendContactAutoReply } from "@/lib/email";
@@ -14,7 +15,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 });
     }
 
-    const { name, email, subject } = parsed.data;
+    const { name, email, subject, message } = parsed.data;
+
+    await prisma.contactMessage.create({ data: { name, email, subject, message } });
 
     sendContactAutoReply({ name, email, subject }).catch(() => {});
 

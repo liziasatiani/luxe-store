@@ -39,7 +39,6 @@ export async function GET(req: NextRequest) {
       and.push({
         OR: [
           { name: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } },
           { tags: { has: search.toLowerCase() } },
           { brand: { name: { contains: search, mode: "insensitive" } } },
           { category: { name: { contains: search, mode: "insensitive" } } },

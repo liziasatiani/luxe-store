@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
-import { TrendingUp, TrendingDown, ShoppingBag, Users, DollarSign, Package, AlertTriangle } from "lucide-react";
+import { TrendingUp, TrendingDown, ShoppingBag, Users, DollarSign, AlertTriangle } from "lucide-react";
 import { formatPrice, formatDate, formatNumber } from "@/lib/utils";
 import { Spinner, Badge } from "@/components/ui";
 import Link from "next/link";

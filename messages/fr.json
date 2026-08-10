@@ -394,7 +394,8 @@
     "deals": {
       "title": "Offres & Soldes",
       "subtitle": "Le luxe à prix doux.",
-      "badge": "Durée limitée"
+      "badge": "Durée limitée",
+      "description": "De nouvelles offres ajoutées chaque jour."
     },
     "brands": {
       "title": "Nos Marques",
@@ -435,7 +436,12 @@
     },
     "sitemap": {
       "title": "Plan du site",
-      "subtitle": "Trouvez tout sur Everything Street"
+      "subtitle": "Trouvez tout sur Everything Street",
+      "sectionShop": "Boutique",
+      "sectionDiscover": "Découvrir",
+      "sectionAccount": "Compte",
+      "sectionHelp": "Aide",
+      "sectionCompany": "Entreprise"
     },
     "trackOrder": {
       "title": "Suivre votre commande",

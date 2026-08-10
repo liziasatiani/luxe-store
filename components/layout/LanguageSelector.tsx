@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Globe } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { locales, localeNames, localeFlags, LOCALE_COOKIE, type Locale } from "@/i18n.config";
 import { cn } from "@/lib/utils";
 

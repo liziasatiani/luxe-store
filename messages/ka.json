@@ -394,7 +394,8 @@
     "deals": {
       "title": "შეთავაზებები და ფასდაკლებები",
       "subtitle": "პრემიუმი ხელმისაწვდომ ფასად.",
-      "badge": "შეზღუდული დრო"
+      "badge": "შეზღუდული დრო",
+      "description": "ახალი შეთავაზებები ყოველდღე."
     },
     "brands": {
       "title": "ჩვენი ბრენდები",
@@ -435,7 +436,12 @@
     },
     "sitemap": {
       "title": "საიტის რუქა",
-      "subtitle": "იპოვეთ ყველაფერი Everything Street-ზე"
+      "subtitle": "იპოვეთ ყველაფერი Everything Street-ზე",
+      "sectionShop": "მაღაზია",
+      "sectionDiscover": "აღმოაჩინე",
+      "sectionAccount": "ანგარიში",
+      "sectionHelp": "დახმარება",
+      "sectionCompany": "კომპანია"
     },
     "trackOrder": {
       "title": "შეკვეთის სტატუსი",

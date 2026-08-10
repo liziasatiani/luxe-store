@@ -1,9 +1,9 @@
 "use client";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, Download, FileText, CheckCircle, XCircle } from "lucide-react";
+import { Upload, Download, FileText, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge, Spinner } from "@/components/ui";
+import { Spinner } from "@/components/ui";
 import toast from "react-hot-toast";
 
 interface ImportResult { succeeded: number; failed: number; totalRows: number; errors: Array<{ row: number; error: string }> }

@@ -24,8 +24,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [annVisible, setAnnVisible] = useState(false);
   const t = useTranslations("nav");
-
-  if (pathname.startsWith("/admin")) return null;
+  const tc = useTranslations("home.categories");
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -39,12 +38,12 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  if (pathname.startsWith("/admin")) return null;
+
   const count = mounted ? itemCount() : 0;
   const user = session?.user;
   const isAdmin = (user as { role?: string } | undefined)?.role === "ADMIN" ||
     (user as { role?: string } | undefined)?.role === "SUPER_ADMIN";
-
-  const tc = useTranslations("home.categories");
   const NAV_LINKS = [
     { label: t("beauty"), href: "/beauty", children: [
       { label: tc("skincare"),    href: "/beauty/skincare"     },

@@ -13,7 +13,6 @@ import { ExitIntentCapture } from "@/components/ui/ExitIntentCapture";
 import { MusicPlayer } from "@/components/ui/MusicPlayer";
 import { WishlistSync } from "@/components/WishlistSync";
 import { CookieConsent } from "@/components/CookieConsent";
-import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { PWAInit } from "@/components/PWAInit";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { SplashScreen } from "@/components/ui/SplashScreen";

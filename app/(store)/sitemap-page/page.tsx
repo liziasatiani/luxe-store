@@ -1,4 +1,5 @@
-import { getLocale } from "next-intl/server";
+export const revalidate = 3600;
+import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
@@ -7,77 +8,81 @@ export async function generateMetadata() {
   return buildMetadata({ title: "Sitemap", noIndex: true, locale });
 }
 
-const SECTIONS = [
-  {
-    title: "Shop",
-    links: [
-      { label: "All Beauty",    href: "/beauty"              },
-      { label: "Skincare",      href: "/beauty/skincare"     },
-      { label: "Makeup",        href: "/beauty/makeup"       },
-      { label: "Hair Care",     href: "/beauty/hair-care"    },
-      { label: "Body Care",     href: "/beauty/body-care"    },
-      { label: "Perfume",       href: "/beauty/perfume"      },
-      { label: "Beauty Tools",  href: "/beauty/beauty-tools" },
-      { label: "All Tech",      href: "/tech"                },
-      { label: "Headphones",    href: "/tech/headphones"     },
-      { label: "Cameras",       href: "/tech/cameras"        },
-      { label: "Tablets",       href: "/tech/tablets"        },
-      { label: "Gaming",        href: "/tech/gaming"         },
-      { label: "Wearables",     href: "/tech/wearables"      },
-      { label: "Smart Home",    href: "/tech/smart-home"     },
-      { label: "Audio",         href: "/tech/audio"          },
-      { label: "Accessories",   href: "/tech/accessories"    },
-    ],
-  },
-  {
-    title: "Discover",
-    links: [
-      { label: "New Arrivals",  href: "/new"      },
-      { label: "Best Sellers",  href: "/best"     },
-      { label: "Featured",      href: "/featured" },
-      { label: "Deals & Sales", href: "/deals"    },
-      { label: "All Brands",    href: "/brands"   },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { label: "Sign In",        href: "/login"             },
-      { label: "Create Account", href: "/register"          },
-      { label: "My Account",     href: "/account"           },
-      { label: "My Orders",      href: "/account/orders"    },
-      { label: "My Addresses",   href: "/account/addresses" },
-      { label: "My Wishlist",    href: "/wishlist"          },
-      { label: "Track Order",    href: "/track-order"       },
-    ],
-  },
-  {
-    title: "Help",
-    links: [
-      { label: "FAQ",           href: "/faq"      },
-      { label: "Contact Us",    href: "/contact"  },
-      { label: "Shipping Info", href: "/shipping" },
-      { label: "Returns",       href: "/returns"  },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About Us",       href: "/about"   },
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Use",   href: "/terms"   },
-    ],
-  },
-];
+export default async function SitemapPage() {
+  const [t, tn, tc] = await Promise.all([
+    getTranslations("pages.sitemap"),
+    getTranslations("nav"),
+    getTranslations("home.categories"),
+  ]);
 
-export default function SitemapPage() {
+  const SECTIONS = [
+    {
+      title: t("sectionShop"),
+      links: [
+        { label: tn("beauty"),      href: "/beauty"              },
+        { label: tc("skincare"),    href: "/beauty/skincare"     },
+        { label: tc("makeup"),      href: "/beauty/makeup"       },
+        { label: tc("hairCare"),    href: "/beauty/hair-care"    },
+        { label: tc("bodyCare"),    href: "/beauty/body-care"    },
+        { label: tc("perfume"),     href: "/beauty/perfume"      },
+        { label: tc("beautyTools"), href: "/beauty/beauty-tools" },
+        { label: tn("tech"),        href: "/tech"                },
+        { label: tc("headphones"),  href: "/tech/headphones"     },
+        { label: tc("cameras"),     href: "/tech/cameras"        },
+        { label: tc("tablets"),     href: "/tech/tablets"        },
+        { label: tc("gaming"),      href: "/tech/gaming"         },
+        { label: tc("wearables"),   href: "/tech/wearables"      },
+        { label: tc("smartHome"),   href: "/tech/smart-home"     },
+        { label: tc("audio"),       href: "/tech/audio"          },
+        { label: tc("accessories"), href: "/tech/accessories"    },
+      ],
+    },
+    {
+      title: t("sectionDiscover"),
+      links: [
+        { label: tn("new"),    href: "/new"      },
+        { label: tn("deals"),  href: "/deals"    },
+        { label: tn("brands"), href: "/brands"   },
+      ],
+    },
+    {
+      title: t("sectionAccount"),
+      links: [
+        { label: tn("signIn"),    href: "/login"             },
+        { label: tn("myAccount"), href: "/account"           },
+        { label: tn("orders"),    href: "/account/orders"    },
+        { label: tn("wishlist"),  href: "/wishlist"          },
+      ],
+    },
+    {
+      title: t("sectionHelp"),
+      links: [
+        { label: "FAQ",     href: "/faq"      },
+        { label: "Contact", href: "/contact"  },
+        { label: "Shipping", href: "/shipping" },
+        { label: "Returns",  href: "/returns"  },
+      ],
+    },
+    {
+      title: t("sectionCompany"),
+      links: [
+        { label: "About",   href: "/about"   },
+        { label: "Privacy", href: "/privacy" },
+        { label: "Terms",   href: "/terms"   },
+      ],
+    },
+  ];
+
   return (
     <>
+      <style>{`
+        .sitemap-link { font-size: 13px; color: var(--chalk3); text-decoration: none; transition: color 0.15s; }
+        .sitemap-link:hover { color: var(--chalk); }
+      `}</style>
       <div className="k-page-hdr">
         <div className="wrap">
-          <p className="page-hd-eyebrow">Navigation</p>
-          <h1 className="page-hd-title">Sitemap</h1>
-          <p style={{ fontSize: 14, color: "var(--chalk3)", marginTop: 12 }}>Find everything on Everything Street</p>
+          <p className="page-hd-eyebrow">{t("title")}</p>
+          <h1 className="page-hd-title">{t("subtitle")}</h1>
         </div>
       </div>
       <div style={{ paddingTop: 64, paddingBottom: 96 }}>
@@ -91,12 +96,7 @@ export default function SitemapPage() {
                 <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
                   {section.links.map(link => (
                     <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        style={{ fontSize: 13, color: "var(--chalk3)", textDecoration: "none", transition: "color 0.15s" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "var(--chalk)")}
-                        onMouseLeave={e => (e.currentTarget.style.color = "var(--chalk3)")}
-                      >
+                      <Link href={link.href} className="sitemap-link">
                         {link.label}
                       </Link>
                     </li>

@@ -1,12 +1,11 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Heart, Share2 } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { Share2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCartStore, useWishlistStore } from "@/store";
 import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import type { ProductCard } from "@/types";
 
 interface Variant {
@@ -21,19 +20,9 @@ interface Props {
   product: ProductCard & { variants?: Variant[] };
 }
 
-function getDeliveryEstimate(locale = "en"): string {
-  const now = new Date();
-  const day = now.getDay();
-  const daysToAdd = day === 0 ? 2 : day === 5 ? 3 : day === 6 ? 2 : 2;
-  const d = new Date(now);
-  d.setDate(d.getDate() + daysToAdd);
-  return d.toLocaleDateString(locale, { weekday: "long", month: "short", day: "numeric" });
-}
-
 export function AddToCartSection({ product }: Props) {
   const t = useTranslations("product");
   const { format } = useCurrency();
-  const locale = useLocale();
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [stickyVisible, setStickyVisible] = useState(false);

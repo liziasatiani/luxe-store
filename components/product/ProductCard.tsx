@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useCartStore, useWishlistStore } from "@/store";
@@ -23,7 +23,7 @@ interface ProductCardProps {
   className?: string;
 }
 
-export function ProductCard({ product, index = 0, priority = false, variant = "default", darkBg = false, className }: ProductCardProps) {
+export function ProductCard({ product, index = 0, priority = false, variant = "default", className }: ProductCardProps) {
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
   const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
