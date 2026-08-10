@@ -24,8 +24,6 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [annVisible, setAnnVisible] = useState(false);
   const t = useTranslations("nav");
-  const tc = useTranslations("home.categories");
-
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
@@ -46,28 +44,7 @@ export function Navbar() {
   const isAdmin = (user as { role?: string } | undefined)?.role === "ADMIN" ||
     (user as { role?: string } | undefined)?.role === "SUPER_ADMIN";
   const NAV_LINKS = [
-    { label: t("beauty"), href: "/beauty", children: [
-      { label: tc("skincare"),    href: "/beauty/skincare"     },
-      { label: tc("makeup"),      href: "/beauty/makeup"       },
-      { label: tc("hairCare"),    href: "/beauty/hair-care"    },
-      { label: tc("bodyCare"),    href: "/beauty/body-care"    },
-      { label: tc("perfume"),     href: "/beauty/perfume"      },
-      { label: tc("beautyTools"), href: "/beauty/beauty-tools" },
-      { label: tc("mini"),        href: "/beauty/mini"         },
-    ]},
-    { label: t("tech"), href: "/tech", children: [
-      { label: tc("headphones"),  href: "/tech/headphones" },
-      { label: tc("cameras"),     href: "/tech/cameras"    },
-      { label: tc("tablets"),     href: "/tech/tablets"    },
-      { label: tc("gaming"),      href: "/tech/gaming"     },
-      { label: tc("wearables"),   href: "/tech/wearables"  },
-      { label: tc("smartHome"),   href: "/tech/smart-home" },
-      { label: tc("audio"),       href: "/tech/audio"      },
-      { label: tc("accessories"), href: "/tech/accessories"},
-    ]},
-    { label: t("brands"), href: "/brands",  children: [] },
-    { label: t("deals"),  href: "/deals",   children: [] },
-    { label: t("new"),    href: "/new",     children: [] },
+    { label: t("brands"), href: "/brands" },
   ];
 
   const ANN_ITEMS = [
@@ -105,20 +82,14 @@ export function Navbar() {
             </button>
             <nav className="nav-links" aria-label="Main navigation">
               {NAV_LINKS.map((link) => (
-                link.children?.length ? (
-                  <div key={link.href} className="nav-link-group">
-                    <Link href={link.href} className="nav-link">{link.label}</Link>
-                    <div className="nav-dropdown">
-                      {link.children.map((child) => (
-                        <Link key={child.href} href={child.href} className="nav-dropdown-link">{child.label}</Link>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link key={link.href} href={link.href} className="nav-link">{link.label}</Link>
-                )
+                <Link key={link.href} href={link.href} className="nav-link">{link.label}</Link>
               ))}
             </nav>
+            <div className="hidden lg:flex items-center" style={{ gap: "16px", marginLeft: "16px" }}>
+              {mounted && <CurrencySelector />}
+              <span className="nav-sep" />
+              {mounted && <LanguageSelector />}
+            </div>
           </div>
 
           <Link href="/" onClick={closeMobileMenu} className="nav-logo">
@@ -126,11 +97,6 @@ export function Navbar() {
           </Link>
 
           <div className="nav-right">
-            <div className="hidden lg:flex items-center" style={{ gap: "16px", marginRight: "8px" }}>
-              {mounted && <CurrencySelector />}
-              <span className="nav-sep" />
-              {mounted && <LanguageSelector />}
-            </div>
             {mounted && (
               <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme" className="nav-icon">
                 {theme === "dark" ? <Sun size={15} strokeWidth={1.5} /> : <Moon size={15} strokeWidth={1.5} />}
@@ -155,7 +121,7 @@ export function Navbar() {
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-            {mounted && <span className="nav-sep" />}
+            {mounted && user && <span className="nav-sep" />}
             {mounted && (user ? (
               <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
             ) : (
@@ -185,12 +151,6 @@ export function Navbar() {
                     className="flex items-center h-12 text-[12px] tracking-[0.14em] uppercase font-medium text-white">
                     {link.label}
                   </Link>
-                  {link.children?.map((child) => (
-                    <Link key={child.href} href={child.href} onClick={closeMobileMenu}
-                      className="flex items-center h-10 pl-4 text-[10px] tracking-[0.08em] uppercase text-white/40 hover:text-white transition-colors">
-                      {child.label}
-                    </Link>
-                  ))}
                 </div>
               ))}
               <div className="pt-6 flex flex-col gap-1">
