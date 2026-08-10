@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
+import { Heart, Search, Menu, X, User, Package, LogOut, LayoutDashboard, Sun, Moon, ChevronRight } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [annVisible, setAnnVisible] = useState(false);
   const t = useTranslations("nav");
+  const tCat = useTranslations("home.categories");
+  const [expandedSection, setExpandedSection] = useState<"beauty" | "tech" | null>(null);
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
@@ -45,14 +47,6 @@ export function Navbar() {
     (user as { role?: string } | undefined)?.role === "SUPER_ADMIN";
   const NAV_LINKS = [
     { label: t("brands"), href: "/brands" },
-  ];
-
-  const MOBILE_NAV_LINKS = [
-    { label: t("beauty"),  href: "/beauty"  },
-    { label: t("tech"),    href: "/tech"    },
-    { label: t("new"),     href: "/new"     },
-    { label: t("brands"),  href: "/brands"  },
-    { label: t("deals"),   href: "/deals"   },
   ];
 
   const ANN_ITEMS = [
@@ -81,7 +75,7 @@ export function Navbar() {
       >
           <div className="nav-left">
             <button
-              onClick={() => mobileMenuOpen ? closeMobileMenu() : openMobileMenu()}
+              onClick={() => { if (mobileMenuOpen) { closeMobileMenu(); setExpandedSection(null); } else openMobileMenu(); }}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
               className="nav-icon lg:hidden"
@@ -153,7 +147,76 @@ export function Navbar() {
                 {mounted && <CurrencySelector />}
                 {mounted && <LanguageSelector />}
               </div>
-              {MOBILE_NAV_LINKS.map((link) => (
+              {/* Beauty — expandable */}
+              <div className="border-b border-white/[0.06]">
+                <button
+                  onClick={() => setExpandedSection(s => s === "beauty" ? null : "beauty")}
+                  className="flex items-center justify-between w-full h-12 text-[12px] tracking-[0.14em] uppercase font-medium text-white">
+                  {t("beauty")}
+                  <ChevronRight size={14} className="text-white/40 transition-transform duration-200" style={{ transform: expandedSection === "beauty" ? "rotate(90deg)" : "none" }} />
+                </button>
+                <AnimatePresence>
+                  {expandedSection === "beauty" && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: "hidden" }}>
+                      <div className="pb-2 flex flex-col gap-0">
+                        {[
+                          { label: tCat("skincare"),    href: "/beauty/skincare"     },
+                          { label: tCat("makeup"),      href: "/beauty/makeup"       },
+                          { label: tCat("hairCare"),    href: "/beauty/hair-care"    },
+                          { label: tCat("bodyCare"),    href: "/beauty/body-care"    },
+                          { label: tCat("perfume"),     href: "/beauty/perfume"      },
+                          { label: tCat("beautyTools"), href: "/beauty/beauty-tools" },
+                        ].map(sub => (
+                          <Link key={sub.href} href={sub.href} onClick={closeMobileMenu}
+                            className="flex items-center h-9 pl-3 text-[11px] tracking-[0.1em] uppercase text-white/50 hover:text-white transition-colors">
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Tech — expandable */}
+              <div className="border-b border-white/[0.06]">
+                <button
+                  onClick={() => setExpandedSection(s => s === "tech" ? null : "tech")}
+                  className="flex items-center justify-between w-full h-12 text-[12px] tracking-[0.14em] uppercase font-medium text-white">
+                  {t("tech")}
+                  <ChevronRight size={14} className="text-white/40 transition-transform duration-200" style={{ transform: expandedSection === "tech" ? "rotate(90deg)" : "none" }} />
+                </button>
+                <AnimatePresence>
+                  {expandedSection === "tech" && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: "hidden" }}>
+                      <div className="pb-2 flex flex-col gap-0">
+                        {[
+                          { label: tCat("headphones"),  href: "/tech/headphones"  },
+                          { label: tCat("cameras"),     href: "/tech/cameras"     },
+                          { label: tCat("tablets"),     href: "/tech/tablets"     },
+                          { label: tCat("gaming"),      href: "/tech/gaming"      },
+                          { label: tCat("wearables"),   href: "/tech/wearables"   },
+                          { label: tCat("smartHome"),   href: "/tech/smart-home"  },
+                          { label: tCat("audio"),       href: "/tech/audio"       },
+                          { label: tCat("accessories"), href: "/tech/accessories" },
+                        ].map(sub => (
+                          <Link key={sub.href} href={sub.href} onClick={closeMobileMenu}
+                            className="flex items-center h-9 pl-3 text-[11px] tracking-[0.1em] uppercase text-white/50 hover:text-white transition-colors">
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Direct links */}
+              {[
+                { label: t("new"),    href: "/new"    },
+                { label: t("brands"), href: "/brands" },
+                { label: t("deals"),  href: "/deals"  },
+              ].map((link) => (
                 <div key={link.href} className="border-b border-white/[0.06]">
                   <Link href={link.href} onClick={closeMobileMenu}
                     className="flex items-center h-12 text-[12px] tracking-[0.14em] uppercase font-medium text-white">
