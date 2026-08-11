@@ -79,7 +79,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-[210] bg-black/50 backdrop-blur-sm"
             onClick={closeCart}
           />
 
@@ -95,7 +95,7 @@ export function CartDrawer() {
             aria-label="Shopping cart"
             onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
             onTouchEnd={e => { if (e.changedTouches[0].clientX - touchStartX.current > SWIPE_CLOSE_THRESHOLD) closeCart(); }}
-            className="fixed top-0 right-0 h-full w-full max-w-sm z-50 flex flex-col bg-white dark:bg-surface-950 shadow-2xl"
+            className="fixed top-0 right-0 h-full w-full max-w-sm z-[210] flex flex-col bg-white dark:bg-surface-950 shadow-2xl"
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-surface-100 dark:border-surface-800">
               <div className="flex items-center gap-2">
