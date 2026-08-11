@@ -128,7 +128,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                     )}
                   </div>
                   {product.description && (
-                    <p className="text-sm text-surface-500 leading-relaxed">
+                    <p className="text-sm text-surface-500 leading-relaxed whitespace-pre-line">
                       {product.description}
                     </p>
                   )}

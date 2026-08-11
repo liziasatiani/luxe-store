@@ -21,10 +21,10 @@ export default async function AccountLayout({ children }: { children: React.Reac
   ];
 
   return (
-    <div style={{ paddingTop: 40, paddingBottom: 96 }}>
+    <div className="pt-10 pb-24">
       <div className="wrap">
-        <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
-          <aside style={{ width: 220, flexShrink: 0 }}>
+        <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-10">
+          <aside className="w-full lg:w-[220px] lg:flex-shrink-0">
             <div style={{ border: "1px solid var(--border)" }}>
               <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid var(--border)", background: "var(--s1)" }}>
                 <div style={{ width: 36, height: 36, border: "1px solid var(--borderg)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
@@ -57,7 +57,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
               </nav>
             </div>
           </aside>
-          <main style={{ flex: 1, minWidth: 0 }}>{children}</main>
+          <main className="flex-1 min-w-0">{children}</main>
         </div>
       </div>
     </div>

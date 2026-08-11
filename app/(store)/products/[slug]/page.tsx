@@ -99,7 +99,7 @@ export default async function ProductPage({ params }: Props) {
           )}
 
           {/* .dname */}
-          <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(26px,2.5vw,40px)", fontWeight: 700, lineHeight: 1.1, marginBottom: 22, color: "var(--chalk)" }}>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(26px,2.5vw,40px)", fontWeight: 700, lineHeight: 1.1, marginBottom: 22, color: "var(--chalk)", whiteSpace: "pre-line" }}>
             {p.name}
           </h1>
 
@@ -142,7 +142,7 @@ export default async function ProductPage({ params }: Props) {
           {(p.shortDescription || p.description) && (
             <div style={{ marginBottom: 32 }}>
               <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("aboutProduct")}</p>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75 }}>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>
                 {p.shortDescription ?? p.description}
               </p>
             </div>
@@ -160,7 +160,7 @@ export default async function ProductPage({ params }: Props) {
           {p.ingredients && (
             <div style={{ marginBottom: 32 }}>
               <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("ingredients")}</p>
-              <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, opacity: 0.85 }}>{p.ingredients}</p>
+              <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, opacity: 0.85, whiteSpace: "pre-line" }}>{p.ingredients}</p>
             </div>
           )}
 

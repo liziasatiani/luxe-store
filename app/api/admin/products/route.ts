@@ -8,6 +8,21 @@ export async function GET(req: NextRequest) {
   try {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
+    const id = req.nextUrl.searchParams.get("id");
+    if (id) {
+      const product = await prisma.product.findUnique({
+        where: { id },
+        include: {
+          images: { orderBy: { sortOrder: "asc" } },
+          specifications: { orderBy: { sortOrder: "asc" } },
+          brand: { select: { id: true, name: true } },
+          category: { select: { id: true, name: true, slug: true } },
+        },
+      });
+      if (!product) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
+      return NextResponse.json({ success: true, data: { product: serializeDecimal(product) } });
+    }
+
     const page = parseIntParam(req.nextUrl.searchParams.get("page"), 1, { min: 1 });
     const limit = parseIntParam(req.nextUrl.searchParams.get("limit"), 20, { min: 1, max: 100 });
     const search = req.nextUrl.searchParams.get("search") ?? "";

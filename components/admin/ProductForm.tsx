@@ -16,6 +16,29 @@ interface ProductFormProps {
 const inputCls = "w-full h-11 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white px-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-colors";
 const labelCls = "block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5";
 
+function buildFormState(p: Record<string, unknown> | null | undefined) {
+  return {
+    name:         String(p?.name ?? ""),
+    sku:          String(p?.sku ?? ""),
+    description:  String(p?.description ?? ""),
+    howToUse:     String(p?.howToUse ?? ""),
+    ingredients:  String(p?.ingredients ?? ""),
+    inTheBox:     String(p?.inTheBox ?? ""),
+    price:        String(p?.price ?? ""),
+    comparePrice: String(p?.comparePrice ?? ""),
+    costPrice:    String(p?.costPrice ?? ""),
+    stock:        String(p?.stock ?? "0"),
+    categoryId:   String(p?.categoryId ?? ""),
+    brandId:      String(p?.brandId ?? ""),
+    isFeatured:   Boolean(p?.isFeatured ?? false),
+    isBestSeller: Boolean(p?.isBestSeller ?? false),
+    isNewArrival: Boolean(p?.isNewArrival ?? true),
+    isOnSale:     Boolean(p?.isOnSale ?? false),
+    tags:         ((p?.tags as string[]) ?? []).join(", "),
+    weight:       String(p?.weight ?? ""),
+  };
+}
+
 export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
   const [categories, setCategories] = useState<Array<{ id: string; name: string; parentId: string | null }>>([]);
   const [brands, setBrands] = useState<Array<{ id: string; name: string }>>([]);
@@ -25,33 +48,32 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
   const [newBrandName, setNewBrandName] = useState("");
   const [savingBrand, setSavingBrand] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [loadingProduct, setLoadingProduct] = useState(!!product?.id);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState<Array<{ url: string; isPrimary: boolean }>>(
-    (product?.images as Array<{ url: string; isPrimary: boolean }>) ?? [{ url: "", isPrimary: true }]
-  );
-  const [specs, setSpecs] = useState<Array<{ name: string; value: string }>>(
-    (product?.specifications as Array<{ name: string; value: string }>) ?? []
-  );
-  const [form, setForm] = useState({
-    name:         String(product?.name ?? ""),
-    sku:          String(product?.sku ?? ""),
-    description:  String(product?.description ?? ""),
-    howToUse:     String(product?.howToUse ?? ""),
-    ingredients:  String(product?.ingredients ?? ""),
-    inTheBox:     String(product?.inTheBox ?? ""),
-    price:        String(product?.price ?? ""),
-    comparePrice: String(product?.comparePrice ?? ""),
-    costPrice:    String(product?.costPrice ?? ""),
-    stock:        String(product?.stock ?? "0"),
-    categoryId:   String(product?.categoryId ?? ""),
-    brandId:      String(product?.brandId ?? ""),
-    isFeatured:   Boolean(product?.isFeatured ?? false),
-    isBestSeller: Boolean(product?.isBestSeller ?? false),
-    isNewArrival: Boolean(product?.isNewArrival ?? true),
-    isOnSale:     Boolean(product?.isOnSale ?? false),
-    tags:         ((product?.tags as string[]) ?? []).join(", "),
-    weight:       String(product?.weight ?? ""),
-  });
+  const [images, setImages] = useState<Array<{ url: string; isPrimary: boolean }>>([{ url: "", isPrimary: true }]);
+  const [specs, setSpecs] = useState<Array<{ name: string; value: string }>>([]);
+  const [form, setForm] = useState(buildFormState(null));
+
+  useEffect(() => {
+    if (!product?.id) {
+      setLoadingProduct(false);
+      return;
+    }
+    fetch(`/api/admin/products?id=${product.id}`)
+      .then(r => r.json())
+      .then(data => {
+        if (!data.success) { toast.error("Failed to load product"); return; }
+        const p = data.data.product as Record<string, unknown>;
+        setImages(
+          (p.images as Array<{ url: string; isPrimary?: boolean }>)?.filter(i => i.url).map(i => ({ url: i.url, isPrimary: i.isPrimary ?? false }))
+          ?? [{ url: "", isPrimary: true }]
+        );
+        setSpecs((p.specifications as Array<{ name: string; value: string }>) ?? []);
+        setForm(buildFormState(p));
+      })
+      .catch(() => toast.error("Failed to load product"))
+      .finally(() => setLoadingProduct(false));
+  }, [product?.id]);
 
   useEffect(() => {
     Promise.all([
@@ -174,11 +196,24 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
             <X size={18} />
           </button>
         </div>
+        {loadingProduct && (
+          <div className="flex items-center justify-center py-24">
+            <Loader2 size={28} className="animate-spin text-brand-500" />
+          </div>
+        )}
+        {loadingProduct && <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-surface-100 dark:border-surface-800"><Button onClick={onClose} variant="outline">Cancel</Button></div>}
 
-        <div className="p-6 space-y-6">
+        {!loadingProduct && <><div className="p-6 space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <Input label="Product Name *" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Crème de la Mer 60ml" />
+              <label className={labelCls}>Product Name *</label>
+              <textarea
+                value={form.name}
+                onChange={(e) => set("name", e.target.value)}
+                rows={2}
+                placeholder="e.g. Crème de la Mer 60ml"
+                className="w-full rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-4 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 placeholder:text-surface-400 transition-colors resize-none"
+              />
             </div>
             <Input label="SKU *" value={form.sku} onChange={(e) => set("sku", e.target.value)} placeholder="SKC-0001" />
             <Input label="Weight / Volume (g or ml)" type="number" value={form.weight} onChange={(e) => set("weight", e.target.value)} placeholder="50" />
@@ -455,7 +490,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
           <Button onClick={saveProduct} loading={loading} variant="gold">
             {product?.id ? "Update Product" : "Create Product"}
           </Button>
-        </div>
+        </div></>}
       </motion.div>
     </motion.div>
   );
