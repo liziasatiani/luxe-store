@@ -37,13 +37,24 @@ const PRODUCT_SELECT = {
 export async function FeaturedProductsSection() {
   let products: ProductCardType[] = [];
   try {
-    const rows = await prisma.product.findMany({
+    const featured = await prisma.product.findMany({
       where: { isActive: true, isFeatured: true },
       select: PRODUCT_SELECT,
       orderBy: [{ salesCount: "desc" }, { createdAt: "desc" }],
       take: 8,
     });
-    products = serializeDecimal(rows) as ProductCardType[];
+    if (featured.length < 4) {
+      const ids = featured.map(p => p.id);
+      const fallback = await prisma.product.findMany({
+        where: { isActive: true, ...(ids.length ? { id: { notIn: ids } } : {}) },
+        select: PRODUCT_SELECT,
+        orderBy: [{ salesCount: "desc" }, { ratingAvg: "desc" }],
+        take: 8 - featured.length,
+      });
+      products = serializeDecimal([...featured, ...fallback]) as ProductCardType[];
+    } else {
+      products = serializeDecimal(featured) as ProductCardType[];
+    }
   } catch {
     return null;
   }

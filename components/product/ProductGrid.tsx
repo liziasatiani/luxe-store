@@ -100,6 +100,7 @@ export function ProductGrid({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   const handleFilterChange = (key: keyof ProductFilters, value: unknown) => {
     const next = { ...filters, [key]: value };
     setFilters(next);

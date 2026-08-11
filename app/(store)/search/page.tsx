@@ -32,8 +32,8 @@ export default async function SearchPage({ searchParams }: Props) {
 
       <div style={{ paddingTop: 32, paddingBottom: 96 }}>
         <div className="wrap">
-          <Suspense fallback={null}>
-            <ProductGrid filters={{ search: q ?? "" }} showFilters={true} />
+          <Suspense key={q ?? ""} fallback={null}>
+            <ProductGrid key={q ?? ""} filters={{ search: q ?? "" }} showFilters={true} />
           </Suspense>
         </div>
       </div>
