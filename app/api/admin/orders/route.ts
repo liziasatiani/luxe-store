@@ -5,6 +5,20 @@ import { serializeDecimal } from "@/lib/utils";
 import { requireAdmin } from "@/lib/adminAuth";
 import { sendShippingNotification, sendOrderStatusEmail } from "@/lib/email";
 
+export async function DELETE(req: NextRequest) {
+  try {
+    if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    const { id } = await req.json();
+    if (!id) return NextResponse.json({ success: false, error: "Order ID required" }, { status: 400 });
+    await prisma.couponUsage.updateMany({ where: { orderId: id }, data: { orderId: null } });
+    await prisma.order.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("[admin/orders DELETE]", err);
+    return NextResponse.json({ success: false, error: "Failed to delete order" }, { status: 500 });
+  }
+}
+
 const ORDER_STATUSES = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
 
 const orderUpdateSchema = z.object({

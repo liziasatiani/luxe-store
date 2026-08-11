@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Search, X, Truck, MapPin, Package } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, X, Truck, MapPin, Package, Trash2 } from "lucide-react";
 import { Badge, Input, Spinner } from "@/components/ui";
 import { formatPrice, formatDate } from "@/lib/utils";
 import toast from "react-hot-toast";
@@ -52,6 +52,7 @@ export default function AdminOrdersPage() {
   const [tracking, setTracking] = useState({ number: "", url: "" });
   const [detail, setDetail] = useState<OrderDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState<string | null>(null);
   const debouncedSearch = useDebounce(search, 400);
 
   const fetchOrders = useCallback(async () => {
@@ -125,6 +126,21 @@ export default function AdminOrdersPage() {
     setShipModal(null);
   };
 
+  const deleteOrder = async (id: string) => {
+    try {
+      const res = await fetch("/api/admin/orders", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Order deleted");
+      setConfirmingDelete(null);
+      if (detail?.id === id) setDetail(null);
+      fetchOrders();
+    } catch { toast.error("Failed to delete order"); }
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -178,16 +194,29 @@ export default function AdminOrdersPage() {
                     </td>
                     <td className="px-4 py-3 text-xs text-surface-400">{formatDate(order.createdAt, { month: "short", day: "numeric" })}</td>
                     <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                      <select
-                        value={order.status}
-                        onChange={(e) => handleStatusChange(order, e.target.value)}
-                        disabled={updating === order.id}
-                        className="text-xs rounded-lg border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                      >
-                        {STATUS_OPTIONS.filter((o) => o.value).map((o) => (
-                          <option key={o.value} value={o.value}>{o.label}</option>
-                        ))}
-                      </select>
+                      {confirmingDelete === order.id ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-surface-500">Delete?</span>
+                          <button onClick={() => deleteOrder(order.id)} className="text-xs px-2 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors">Yes</button>
+                          <button onClick={() => setConfirmingDelete(null)} className="text-xs px-2 py-1 rounded-lg border border-surface-200 dark:border-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors">No</button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <select
+                            value={order.status}
+                            onChange={(e) => handleStatusChange(order, e.target.value)}
+                            disabled={updating === order.id}
+                            className="text-xs rounded-lg border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                          >
+                            {STATUS_OPTIONS.filter((o) => o.value).map((o) => (
+                              <option key={o.value} value={o.value}>{o.label}</option>
+                            ))}
+                          </select>
+                          <button onClick={() => setConfirmingDelete(order.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-surface-400 hover:text-red-500 transition-colors">
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
