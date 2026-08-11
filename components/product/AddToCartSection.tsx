@@ -7,6 +7,7 @@ import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import type { ProductCard } from "@/types";
+import { NotifyMe } from "./NotifyMe";
 
 interface Variant {
   id: string;
@@ -134,6 +135,7 @@ export function AddToCartSection({ product }: Props) {
         >
           {outOfStock ? t("outOfStock") : t("addToCart")}
         </button>
+        {outOfStock && <NotifyMe productId={product.id} />}
 
         {/* Wishlist — K .dwish */}
         <button

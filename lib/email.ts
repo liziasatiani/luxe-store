@@ -519,3 +519,29 @@ export async function sendAdminNewOrderAlert(data: {
   });
   if (error) console.error(`[email] admin order alert:`, error);
 }
+
+export async function sendRestockNotifications(
+  emails: string[],
+  productName: string,
+  productSlug: string
+): Promise<void> {
+  if (!isConfigured() || !emails.length) return;
+  const html = baseTemplate(
+    "Back in Stock",
+    `${productName} is available again`,
+    `<h1 style="margin:0 0 12px;font-size:22px;font-weight:700;color:#111827;">Back in Stock</h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#6B7280;line-height:1.6;">
+      Good news — <strong style="color:#111827;">${productName}</strong> is available again. Grab it before it sells out.
+    </p>
+    ${btn(`${APP_URL}/products/${productSlug}`, "Shop Now")}
+    <p style="margin:24px 0 0;font-size:12px;color:#9CA3AF;text-align:center;">
+      You signed up for restock alerts at everythingstreet.ge.
+    </p>`
+  );
+  await Promise.all(
+    emails.map(to =>
+      resend.emails.send({ from: FROM, to, subject: `${productName} is back in stock`, html })
+        .catch(err => console.error(`[email] restock to ${to}:`, err))
+    )
+  );
+}

@@ -10,6 +10,7 @@ import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import type { ProductCard as ProductCardType } from "@/types";
 import { QuickView } from "./QuickView";
+import { NotifyMe } from "./NotifyMe";
 
 const TECH_CATS = new Set(["headphones", "cameras", "tablets", "gaming", "wearables", "smart-home", "audio", "accessories"]);
 const BEAUTY_CATS = new Set(["skincare", "makeup", "hair-care", "body-care", "perfume", "beauty-tools"]);
@@ -117,13 +118,16 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               <p className="text-[10px] tracking-[0.08em] uppercase text-red-500 mb-3">Low Stock</p>
             )}
             <div className="pacts">
+              {product.stockStatus === "OUT_OF_STOCK" ? (
+                <NotifyMe productId={product.id} compact />
+              ) : (
               <button
                 onClick={handleAddToCart}
-                disabled={product.stockStatus === "OUT_OF_STOCK"}
                 className="btn-cart"
               >
                 Add to Cart
               </button>
+              )}
               <button
                 onClick={handleWishlist}
                 aria-label={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}

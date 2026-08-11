@@ -292,12 +292,13 @@ model Product {
   brand          Brand?           @relation(fields: [brandId], references: [id])
   images         ProductImage[]
   variants       ProductVariant[]
-  specifications ProductSpec[]
-  reviews        Review[]
-  wishlistItems  WishlistItem[]
-  cartItems      CartItem[]
-  orderItems     OrderItem[]
-  recentlyViewed RecentlyViewed[]
+  specifications      ProductSpec[]
+  reviews             Review[]
+  wishlistItems       WishlistItem[]
+  cartItems           CartItem[]
+  orderItems          OrderItem[]
+  recentlyViewed      RecentlyViewed[]
+  stockNotifications  StockNotification[]
 
   @@index([slug])
   @@index([categoryId])
@@ -689,4 +690,16 @@ model AnalyticsEvent {
   @@index([event])
   @@index([createdAt])
   @@map("analytics_events")
+}
+
+model StockNotification {
+  id         String    @id @default(cuid())
+  productId  String
+  email      String
+  notifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+  product    Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, email])
+  @@map("stock_notifications")
 }

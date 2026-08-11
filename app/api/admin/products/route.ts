@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/validations";
 import { slugify, serializeDecimal, parseIntParam } from "@/lib/utils";
 import { requireAdmin } from "@/lib/adminAuth";
+import { sendRestockNotifications } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
   try {
@@ -115,6 +116,10 @@ export async function PUT(req: NextRequest) {
       ? { isOnSale: data.comparePrice != null && Number(data.comparePrice) > Number(data.price) }
       : {};
 
+    const prevStatus = stockStatusUpdate.stockStatus
+      ? (await prisma.product.findUnique({ where: { id }, select: { stockStatus: true } }))?.stockStatus
+      : null;
+
     const product = await prisma.product.update({
       where: { id },
       data: {
@@ -132,6 +137,20 @@ export async function PUT(req: NextRequest) {
         },
       },
     });
+
+    if (prevStatus === "OUT_OF_STOCK" && stockStatusUpdate.stockStatus !== "OUT_OF_STOCK") {
+      prisma.$queryRawUnsafe<Array<{ email: string }>>(
+        `SELECT email FROM "stock_notifications" WHERE "productId" = $1 AND "notifiedAt" IS NULL`,
+        id
+      ).then(async rows => {
+        if (!rows.length) return;
+        await sendRestockNotifications(rows.map(r => r.email), product.name, product.slug);
+        await prisma.$executeRawUnsafe(
+          `UPDATE "stock_notifications" SET "notifiedAt" = NOW() WHERE "productId" = $1 AND "notifiedAt" IS NULL`,
+          id
+        );
+      }).catch(err => console.error("[restock notifications]", err));
+    }
 
     return NextResponse.json({ success: true, data: { product: serializeDecimal(product) } });
   } catch (err) {
