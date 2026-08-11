@@ -62,26 +62,35 @@ export async function GET(req: NextRequest) {
     const updatedAt = byKey["rates_updated_at"] ? new Date(byKey["rates_updated_at"]) : null;
     const fresh = updatedAt && Date.now() - updatedAt.getTime() < CACHE_TTL_MS;
     if (fresh && byKey["rate_usd_gel"]) {
-      return NextResponse.json({ success: true, data: { ...parseRates(byKey), source: "cache" } });
+      return NextResponse.json(
+        { success: true, data: { ...parseRates(byKey), source: "cache" } },
+        { headers: { "Cache-Control": "public, max-age=300, stale-while-revalidate=3600" } }
+      );
     }
   }
 
   const live = await fetchLiveRates();
   if (live) {
     await writeRates(live);
-    return NextResponse.json({
-      success: true,
-      data: { ...live, updatedAt: new Date().toISOString(), source: "live" },
-    });
+    return NextResponse.json(
+      { success: true, data: { ...live, updatedAt: new Date().toISOString(), source: "live" } },
+      { headers: { "Cache-Control": "public, max-age=300, stale-while-revalidate=3600" } }
+    );
   }
 
   // API down — return stale cache or hardcoded fallback
   const byKey = await readCachedRates();
   if (byKey["rate_usd_gel"]) {
-    return NextResponse.json({ success: true, data: { ...parseRates(byKey), source: "stale" } });
+    return NextResponse.json(
+      { success: true, data: { ...parseRates(byKey), source: "stale" } },
+      { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=600" } }
+    );
   }
 
-  return NextResponse.json({ success: true, data: { ...FALLBACK, updatedAt: null, source: "fallback" } });
+  return NextResponse.json(
+    { success: true, data: { ...FALLBACK, updatedAt: null, source: "fallback" } },
+    { headers: { "Cache-Control": "public, max-age=60" } }
+  );
 }
 
 // Admin-only: manual rate override
