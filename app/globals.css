@@ -215,10 +215,11 @@ textarea:focus-visible,
   background: rgba(244,240,232,0.92);
 }
 :root:not(.dark) #nav {
-  background: rgba(244,240,232,0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+:root:not(.dark) #nav.solid {
+  background: rgba(244,240,232,0.92);
 }
 .nav-left { display: flex; align-items: center; gap: 20px; }
 .nav-right { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
