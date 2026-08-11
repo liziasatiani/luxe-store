@@ -152,6 +152,7 @@ export default function AdminCustomersPage() {
         {loading ? (
           <div className="flex justify-center py-16"><Spinner size={28} /></div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-surface-50 dark:bg-surface-800/50 border-b border-surface-100 dark:border-surface-800">
               <tr>
@@ -186,6 +187,7 @@ export default function AdminCustomersPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
         {total > 20 && (
           <div className="flex items-center justify-between px-4 py-3 border-t border-surface-100 dark:border-surface-800">
