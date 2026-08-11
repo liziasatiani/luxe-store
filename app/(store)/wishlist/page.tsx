@@ -68,7 +68,7 @@ export default function WishlistPage() {
             <Heart size={48} strokeWidth={1} style={{ color: "var(--chalk3)", marginBottom: 24 }} />
             <h3 style={{ fontFamily: "var(--serif)", fontSize: 28, color: "var(--chalk)", marginBottom: 12 }}>{t("nothingSaved")}</h3>
             <p style={{ fontSize: 14, color: "var(--chalk2)", marginBottom: 36 }}>{t("nothingSavedDesc")}</p>
-            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>
+            <Link href="/beauty" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>
               Start Shopping →
             </Link>
           </div>
@@ -80,7 +80,7 @@ export default function WishlistPage() {
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "96px 24px", textAlign: "center" }}>
             <h3 style={{ fontFamily: "var(--serif)", fontSize: 28, color: "var(--chalk)", marginBottom: 12 }}>{t("nothingFound")}</h3>
             <p style={{ fontSize: 14, color: "var(--chalk2)", marginBottom: 36 }}>{t("nothingFoundDesc")}</p>
-            <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>
+            <Link href="/beauty" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "13px 28px", border: "1px solid var(--gold)", color: "var(--gold)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>
               Continue Shopping →
             </Link>
           </div>

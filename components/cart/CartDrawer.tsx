@@ -142,7 +142,7 @@ export function CartDrawer() {
                   <p className="font-medium text-surface-700 dark:text-surface-300">{t("empty")}</p>
                   <p className="text-sm text-surface-400">{t("emptyDesc")}</p>
                   <Button variant="gold" size="sm" onClick={closeCart} asChild>
-                    <Link href="/">{t("continueShopping")}</Link>
+                    <Link href="/beauty">{t("continueShopping")}</Link>
                   </Button>
                 </div>
               ) : (
