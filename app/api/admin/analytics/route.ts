@@ -40,14 +40,14 @@ export async function GET() {
     ]);
 
     const revenueChart = await prisma.$queryRaw<Array<{ date: string; revenue: number; orders: bigint }>>`
-      SELECT 
-        DATE(created_at)::text as date,
+      SELECT
+        DATE("createdAt")::text as date,
         SUM(total)::float as revenue,
         COUNT(*)::bigint as orders
       FROM orders
-      WHERE created_at >= NOW() - INTERVAL '30 days'
-        AND payment_status = 'PAID'
-      GROUP BY DATE(created_at)
+      WHERE "createdAt" >= NOW() - INTERVAL '30 days'
+        AND "paymentStatus" = 'PAID'
+      GROUP BY DATE("createdAt")
       ORDER BY date ASC
     `;
 
