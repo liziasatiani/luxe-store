@@ -631,7 +631,7 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
 
   /* Product detail */
   .dlayout { grid-template-columns: 1fr !important; }
-  .dgallery { position: relative !important; top: auto !important; height: auto !important; padding: 20px 16px 12px !important; }
+  .dgallery { position: relative !important; top: auto !important; height: 380px !important; padding: 12px 16px 8px !important; }
 
   /* About / Contact */
   .pillars-grid { grid-template-columns: 1fr !important; }
