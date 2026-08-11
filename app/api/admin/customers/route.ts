@@ -67,3 +67,58 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: "Failed to fetch customers" }, { status: 500 });
   }
 }
+
+export async function PUT(req: NextRequest) {
+  if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  try {
+    const { id, name, email, phone, isActive } = await req.json();
+    if (!id) return NextResponse.json({ success: false, error: "ID required" }, { status: 400 });
+
+    if (email) {
+      const conflict = await prisma.user.findFirst({ where: { email, NOT: { id } } });
+      if (conflict) return NextResponse.json({ success: false, error: "Email already in use" }, { status: 409 });
+    }
+
+    const customer = await prisma.user.update({
+      where: { id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(email !== undefined && { email }),
+        ...(phone !== undefined && { phone: phone || null }),
+        ...(isActive !== undefined && { isActive }),
+      },
+      select: { id: true, name: true, email: true, phone: true, isActive: true },
+    });
+    return NextResponse.json({ success: true, data: { customer } });
+  } catch {
+    return NextResponse.json({ success: false, error: "Failed to update customer" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  try {
+    const { id } = await req.json();
+    if (!id) return NextResponse.json({ success: false, error: "ID required" }, { status: 400 });
+
+    // Anonymize PII — keep the account and order history, replace personal data
+    const anon = `deleted-${id.slice(-8)}`;
+    await prisma.user.update({
+      where: { id },
+      data: {
+        name: "Deleted Customer",
+        email: `${anon}@deleted.invalid`,
+        phone: null,
+        image: null,
+        passwordHash: null,
+        isActive: false,
+      },
+    });
+    // Remove saved addresses
+    await prisma.address.deleteMany({ where: { userId: id } });
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ success: false, error: "Failed to delete customer" }, { status: 500 });
+  }
+}
