@@ -18,7 +18,7 @@ export function Navbar() {
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
   const { openSearch, openMobileMenu, mobileMenuOpen, closeMobileMenu } = useUIStore();
-  const { itemCount } = useCartStore();
+  const { itemCount, openCart } = useCartStore();
   const wishlistIds = useWishlistStore(s => s.ids);
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -113,7 +113,7 @@ export function Navbar() {
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-            <Link href="/cart" aria-label="Shopping cart" className="nav-icon">
+            <button onClick={openCart} aria-label="Shopping cart" className="nav-icon">
               <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
                 <path d="M2 2h1.5l2 7h7l1.5-5H4.5" />
                 <circle cx="6.5" cy="13" r="1" />
@@ -122,7 +122,7 @@ export function Navbar() {
               {mounted && count > 0 && (
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
-            </Link>
+            </button>
             <span className="nav-sep" />
             {mounted && (user ? (
               <AccountMenu user={{ name: user.name, image: user.image }} isAdmin={isAdmin} />
