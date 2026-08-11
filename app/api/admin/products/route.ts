@@ -65,9 +65,9 @@ export async function POST(req: NextRequest) {
         stockStatus,
         isOnSale,
         brandId: data.brandId || null,
-        images: { create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ ...img, sortOrder: i, isPrimary: i === 0 })) },
-        specifications: { create: specifications.map((s: { name: string; value: string }, i: number) => ({ ...s, sortOrder: i })) },
-        variants: { create: variants.map((v: { name: string; value: string; price?: number; stock?: number }, i: number) => ({ ...v, sortOrder: i })) },
+        images: { create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ url: img.url, altText: img.altText, isPrimary: i === 0, sortOrder: i })) },
+        specifications: { create: specifications.map((s: { name: string; value: string }, i: number) => ({ name: s.name, value: s.value, sortOrder: i })) },
+        variants: { create: variants.map((v: { name: string; value: string; price?: number; stock?: number }, i: number) => ({ name: v.name, value: v.value, price: v.price, stock: v.stock, sortOrder: i })) },
       },
       include: { images: true, specifications: true },
     });
@@ -109,17 +109,18 @@ export async function PUT(req: NextRequest) {
         brandId: data.brandId || null,
         images: {
           deleteMany: {},
-          create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ ...img, sortOrder: i, isPrimary: i === 0 })),
+          create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ url: img.url, altText: img.altText, isPrimary: i === 0, sortOrder: i })),
         },
         specifications: {
           deleteMany: {},
-          create: specifications.map((s: { name: string; value: string }, i: number) => ({ ...s, sortOrder: i })),
+          create: specifications.map((s: { name: string; value: string }, i: number) => ({ name: s.name, value: s.value, sortOrder: i })),
         },
       },
     });
 
     return NextResponse.json({ success: true, data: { product: serializeDecimal(product) } });
-  } catch {
+  } catch (err) {
+    console.error("[admin/products PUT]", err);
     return NextResponse.json({ success: false, error: "Failed to update product" }, { status: 500 });
   }
 }
