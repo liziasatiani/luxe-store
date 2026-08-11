@@ -358,6 +358,49 @@ export async function sendShippingNotification(data: {
   if (error) console.error(`[email] shipping notification to ${recipientEmail}:`, error);
 }
 
+export async function sendOrderStatusEmail(data: {
+  recipientName: string;
+  recipientEmail: string;
+  orderNumber: string;
+  orderId: string;
+  status: "CONFIRMED" | "DELIVERED" | "CANCELLED";
+}): Promise<void> {
+  if (!isConfigured()) return;
+  const { recipientName, recipientEmail, orderNumber, orderId, status } = data;
+  const orderUrl = `${APP_URL}/account/orders/${orderId}`;
+  const firstName = recipientName.split(" ")[0];
+  const configs = {
+    CONFIRMED: {
+      subject: `Your order ${orderNumber} is confirmed ✅`,
+      eyebrow: "Order Confirmed",
+      heading: `Your order is confirmed, ${firstName}!`,
+      body: `We've received your order <strong style="color:#111827;">${orderNumber}</strong> and it's being prepared. You'll receive another email when it ships.`,
+    },
+    DELIVERED: {
+      subject: `Your order ${orderNumber} has been delivered 🎉`,
+      eyebrow: "Delivered",
+      heading: `Your order has arrived, ${firstName}!`,
+      body: `Your order <strong style="color:#111827;">${orderNumber}</strong> has been marked as delivered. We hope you love your purchase!`,
+    },
+    CANCELLED: {
+      subject: `Your order ${orderNumber} has been cancelled`,
+      eyebrow: "Order Cancelled",
+      heading: `Your order has been cancelled`,
+      body: `Your order <strong style="color:#111827;">${orderNumber}</strong> has been cancelled. If you have questions or didn't request this, please contact us at <a href="mailto:hello@everythingstreet.ge" style="color:#6B7280;">hello@everythingstreet.ge</a>.`,
+    },
+  };
+  const { subject, eyebrow, heading, body } = configs[status];
+  const html = baseTemplate(
+    heading,
+    subject,
+    `<p style="margin:0 0 6px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9CA3AF;">${eyebrow}</p>
+    <h1 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">${heading}</h1>
+    <p style="margin:0 0 24px;font-size:15px;color:#6B7280;line-height:1.6;">${body}</p>
+    ${btn(orderUrl, "View Order")}`
+  );
+  const { error } = await resend.emails.send({ from: FROM, to: recipientEmail, subject, html });
+  if (error) console.error(`[email] order status email (${status}) to ${recipientEmail}:`, error);
+}
 
 export async function sendWelcomeEmail(data: {
   name: string;

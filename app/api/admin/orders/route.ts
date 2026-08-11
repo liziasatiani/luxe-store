@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 import { requireAdmin } from "@/lib/adminAuth";
+import { sendShippingNotification, sendOrderStatusEmail } from "@/lib/email";
 
 const ORDER_STATUSES = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
 
@@ -99,39 +100,29 @@ export async function PUT(req: NextRequest) {
       include: { user: { select: { name: true, email: true } } },
     });
 
-    if (status === "SHIPPED") {
-      const recipientEmail = (order as { user?: { email: string } | null }).user?.email ?? order.guestEmail;
-      const recipientName = (order as { user?: { name: string | null } | null }).user?.name ?? order.guestName ?? "Customer";
-      if (recipientEmail) {
-        const { sendShippingNotification } = await import("@/lib/email");
-        sendShippingNotification({
-          recipientName,
-          recipientEmail,
-          orderNumber: order.orderNumber,
-          orderId: order.id,
-          trackingNumber: trackingNumber ?? null,
-          trackingUrl: trackingUrl ?? null,
-        }).catch((err) => console.error("[admin/orders] shipping email failed", err));
-      }
-    }
+    const recipientEmail = order.user?.email ?? order.guestEmail;
+    const recipientName = order.user?.name ?? order.guestName ?? "Customer";
 
     const NOTIFY_STATUSES = ["CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"] as const;
-    if (order.userId && NOTIFY_STATUSES.includes(status as typeof NOTIFY_STATUSES[number])) {
-      const notifType = status === "SHIPPED" ? "ORDER_SHIPPED" : status === "DELIVERED" ? "ORDER_DELIVERED" : status === "CANCELLED" ? "ORDER_CANCELLED" : "ORDER_PLACED";
-      const TITLES: Record<string, string> = { CONFIRMED: "Order Confirmed", SHIPPED: "Order Shipped", DELIVERED: "Order Delivered", CANCELLED: "Order Cancelled" };
-      await prisma.notification.create({
-        data: {
-          userId: order.userId,
-          type: notifType,
-          title: TITLES[status] ?? `Order ${status}`,
-          message: `Your order #${order.orderNumber} has been ${status.toLowerCase()}.`,
-          link: `/account/orders/${order.id}`,
-        },
-      });
-    }
+    const TITLES: Record<string, string> = { CONFIRMED: "Order Confirmed", SHIPPED: "Order Shipped", DELIVERED: "Order Delivered", CANCELLED: "Order Cancelled" };
+    const NOTIF_TYPES: Record<string, "ORDER_PLACED" | "ORDER_SHIPPED" | "ORDER_DELIVERED" | "ORDER_CANCELLED"> = {
+      CONFIRMED: "ORDER_PLACED", SHIPPED: "ORDER_SHIPPED", DELIVERED: "ORDER_DELIVERED", CANCELLED: "ORDER_CANCELLED",
+    };
+
+    Promise.all([
+      recipientEmail && status === "SHIPPED"
+        ? sendShippingNotification({ recipientName, recipientEmail, orderNumber: order.orderNumber, orderId: order.id, trackingNumber: trackingNumber ?? null, trackingUrl: trackingUrl ?? null })
+        : recipientEmail && (status === "CONFIRMED" || status === "DELIVERED" || status === "CANCELLED")
+        ? sendOrderStatusEmail({ recipientName, recipientEmail, orderNumber: order.orderNumber, orderId: order.id, status: status as "CONFIRMED" | "DELIVERED" | "CANCELLED" })
+        : Promise.resolve(),
+      order.userId && NOTIFY_STATUSES.includes(status as typeof NOTIFY_STATUSES[number])
+        ? prisma.notification.create({ data: { userId: order.userId, type: NOTIF_TYPES[status] ?? "ORDER_PLACED", title: TITLES[status] ?? `Order ${status}`, message: `Your order #${order.orderNumber} has been ${status.toLowerCase()}.`, link: `/account/orders/${order.id}` } })
+        : Promise.resolve(),
+    ]).catch((err) => console.error("[admin/orders PUT] post-update side effects failed:", err));
 
     return NextResponse.json({ success: true, data: { order: serializeDecimal(order) } });
-  } catch {
+  } catch (err) {
+    console.error("[admin/orders PUT]", err);
     return NextResponse.json({ success: false, error: "Failed to update order" }, { status: 500 });
   }
 }
