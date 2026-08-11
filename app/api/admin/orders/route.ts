@@ -17,6 +17,26 @@ export async function GET(req: NextRequest) {
   try {
     if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
+    const id = req.nextUrl.searchParams.get("id");
+    if (id) {
+      const order = await prisma.order.findUnique({
+        where: { id },
+        select: {
+          id: true, orderNumber: true, status: true, paymentStatus: true, createdAt: true,
+          subtotal: true, discountAmount: true, shippingAmount: true, taxAmount: true, total: true,
+          couponCode: true, notes: true, trackingNumber: true, trackingUrl: true, shippedAt: true,
+          guestName: true, guestEmail: true, guestPhone: true,
+          shippingName: true, shippingLine1: true, shippingLine2: true,
+          shippingCity: true, shippingState: true, shippingPostal: true,
+          shippingCountry: true, shippingPhone: true,
+          user: { select: { name: true, email: true } },
+          items: { select: { productName: true, productImage: true, productSku: true, quantity: true, unitPrice: true, totalPrice: true, variantName: true } },
+        },
+      });
+      if (!order) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
+      return NextResponse.json({ success: true, data: { order: serializeDecimal(order) } });
+    }
+
     const page = Math.max(1, parseInt(req.nextUrl.searchParams.get("page") ?? "1") || 1);
     const limit = Math.min(100, Math.max(1, parseInt(req.nextUrl.searchParams.get("limit") ?? "20") || 20));
     const status = req.nextUrl.searchParams.get("status") ?? "";
