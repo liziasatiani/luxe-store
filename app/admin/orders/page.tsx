@@ -91,6 +91,12 @@ export default function AdminOrdersPage() {
     }
   };
 
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("id");
+    if (id) openDetail(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const updateStatus = async (id: string, status: string, trackingNumber?: string, trackingUrl?: string) => {
     setUpdating(id);
     try {
