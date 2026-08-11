@@ -48,9 +48,12 @@ export async function DELETE(req: NextRequest) {
   try {
     const { id } = await req.json();
     if (!id) return NextResponse.json({ success: false, error: "Coupon ID required" }, { status: 400 });
+    await prisma.couponUsage.deleteMany({ where: { couponId: id } });
+    await prisma.order.updateMany({ where: { couponId: id }, data: { couponId: null } });
     await prisma.coupon.delete({ where: { id } });
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error("[admin/coupons DELETE]", err);
     return NextResponse.json({ success: false, error: "Failed to delete coupon" }, { status: 500 });
   }
 }

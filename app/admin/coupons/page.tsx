@@ -29,6 +29,7 @@ export default function AdminCouponsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [confirmingDelete, setConfirmingDelete] = useState<string | null>(null);
 
   const fetchCoupons = () => {
     setLoading(true);
@@ -105,7 +106,6 @@ export default function AdminCouponsPage() {
   };
 
   const deleteCoupon = async (id: string) => {
-    if (!confirm("Delete this coupon?")) return;
     try {
       const res = await fetch("/api/admin/coupons", {
         method: "DELETE",
@@ -115,6 +115,7 @@ export default function AdminCouponsPage() {
       if (!res.ok) throw new Error();
       toast.success("Coupon deleted");
       if (editingId === id) closeForm();
+      setConfirmingDelete(null);
       fetchCoupons();
     } catch { toast.error("Failed to delete coupon"); }
   };
@@ -204,14 +205,22 @@ export default function AdminCouponsPage() {
                     </button>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(c)} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-500 hover:text-surface-900 dark:hover:text-white transition-colors">
-                        <Pencil size={13} />
-                      </button>
-                      <button onClick={() => deleteCoupon(c.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-surface-500 hover:text-red-500 transition-colors">
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
+                    {confirmingDelete === c.id ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-surface-500">Delete?</span>
+                        <button onClick={() => deleteCoupon(c.id)} className="text-xs px-2 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors">Yes</button>
+                        <button onClick={() => setConfirmingDelete(null)} className="text-xs px-2 py-1 rounded-lg border border-surface-200 dark:border-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors">No</button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => openEdit(c)} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-500 hover:text-surface-900 dark:hover:text-white transition-colors">
+                          <Pencil size={13} />
+                        </button>
+                        <button onClick={() => setConfirmingDelete(c.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-surface-500 hover:text-red-500 transition-colors">
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
