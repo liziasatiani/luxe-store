@@ -139,7 +139,13 @@ export default function AdminOrdersPage() {
                       <p className="text-sm text-surface-900 dark:text-white">{order.user?.name ?? order.guestName ?? "Guest"}</p>
                       <p className="text-xs text-surface-400">{order.user?.email ?? order.guestEmail ?? "—"}</p>
                     </td>
-                    <td className="px-4 py-3 text-sm text-surface-600 dark:text-surface-400">{order.items.length}</td>
+                    <td className="px-4 py-3">
+                      {order.items.map((item, i) => (
+                        <p key={i} className="text-sm text-surface-900 dark:text-white leading-snug">
+                          {item.quantity > 1 && <span className="text-surface-400 mr-1">{item.quantity}×</span>}{item.productName}
+                        </p>
+                      ))}
+                    </td>
                     <td className="px-4 py-3 text-sm font-semibold">{formatPrice(order.total)}</td>
                     <td className="px-4 py-3">
                       <Badge variant={STATUS_BADGE[order.status] ?? "default"} size="sm">{order.status}</Badge>
