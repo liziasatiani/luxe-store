@@ -386,6 +386,7 @@ textarea:focus-visible,
   border-radius: 1px;
   transition: 0.25s;
   cursor: pointer;
+  white-space: nowrap;
 }
 .btn-cart:hover { background: var(--gold); color: #000; border-color: var(--gold); }
 .btn-cart:disabled { opacity: 0.4; cursor: not-allowed; }

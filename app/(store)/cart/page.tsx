@@ -60,7 +60,7 @@ export default function CartPage() {
       <div className="k-page-hdr">
         <div className="wrap">
           <p className="page-hd-eyebrow">{t("title")}</p>
-          <h1 className="page-hd-title">{itemCount()} {t("items")}</h1>
+          <h1 className="page-hd-title">{itemCount()} {itemCount() === 1 ? t("item") : t("items")}</h1>
         </div>
       </div>
 
