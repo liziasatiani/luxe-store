@@ -38,6 +38,9 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
+  // Next.js bundles: never cache — they have content-hashed names in production
+  if (url.pathname.startsWith("/_next/")) return;
+
   // Static assets: cache-first
   e.respondWith(
     caches.match(request).then(

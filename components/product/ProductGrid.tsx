@@ -23,6 +23,7 @@ interface ProductGridProps {
   activeSubcategorySlug?: string;
   allCategoryLabel?: string;
   allCategoryHref?: string;
+  sidebarSlot?: React.ReactNode;
 }
 
 const SORT_KEYS: { key: string; value: SortOption }[] = [
@@ -44,6 +45,7 @@ export function ProductGrid({
   activeSubcategorySlug,
   allCategoryLabel,
   allCategoryHref,
+  sidebarSlot,
 }: ProductGridProps) {
   const t = useTranslations("filters");
   const router = useRouter();
@@ -137,6 +139,7 @@ export function ProductGrid({
       {showFilters && (
         <>
           <aside className="hidden lg:block w-64 shrink-0">
+            {sidebarSlot}
             {subcategories && subcategories.length > 0 && subcategoryBasePath && (
               <div className="border-b border-black/8 dark:border-white/8 pb-5 mb-6">
                 <p className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white mb-3">{t("category")}</p>
@@ -182,6 +185,7 @@ export function ProductGrid({
                     <h3 className="font-semibold text-lg">{t("filters")}</h3>
                     <button onClick={() => setSidebarOpen(false)}><X size={20} /></button>
                   </div>
+                  {sidebarSlot}
                   {subcategories && subcategories.length > 0 && subcategoryBasePath && (
                     <div className="border-b border-black/8 dark:border-white/8 pb-5 mb-6">
                       <p className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white mb-3">{t("category")}</p>

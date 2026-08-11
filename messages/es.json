@@ -657,11 +657,13 @@
     "beauty": {
       "collection": "Colección",
       "all": "Toda la Belleza",
+      "allTech": "Toda la Tecnología",
       "desc": "Cuidado de lujo, maquillaje y fragancias de las marcas más codiciadas del mundo."
     },
     "tech": {
       "collection": "Colección",
       "all": "Toda la Tecnología",
+      "allBeauty": "Toda la Belleza",
       "desc": "Electrónica premium y gadgets diseñados para quienes exigen lo mejor."
     }
   },

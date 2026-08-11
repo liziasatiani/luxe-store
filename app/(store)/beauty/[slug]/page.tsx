@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
 import { ProductGrid } from "@/components/product/ProductGrid";
+import { CategorySidebar } from "@/components/product/CategorySidebar";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
@@ -21,13 +22,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BeautySubcategoryPage({ params }: Props) {
   const { slug } = await params;
 
-  const [category, subcategories, t, tNav, tCommon] = await Promise.all([
+  const [category, beautySubs, techSubs, t, tNav, tCommon] = await Promise.all([
     prisma.category.findUnique({
       where: { slug, isActive: true },
       include: { parent: true, _count: { select: { products: { where: { isActive: true } } } } },
     }),
     prisma.category.findMany({
       where: { parent: { slug: "beauty" }, isActive: true },
+      select: { name: true, slug: true, _count: { select: { products: { where: { isActive: true } } } } },
+      orderBy: { sortOrder: "asc" },
+    }),
+    prisma.category.findMany({
+      where: { parent: { slug: "tech" }, isActive: true },
       select: { name: true, slug: true, _count: { select: { products: { where: { isActive: true } } } } },
       orderBy: { sortOrder: "asc" },
     }),
@@ -52,11 +58,12 @@ export default async function BeautySubcategoryPage({ params }: Props) {
         <div className="wrap">
           <ProductGrid
             filters={{ categorySlug: slug }}
-            subcategories={subcategories.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products }))}
-            subcategoryBasePath="/beauty"
-            activeSubcategorySlug={slug}
-            allCategoryLabel={t("all")}
-            allCategoryHref="/beauty"
+            sidebarSlot={
+              <CategorySidebar groups={[
+                { label: tNav("beauty"), allLabel: t("all"), allHref: "/beauty", basePath: "/beauty", subcategories: beautySubs.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products })), isGroupActive: true, activeSubcategorySlug: slug },
+                { label: tNav("tech"), allLabel: t("allTech"), allHref: "/tech", basePath: "/tech", subcategories: techSubs.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products })) },
+              ]} />
+            }
           />
         </div>
       </div>

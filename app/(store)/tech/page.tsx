@@ -1,6 +1,7 @@
 export const revalidate = 3600;
 import { prisma } from "@/lib/prisma";
 import { ProductGrid } from "@/components/product/ProductGrid";
+import { CategorySidebar } from "@/components/product/CategorySidebar";
 import { TrustBar } from "@/components/ui/TrustBar";
 import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
@@ -11,9 +12,14 @@ export async function generateMetadata() {
 }
 
 export default async function TechPage() {
-  const [subcategories, t, tNav] = await Promise.all([
+  const [techSubs, beautySubs, t, tNav] = await Promise.all([
     prisma.category.findMany({
       where: { parent: { slug: "tech" }, isActive: true },
+      select: { name: true, slug: true, _count: { select: { products: { where: { isActive: true } } } } },
+      orderBy: { sortOrder: "asc" },
+    }),
+    prisma.category.findMany({
+      where: { parent: { slug: "beauty" }, isActive: true },
       select: { name: true, slug: true, _count: { select: { products: { where: { isActive: true } } } } },
       orderBy: { sortOrder: "asc" },
     }),
@@ -35,10 +41,12 @@ export default async function TechPage() {
         <div className="wrap">
           <ProductGrid
             filters={{ categorySlug: "tech" }}
-            subcategories={subcategories.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products }))}
-            subcategoryBasePath="/tech"
-            allCategoryLabel={t("all")}
-            allCategoryHref="/tech"
+            sidebarSlot={
+              <CategorySidebar groups={[
+                { label: tNav("beauty"), allLabel: t("allBeauty"), allHref: "/beauty", basePath: "/beauty", subcategories: beautySubs.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products })) },
+                { label: tNav("tech"), allLabel: t("all"), allHref: "/tech", basePath: "/tech", subcategories: techSubs.map(sc => ({ name: sc.name, slug: sc.slug, count: sc._count.products })), isGroupActive: true },
+              ]} />
+            }
           />
         </div>
       </div>
