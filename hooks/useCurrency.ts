@@ -3,14 +3,23 @@ import { useEffect } from "react";
 import { useCurrencyStore } from "@/store";
 import { formatPrice, formatGEL } from "@/lib/utils";
 
+let ratesFetchPromise: Promise<void> | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function fetchRatesOnce(setRates: (r: any) => void) {
+  if (ratesFetchPromise) return ratesFetchPromise;
+  ratesFetchPromise = fetch("/api/rates")
+    .then((r) => r.json())
+    .then((d) => { if (d.success) setRates(d.data); })
+    .catch(() => {});
+  return ratesFetchPromise;
+}
+
 export function useCurrency() {
   const { currency, rates, setCurrency, setRates } = useCurrencyStore();
 
   useEffect(() => {
-    fetch("/api/rates")
-      .then((r) => r.json())
-      .then((d) => { if (d.success) setRates(d.data); })
-      .catch(() => {});
+    fetchRatesOnce(setRates);
   }, [setRates]);
 
   function format(usdAmount: number | string | null | undefined): string {
