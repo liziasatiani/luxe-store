@@ -194,7 +194,7 @@ export default async function ProductPage({ params }: Props) {
               {p.specifications.map((spec: { name: string; value: string }, i: number) => (
                 <div key={i} style={{ display: "flex", padding: "13px 0", borderBottom: "1px solid var(--border)", gap: 16 }}>
                   <span style={{ fontSize: 12, color: "var(--chalk2)", minWidth: 130, flexShrink: 0 }}>{spec.name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 400, color: "var(--chalk)" }}>{spec.value}</span>
+                  <span style={{ fontSize: 13, fontWeight: 400, color: "var(--chalk)", whiteSpace: "pre-line" }}>{spec.value}</span>
                 </div>
               ))}
             </div>

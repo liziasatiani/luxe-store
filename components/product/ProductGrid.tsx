@@ -173,37 +173,18 @@ export function ProductGrid({
               <>
                 <motion.div
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-50 bg-black/50 lg:hidden"
+                  className="fixed inset-0 z-[210] bg-black/50 lg:hidden"
                   onClick={() => setSidebarOpen(false)}
                 />
                 <motion.aside
                   initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
                   transition={{ type: "spring", damping: 30 }}
-                  className="fixed left-0 top-0 bottom-0 z-50 w-80 bg-white dark:bg-black overflow-y-auto p-6 lg:hidden"
+                  className="fixed left-0 top-0 bottom-0 z-[210] w-80 bg-white dark:bg-black overflow-y-auto p-6 lg:hidden"
                 >
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="font-semibold text-lg">{t("filters")}</h3>
                     <button onClick={() => setSidebarOpen(false)}><X size={20} /></button>
                   </div>
-                  {sidebarSlot}
-                  {subcategories && subcategories.length > 0 && subcategoryBasePath && (
-                    <div className="border-b border-black/8 dark:border-white/8 pb-5 mb-6">
-                      <p className="text-[11px] tracking-[0.12em] uppercase text-black dark:text-white mb-3">{t("category")}</p>
-                      <div className="space-y-1">
-                        {allCategoryHref && (
-                          <Link href={allCategoryHref} className={cn("flex items-center justify-between py-1.5 text-sm transition-colors", !activeSubcategorySlug ? "text-black dark:text-white font-medium" : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")}>
-                            <span>{allCategoryLabel ?? "All"}</span>
-                          </Link>
-                        )}
-                        {subcategories.map((sc) => (
-                          <Link key={sc.slug} href={`${subcategoryBasePath}/${sc.slug}`} className={cn("flex items-center justify-between py-1.5 text-sm transition-colors", activeSubcategorySlug === sc.slug ? "text-black dark:text-white font-medium" : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white")}>
-                            <span>{sc.name}</span>
-                            <span className="text-[11px] text-black/30 dark:text-white/30">{sc.count}</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                   <FilterSidebar
                     filters={filters}
                     brands={brands}

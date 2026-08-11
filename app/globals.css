@@ -214,6 +214,12 @@ textarea:focus-visible,
 :root:not(.dark) #nav.solid {
   background: rgba(244,240,232,0.92);
 }
+:root:not(.dark) #nav {
+  background: rgba(244,240,232,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--border);
+}
 .nav-left { display: flex; align-items: center; gap: 20px; }
 .nav-right { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
 @media (min-width: 768px) { .nav-right { gap: 16px; } }
@@ -625,6 +631,7 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
 
   /* Product detail */
   .dlayout { grid-template-columns: 1fr !important; }
+  .dgallery { position: relative !important; top: auto !important; height: auto !important; padding: 20px 16px 12px !important; }
 
   /* About / Contact */
   .pillars-grid { grid-template-columns: 1fr !important; }

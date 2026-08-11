@@ -33,8 +33,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   return (
     <>
-      {/* K .dgallery — sticky, flex-col, main + thumbs */}
-      <div style={{
+      <div className="dgallery" style={{
         position: "sticky",
         top: "var(--nav-h)",
         height: "calc(100vh - var(--nav-h))",
@@ -107,7 +106,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            style={{ position: "fixed", inset: 0, zIndex: 100, background: "#000", display: "flex", flexDirection: "column" }}
+            style={{ position: "fixed", inset: 0, zIndex: 300, background: "#000", display: "flex", flexDirection: "column" }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", flexShrink: 0 }}>
               <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>

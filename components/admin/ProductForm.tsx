@@ -41,6 +41,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
     inTheBox:     String(product?.inTheBox ?? ""),
     price:        String(product?.price ?? ""),
     comparePrice: String(product?.comparePrice ?? ""),
+    costPrice:    String(product?.costPrice ?? ""),
     stock:        String(product?.stock ?? "0"),
     categoryId:   String(product?.categoryId ?? ""),
     brandId:      String(product?.brandId ?? ""),
@@ -127,6 +128,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
         ...form,
         price: parseFloat(form.price),
         comparePrice: form.comparePrice ? parseFloat(form.comparePrice) : null,
+        costPrice: form.costPrice ? parseFloat(form.costPrice) : null,
         stock: parseInt(form.stock),
         weight: form.weight ? parseFloat(form.weight) : null,
         brandId: form.brandId || null,
@@ -227,6 +229,22 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
             <Input label="Price *" type="number" step="0.01" value={form.price} onChange={(e) => set("price", e.target.value)} placeholder="0.00" />
             <Input label="Compare Price" type="number" step="0.01" value={form.comparePrice} onChange={(e) => set("comparePrice", e.target.value)} placeholder="0.00" />
             <Input label="Stock *" type="number" value={form.stock} onChange={(e) => set("stock", e.target.value)} placeholder="0" />
+          </div>
+          <div className="grid grid-cols-3 gap-4 items-end">
+            <Input label="Purchase Price (admin only)" type="number" step="0.01" value={form.costPrice} onChange={(e) => set("costPrice", e.target.value)} placeholder="0.00" />
+            {form.price && form.costPrice && (
+              <div className="col-span-2 flex items-center gap-2 h-11">
+                {(() => {
+                  const profit = parseFloat(form.price) - parseFloat(form.costPrice);
+                  const margin = parseFloat(form.price) > 0 ? (profit / parseFloat(form.price)) * 100 : 0;
+                  return (
+                    <p className={`text-sm font-medium ${profit >= 0 ? "text-green-600 dark:text-green-400" : "text-red-500"}`}>
+                      Profit: {profit >= 0 ? "+" : ""}₾{profit.toFixed(2)} ({margin.toFixed(1)}% margin)
+                    </p>
+                  );
+                })()}
+              </div>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -410,20 +428,21 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
             </div>
             <div className="space-y-2">
               {specs.map((spec, i) => (
-                <div key={i} className="flex gap-2 items-center">
+                <div key={i} className="flex gap-2 items-start">
                   <Input
                     placeholder="Name"
                     value={spec.name}
                     onChange={(e) => setSpecs((s) => s.map((sp, j) => j === i ? { ...sp, name: e.target.value } : sp))}
                     className="flex-1 h-9 text-sm"
                   />
-                  <Input
+                  <textarea
                     placeholder="Value"
                     value={spec.value}
+                    rows={2}
                     onChange={(e) => setSpecs((s) => s.map((sp, j) => j === i ? { ...sp, value: e.target.value } : sp))}
-                    className="flex-1 h-9 text-sm"
+                    className="flex-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-surface-900 dark:text-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 transition-colors resize-none"
                   />
-                  <button onClick={() => setSpecs((s) => s.filter((_, j) => j !== i))} className="text-surface-400 hover:text-red-500">
+                  <button onClick={() => setSpecs((s) => s.filter((_, j) => j !== i))} className="text-surface-400 hover:text-red-500 mt-2">
                     <Trash2 size={14} />
                   </button>
                 </div>

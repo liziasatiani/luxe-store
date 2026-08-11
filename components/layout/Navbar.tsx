@@ -107,7 +107,7 @@ export function Navbar() {
             <button onClick={openSearch} aria-label="Open search" className="nav-icon">
               <Search size={16} />
             </button>
-            <Link href="/wishlist" aria-label="Wishlist" className="nav-icon nav-icon-desktop">
+            <Link href="/wishlist" aria-label="Wishlist" className="nav-icon">
               <Heart size={16} />
               {mounted && wishlistIds.length > 0 && (
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
@@ -267,7 +267,7 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
   return (
     <div ref={ref} className="relative">
       <button onClick={() => setOpen(o => !o)} aria-label="Open account menu" aria-expanded={open}
-        className="p-2.5 text-white/70 hover:text-white transition-colors">
+        className="nav-icon">
         {user.image ? (
           <Image src={user.image} alt={user.name ?? "User avatar"} width={22} height={22} className="rounded-full object-cover" />
         ) : (

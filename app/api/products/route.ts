@@ -73,12 +73,12 @@ export async function GET(req: NextRequest) {
       ...(newArrival && { isNewArrival: true }),
     };
 
-    const orderBy: Prisma.ProductOrderByWithRelationInput =
+    const orderBy: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[] =
       sort === "price-asc"     ? { price: "asc" }
       : sort === "price-desc"  ? { price: "desc" }
       : sort === "rating"      ? { ratingAvg: "desc" }
-      : sort === "best-selling"? { salesCount: "desc" }
-      : sort === "discount"    ? { comparePrice: "desc" }
+      : sort === "best-selling"? [{ salesCount: "desc" }, { ratingAvg: "desc" }]
+      : sort === "discount"    ? [{ isOnSale: "desc" }, { comparePrice: "desc" }]
       : sort === "oldest"      ? { createdAt: "asc" }
       :                          { createdAt: "desc" };
 

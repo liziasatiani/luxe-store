@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       prisma.product.findMany({
         where,
         include: {
-          images: { where: { isPrimary: true }, take: 1 },
+          images: { orderBy: { sortOrder: "asc" } },
           brand: { select: { name: true } },
           category: { select: { name: true, slug: true } },
         },
@@ -109,7 +109,7 @@ export async function PUT(req: NextRequest) {
         brandId: data.brandId || null,
         images: {
           deleteMany: {},
-          create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ url: img.url, altText: img.altText, isPrimary: i === 0, sortOrder: i })),
+          create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ url: img.url, altText: img.altText, isPrimary: img.isPrimary ?? i === 0, sortOrder: i })),
         },
         specifications: {
           deleteMany: {},
