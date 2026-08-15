@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export function NewsletterK() {
+  const t = useTranslations("newsletter");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -25,12 +27,12 @@ export function NewsletterK() {
     <div className="nl-section">
       <div className="nl-inner">
         <div>
-          <h2 className="nl-title">First to Know</h2>
-          <p className="nl-desc">New arrivals, exclusive drops and curated edits — straight to your inbox.</p>
+          <h2 className="nl-title">{t("title")}</h2>
+          <p className="nl-desc">{t("desc")}</p>
         </div>
         <div>
           {status === "success" ? (
-            <p className="nl-note" style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase" }}>Subscribed ✓</p>
+            <p className="nl-note" style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase" }}>{t("subscribed")}</p>
           ) : (
             <>
               <div className="nl-form">
@@ -39,7 +41,7 @@ export function NewsletterK() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && subscribe()}
-                  placeholder="Email"
+                  placeholder={t("placeholder")}
                   className="nl-input"
                 />
                 <button
@@ -47,10 +49,10 @@ export function NewsletterK() {
                   disabled={status === "loading"}
                   className="nl-btn"
                 >
-                  {status === "loading" ? "…" : "Subscribe"}
+                  {status === "loading" ? "…" : t("subscribe")}
                 </button>
               </div>
-              <p className="nl-note">By subscribing you agree to our Privacy Policy. Unsubscribe anytime.</p>
+              <p className="nl-note">{t("privacy")}</p>
             </>
           )}
         </div>

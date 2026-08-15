@@ -91,9 +91,9 @@ export default function WishlistPage() {
             </div>
             <div className="wrap" style={{ paddingTop: 32 }}>
               <p style={{ fontSize: 11, color: "var(--chalk2)", letterSpacing: "0.06em" }}>
-                Your wishlist is saved on this device.{" "}
-                <Link href="/login" style={{ color: "var(--gold)", textDecoration: "none", borderBottom: "1px solid var(--borderg)" }}>Sign in</Link>
-                {" "}to sync across devices.
+                {t("savedOnDevice")}{" "}
+                <Link href="/login" style={{ color: "var(--gold)", textDecoration: "none", borderBottom: "1px solid var(--borderg)" }}>{t("signIn")}</Link>
+                {" "}{t("signInToSync")}
               </p>
             </div>
           </>

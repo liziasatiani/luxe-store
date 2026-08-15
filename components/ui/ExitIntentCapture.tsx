@@ -82,7 +82,7 @@ export function ExitIntentCapture() {
           >
             <button
               onClick={dismiss}
-              aria-label="Close"
+              aria-label={t("close")}
               className="absolute top-4 right-4 text-black/30 dark:text-white/30 hover:text-black dark:hover:text-white transition-colors"
             >
               <X size={18} />

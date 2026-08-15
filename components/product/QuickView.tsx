@@ -29,6 +29,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
   const [qty, setQty] = useState(1);
   const { format } = useCurrency();
   const t = useTranslations("product");
+  const tc = useTranslations("common");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
 
@@ -79,7 +80,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
             style={{ willChange: "transform" }}
             role="dialog"
             aria-modal="true"
-            aria-label="Quick view"
+            aria-label={t("quickView")}
             className="relative w-full sm:max-w-3xl sm:mx-auto max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-900 rounded-t-2xl sm:rounded-2xl shadow-2xl"
             onClick={e => e.stopPropagation()}
           >
@@ -135,9 +136,9 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                   <div>
                     <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">{t("qty")}</p>
                     <div className="flex items-center gap-1 w-fit rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
-                      <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Decrease quantity" className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">−</button>
+                      <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label={t("decreaseQty")} className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600">−</button>
                       <span className="w-10 text-center text-sm font-medium" aria-live="polite" aria-atomic="true">{qty}</span>
-                      <button onClick={() => setQty(q => Math.min(product.stock, q + 1))} disabled={qty >= product.stock} aria-label="Increase quantity" className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600 disabled:opacity-40">+</button>
+                      <button onClick={() => setQty(q => Math.min(product.stock, q + 1))} disabled={qty >= product.stock} aria-label={t("increaseQty")} className="w-11 h-11 flex items-center justify-center hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-600 disabled:opacity-40">+</button>
                     </div>
                   </div>
                   <div className="flex gap-3 pt-2">
@@ -150,7 +151,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                       {product.stockStatus === "OUT_OF_STOCK" ? t("outOfStock") : t("addToCart")}
                     </Button>
                     <button
-                      onClick={() => { toggle(product.id); toast.success(isWishlisted ? "Removed" : "Wishlisted"); }}
+                      onClick={() => { toggle(product.id); toast.success(isWishlisted ? tc("removedFromWishlist") : tc("savedToWishlist")); }}
                       className={cn(
                         "w-11 h-11 rounded-xl border flex items-center justify-center transition-colors shrink-0",
                         isWishlisted ? "bg-red-500 border-red-500 text-white" : "border-surface-200 dark:border-surface-700 text-surface-500 hover:text-red-500"
@@ -170,7 +171,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
               </div>
             ) : (
               <div className="flex items-center justify-center py-20">
-                <p className="text-surface-400">Product not found</p>
+                <p className="text-surface-400">{t("notFound")}</p>
               </div>
             )}
           </motion.div>

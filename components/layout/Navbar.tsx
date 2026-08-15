@@ -76,13 +76,13 @@ export function Navbar() {
           <div className="nav-left">
             <button
               onClick={() => { if (mobileMenuOpen) { closeMobileMenu(); setExpandedSection(null); } else openMobileMenu(); }}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileMenuOpen ? t("closeMenu") : t("openMenu")}
               aria-expanded={mobileMenuOpen}
               className="nav-icon lg:hidden"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
-            <nav className="nav-links" aria-label="Main navigation">
+            <nav className="nav-links" aria-label={t("mainNav")}>
               {NAV_LINKS.map((link) => (
                 <Link key={link.href} href={link.href} className="nav-link">{link.label}</Link>
               ))}
@@ -100,11 +100,11 @@ export function Navbar() {
 
           <div className="nav-right">
             {mounted && (
-              <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme" className="nav-icon">
+              <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={t("toggleTheme")} className="nav-icon">
                 {theme === "dark" ? <Sun size={15} strokeWidth={1.5} /> : <Moon size={15} strokeWidth={1.5} />}
               </button>
             )}
-            <button onClick={openSearch} aria-label="Open search" className="nav-icon">
+            <button onClick={openSearch} aria-label={t("openSearch")} className="nav-icon">
               <Search size={16} />
             </button>
             <Link href="/wishlist" aria-label="Wishlist" className="nav-icon">
@@ -113,7 +113,7 @@ export function Navbar() {
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />
               )}
             </Link>
-            <button onClick={openCart} aria-label="Shopping cart" className="nav-icon">
+            <button onClick={openCart} aria-label={t("shoppingCart")} className="nav-icon">
               <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
                 <path d="M2 2h1.5l2 7h7l1.5-5H4.5" />
                 <circle cx="6.5" cy="13" r="1" />
@@ -266,7 +266,7 @@ function AccountMenu({ user, isAdmin }: { user: { name?: string | null; image?: 
 
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen(o => !o)} aria-label="Open account menu" aria-expanded={open}
+      <button onClick={() => setOpen(o => !o)} aria-label={t("openAccountMenu")} aria-expanded={open}
         className="nav-icon">
         {user.image ? (
           <Image src={user.image} alt={user.name ?? "User avatar"} width={22} height={22} className="rounded-full object-cover" />

@@ -225,7 +225,7 @@ export default function CheckoutPage() {
       <div style={{ paddingTop: 64, paddingBottom: 96 }}>
         <div className="wrap" style={{ maxWidth: 480 }}>
           <h1 style={{ fontFamily: "var(--serif)", fontSize: 32, fontWeight: 700, color: "var(--chalk)", marginBottom: 8, textAlign: "center" }}>{t("title")}</h1>
-          <p style={{ textAlign: "center", fontSize: 13, color: "var(--chalk3)", marginBottom: 40 }}>How would you like to continue?</p>
+          <p style={{ textAlign: "center", fontSize: 13, color: "var(--chalk3)", marginBottom: 40 }}>{t("howToContinue")}</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <button
               onClick={() => setMode("guest")}
@@ -237,7 +237,7 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>{t("continueAsGuest")}</p>
-                  <p style={{ fontSize: 11, opacity: 0.6, marginTop: 3 }}>No account required · Fast checkout</p>
+                  <p style={{ fontSize: 11, opacity: 0.6, marginTop: 3 }}>{t("guestSubtitle")}</p>
                 </div>
               </div>
             </button>
@@ -260,14 +260,14 @@ export default function CheckoutPage() {
                 </div>
                 <div>
                   <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk)" }}>{t("signIn")}</p>
-                  <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 3 }}>Faster checkout · Order tracking · Saved addresses</p>
+                  <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 3 }}>{t("signInSubtitle")}</p>
                 </div>
               </div>
             </button>
 
             <p style={{ textAlign: "center", fontSize: 11, color: "var(--chalk3)", paddingTop: 8 }}>
-              New here?{" "}
-              <Link href="/register?redirect=/checkout" style={{ color: "var(--chalk2)", textDecoration: "underline" }}>Create an account</Link>
+              {t("newHere")}{" "}
+              <Link href="/register?redirect=/checkout" style={{ color: "var(--chalk2)", textDecoration: "underline" }}>{t("createAccount")}</Link>
             </p>
           </div>
         </div>
@@ -355,8 +355,8 @@ export default function CheckoutPage() {
                 {mode === "guest" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>Contact</p>
-                      <button onClick={() => setMode("choose")} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>← Change</button>
+                      <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("contact")}</p>
+                      <button onClick={() => setMode("choose")} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>{t("change")}</button>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                       <KInput id="firstName" label={t("firstName")} autoComplete="given-name" value={guest.firstName} onChange={e => setG("firstName", e.target.value)} error={guestErrors.firstName} />
@@ -459,13 +459,13 @@ export default function CheckoutPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <h2 style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 700, color: "var(--chalk)" }}>{t("payment")}</h2>
-                  <button onClick={() => setStep(1)} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>← Edit shipping</button>
+                  <button onClick={() => setStep(1)} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>{t("editShipping")}</button>
                 </div>
 
                 <div style={{ padding: 16, border: "1px solid var(--borderg)", background: "var(--s1)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <Truck size={13} style={{ color: "var(--chalk3)" }} />
-                    <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>Shipping to</p>
+                    <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("shippingTo")}</p>
                   </div>
                   {mode === "guest" ? (
                     <p style={{ fontSize: 13, color: "var(--chalk)" }}>{guest.firstName} {guest.lastName} · {guest.line1}, {guest.city}, {guest.state} {guest.postalCode}</p>
@@ -544,7 +544,7 @@ export default function CheckoutPage() {
                   <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "#4a9d6f" }}>{t("discount", { code: coupon?.code ?? "" })}</span><span style={{ fontSize: 12, color: "#4a9d6f" }}>−{format(discount())}</span></div>
                 )}
                 <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("shipping")}</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{shipping() === 0 ? t("free") : format(shipping())}</span></div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>Tax</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{format(tax())}</span></div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 12, color: "var(--chalk3)" }}>{t("tax")}</span><span style={{ fontSize: 12, color: "var(--chalk)" }}>{format(tax())}</span></div>
               </div>
               <KDivider />
               <div style={{ display: "flex", justifyContent: "space-between" }}>

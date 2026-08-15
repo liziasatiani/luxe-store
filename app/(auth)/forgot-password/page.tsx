@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <KInput
                 label={t("email")} id="email" type="email"
-                placeholder="you@example.com" value={email}
+                placeholder={t("emailPlaceholder")} value={email}
                 onChange={e => setEmail(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && requestReset()}
               />

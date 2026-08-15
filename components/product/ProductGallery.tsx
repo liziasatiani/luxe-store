@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ProductGalleryProps {
   images: { url: string; altText?: string | null }[];
@@ -10,6 +11,7 @@ interface ProductGalleryProps {
 }
 
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
+  const t = useTranslations("product");
   const [activeIdx, setActiveIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const closeBtn = useRef<HTMLButtonElement>(null);
@@ -112,7 +114,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               <p style={{ fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
                 {activeIdx + 1} / {images.length}
               </p>
-              <button ref={closeBtn} onClick={close} aria-label="Close gallery"
+              <button ref={closeBtn} onClick={close} aria-label={t("closeGallery")}
                 style={{ width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.6)" }}>
                 <X size={18} />
               </button>
@@ -132,10 +134,10 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               </AnimatePresence>
               {images.length > 1 && (
                 <>
-                  <button onClick={prev} aria-label="Previous" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)" }}>
+                  <button onClick={prev} aria-label={t("prevImage")} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)" }}>
                     <ChevronLeft size={24} />
                   </button>
-                  <button onClick={next} aria-label="Next" style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)" }}>
+                  <button onClick={next} aria-label={t("nextImage")} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.5)" }}>
                     <ChevronRight size={24} />
                   </button>
                 </>

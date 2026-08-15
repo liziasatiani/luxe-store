@@ -28,7 +28,7 @@ export function BottomTabBar() {
 
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={t("mainNav")}
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white dark:bg-black border-t border-black/8 dark:border-white/8 safe-area-inset-bottom"
     >
       <div className="flex items-stretch h-14">

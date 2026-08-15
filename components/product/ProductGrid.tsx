@@ -291,7 +291,7 @@ function FilterSidebar({
         <div className="flex items-center gap-2">
           <Input
             type="number"
-            placeholder="Min"
+            placeholder={t("minPrice")}
             min={0}
             value={filters.minPrice ?? ""}
             className="h-9 text-sm"
@@ -301,7 +301,7 @@ function FilterSidebar({
           <span className="text-black/30 dark:text-white/30">—</span>
           <Input
             type="number"
-            placeholder="Max"
+            placeholder={t("maxPrice")}
             min={0}
             value={filters.maxPrice ?? ""}
             className="h-9 text-sm"

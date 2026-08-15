@@ -105,7 +105,7 @@ export function AddToCartSection({ product }: Props) {
       <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 1, width: "fit-content", marginBottom: 26 }}>
         <button
           onClick={() => setQty(q => Math.max(1, q - 1))}
-          aria-label="Decrease quantity"
+          aria-label={t("decreaseQty")}
           style={{ width: 46, height: 46, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 200, color: "var(--chalk2)", transition: "background 0.15s, color 0.15s" }}
           onMouseEnter={e => { const el = e.currentTarget; el.style.background = "var(--s2)"; el.style.color = "var(--chalk)"; }}
           onMouseLeave={e => { const el = e.currentTarget; el.style.background = "transparent"; el.style.color = "var(--chalk2)"; }}
@@ -116,7 +116,7 @@ export function AddToCartSection({ product }: Props) {
         <button
           onClick={() => setQty(q => Math.min(product.stock, q + 1))}
           disabled={qty >= product.stock}
-          aria-label="Increase quantity"
+          aria-label={t("increaseQty")}
           style={{ width: 46, height: 46, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 200, color: "var(--chalk2)", transition: "background 0.15s, color 0.15s", opacity: qty >= product.stock ? 0.4 : 1 }}
           onMouseEnter={e => { if (qty < product.stock) { const el = e.currentTarget; el.style.background = "var(--s2)"; el.style.color = "var(--chalk)"; } }}
           onMouseLeave={e => { const el = e.currentTarget; el.style.background = "transparent"; el.style.color = "var(--chalk2)"; }}

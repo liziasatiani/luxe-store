@@ -2,8 +2,10 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, RefreshCw } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  const t = useTranslations("pages.error");
   useEffect(() => { console.error(error); }, [error]);
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -13,9 +15,9 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
             500
           </p>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-5">Unexpected error</p>
+            <p className="text-[10px] tracking-[0.28em] uppercase text-black/30 dark:text-white/30 mb-5">{t("eyebrow")}</p>
             <h1 className="font-display text-3xl md:text-4xl uppercase tracking-[0.06em] text-black dark:text-white text-center">
-              That didn't work
+              {t("title")}
             </h1>
           </div>
         </div>
@@ -23,7 +25,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
         <div className="border-t border-black/8 dark:border-white/8 pt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-center sm:text-left">
             <p className="text-sm text-black/40 dark:text-white/40 max-w-xs leading-relaxed">
-              The page hit an error we didn't expect. Try refreshing, or head back home.
+              {t("body")}
             </p>
             {error.digest && (
               <p className="text-[10px] tracking-[0.08em] text-black/20 dark:text-white/20 mt-2 font-mono">
@@ -35,7 +37,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
             <button
               onClick={reset}
               className="h-11 w-11 flex items-center justify-center border border-black/15 dark:border-white/15 text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-colors"
-              aria-label="Try again"
+              aria-label={t("tryAgain")}
             >
               <RefreshCw size={15} />
             </button>
@@ -43,7 +45,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
               href="/"
               className="h-11 px-8 flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black text-[11px] tracking-[0.14em] uppercase font-medium hover:bg-black/80 dark:hover:bg-white/80 transition-colors"
             >
-              Go Home <ArrowRight size={14} />
+              {t("goHome")} <ArrowRight size={14} />
             </Link>
           </div>
         </div>

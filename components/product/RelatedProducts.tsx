@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
 import type { ProductCard as ProductCardType } from "@/types";
 
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export async function RelatedProducts({ productId, categoryId, price }: Props) {
+  const t = await getTranslations("product");
   const related = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -35,7 +37,7 @@ export async function RelatedProducts({ productId, categoryId, price }: Props) {
 
   return (
     <div className="mt-20">
-      <h2 className="font-display text-3xl text-surface-900 dark:text-white mb-8">You May Also Like</h2>
+      <h2 className="font-display text-3xl text-surface-900 dark:text-white mb-8">{t("youMayAlsoLike")}</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
         {items.map((rp, i) => <ProductCard key={rp.id} product={rp} index={i} />)}
       </div>

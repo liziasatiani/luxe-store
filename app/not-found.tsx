@@ -27,7 +27,7 @@ export default async function NotFound() {
           <Link
             href="/search"
             className="h-11 w-11 flex items-center justify-center border border-black/15 dark:border-white/15 text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-colors"
-            aria-label="Search"
+            aria-label={t("search")}
           >
             <Search size={16} />
           </Link>

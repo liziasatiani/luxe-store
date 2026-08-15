@@ -92,7 +92,7 @@ export function CartDrawer() {
             transition={{ type: "spring", damping: 32, stiffness: 300 }}
             role="dialog"
             aria-modal="true"
-            aria-label="Shopping cart"
+            aria-label={t("shoppingCart")}
             onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
             onTouchEnd={e => { if (e.changedTouches[0].clientX - touchStartX.current > SWIPE_CLOSE_THRESHOLD) closeCart(); }}
             className="fixed top-0 right-0 h-full w-full max-w-sm z-[210] flex flex-col bg-white dark:bg-surface-950 shadow-2xl"
@@ -118,11 +118,11 @@ export function CartDrawer() {
               <div className="px-5 py-3 border-b border-surface-100 dark:border-surface-800">
                 {amountToFreeShip === 0 ? (
                   <p className="text-[10px] tracking-[0.12em] uppercase text-green-600 dark:text-green-400 font-medium text-center">
-                    ✓ You&apos;ve unlocked free shipping
+                    ✓ {t("freeShippingUnlocked")}
                   </p>
                 ) : (
                   <p className="text-[10px] tracking-[0.08em] uppercase text-black/50 dark:text-white/50 mb-2">
-                    Add <span className="text-black dark:text-white font-semibold">{format(amountToFreeShip)}</span> more for free shipping
+                    {t("addMoreForFreeShip", { amount: format(amountToFreeShip) })}
                   </p>
                 )}
                 <div className="h-px bg-surface-100 dark:bg-surface-800 overflow-hidden">
@@ -207,7 +207,7 @@ export function CartDrawer() {
             </div>
             {items.length > 0 && suggestions.length > 0 && (
               <div className="border-t border-surface-100 dark:border-surface-800 px-5 py-4">
-                <p className="text-[9px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 mb-3">You might also like</p>
+                <p className="text-[9px] tracking-[0.16em] uppercase text-black/40 dark:text-white/40 mb-3">{t("youMightAlsoLike")}</p>
                 <div className="space-y-3">
                   {suggestions.map((p) => {
                     const img = getProductImageUrl(p.images, 200, 75);
@@ -225,7 +225,7 @@ export function CartDrawer() {
                           disabled={p.stockStatus === "OUT_OF_STOCK"}
                           className="shrink-0 h-7 px-3 border border-black dark:border-white text-black dark:text-white text-[9px] tracking-[0.1em] uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-40"
                         >
-                          Add
+                          {t("add")}
                         </button>
                       </div>
                     );
@@ -256,7 +256,7 @@ export function CartDrawer() {
                           value={couponInput}
                           onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError(""); }}
                           onKeyDown={e => e.key === "Enter" && handleApplyCoupon()}
-                          aria-label="Coupon code"
+                          aria-label={t("couponCode")}
                           placeholder={t("coupon")}
                           className="w-full pl-7 pr-2 h-8 text-[11px] tracking-[0.06em] uppercase border border-surface-200 dark:border-surface-700 bg-transparent text-black dark:text-white placeholder-black/35 dark:placeholder-white/35 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
                         />

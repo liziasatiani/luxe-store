@@ -57,7 +57,7 @@ export function CookieConsent() {
           exit={{ y: 80, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           role="dialog"
-          aria-label="Cookie consent"
+          aria-label={t("ariaLabel")}
           className="fixed bottom-4 left-4 right-4 z-[100] md:left-auto md:right-6 md:max-w-sm"
         >
           <div className="bg-white dark:bg-black border border-black/10 dark:border-white/10 p-5">

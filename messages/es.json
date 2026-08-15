@@ -4,7 +4,8 @@
     "body": "Usamos cookies analíticas para mejorar tu experiencia. Consulta nuestra",
     "cookiePolicy": "Política de cookies",
     "decline": "Rechazar",
-    "accept": "Aceptar"
+    "accept": "Aceptar",
+    "ariaLabel": "Consentimiento de cookies"
   },
   "nav": {
     "beauty": "Belleza",
@@ -23,7 +24,14 @@
     "home": "Inicio",
     "shop": "Tienda",
     "cart": "Carrito",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "shoppingCart": "Carrito",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "toggleTheme": "Cambiar tema",
+    "openSearch": "Abrir búsqueda",
+    "openAccountMenu": "Abrir menú de cuenta",
+    "mainNav": "Navegación principal"
   },
   "home": {
     "hero": {
@@ -135,7 +143,14 @@
     "submit": "OK",
     "lowStockLabel": "Stock bajo",
     "removeFromWishlist": "Quitar de favoritos",
-    "emailPlaceholder": "tu@email.com"
+    "emailPlaceholder": "tu@email.com",
+    "decreaseQty": "Disminuir cantidad",
+    "increaseQty": "Aumentar cantidad",
+    "closeGallery": "Cerrar galería",
+    "prevImage": "Anterior",
+    "nextImage": "Siguiente",
+    "recentlyViewed": "Vistos recientemente",
+    "notFound": "Producto no encontrado"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -159,15 +174,21 @@
     "viewFullCart": "Ver carrito completo",
     "trustSecure": "Pago seguro",
     "trustReturns": "Devoluciones 30 días",
-    "trustAuthentic": "100% auténtico"
+    "trustAuthentic": "100% auténtico",
+    "shoppingCart": "Carrito",
+    "couponCode": "Código de cupón",
+    "freeShippingUnlocked": "Has desbloqueado el envío gratuito",
+    "addMoreForFreeShip": "Añade {amount} más para envío gratuito",
+    "youMightAlsoLike": "También te podría gustar",
+    "add": "Añadir"
   },
   "checkout": {
     "title": "Finalizar pedido",
     "continueAsGuest": "Continuar como invitado",
-    "guestSubtitle": "Sin necesidad de cuenta — simplemente completa tus datos",
+    "guestSubtitle": "Sin cuenta · Pago rápido",
     "signIn": "Iniciar sesión",
-    "signInSubtitle": "Inicia sesión para un pago más rápido",
-    "createAccount": "Crear una",
+    "signInSubtitle": "Pago rápido · Seguimiento de pedido · Direcciones guardadas",
+    "createAccount": "Crear una cuenta",
     "noAccount": "¿No tienes cuenta?",
     "yourDetails": "Tus datos",
     "back": "Volver",
@@ -220,7 +241,14 @@
     "sslEncryption": "Cifrado SSL de 256 bits",
     "freeShipping": "Envío gratis a partir de ₾200",
     "cancel": "Cancelar",
-    "newAddress": "Nueva dirección"
+    "newAddress": "Nueva dirección",
+    "howToContinue": "¿Cómo deseas continuar?",
+    "contact": "Contacto",
+    "change": "← Cambiar",
+    "editShipping": "← Editar envío",
+    "shippingTo": "Envío a",
+    "tax": "Impuesto",
+    "newHere": "¿Nuevo aquí?"
   },
   "orderSuccess": {
     "title": "¡Pedido confirmado!",
@@ -367,7 +395,8 @@
       "errors": {
         "email": "Por favor, ingrese una dirección de correo válida.",
         "failed": "No se pudo enviar el enlace — verifique su conexión e inténtelo de nuevo."
-      }
+      },
+      "emailPlaceholder": "tu@ejemplo.com"
     },
     "resetPassword": {
       "title": "Establecer nueva contraseña",
@@ -755,7 +784,8 @@
     "notFound": {
       "title": "Página no encontrada",
       "subtitle": "Esta página no existe.",
-      "back": "Inicio"
+      "back": "Inicio",
+      "search": "Buscar"
     },
     "beauty": {
       "collection": "Colección",
@@ -788,6 +818,13 @@
       "s6Content": "Los siguientes terceros pueden establecer cookies a través de nuestro sitio:\n\n• Stripe Payments Europe Ltd\n  Propósito: Procesamiento seguro de pagos\n  Gestión: stripe.com/cookie-settings\n\n• Google LLC (Google Analytics 4)\n  Propósito: Análisis anonimizados\n  Exclusión: tools.google.com/dlpage/gaoptout",
       "s7Title": "7. Actualizaciones de esta política",
       "s7Content": "Actualizaremos esta Política cuando añadamos o eliminemos servicios que utilicen cookies.\n\nPara preguntas sobre cookies: legal@everythingstreet.ge"
+    },
+    "error": {
+      "eyebrow": "Error inesperado",
+      "title": "Algo salió mal",
+      "body": "La página encontró un error inesperado. Prueba a actualizar la página o vuelve al inicio.",
+      "tryAgain": "Intentar de nuevo",
+      "goHome": "Ir al inicio"
     }
   },
   "common": {
@@ -849,7 +886,11 @@
     "allTech": "Toda la Tecnología",
     "savedToWishlist": "Guardado en favoritos",
     "reorderFailed": "No se pudieron agregar artículos al carrito",
-    "reorder": "Volver a pedir"
+    "reorder": "Volver a pedir",
+    "scrollToTop": "Volver arriba",
+    "breadcrumb": "Ruta de navegación",
+    "tryAgain": "Intentar de nuevo",
+    "close": "Cerrar"
   },
   "hero": {
     "headline1": "Dos mundos,",
@@ -878,7 +919,10 @@
     "nothingSaved": "Nada guardado aún",
     "nothingSavedDesc": "Toca el corazón en cualquier producto para guardarlo aquí. No se necesita cuenta.",
     "nothingFound": "Nada encontrado",
-    "nothingFoundDesc": "Algunos artículos guardados pueden ya no estar disponibles."
+    "nothingFoundDesc": "Algunos artículos guardados pueden ya no estar disponibles.",
+    "savedOnDevice": "Tu lista de deseos está guardada en este dispositivo.",
+    "signInToSync": "Inicia sesión para sincronizar en todos tus dispositivos.",
+    "signIn": "Iniciar sesión"
   },
   "filters": {
     "title": "Filtros",
@@ -903,7 +947,9 @@
     "nothingMatchesDesc": "Intenta ajustar tus filtros o términos de búsqueda.",
     "loadMore": "Cargar más",
     "filters": "Filtros",
-    "category": "Categoría"
+    "category": "Categoría",
+    "minPrice": "Mín",
+    "maxPrice": "Máx"
   },
   "contact": {
     "title": "Contáctenos",
@@ -998,7 +1044,8 @@
     "yourCode": "Su código",
     "onList": "Ya está en la lista.",
     "useAtCheckout": "Úselo al pagar",
-    "singleUse": "{pct} % de descuento en su primer pedido. De un solo uso."
+    "singleUse": "{pct} % de descuento en su primer pedido. De un solo uso.",
+    "close": "Cerrar"
   },
   "search": {
     "placeholder": "Buscar productos, marcas, categorías…",
@@ -1008,7 +1055,9 @@
     "tabBeauty": "Belleza",
     "tabTech": "Tech",
     "viewAll": "Ver todos los resultados",
-    "trending": "Tendencias"
+    "trending": "Tendencias",
+    "ariaLabel": "Buscar",
+    "tryDifferent": "Prueba con otras palabras clave"
   },
   "categories": {
     "skincare": "Cuidado de la piel",
@@ -1025,5 +1074,13 @@
     "smart-home": "Hogar inteligente",
     "audio": "Audio",
     "accessories": "Accesorios"
+  },
+  "newsletter": {
+    "title": "Sé el primero en saberlo",
+    "desc": "Novedades, lanzamientos exclusivos y selecciones curadas — directamente en tu bandeja de entrada.",
+    "subscribed": "Suscrito ✓",
+    "placeholder": "Correo electrónico",
+    "subscribe": "Suscribirse",
+    "privacy": "Al suscribirte aceptas nuestra Política de privacidad. Cancela cuando quieras."
   }
 }

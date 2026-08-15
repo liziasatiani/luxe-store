@@ -1,11 +1,14 @@
+"use client";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface BreadcrumbItem { name: string; url: string }
 
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
+  const tc = useTranslations("common");
   return (
-    <nav aria-label="Breadcrumb">
+    <nav aria-label={tc("breadcrumb")}>
       <ol className="flex items-center flex-wrap gap-1">
         {items.map((item, i) => (
           <li key={item.url} className="flex items-center gap-1">

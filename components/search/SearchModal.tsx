@@ -77,7 +77,7 @@ export function SearchModal() {
               transition={{ duration: 0.18 }}
               role="dialog"
               aria-modal="true"
-              aria-label="Search"
+              aria-label={t("ariaLabel")}
               style={{
                 position: "fixed", top: 16, left: 16, right: 16,
                 maxWidth: 620, margin: "0 auto", zIndex: 211,
@@ -181,7 +181,7 @@ export function SearchModal() {
                   ) : (
                     <div style={{ textAlign: "center", padding: "32px 0" }}>
                       <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("noResults", { query })}</p>
-                      <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 6 }}>Try different keywords</p>
+                      <p style={{ fontSize: 11, color: "var(--chalk3)", marginTop: 6 }}>{t("tryDifferent")}</p>
                     </div>
                   )}
                 </div>

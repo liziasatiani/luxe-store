@@ -4,7 +4,8 @@
     "body": "We use analytics cookies to improve your experience. Read our",
     "cookiePolicy": "Cookie Policy",
     "decline": "Decline",
-    "accept": "Accept"
+    "accept": "Accept",
+    "ariaLabel": "Cookie consent"
   },
   "nav": {
     "beauty": "Beauty",
@@ -23,7 +24,14 @@
     "home": "Home",
     "shop": "Shop",
     "cart": "Cart",
-    "account": "Account"
+    "account": "Account",
+    "shoppingCart": "Shopping cart",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle theme",
+    "openSearch": "Open search",
+    "openAccountMenu": "Open account menu",
+    "mainNav": "Main navigation"
   },
   "home": {
     "hero": {
@@ -135,7 +143,14 @@
     "submit": "OK",
     "lowStockLabel": "Low Stock",
     "removeFromWishlist": "Remove from wishlist",
-    "emailPlaceholder": "your@email.com"
+    "emailPlaceholder": "your@email.com",
+    "decreaseQty": "Decrease quantity",
+    "increaseQty": "Increase quantity",
+    "closeGallery": "Close gallery",
+    "prevImage": "Previous",
+    "nextImage": "Next",
+    "recentlyViewed": "Recently Viewed",
+    "notFound": "Product not found"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -159,15 +174,21 @@
     "viewFullCart": "View full cart",
     "trustSecure": "Secure checkout",
     "trustReturns": "30-day returns",
-    "trustAuthentic": "100% authentic"
+    "trustAuthentic": "100% authentic",
+    "shoppingCart": "Shopping cart",
+    "couponCode": "Coupon code",
+    "freeShippingUnlocked": "You've unlocked free shipping",
+    "addMoreForFreeShip": "Add {amount} more for free shipping",
+    "youMightAlsoLike": "You might also like",
+    "add": "Add"
   },
   "checkout": {
     "title": "Checkout",
     "continueAsGuest": "Continue as Guest",
-    "guestSubtitle": "No account needed — just fill in your details",
+    "guestSubtitle": "No account required · Fast checkout",
     "signIn": "Sign In",
-    "signInSubtitle": "Sign in for faster checkout and order tracking",
-    "createAccount": "Create one",
+    "signInSubtitle": "Faster checkout · Order tracking · Saved addresses",
+    "createAccount": "Create an account",
     "noAccount": "Don't have an account?",
     "yourDetails": "Your Details",
     "back": "Back",
@@ -220,7 +241,14 @@
     "sslEncryption": "256-bit SSL encryption",
     "freeShipping": "Free shipping over ₾200",
     "cancel": "Cancel",
-    "newAddress": "New address"
+    "newAddress": "New address",
+    "howToContinue": "How would you like to continue?",
+    "contact": "Contact",
+    "change": "← Change",
+    "editShipping": "← Edit shipping",
+    "shippingTo": "Shipping to",
+    "tax": "Tax",
+    "newHere": "New here?"
   },
   "orderSuccess": {
     "title": "Order Confirmed!",
@@ -367,7 +395,8 @@
       "errors": {
         "email": "Please enter a valid email address.",
         "failed": "Couldn't send the link — check your connection and try again."
-      }
+      },
+      "emailPlaceholder": "you@example.com"
     },
     "resetPassword": {
       "title": "Set new password",
@@ -755,7 +784,8 @@
     "notFound": {
       "title": "Page Not Found",
       "subtitle": "The page you're looking for doesn't exist.",
-      "back": "Go Home"
+      "back": "Go Home",
+      "search": "Search"
     },
     "beauty": {
       "collection": "Collection",
@@ -788,6 +818,13 @@
       "s6Content": "The following third parties may set cookies through our website:\n\n• Stripe Payments Europe Ltd\n  Purpose: Secure payment processing and fraud prevention\n  Cookie management: stripe.com/cookie-settings\n  Privacy policy: stripe.com/privacy\n\n• Google LLC (Google Analytics 4)\n  Purpose: Anonymised website analytics (consent required)\n  Opt-out tool: tools.google.com/dlpage/gaoptout\n  Privacy policy: policies.google.com/privacy",
       "s7Title": "7. Updates to This Policy",
       "s7Content": "We will update this Cookie Policy when we add or remove services that use cookies. For material changes we will notify you via our cookie banner on your next visit.\n\nFor questions about our use of cookies, contact us at legal@everythingstreet.ge."
+    },
+    "error": {
+      "eyebrow": "Unexpected error",
+      "title": "That didn't work",
+      "body": "The page hit an error we didn't expect. Try refreshing, or head back home.",
+      "tryAgain": "Try again",
+      "goHome": "Go Home"
     }
   },
   "common": {
@@ -849,7 +886,11 @@
     "allTech": "All Tech",
     "savedToWishlist": "Saved to wishlist",
     "reorderFailed": "Couldn't add items to cart",
-    "reorder": "Reorder"
+    "reorder": "Reorder",
+    "scrollToTop": "Scroll to top",
+    "breadcrumb": "Breadcrumb",
+    "tryAgain": "Try again",
+    "close": "Close"
   },
   "hero": {
     "headline1": "Two worlds,",
@@ -878,7 +919,10 @@
     "nothingSaved": "Nothing saved yet",
     "nothingSavedDesc": "Tap the heart on any product to save it here. No account needed.",
     "nothingFound": "Nothing found",
-    "nothingFoundDesc": "Some saved items may no longer be available."
+    "nothingFoundDesc": "Some saved items may no longer be available.",
+    "savedOnDevice": "Your wishlist is saved on this device.",
+    "signInToSync": "Sign in to sync across devices.",
+    "signIn": "Sign in"
   },
   "filters": {
     "title": "Filters",
@@ -903,7 +947,9 @@
     "nothingMatchesDesc": "Try adjusting your filters or search terms to find what you're looking for.",
     "loadMore": "Load More",
     "filters": "Filters",
-    "category": "Category"
+    "category": "Category",
+    "minPrice": "Min",
+    "maxPrice": "Max"
   },
   "contact": {
     "title": "Get In Touch",
@@ -998,7 +1044,8 @@
     "yourCode": "Your code",
     "onList": "You're on the list.",
     "useAtCheckout": "Use at checkout",
-    "singleUse": "{pct}% off your first order. Single use."
+    "singleUse": "{pct}% off your first order. Single use.",
+    "close": "Close"
   },
   "search": {
     "placeholder": "Search products, brands, categories…",
@@ -1008,7 +1055,9 @@
     "tabBeauty": "Beauty",
     "tabTech": "Tech",
     "viewAll": "View all results",
-    "trending": "Trending"
+    "trending": "Trending",
+    "ariaLabel": "Search",
+    "tryDifferent": "Try different keywords"
   },
   "categories": {
     "skincare": "Skincare",
@@ -1025,5 +1074,13 @@
     "smart-home": "Smart Home",
     "audio": "Audio",
     "accessories": "Accessories"
+  },
+  "newsletter": {
+    "title": "First to Know",
+    "desc": "New arrivals, exclusive drops and curated edits — straight to your inbox.",
+    "subscribed": "Subscribed ✓",
+    "placeholder": "Email",
+    "subscribe": "Subscribe",
+    "privacy": "By subscribing you agree to our Privacy Policy. Unsubscribe anytime."
   }
 }
