@@ -134,7 +134,8 @@
     "notifyFailed": "Failed — try again",
     "submit": "OK",
     "lowStockLabel": "Low Stock",
-    "removeFromWishlist": "Remove from wishlist"
+    "removeFromWishlist": "Remove from wishlist",
+    "emailPlaceholder": "your@email.com"
   },
   "cart": {
     "title": "Shopping Cart",

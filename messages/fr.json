@@ -134,7 +134,8 @@
     "notifyFailed": "Échec — réessayez",
     "submit": "OK",
     "lowStockLabel": "Stock limité",
-    "removeFromWishlist": "Retirer de la liste de souhaits"
+    "removeFromWishlist": "Retirer de la liste de souhaits",
+    "emailPlaceholder": "votre@email.com"
   },
   "cart": {
     "title": "Panier",

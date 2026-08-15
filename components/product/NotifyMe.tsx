@@ -64,7 +64,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={t("emailPlaceholder")}
           required
           style={{
             flex: 1, minWidth: 0, height: 34, padding: "0 8px",
@@ -101,7 +101,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={t("emailPlaceholder")}
           required
           style={{
             flex: 1, height: 46, padding: "0 14px",

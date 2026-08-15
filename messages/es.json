@@ -134,7 +134,8 @@
     "notifyFailed": "Error — inténtalo de nuevo",
     "submit": "OK",
     "lowStockLabel": "Stock bajo",
-    "removeFromWishlist": "Quitar de favoritos"
+    "removeFromWishlist": "Quitar de favoritos",
+    "emailPlaceholder": "tu@email.com"
   },
   "cart": {
     "title": "Carrito de compra",

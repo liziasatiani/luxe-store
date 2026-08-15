@@ -134,7 +134,8 @@
     "notifyFailed": "ვერ მოხერხდა — სცადეთ კვლავ",
     "submit": "OK",
     "lowStockLabel": "მარაგი იწურება",
-    "removeFromWishlist": "სურვილების სიიდან წაშლა"
+    "removeFromWishlist": "სურვილების სიიდან წაშლა",
+    "emailPlaceholder": "your@email.com"
   },
   "cart": {
     "title": "სავაჭრო კალათი",
