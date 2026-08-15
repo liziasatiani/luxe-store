@@ -131,7 +131,8 @@
     "notifyLabel": "Notify me when back in stock:",
     "notifySuccess": "We'll email you when it's back in stock",
     "notifyConfirmed": "You'll be notified",
-    "notifyFailed": "Failed — try again"
+    "notifyFailed": "Failed — try again",
+    "submit": "OK"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -209,7 +210,14 @@
     "codUnavailable": "Only available under ₾{max}",
     "codUnavailableMsg": "Cash on delivery is only available for orders under ₾{max}. Please pay by card.",
     "addressSaved": "Address saved",
-    "addressFailed": "Failed to save address"
+    "addressFailed": "Failed to save address",
+    "pay": "Pay",
+    "saveAddress": "Save address",
+    "addressLabel": "Label (e.g. Home)",
+    "sslEncryption": "256-bit SSL encryption",
+    "freeShipping": "Free shipping over ₾200",
+    "cancel": "Cancel",
+    "newAddress": "New address"
   },
   "orderSuccess": {
     "title": "Order Confirmed!",
@@ -512,7 +520,11 @@
         "email": "Please enter a valid email address",
         "message": "Message must be at least 10 characters",
         "failed": "Something went wrong. Please try again."
-      }
+      },
+      "namePlaceholder": "Jane Smith",
+      "emailPlaceholder": "you@example.com",
+      "subjectPlaceholder": "How can we help?",
+      "messagePlaceholder": "Tell us what’s on your mind…"
     },
     "faq": {
       "title": "Frequently Asked Questions",
@@ -833,7 +845,8 @@
     "allBeauty": "All Beauty",
     "allTech": "All Tech",
     "savedToWishlist": "Saved to wishlist",
-    "reorderFailed": "Couldn't add items to cart"
+    "reorderFailed": "Couldn't add items to cart",
+    "reorder": "Reorder"
   },
   "hero": {
     "headline1": "Two worlds,",

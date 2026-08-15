@@ -131,7 +131,8 @@
     "notifyLabel": "Notificarme cuando esté disponible:",
     "notifySuccess": "Te enviaremos un correo cuando esté disponible",
     "notifyConfirmed": "Serás notificado/a",
-    "notifyFailed": "Error — inténtalo de nuevo"
+    "notifyFailed": "Error — inténtalo de nuevo",
+    "submit": "OK"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -209,7 +210,14 @@
     "codUnavailable": "Solo disponible bajo ₾{max}",
     "codUnavailableMsg": "El pago contra reembolso solo está disponible para pedidos inferiores a ₾{max}. Por favor, pague con tarjeta.",
     "addressSaved": "Dirección guardada",
-    "addressFailed": "Error al guardar la dirección"
+    "addressFailed": "Error al guardar la dirección",
+    "pay": "Pagar",
+    "saveAddress": "Guardar dirección",
+    "addressLabel": "Etiqueta (p. ej. Casa)",
+    "sslEncryption": "Cifrado SSL de 256 bits",
+    "freeShipping": "Envío gratis a partir de ₾200",
+    "cancel": "Cancelar",
+    "newAddress": "Nueva dirección"
   },
   "orderSuccess": {
     "title": "¡Pedido confirmado!",
@@ -512,7 +520,11 @@
         "email": "Por favor ingresa un correo electrónico válido",
         "message": "El mensaje debe tener al menos 10 caracteres",
         "failed": "Algo salió mal. Inténtalo de nuevo."
-      }
+      },
+      "namePlaceholder": "Ana Martínez",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "subjectPlaceholder": "¿En qué podemos ayudarte?",
+      "messagePlaceholder": "Cuéntanos qué tienes en mente…"
     },
     "faq": {
       "title": "Preguntas frecuentes",
@@ -833,7 +845,8 @@
     "allBeauty": "Toda la Belleza",
     "allTech": "Toda la Tecnología",
     "savedToWishlist": "Guardado en favoritos",
-    "reorderFailed": "No se pudieron agregar artículos al carrito"
+    "reorderFailed": "No se pudieron agregar artículos al carrito",
+    "reorder": "Volver a pedir"
   },
   "hero": {
     "headline1": "Dos mundos,",

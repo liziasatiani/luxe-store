@@ -129,9 +129,9 @@ export default function ContactPage() {
               <h2 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, marginBottom: 44, color: "var(--chalk)" }}>{t("sendMessage")}</h2>
 
               {[
-                { key: "name", label: t("yourName"), type: "text", placeholder: "Jane Smith" },
-                { key: "email", label: t("yourEmail"), type: "email", placeholder: "you@example.com" },
-                { key: "subject", label: t("subject"), type: "text", placeholder: "How can we help?" },
+                { key: "name", label: t("yourName"), type: "text", placeholder: t("namePlaceholder") },
+                { key: "email", label: t("yourEmail"), type: "email", placeholder: t("emailPlaceholder") },
+                { key: "subject", label: t("subject"), type: "text", placeholder: t("subjectPlaceholder") },
               ].map(({ key, label, type, placeholder }) => (
                 <div key={key} style={{ marginBottom: 26 }}>
                   <label style={{ display: "block", fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 10 }}>{label}</label>
@@ -152,7 +152,7 @@ export default function ContactPage() {
                 <textarea
                   value={form.message}
                   onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                  placeholder="Tell us what's on your mind..."
+                  placeholder={t("messagePlaceholder")}
                   rows={5}
                   style={{ ...INPUT_STYLE, resize: "vertical", height: 138 }}
                   onFocus={e => { e.currentTarget.style.borderColor = "var(--gold)"; }}

@@ -131,7 +131,8 @@
     "notifyLabel": "M'avertir quand disponible :",
     "notifySuccess": "Nous vous enverrons un e-mail quand l'article sera disponible",
     "notifyConfirmed": "Vous serez notifié(e)",
-    "notifyFailed": "Échec — réessayez"
+    "notifyFailed": "Échec — réessayez",
+    "submit": "OK"
   },
   "cart": {
     "title": "Panier",
@@ -209,7 +210,14 @@
     "codUnavailable": "Disponible uniquement sous ₾{max}",
     "codUnavailableMsg": "Le paiement à la livraison est disponible uniquement pour les commandes inférieures à ₾{max}. Veuillez payer par carte.",
     "addressSaved": "Adresse enregistrée",
-    "addressFailed": "Impossible d'enregistrer l'adresse"
+    "addressFailed": "Impossible d'enregistrer l'adresse",
+    "pay": "Payer",
+    "saveAddress": "Enregistrer l’adresse",
+    "addressLabel": "Étiquette (ex. Domicile)",
+    "sslEncryption": "Chiffrement SSL 256 bits",
+    "freeShipping": "Livraison gratuite dès ₾200",
+    "cancel": "Annuler",
+    "newAddress": "Nouvelle adresse"
   },
   "orderSuccess": {
     "title": "Commande confirmée !",
@@ -512,7 +520,11 @@
         "email": "Veuillez entrer une adresse e-mail valide",
         "message": "Le message doit contenir au moins 10 caractères",
         "failed": "Une erreur s'est produite. Veuillez réessayer."
-      }
+      },
+      "namePlaceholder": "Jane Dupont",
+      "emailPlaceholder": "vous@exemple.com",
+      "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+      "messagePlaceholder": "Dites-nous ce qui vous préoccupe…"
     },
     "faq": {
       "title": "Questions fréquentes",
@@ -833,7 +845,8 @@
     "allBeauty": "Toute la Beauté",
     "allTech": "Toute la Tech",
     "savedToWishlist": "Ajouté aux favoris",
-    "reorderFailed": "Impossible d'ajouter les articles au panier"
+    "reorderFailed": "Impossible d'ajouter les articles au panier",
+    "reorder": "Recommander"
   },
   "hero": {
     "headline1": "Deux mondes,",

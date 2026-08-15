@@ -85,7 +85,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
             opacity: loading ? 0.6 : 1, flexShrink: 0,
           }}
         >
-          {loading ? "…" : "OK"}
+          {loading ? "…" : t("submit")}
         </button>
       </form>
     );

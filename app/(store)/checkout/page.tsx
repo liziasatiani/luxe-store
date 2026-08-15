@@ -405,8 +405,8 @@ export default function CheckoutPage() {
 
                     {addingAddress ? (
                       <div style={{ border: "1px solid var(--borderg)", padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
-                        <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>New address</p>
-                        <KInput id="al" label="Label (e.g. Home)" value={newAddr.label} onChange={e => setNA("label", e.target.value)} />
+                        <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("newAddress")}</p>
+                        <KInput id="al" label={t("addressLabel")} value={newAddr.label} onChange={e => setNA("label", e.target.value)} />
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                           <KInput id="afn" label={t("firstName")} value={newAddr.firstName} onChange={e => setNA("firstName", e.target.value)} autoComplete="given-name" />
                           <KInput id="aln" label={t("lastName")} value={newAddr.lastName} onChange={e => setNA("lastName", e.target.value)} autoComplete="family-name" />
@@ -419,10 +419,10 @@ export default function CheckoutPage() {
                         </div>
                         <div style={{ display: "flex", gap: 10 }}>
                           <button onClick={saveNewAddress} disabled={savingAddress} style={{ padding: "9px 18px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", border: "none", cursor: savingAddress ? "wait" : "pointer", opacity: savingAddress ? 0.7 : 1 }}>
-                            {savingAddress ? "…" : "Save address"}
+                            {savingAddress ? "…" : t("saveAddress")}
                           </button>
                           <button onClick={() => setAddingAddress(false)} style={{ padding: "9px 18px", background: "transparent", color: "var(--chalk2)", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", border: "1px solid var(--borderg)", cursor: "pointer" }}>
-                            Cancel
+                            {t("cancel")}
                           </button>
                         </div>
                       </div>
@@ -518,7 +518,7 @@ export default function CheckoutPage() {
                   style={{ width: "100%", height: 52, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "var(--gold)", color: "#000", fontSize: 12, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", border: "none", cursor: placing ? "wait" : "pointer", opacity: placing ? 0.7 : 1 }}
                 >
                   <Lock size={14} />
-                  {placing ? "…" : paymentMethod === "STRIPE" ? `Pay ${format(total())}` : `${t("placeOrder")} · ${format(total())}`}
+                  {placing ? "…" : paymentMethod === "STRIPE" ? `${t("pay")} ${format(total())}` : `${t("placeOrder")} · ${format(total())}`}
                 </button>
                 <p style={{ fontSize: 11, textAlign: "center", color: "var(--chalk3)" }}>{t("termsNotice")}</p>
               </div>
@@ -552,7 +552,7 @@ export default function CheckoutPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "var(--chalk)" }}>{format(total())}</span>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, paddingTop: 4 }}>
-                {[{ icon: Lock, text: "256-bit SSL encryption" }, { icon: Truck, text: "Free shipping over ₾200" }].map(({ icon: Icon, text }) => (
+                {[{ icon: Lock, text: t("sslEncryption") }, { icon: Truck, text: t("freeShipping") }].map(({ icon: Icon, text }) => (
                   <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <Icon size={11} style={{ color: "var(--chalk3)", flexShrink: 0 }} />
                     <span style={{ fontSize: 11, color: "var(--chalk3)" }}>{text}</span>

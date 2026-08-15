@@ -54,10 +54,10 @@ export function ReorderButton({ orderId }: Props) {
       onClick={handleReorder}
       disabled={loading}
       className="flex items-center gap-1 text-[10px] tracking-[0.08em] uppercase text-surface-500 hover:text-black dark:hover:text-white transition-colors disabled:opacity-40"
-      aria-label="Reorder"
+      aria-label={tc("reorder")}
     >
       {done ? <Check size={12} className="text-green-500" /> : <RotateCcw size={12} className={loading ? "animate-spin" : ""} />}
-      {done ? tc("addedToCart") : "Reorder"}
+      {done ? tc("addedToCart") : tc("reorder")}
     </button>
   );
 }
