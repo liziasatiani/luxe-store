@@ -132,7 +132,9 @@
     "notifySuccess": "Te enviaremos un correo cuando esté disponible",
     "notifyConfirmed": "Serás notificado/a",
     "notifyFailed": "Error — inténtalo de nuevo",
-    "submit": "OK"
+    "submit": "OK",
+    "lowStockLabel": "Stock bajo",
+    "removeFromWishlist": "Quitar de favoritos"
   },
   "cart": {
     "title": "Carrito de compra",

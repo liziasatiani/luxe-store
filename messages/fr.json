@@ -132,7 +132,9 @@
     "notifySuccess": "Nous vous enverrons un e-mail quand l'article sera disponible",
     "notifyConfirmed": "Vous serez notifié(e)",
     "notifyFailed": "Échec — réessayez",
-    "submit": "OK"
+    "submit": "OK",
+    "lowStockLabel": "Stock limité",
+    "removeFromWishlist": "Retirer de la liste de souhaits"
   },
   "cart": {
     "title": "Panier",

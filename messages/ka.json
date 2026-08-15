@@ -132,7 +132,9 @@
     "notifySuccess": "ელ-ფოსტაზე მოგივათ შეტყობინება, როდესაც პროდუქტი გამოჩნდება",
     "notifyConfirmed": "შეტყობინება გააქტიურებულია",
     "notifyFailed": "ვერ მოხერხდა — სცადეთ კვლავ",
-    "submit": "OK"
+    "submit": "OK",
+    "lowStockLabel": "მარაგი იწურება",
+    "removeFromWishlist": "სურვილების სიიდან წაშლა"
   },
   "cart": {
     "title": "სავაჭრო კალათი",

@@ -27,6 +27,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0, priority = false, variant = "default", className }: ProductCardProps) {
   const tc = useTranslations("common");
+  const tp = useTranslations("product");
+  const tn = useTranslations("nav");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
   const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
@@ -89,10 +91,10 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               priority={priority}
             />
 
-            {isTech && <span className="pbadge bt">Tech</span>}
-            {isBeauty && <span className="pbadge bb" style={isTech ? { top: 52 } : undefined}>Beauty</span>}
+            {isTech && <span className="pbadge bt">{tn("tech")}</span>}
+            {isBeauty && <span className="pbadge bb" style={isTech ? { top: 52 } : undefined}>{tn("beauty")}</span>}
             {product.isNewArrival && (
-              <span className="pbadge bn" style={(isTech || isBeauty) ? { top: (isTech && isBeauty) ? 86 : 52 } : undefined}>New</span>
+              <span className="pbadge bn" style={(isTech || isBeauty) ? { top: (isTech && isBeauty) ? 86 : 52 } : undefined}>{tc("new")}</span>
             )}
             {discount > 0 && (
               <span className="pbadge bd" style={{ top: 18 + ([isTech, isBeauty, product.isNewArrival].filter(Boolean).length) * 34 }}>
@@ -102,7 +104,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
 
             {product.stockStatus === "OUT_OF_STOCK" && (
               <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
-                <span className="text-[10px] tracking-[0.12em] uppercase bg-black text-white px-3 py-1.5">Out of Stock</span>
+                <span className="text-[10px] tracking-[0.12em] uppercase bg-black text-white px-3 py-1.5">{tp("outOfStockLabel")}</span>
               </div>
             )}
           </div>
@@ -117,7 +119,7 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
               )}
             </div>
             {product.stockStatus === "LOW_STOCK" && (
-              <p className="text-[10px] tracking-[0.08em] uppercase text-red-500 mb-3">Low Stock</p>
+              <p className="text-[10px] tracking-[0.08em] uppercase text-red-500 mb-3">{tp("lowStockLabel")}</p>
             )}
             <div className="pacts">
               {product.stockStatus === "OUT_OF_STOCK" ? (
@@ -127,12 +129,12 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
                 onClick={handleAddToCart}
                 className="btn-cart"
               >
-                Add to Cart
+                {tp("addToCart")}
               </button>
               )}
               <button
                 onClick={handleWishlist}
-                aria-label={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+                aria-label={isWishlisted ? tp("removeFromWishlist") : tp("addToWishlist")}
                 className={cn("btn-wish", isWishlisted && "wishlisted")}
               >
                 <Heart size={15} fill={isWishlisted ? "currentColor" : "none"} />

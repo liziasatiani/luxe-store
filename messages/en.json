@@ -132,7 +132,9 @@
     "notifySuccess": "We'll email you when it's back in stock",
     "notifyConfirmed": "You'll be notified",
     "notifyFailed": "Failed — try again",
-    "submit": "OK"
+    "submit": "OK",
+    "lowStockLabel": "Low Stock",
+    "removeFromWishlist": "Remove from wishlist"
   },
   "cart": {
     "title": "Shopping Cart",
