@@ -21,16 +21,16 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
 
   const sendMessage = async () => {
-    if (!form.name.trim()) { toast.error(t("yourName").replace(" *", "") + " required"); return; }
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) { toast.error("Invalid email"); return; }
-    if (!form.message.trim() || form.message.trim().length < 10) { toast.error("Message too short"); return; }
+    if (!form.name.trim()) { toast.error(t("errors.name")); return; }
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) { toast.error(t("errors.email")); return; }
+    if (!form.message.trim() || form.message.trim().length < 10) { toast.error(t("errors.message")); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
       if (!res.ok) throw new Error("Failed");
       setSent(true);
       toast.success(t("messageSent"));
-    } catch { toast.error("Something went wrong. Please try again."); }
+    } catch { toast.error(t("errors.failed")); }
     finally { setLoading(false); }
   };
 

@@ -8,6 +8,7 @@ import { useCartStore, useWishlistStore } from "@/store";
 import { formatDiscount, getProductImageUrl, cn } from "@/lib/utils";
 import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import type { ProductCard as ProductCardType } from "@/types";
 import { QuickView } from "./QuickView";
 import { NotifyMe } from "./NotifyMe";
@@ -25,6 +26,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0, priority = false, variant = "default", className }: ProductCardProps) {
+  const tc = useTranslations("common");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
   const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
@@ -44,13 +46,13 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addItem(product);
-    toast.success("Added to cart", { icon: "🛍️", style: { borderRadius: "0" } });
+    toast.success(tc("addedToCart"), { icon: "🛍️", style: { borderRadius: "0" } });
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     toggle(product.id);
-    toast.success(isWishlisted ? "Removed from wishlist" : "Saved to wishlist", {
+    toast.success(isWishlisted ? tc("removedFromWishlist") : tc("savedToWishlist"), {
       icon: isWishlisted ? "💔" : "❤️", style: { borderRadius: "0" },
     });
   };

@@ -116,9 +116,9 @@ export default function CheckoutPage() {
       setSelectedAddress(saved.id);
       setAddingAddress(false);
       setNewAddr({ label: "", firstName: "", lastName: "", line1: "", line2: "", city: "", state: "", postalCode: "", country: "GE", phone: "" });
-      toast.success("Address saved");
+      toast.success(t("addressSaved"));
     } catch {
-      toast.error("Failed to save address");
+      toast.error(t("addressFailed"));
     } finally {
       setSavingAddress(false);
     }

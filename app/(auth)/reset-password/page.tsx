@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 function KInput({ label, error, type = "text", rightIcon, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string; rightIcon?: React.ReactNode }) {
   return (
@@ -27,6 +28,7 @@ function KInput({ label, error, type = "text", rightIcon, ...props }: React.Inpu
 }
 
 function ResetPasswordForm() {
+  const t = useTranslations("auth.resetPassword");
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -42,8 +44,8 @@ function ResetPasswordForm() {
   }, [token, router]);
 
   const updatePassword = async () => {
-    if (password !== confirm) { toast.error("Passwords do not match"); return; }
-    if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
+    if (password !== confirm) { toast.error(t("errors.mismatch")); return; }
+    if (password.length < 8) { toast.error(t("errors.tooShort")); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/auth/reset-password", {
@@ -52,10 +54,10 @@ function ResetPasswordForm() {
         body: JSON.stringify({ token, password, confirmPassword: confirm }),
       });
       const data = await res.json();
-      if (!res.ok) { toast.error(data.error ?? "Failed to reset password"); return; }
+      if (!res.ok) { toast.error(data.error ?? t("errors.failed")); return; }
       setDone(true);
     } catch {
-      toast.error("Couldn't update password — check your connection and try again.");
+      toast.error(t("errors.failed"));
     } finally {
       setLoading(false);
     }
@@ -65,8 +67,8 @@ function ResetPasswordForm() {
     <div style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px", background: "var(--bg)" }}>
       <div style={{ width: "100%", maxWidth: 420 }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginBottom: 8 }}>Set new password</h1>
-          <p style={{ fontSize: 13, color: "var(--chalk2)" }}>Choose a strong password for your account</p>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginBottom: 8 }}>{t("title")}</h1>
+          <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("subtitle")}</p>
         </div>
 
         <div style={{ border: "1px solid var(--border)", padding: 36 }}>
@@ -75,15 +77,15 @@ function ResetPasswordForm() {
               <div style={{ width: 52, height: 52, border: "1px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <CheckCircle size={22} style={{ color: "var(--gold)" }} />
               </div>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.6 }}>Your password has been updated successfully.</p>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.6 }}>{t("success")}</p>
               <Link href="/login" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", textDecoration: "none" }}>
-                Sign In →
+                {t("signIn")} →
               </Link>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <KInput
-                label="New password" id="password"
+                label={t("newPassword")} id="password"
                 type={showPw ? "text" : "password"}
                 autoComplete="new-password" placeholder="••••••••"
                 value={password} onChange={e => setPassword(e.target.value)}
@@ -94,7 +96,7 @@ function ResetPasswordForm() {
                 }
               />
               <KInput
-                label="Confirm password" id="confirm"
+                label={t("confirmPassword")} id="confirm"
                 type={showConfirm ? "text" : "password"}
                 autoComplete="new-password" placeholder="••••••••"
                 value={confirm} onChange={e => setConfirm(e.target.value)}
@@ -109,10 +111,10 @@ function ResetPasswordForm() {
                 onClick={updatePassword} disabled={loading}
                 style={{ width: "100%", padding: "14px 24px", background: "var(--gold)", color: "#000", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", border: "none", cursor: loading ? "wait" : "pointer", opacity: loading ? 0.7 : 1, transition: "0.2s" }}
               >
-                {loading ? "…" : "Update password"}
+                {loading ? "…" : t("update")}
               </button>
               <Link href="/login" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk2)", textDecoration: "none" }}>
-                <ArrowLeft size={13} /> Back to login
+                <ArrowLeft size={13} /> {t("back")}
               </Link>
             </div>
           )}

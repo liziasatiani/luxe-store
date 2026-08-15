@@ -126,7 +126,12 @@
     "availability": "Availability",
     "returnPolicy": "Return Policy",
     "returnPolicyValue": "14-day returns",
-    "outOfStockLabel": "Out of Stock"
+    "outOfStockLabel": "Out of Stock",
+    "notifyMe": "Notify Me",
+    "notifyLabel": "Notify me when back in stock:",
+    "notifySuccess": "We'll email you when it's back in stock",
+    "notifyConfirmed": "You'll be notified",
+    "notifyFailed": "Failed — try again"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -202,7 +207,9 @@
     "cardPayment": "Card · Apple Pay · Google Pay",
     "payWhenReceived": "Pay when received",
     "codUnavailable": "Only available under ₾{max}",
-    "codUnavailableMsg": "Cash on delivery is only available for orders under ₾{max}. Please pay by card."
+    "codUnavailableMsg": "Cash on delivery is only available for orders under ₾{max}. Please pay by card.",
+    "addressSaved": "Address saved",
+    "addressFailed": "Failed to save address"
   },
   "orderSuccess": {
     "title": "Order Confirmed!",
@@ -350,6 +357,21 @@
         "email": "Please enter a valid email address.",
         "failed": "Couldn't send the link — check your connection and try again."
       }
+    },
+    "resetPassword": {
+      "title": "Set new password",
+      "subtitle": "Choose a strong password for your account",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "update": "Update password",
+      "back": "Back to login",
+      "signIn": "Sign In",
+      "success": "Your password has been updated successfully.",
+      "errors": {
+        "mismatch": "Passwords do not match",
+        "tooShort": "Password must be at least 8 characters",
+        "failed": "Couldn't update password — check your connection and try again."
+      }
     }
   },
   "footer": {
@@ -484,7 +506,13 @@
       "send": "Send Message",
       "messageSent": "Message Sent!",
       "messageSentDesc": "We'll get back to you within 24 hours.",
-      "sendAnother": "Send another message"
+      "sendAnother": "Send another message",
+      "errors": {
+        "name": "Please enter your name",
+        "email": "Please enter a valid email address",
+        "message": "Message must be at least 10 characters",
+        "failed": "Something went wrong. Please try again."
+      }
     },
     "faq": {
       "title": "Frequently Asked Questions",
@@ -634,10 +662,70 @@
       "needHelp": "Need help with a return?"
     },
     "privacy": {
-      "title": "Privacy Policy"
+      "title": "Privacy Policy",
+      "eyebrow": "Legal",
+      "updated": "Last updated: August 10, 2026 · Effective: August 10, 2026",
+      "intro": "At Everything Street we take your privacy seriously. This policy explains what personal data we collect, why we collect it, how we use it, and your rights — in plain language.",
+      "s1Title": "1. Data Controller",
+      "s1Content": "Everything Street\nShalva Nutsubidze St, Tbilisi, Georgia\nEmail: legal@everythingstreet.ge\nPhone: +995 500 09 06 14\n\nThis Privacy Policy explains how we collect, use, and protect your personal data when you use our website or place an order. It is governed primarily by Georgia's Law on Personal Data Protection (Law No. 5669, as amended) and, where applicable to customers in the European Economic Area or United Kingdom, by the General Data Protection Regulation (GDPR) and UK GDPR.",
+      "s2Title": "2. Information We Collect",
+      "s2Content": "a) Account & Order Data\nWhen you create an account or place an order, we collect your name, email address, phone number, shipping address, and billing address.\nLegal basis: Performance of contract (GDPR Art. 6(1)(b)).\n\nb) Payment Data\nWe do not store, see, or process your card number, CVV, or full payment details. All payment data is transmitted directly to Stripe Payments Europe Ltd.\nSee Stripe's Privacy Policy: stripe.com/privacy\nLegal basis: Performance of contract; legal obligation.\n\nc) Stripe Radar — Automated Fraud Screening\nStripe uses automated fraud detection technology that analyses transaction signals — including IP address, device fingerprint, and purchase patterns. If you believe a legitimate order was incorrectly declined, contact us at hello@everythingstreet.ge.\nLegal basis: Legitimate interests — fraud prevention (GDPR Art. 6(1)(f)).\n\nd) Device & Technical Data\nWhen you visit our website, we automatically collect your IP address, browser type, operating system, pages visited, and referring URLs.\nLegal basis: Legitimate interests (site security and operation).\n\ne) Analytics Data\nWe use Google Analytics 4 (GA4) to collect anonymised usage statistics. GA4 cookies are only activated after you provide consent.\nLegal basis: Consent (GDPR Art. 6(1)(a)).\n\nf) Marketing Communications\nIf you subscribe to our newsletter, we store your email address and a record of your consent. You may unsubscribe at any time.\nLegal basis: Consent (GDPR Art. 6(1)(a)).\n\ng) Customer Support\nIf you contact us by email, we retain the content of those communications.\nLegal basis: Legitimate interests.",
+      "s3Title": "3. How We Use Your Data",
+      "s3Content": "We use your personal data to:\n• Process and fulfil your orders, including arranging delivery\n• Process payments securely via Stripe\n• Detect and prevent fraud (Stripe Radar)\n• Send order confirmation, dispatch, and delivery notifications\n• Respond to customer service enquiries\n• Send marketing emails (with your consent only)\n• Analyse website usage and improve our services (with your consent)\n• Comply with Georgian tax, accounting, and legal obligations\n• Defend our legal rights if a dispute arises",
+      "s4Title": "4. Third-Party Service Providers",
+      "s4Content": "We share your personal data only with service providers who require it to perform specific functions. We do not sell your personal data.\n\n• Stripe Payments Europe Ltd — payment processing and fraud detection\n  Location: United States and EU | Safeguard: Standard Contractual Clauses\n  Policy: stripe.com/privacy\n\n• Supabase Inc. — database and file storage\n  Location: EU region (Frankfurt, Germany)\n\n• Resend Inc. — transactional email delivery\n  Location: United States | Safeguard: Standard Contractual Clauses\n\n• Vercel Inc. — website hosting and edge delivery\n  Location: US and globally distributed edge nodes | Safeguard: SCCs\n\n• Google LLC (Google Analytics 4) — anonymised website analytics\n  Location: United States | Safeguard: Standard Contractual Clauses\n  Opt-out: tools.google.com/dlpage/gaoptout\n\n• Upstash Inc. — rate limiting and abuse prevention\n  Location: EU region\n\n• Georgian tax authorities and regulatory bodies — where legally required\n• Law enforcement or courts — only when legally compelled",
+      "s5Title": "5. International Data Transfers",
+      "s5Content": "Several of our service providers process data outside the EEA and Georgia:\n\n• Stripe: United States — protected by EU Standard Contractual Clauses (SCCs)\n• Resend: United States — protected by EU Standard Contractual Clauses\n• Vercel: United States and global edge — protected by EU Standard Contractual Clauses\n• Google Analytics: United States — protected by SCCs and Google's Data Processing Terms\n\nCopies of applicable SCCs are available on request from legal@everythingstreet.ge.",
+      "s6Title": "6. Data Retention",
+      "s6Content": "We retain your personal data for the following periods:\n\n• Order records and transaction data: 7 years (required by Georgian tax and accounting law)\n• Account profile data: for the duration of your account, plus 2 years after you close it\n• Marketing consent records: until you withdraw consent, plus 3 years for audit purposes\n• Customer support communications: 3 years from the last exchange\n• Analytics data: 14 months\n• Payment records: per Stripe's own retention policy\n\nYou may request earlier deletion of your data at any time.",
+      "s7Title": "7. Your Rights",
+      "s7Content": "Under Georgia's Law on Personal Data Protection and the GDPR (for EEA/UK residents), you have the following rights:\n\n• Right to access — request a copy of all personal data we hold about you\n• Right to rectification — ask us to correct inaccurate or incomplete data\n• Right to erasure — ask us to delete your personal data\n• Right to restrict processing\n• Right to data portability\n• Right to object\n• Rights related to automated decision-making — contact hello@everythingstreet.ge to request human review\n• Right to withdraw consent — at any time\n\nTo exercise any of these rights, email legal@everythingstreet.ge. We will respond within 30 calendar days.",
+      "s8Title": "8. Supervisory Authorities",
+      "s8Content": "If you are not satisfied with how we handle your data, you have the right to lodge a complaint:\n\nGeorgia:\nPersonal Data Protection Service of Georgia\nWebsite: pdp.ge | Email: info@pdp.ge\n\nEuropean Union / EEA residents:\nYour local national Data Protection Authority\n(Full list at edpb.europa.eu)\n\nUnited Kingdom residents:\nInformation Commissioner's Office (ICO)\nWebsite: ico.org.uk | Phone: 0303 123 1113",
+      "s9Title": "9. Connected & Smart Devices",
+      "s9Content": "Some tech products we sell — such as smartwatches, fitness trackers, and smart home devices — may collect personal data when used. This data is processed directly by the product manufacturer, not by Everything Street. Please review the relevant manufacturer's privacy policy before using any connected device.",
+      "s10Title": "10. Children",
+      "s10Content": "Our website and services are not directed to persons under 18 years of age. We do not knowingly collect personal data from minors. If you believe we hold data about a person under 18, contact us at legal@everythingstreet.ge and we will delete it promptly.",
+      "s11Title": "11. Changes to This Policy",
+      "s11Content": "We may update this Privacy Policy from time to time. When we make material changes, we will update the 'Last updated' date and notify registered customers by email at least 14 days before the changes take effect.",
+      "s12Title": "12. Contact",
+      "s12Content": "For any privacy-related questions or to exercise your rights:\n\nEmail: legal@everythingstreet.ge\nPhone: +995 500 09 06 14\nAddress: Everything Street, Shalva Nutsubidze St, Tbilisi, Georgia\n\nWe aim to respond to all privacy enquiries within 5 business days."
     },
     "terms": {
-      "title": "Terms of Use"
+      "title": "Terms of Use",
+      "eyebrow": "Legal",
+      "updated": "Last updated: August 10, 2026 · Effective: August 10, 2026",
+      "intro": "Please read these Terms carefully before using Everything Street or placing an order. They set out the rules for using our platform and your rights as a customer.",
+      "s1Title": "1. About These Terms",
+      "s1Content": "These Terms and Conditions govern your use of everythingstreet.ge and the purchase of products from Everything Street.\n\nEverything Street\nShalva Nutsubidze St, Tbilisi, Georgia\nEmail: legal@everythingstreet.ge\nPhone: +995 500 09 06 14\n\nBy using our website or placing an order you agree to these Terms.",
+      "s2Title": "2. Who Can Purchase",
+      "s2Content": "You must be at least 18 years of age to create an account or purchase from Everything Street. Under Georgian law, legally binding contracts require full legal capacity, which begins at age 18.\n\nInternational buyers: You are responsible for ensuring that the products you order are legal to import and use in your country. Everything Street is not responsible for items seized or refused at customs.",
+      "s3Title": "3. Account Registration & Security",
+      "s3Content": "When you create an account, you must provide accurate, complete, and current information. You are responsible for maintaining the confidentiality of your login credentials.\n\nNotify us immediately at hello@everythingstreet.ge if you suspect unauthorised access to your account.",
+      "s4Title": "4. Products & Descriptions",
+      "s4Content": "We aim to ensure that all product descriptions, images, and specifications are accurate. However:\n\n• Beauty products: Ingredient formulations may vary between batches. Always check the physical label before use, especially if you have known allergies.\n• Tech products: Images are representative and may differ slightly from the actual item.\n• If you receive a product that materially differs from its description, you are entitled to a return or refund.",
+      "s5Title": "5. Pricing & Currency",
+      "s5Content": "All prices are displayed in Georgian Lari (₾ GEL) and include applicable taxes. We reserve the right to change prices at any time.\n\nIn the event of a pricing error, we reserve the right to cancel orders placed at the incorrect price.\n\nInternational customers: Payment is charged in GEL. Currency conversion fees are your responsibility.",
+      "s6Title": "6. Placing an Order",
+      "s6Content": "When you place an order, you are making an offer to purchase. We will send you an order confirmation email when your payment is processed — this is an acknowledgement, not an acceptance.\n\nA binding contract is formed when we dispatch your goods.\n\nWe reserve the right to cancel any order, including cases of:\n• Product out of stock\n• Suspected fraudulent activity\n• Pricing error\n• Failure to obtain payment authorisation",
+      "s7Title": "7. Payment via Stripe",
+      "s7Content": "All payments are processed by Stripe Payments Europe Ltd.\n\nAccepted methods: Visa, Mastercard, and Apple Pay.\n\nPCI DSS compliance: Your card details are transmitted directly to Stripe and never seen by Everything Street.\n\nFraud screening: Stripe Radar analyses each transaction automatically. If your payment is declined in error, contact us at hello@everythingstreet.ge.\n\nChargebacks: Please contact us before filing a chargeback. We are committed to resolving issues quickly.",
+      "s8Title": "8. Beauty & Cosmetic Products",
+      "s8Content": "All beauty products are cosmetics as defined by Georgian and EU regulations. They are not medicines or medical devices.\n\nResults vary between individuals. We recommend a patch test before using any new skincare product.\n\nIngredients: Full lists are provided on product pages. Always verify before purchase if you have known allergies.\n\nWe source all products from authorised distributors and do not sell products past their expiry date.",
+      "s9Title": "9. Tech & Electronics",
+      "s9Content": "Legal guarantee: Georgian consumer law provides a mandatory 2-year legal guarantee.\n\nSoftware: Once activated or downloaded, the right of return does not apply unless the product is defective.\n\nVoltage: Georgia uses 220V / 50Hz. Verify compatibility before purchase.\n\nLithium batteries: Products with lithium batteries may be subject to shipping restrictions. We will notify you if applicable.\n\nThird-party repair: Repairs by non-authorised providers may void the manufacturer warranty, but do not affect your statutory rights.",
+      "s10Title": "10. Intellectual Property",
+      "s10Content": "All content on everythingstreet.ge is owned by Everything Street or its licensors and is protected under Georgian and international intellectual property law. You may not reproduce, distribute, or modify any content without our express written permission.",
+      "s11Title": "11. Prohibited Uses",
+      "s11Content": "When using our website, you must not:\n• Use the service for any unlawful purpose\n• Attempt to gain unauthorised access to our systems\n• Transmit malicious code or viruses\n• Harvest data by automated means\n• Submit fraudulent orders\n• Impersonate any person or entity\n• Disrupt or damage our website or services",
+      "s12Title": "12. Limitation of Liability",
+      "s12Content": "To the maximum extent permitted by Georgian law, Everything Street's total liability shall not exceed the amount paid for the specific order.\n\nWe are not liable for:\n• Indirect, special, or consequential losses\n• Loss of profit or revenue\n• Loss or corruption of data\n\nThese limitations do not exclude your statutory consumer rights.",
+      "s13Title": "13. Governing Law & Disputes",
+      "s13Content": "These Terms are governed by the laws of Georgia. Any dispute shall be subject to the jurisdiction of the courts of Tbilisi, Georgia.\n\nEU and EEA customers: These Terms do not affect your rights under your local mandatory consumer protection laws. EU consumers may use the Online Dispute Resolution platform at ec.europa.eu/consumers/odr.\n\nUK customers: You retain rights under UK consumer protection law.",
+      "s14Title": "14. Changes to These Terms",
+      "s14Content": "We may update these Terms from time to time. Material changes will be communicated to registered customers by email at least 14 days before taking effect.",
+      "s15Title": "15. Contact",
+      "s15Content": "For questions about these Terms:\n\nEmail: legal@everythingstreet.ge\nPhone: +995 500 09 06 14\nAddress: Everything Street, Shalva Nutsubidze St, Tbilisi, Georgia"
     },
     "wishlist": {
       "title": "My Wishlist",
@@ -665,6 +753,26 @@
       "all": "All Tech",
       "allBeauty": "All Beauty",
       "desc": "Premium electronics and gadgets engineered for those who demand the best."
+    },
+    "cookiePolicy": {
+      "title": "Cookie Policy",
+      "eyebrow": "Legal",
+      "updated": "Last updated: August 10, 2026",
+      "intro": "This Cookie Policy explains what cookies we use on everythingstreet.ge, why we use them, and how you can control them. We use fewer cookies than most e-commerce sites.",
+      "s1Title": "1. What Are Cookies",
+      "s1Content": "Cookies are small text files placed on your device by a website. They allow the site to remember information about your visit — such as your language preference, login status, and cart contents.\n\nWe use cookies for three purposes: to make our website work correctly (strictly necessary), to understand how visitors use our site (analytics), and to process payments securely (Stripe). We do not use advertising or marketing tracking cookies.",
+      "s2Title": "2. Category 1 — Strictly Necessary Cookies",
+      "s2Content": "These cookies are essential for the website to function. They cannot be declined.\n\n• Authentication session cookie — keeps you logged in. Set by NextAuth. Expires: 30 days or when you close your browser.\n\n• CSRF protection cookie — protects form submissions. Session-scoped.\n\n• Language preference cookie (luxe-locale) — stores your selected language. Expires: 1 year.\n\n• Stripe fraud prevention cookies — required to process payments securely. Cannot be disabled without disabling payments.\n  Details: stripe.com/cookie-settings",
+      "s3Title": "3. Category 2 — Analytics Cookies (consent required)",
+      "s3Content": "These cookies help us understand how visitors use our website. All data is anonymised. Analytics cookies are only set after you provide consent.\n\n• Google Analytics 4 (_ga, _ga_*)\n  Purpose: Tracks pages visited, session duration, and navigation patterns.\n  Expiry: 2 years (14-month data retention)\n  Set by: Google LLC\n  Data location: United States (protected by Standard Contractual Clauses)\n  Opt-out: tools.google.com/dlpage/gaoptout\n\nYou can withdraw analytics consent at any time by clearing your cookies.",
+      "s4Title": "4. Category 3 — Marketing & Advertising Cookies",
+      "s4Content": "We do not use any marketing, advertising, or social media tracking cookies on this website.\n\nNo Meta (Facebook) Pixel, TikTok Pixel, Google Ads remarketing tags, or similar third-party advertising trackers are installed on everythingstreet.ge.",
+      "s5Title": "5. Managing Cookies",
+      "s5Content": "You have several ways to control cookies:\n\n• Cookie banner: When you first visit, our cookie banner lets you accept or decline analytics cookies.\n\n• Browser settings:\n  – Google Chrome: Settings → Privacy and Security → Cookies\n  – Mozilla Firefox: Settings → Privacy & Security → Cookies\n  – Safari: Settings → Privacy → Manage Website Data\n  – Microsoft Edge: Settings → Cookies and site permissions\n\nBlocking strictly necessary cookies will prevent core site functions from working.",
+      "s6Title": "6. Third-Party Cookie References",
+      "s6Content": "The following third parties may set cookies through our website:\n\n• Stripe Payments Europe Ltd\n  Purpose: Secure payment processing and fraud prevention\n  Cookie management: stripe.com/cookie-settings\n  Privacy policy: stripe.com/privacy\n\n• Google LLC (Google Analytics 4)\n  Purpose: Anonymised website analytics (consent required)\n  Opt-out tool: tools.google.com/dlpage/gaoptout\n  Privacy policy: policies.google.com/privacy",
+      "s7Title": "7. Updates to This Policy",
+      "s7Content": "We will update this Cookie Policy when we add or remove services that use cookies. For material changes we will notify you via our cookie banner on your next visit.\n\nFor questions about our use of cookies, contact us at legal@everythingstreet.ge."
     }
   },
   "common": {
@@ -723,7 +831,9 @@
     "home": "Home",
     "collection": "Collection",
     "allBeauty": "All Beauty",
-    "allTech": "All Tech"
+    "allTech": "All Tech",
+    "savedToWishlist": "Saved to wishlist",
+    "reorderFailed": "Couldn't add items to cart"
   },
   "hero": {
     "headline1": "Two worlds,",
@@ -883,5 +993,21 @@
     "tabTech": "Tech",
     "viewAll": "View all results",
     "trending": "Trending"
+  },
+  "categories": {
+    "skincare": "Skincare",
+    "makeup": "Makeup",
+    "hair-care": "Hair Care",
+    "body-care": "Body Care",
+    "perfume": "Perfume",
+    "beauty-tools": "Beauty Tools",
+    "headphones": "Headphones",
+    "cameras": "Cameras",
+    "tablets": "Tablets",
+    "gaming": "Gaming",
+    "wearables": "Wearables",
+    "smart-home": "Smart Home",
+    "audio": "Audio",
+    "accessories": "Accessories"
   }
 }

@@ -3,12 +3,14 @@ import { useState } from "react";
 import { RotateCcw, Check } from "lucide-react";
 import { useCartStore } from "@/store";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 interface Props {
   orderId: string;
 }
 
 export function ReorderButton({ orderId }: Props) {
+  const tc = useTranslations("common");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
@@ -41,7 +43,7 @@ export function ReorderButton({ orderId }: Props) {
       openCart();
       setTimeout(() => setDone(false), 3000);
     } catch {
-      toast.error("Couldn't add items to cart");
+      toast.error(tc("reorderFailed"));
     } finally {
       setLoading(false);
     }
@@ -55,7 +57,7 @@ export function ReorderButton({ orderId }: Props) {
       aria-label="Reorder"
     >
       {done ? <Check size={12} className="text-green-500" /> : <RotateCcw size={12} className={loading ? "animate-spin" : ""} />}
-      {done ? "Added" : "Reorder"}
+      {done ? tc("addedToCart") : "Reorder"}
     </button>
   );
 }

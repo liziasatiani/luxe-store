@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 
 export default function CartPage() {
   const t = useTranslations("cart");
+  const tp = useTranslations("product");
   const { items, removeItem, updateQuantity, coupon, setCoupon, subtotal, discount, shipping, tax, total, itemCount } = useCartStore();
   const { format } = useCurrency();
   const [couponCode, setCouponCode] = useState("");
@@ -93,7 +94,7 @@ export default function CartPage() {
                           </Link>
                           {item.variant && <p style={{ fontSize: 12, color: "var(--chalk2)", marginTop: 4 }}>{item.variant.name}: {item.variant.value}</p>}
                         </div>
-                        <button onClick={() => { removeItem(item.id); toast.success("Removed"); }} style={{ color: "var(--chalk2)", background: "none", border: "none", cursor: "pointer", padding: 4, flexShrink: 0 }}>
+                        <button onClick={() => { removeItem(item.id); toast.success(tp("removed")); }} style={{ color: "var(--chalk2)", background: "none", border: "none", cursor: "pointer", padding: 4, flexShrink: 0 }}>
                           <Trash2 size={15} />
                         </button>
                       </div>

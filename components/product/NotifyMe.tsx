@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 interface Props {
   productId: string;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export function NotifyMe({ productId, compact = false }: Props) {
+  const t = useTranslations("product");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -27,9 +29,9 @@ export function NotifyMe({ productId, compact = false }: Props) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setDone(true);
-      toast.success("We'll email you when it's back in stock");
+      toast.success(t("notifySuccess"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed — try again");
+      toast.error(err instanceof Error ? err.message : t("notifyFailed"));
     } finally {
       setLoading(false);
     }
@@ -38,7 +40,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
   if (done) {
     return (
       <p style={{ fontSize: 11, color: "var(--gold)", letterSpacing: "0.08em", textAlign: compact ? "center" : "left" }}>
-        ✓ You&apos;ll be notified
+        ✓ {t("notifyConfirmed")}
       </p>
     );
   }
@@ -51,7 +53,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
           className="btn-cart"
           style={{ fontSize: 10, letterSpacing: "0.12em" }}
         >
-          Notify Me
+          {t("notifyMe")}
         </button>
       );
     }
@@ -92,7 +94,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
   return (
     <div style={{ marginBottom: 11 }}>
       <p style={{ fontSize: 11, color: "var(--chalk2)", letterSpacing: "0.06em", marginBottom: 10 }}>
-        Notify me when back in stock:
+        {t("notifyLabel")}
       </p>
       <form onSubmit={submit} style={{ display: "flex", gap: 8 }}>
         <input
@@ -122,7 +124,7 @@ export function NotifyMe({ productId, compact = false }: Props) {
             opacity: loading ? 0.7 : 1, transition: "opacity 0.2s",
           }}
         >
-          {loading ? "…" : "Notify Me"}
+          {loading ? "…" : t("notifyMe")}
         </button>
       </form>
     </div>

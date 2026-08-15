@@ -126,7 +126,12 @@
     "availability": "Disponibilité",
     "returnPolicy": "Politique de retour",
     "returnPolicyValue": "Retours sous 14 jours",
-    "outOfStockLabel": "Rupture de stock"
+    "outOfStockLabel": "Rupture de stock",
+    "notifyMe": "M'avertir",
+    "notifyLabel": "M'avertir quand disponible :",
+    "notifySuccess": "Nous vous enverrons un e-mail quand l'article sera disponible",
+    "notifyConfirmed": "Vous serez notifié(e)",
+    "notifyFailed": "Échec — réessayez"
   },
   "cart": {
     "title": "Panier",
@@ -202,7 +207,9 @@
     "cardPayment": "Carte · Apple Pay · Google Pay",
     "payWhenReceived": "Payer à la livraison",
     "codUnavailable": "Disponible uniquement sous ₾{max}",
-    "codUnavailableMsg": "Le paiement à la livraison est disponible uniquement pour les commandes inférieures à ₾{max}. Veuillez payer par carte."
+    "codUnavailableMsg": "Le paiement à la livraison est disponible uniquement pour les commandes inférieures à ₾{max}. Veuillez payer par carte.",
+    "addressSaved": "Adresse enregistrée",
+    "addressFailed": "Impossible d'enregistrer l'adresse"
   },
   "orderSuccess": {
     "title": "Commande confirmée !",
@@ -350,6 +357,21 @@
         "email": "Veuillez entrer une adresse e-mail valide.",
         "failed": "Impossible d'envoyer le lien — vérifiez votre connexion et réessayez."
       }
+    },
+    "resetPassword": {
+      "title": "Définir un nouveau mot de passe",
+      "subtitle": "Choisissez un mot de passe sécurisé pour votre compte",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "update": "Mettre à jour le mot de passe",
+      "back": "Retour à la connexion",
+      "signIn": "Se connecter",
+      "success": "Votre mot de passe a été mis à jour avec succès.",
+      "errors": {
+        "mismatch": "Les mots de passe ne correspondent pas",
+        "tooShort": "Le mot de passe doit contenir au moins 8 caractères",
+        "failed": "Impossible de mettre à jour le mot de passe — vérifiez votre connexion et réessayez."
+      }
     }
   },
   "footer": {
@@ -484,7 +506,13 @@
       "send": "Envoyer",
       "messageSent": "Message envoyé !",
       "messageSentDesc": "Nous vous répondrons dans les 24 heures.",
-      "sendAnother": "Envoyer un autre message"
+      "sendAnother": "Envoyer un autre message",
+      "errors": {
+        "name": "Veuillez entrer votre nom",
+        "email": "Veuillez entrer une adresse e-mail valide",
+        "message": "Le message doit contenir au moins 10 caractères",
+        "failed": "Une erreur s'est produite. Veuillez réessayer."
+      }
     },
     "faq": {
       "title": "Questions fréquentes",
@@ -634,10 +662,70 @@
       "needHelp": "Besoin d'aide pour un retour ?"
     },
     "privacy": {
-      "title": "Politique de confidentialité"
+      "title": "Politique de confidentialité",
+      "eyebrow": "Mentions légales",
+      "updated": "Dernière mise à jour : 10 août 2026 · En vigueur : 10 août 2026",
+      "intro": "Chez Everything Street, nous prenons votre vie privée au sérieux. Cette politique explique en termes simples quelles données personnelles nous collectons, pourquoi nous les collectons, comment nous les utilisons et quels sont vos droits.",
+      "s1Title": "1. Responsable du traitement",
+      "s1Content": "Everything Street\nRue Shalva Nutsubidze, Tbilissi, Géorgie\nE-mail : legal@everythingstreet.ge\nTél. : +995 500 09 06 14\n\nCette Politique de confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles. Elle est régie par la loi géorgienne sur la protection des données personnelles (loi n° 5669) et, pour les clients de l'EEE ou du Royaume-Uni, par le RGPD et le UK RGPD.",
+      "s2Title": "2. Informations que nous collectons",
+      "s2Content": "a) Données de compte et de commande\nNous collectons votre nom, adresse e-mail, numéro de téléphone, adresse de livraison et adresse de facturation.\nBase légale : Exécution du contrat (RGPD art. 6(1)(b)).\n\nb) Données de paiement\nNous ne stockons pas votre numéro de carte, CVV ou détails complets de paiement. Toutes les données sont transmises directement à Stripe Payments Europe Ltd.\nBase légale : Exécution du contrat ; obligation légale.\n\nc) Stripe Radar — Détection automatisée de fraude\nStripe analyse automatiquement les transactions pour détecter la fraude. Si votre commande est refusée à tort, contactez-nous à hello@everythingstreet.ge.\nBase légale : Intérêts légitimes (RGPD art. 6(1)(f)).\n\nd) Données techniques\nNous collectons automatiquement votre adresse IP, type de navigateur, système d'exploitation et pages visitées.\nBase légale : Intérêts légitimes.\n\ne) Données analytiques\nNous utilisons Google Analytics 4 pour des statistiques anonymisées. Les cookies GA4 ne sont activés qu'après votre consentement.\nBase légale : Consentement (RGPD art. 6(1)(a)).\n\nf) Communications marketing\nSi vous vous abonnez à notre newsletter, nous conservons votre adresse e-mail. Vous pouvez vous désabonner à tout moment.\nBase légale : Consentement (RGPD art. 6(1)(a)).\n\ng) Support client\nNous conservons le contenu des communications par e-mail.\nBase légale : Intérêts légitimes.",
+      "s3Title": "3. Utilisation de vos données",
+      "s3Content": "Nous utilisons vos données personnelles pour :\n• Traiter et exécuter vos commandes\n• Traiter les paiements via Stripe\n• Détecter et prévenir la fraude\n• Envoyer des confirmations de commande et de livraison\n• Répondre aux demandes du service client\n• Envoyer des e-mails marketing (avec consentement)\n• Analyser l'utilisation du site (avec consentement)\n• Respecter les obligations légales géorgiennes\n• Défendre nos droits légaux",
+      "s4Title": "4. Prestataires de services tiers",
+      "s4Content": "Nous partageons vos données uniquement avec des prestataires qui en ont besoin. Nous ne vendons pas vos données.\n\n• Stripe Payments Europe Ltd — traitement des paiements\n  Lieu : États-Unis et UE | Garantie : Clauses contractuelles types\n\n• Supabase Inc. — base de données\n  Lieu : UE (Francfort, Allemagne)\n\n• Resend Inc. — e-mails transactionnels\n  Lieu : États-Unis | Garantie : CCT\n\n• Vercel Inc. — hébergement web\n  Lieu : États-Unis | Garantie : CCT\n\n• Google LLC — analyses anonymisées\n  Lieu : États-Unis | Garantie : CCT\n\n• Upstash Inc. — limitation de débit\n  Lieu : UE\n\n• Autorités fiscales géorgiennes — lorsque légalement requis",
+      "s5Title": "5. Transferts internationaux de données",
+      "s5Content": "Plusieurs prestataires traitent des données en dehors de l'EEE et de la Géorgie :\n\n• Stripe : États-Unis — protégé par les Clauses contractuelles types (CCT)\n• Resend : États-Unis — protégé par les CCT\n• Vercel : États-Unis — protégé par les CCT\n• Google Analytics : États-Unis — protégé par les CCT\n\nDes copies des CCT sont disponibles sur demande à legal@everythingstreet.ge.",
+      "s6Title": "6. Conservation des données",
+      "s6Content": "Nous conservons vos données pour les durées suivantes :\n\n• Registres de commandes : 7 ans (loi géorgienne)\n• Profil de compte : durée du compte + 2 ans\n• Preuves de consentement marketing : jusqu'au retrait + 3 ans\n• Communications support : 3 ans\n• Données analytiques : 14 mois\n• Données de paiement : selon la politique de Stripe\n\nVous pouvez demander la suppression anticipée de vos données à tout moment.",
+      "s7Title": "7. Vos droits",
+      "s7Content": "En vertu de la loi géorgienne et du RGPD (pour les résidents de l'EEE/Royaume-Uni) :\n\n• Droit d'accès\n• Droit de rectification\n• Droit à l'effacement\n• Droit à la limitation du traitement\n• Droit à la portabilité des données\n• Droit d'opposition\n• Droits relatifs à la décision automatisée\n• Droit de retirer le consentement à tout moment\n\nÉcrivez à legal@everythingstreet.ge. Nous répondrons dans les 30 jours calendaires.",
+      "s8Title": "8. Autorités de contrôle",
+      "s8Content": "Si vous n'êtes pas satisfait, vous pouvez déposer une plainte :\n\nGéorgie :\nService de protection des données de Géorgie\nSite : pdp.ge | E-mail : info@pdp.ge\n\nUnion européenne / EEE :\nVotre autorité nationale de protection des données\n\nRoyaume-Uni :\nInformation Commissioner's Office (ICO)\nSite : ico.org.uk | Tél. : 0303 123 1113",
+      "s9Title": "9. Appareils connectés et intelligents",
+      "s9Content": "Certains produits technologiques peuvent collecter des données lors de leur utilisation. Ces données sont traitées par le fabricant, pas par Everything Street. Consultez la politique de confidentialité du fabricant avant utilisation.",
+      "s10Title": "10. Mineurs",
+      "s10Content": "Notre site ne s'adresse pas aux personnes de moins de 18 ans. Si vous pensez que nous détenons des données sur un mineur, contactez-nous à legal@everythingstreet.ge.",
+      "s11Title": "11. Modifications de cette politique",
+      "s11Content": "Nous pouvons mettre à jour cette Politique de confidentialité. Pour les changements importants, nous informerons les clients enregistrés par e-mail au moins 14 jours avant.",
+      "s12Title": "12. Contact",
+      "s12Content": "Pour toute question relative à la confidentialité :\n\nE-mail : legal@everythingstreet.ge\nTél. : +995 500 09 06 14\nAdresse : Everything Street, rue Shalva Nutsubidze, Tbilissi, Géorgie\n\nNous nous efforçons de répondre dans les 5 jours ouvrables."
     },
     "terms": {
-      "title": "Conditions d'utilisation"
+      "title": "Conditions d'utilisation",
+      "eyebrow": "Mentions légales",
+      "updated": "Dernière mise à jour : 10 août 2026 · En vigueur : 10 août 2026",
+      "intro": "Veuillez lire attentivement ces Conditions avant d'utiliser Everything Street ou de passer une commande.",
+      "s1Title": "1. À propos de ces Conditions",
+      "s1Content": "Ces Conditions générales régissent votre utilisation de everythingstreet.ge.\n\nEverything Street\nRue Shalva Nutsubidze, Tbilissi, Géorgie\nE-mail : legal@everythingstreet.ge\nTél. : +995 500 09 06 14\n\nEn utilisant notre site web ou en passant une commande, vous acceptez ces Conditions.",
+      "s2Title": "2. Qui peut acheter",
+      "s2Content": "Vous devez avoir au moins 18 ans pour créer un compte ou acheter chez Everything Street.\n\nAcheteurs internationaux : Vous êtes responsable de vous assurer que les produits commandés sont légaux à importer dans votre pays.",
+      "s3Title": "3. Inscription et sécurité du compte",
+      "s3Content": "Lors de la création d'un compte, vous devez fournir des informations exactes et à jour.\n\nInformez-nous immédiatement à hello@everythingstreet.ge en cas d'accès non autorisé suspecté.",
+      "s4Title": "4. Produits et descriptions",
+      "s4Content": "Nous nous efforçons de veiller à l'exactitude de toutes les descriptions. Cependant :\n\n• Produits de beauté : Les formulations peuvent varier entre les lots. Vérifiez toujours l'étiquette en cas d'allergies.\n• Produits tech : Les images sont représentatives.\n• Si vous recevez un produit différent de sa description, vous avez droit à un retour ou remboursement.",
+      "s5Title": "5. Prix et devise",
+      "s5Content": "Tous les prix sont affichés en Lari géorgien (₾ GEL) et incluent les taxes applicables.\n\nClients internationaux : Le paiement est facturé en GEL. Les frais de conversion sont à votre charge.",
+      "s6Title": "6. Passer une commande",
+      "s6Content": "Lorsque vous passez une commande, vous faites une offre d'achat. Un contrat contraignant est formé à l'expédition.\n\nNous nous réservons le droit d'annuler toute commande en cas de :\n• Rupture de stock\n• Activité frauduleuse\n• Erreur de prix\n• Échec d'autorisation de paiement",
+      "s7Title": "7. Paiement via Stripe",
+      "s7Content": "Tous les paiements sont traités par Stripe Payments Europe Ltd.\n\nMoyens acceptés : Visa, Mastercard et Apple Pay.\n\nConformité PCI DSS : Vos détails de carte sont transmis directement à Stripe.\n\nDétection de fraude : Stripe Radar analyse chaque transaction automatiquement.",
+      "s8Title": "8. Produits de beauté et cosmétiques",
+      "s8Content": "Tous les produits de beauté sont des cosmétiques. Ce ne sont pas des médicaments.\n\nLes résultats varient selon les individus. Nous recommandons un test cutané avant utilisation.\n\nNous sourceons tous les produits auprès de distributeurs agréés et ne vendons pas de produits périmés.",
+      "s9Title": "9. Tech et électronique",
+      "s9Content": "Garantie légale : La loi géorgienne prévoit une garantie légale obligatoire de 2 ans.\n\nLogiciels : Une fois activés, le droit de retour ne s'applique pas sauf défaut.\n\nTension : La Géorgie utilise 220V / 50Hz. Vérifiez la compatibilité avant l'achat.",
+      "s10Title": "10. Propriété intellectuelle",
+      "s10Content": "Tout le contenu de everythingstreet.ge est la propriété d'Everything Street ou de ses concédants. Vous ne pouvez pas le reproduire sans autorisation écrite.",
+      "s11Title": "11. Utilisations interdites",
+      "s11Content": "Lors de l'utilisation de notre site, vous ne devez pas :\n• Utiliser le service à des fins illégales\n• Tenter d'accéder sans autorisation à nos systèmes\n• Transmettre des codes malveillants\n• Collecter des données par des moyens automatisés\n• Soumettre des commandes frauduleuses\n• Usurper une identité\n• Perturber nos services",
+      "s12Title": "12. Limitation de responsabilité",
+      "s12Content": "La responsabilité totale d'Everything Street ne dépassera pas le montant payé pour la commande concernée.\n\nNous ne sommes pas responsables des pertes indirectes ou consécutives.\n\nCes limitations n'excluent pas vos droits légaux de consommateur.",
+      "s13Title": "13. Droit applicable et litiges",
+      "s13Content": "Ces Conditions sont régies par le droit géorgien. Tout litige sera soumis aux tribunaux de Tbilissi.\n\nClients UE et EEE : Ces Conditions n'affectent pas vos droits nationaux de consommateur.",
+      "s14Title": "14. Modifications des présentes Conditions",
+      "s14Content": "Nous pouvons mettre à jour ces Conditions. Les changements importants seront communiqués par e-mail au moins 14 jours avant.",
+      "s15Title": "15. Contact",
+      "s15Content": "Pour toute question :\n\nE-mail : legal@everythingstreet.ge\nTél. : +995 500 09 06 14\nAdresse : Everything Street, rue Shalva Nutsubidze, Tbilissi, Géorgie"
     },
     "wishlist": {
       "title": "Mes favoris",
@@ -665,6 +753,26 @@
       "all": "Toute la Tech",
       "allBeauty": "Toute la Beauté",
       "desc": "Électronique haut de gamme et gadgets conçus pour ceux qui exigent le meilleur."
+    },
+    "cookiePolicy": {
+      "title": "Politique en matière de cookies",
+      "eyebrow": "Mentions légales",
+      "updated": "Dernière mise à jour : 10 août 2026",
+      "intro": "Cette Politique en matière de cookies explique quels cookies nous utilisons sur everythingstreet.ge, pourquoi nous les utilisons et comment vous pouvez les contrôler.",
+      "s1Title": "1. Qu'est-ce qu'un cookie ?",
+      "s1Content": "Les cookies sont de petits fichiers texte placés sur votre appareil — langue préférée, statut de connexion, contenu du panier.\n\nNous utilisons des cookies à trois fins : fonctionnement du site (strictement nécessaires), analyse d'audience (analytique) et traitement sécurisé des paiements (Stripe). Nous n'utilisons pas de cookies publicitaires.",
+      "s2Title": "2. Catégorie 1 — Cookies strictement nécessaires",
+      "s2Content": "Ces cookies sont essentiels. Ils ne peuvent pas être refusés.\n\n• Cookie de session d'authentification — vous maintient connecté. Expiration : 30 jours.\n• Cookie de protection CSRF — protège les formulaires.\n• Cookie de préférence de langue (luxe-locale). Expiration : 1 an.\n• Cookies Stripe — nécessaires au traitement des paiements.\n  Détails : stripe.com/cookie-settings",
+      "s3Title": "3. Catégorie 2 — Cookies analytiques (consentement requis)",
+      "s3Content": "Ces cookies nous aident à comprendre comment les visiteurs utilisent notre site. Toutes les données sont anonymisées. Ils ne sont activés qu'après consentement.\n\n• Google Analytics 4 (_ga, _ga_*)\n  Objectif : Suivi des pages et sessions.\n  Expiration : 2 ans (rétention : 14 mois)\n  Désactivation : tools.google.com/dlpage/gaoptout",
+      "s4Title": "4. Catégorie 3 — Cookies marketing et publicitaires",
+      "s4Content": "Nous n'utilisons aucun cookie de suivi marketing, publicitaire ou de réseaux sociaux.\n\nAucun Meta Pixel, TikTok Pixel, balises Google Ads ni traceur publicitaire tiers n'est installé sur everythingstreet.ge.",
+      "s5Title": "5. Gérer les cookies",
+      "s5Content": "Vous disposez de plusieurs moyens pour contrôler les cookies :\n\n• Bannière de cookies : Lors de votre première visite, vous pouvez accepter ou refuser les cookies analytiques.\n\n• Paramètres du navigateur :\n  – Google Chrome : Paramètres → Confidentialité → Cookies\n  – Mozilla Firefox : Paramètres → Vie privée\n  – Safari : Paramètres → Confidentialité\n  – Microsoft Edge : Paramètres → Cookies",
+      "s6Title": "6. Références aux cookies tiers",
+      "s6Content": "Les tiers suivants peuvent définir des cookies via notre site :\n\n• Stripe Payments Europe Ltd\n  Objectif : Traitement sécurisé des paiements\n  Gestion : stripe.com/cookie-settings\n\n• Google LLC (Google Analytics 4)\n  Objectif : Analyses anonymisées\n  Désactivation : tools.google.com/dlpage/gaoptout",
+      "s7Title": "7. Mises à jour de cette politique",
+      "s7Content": "Nous mettrons à jour cette Politique lorsque nous ajouterons ou supprimerons des services utilisant des cookies.\n\nPour toute question sur les cookies : legal@everythingstreet.ge"
     }
   },
   "common": {
@@ -723,7 +831,9 @@
     "home": "Accueil",
     "collection": "Collection",
     "allBeauty": "Toute la Beauté",
-    "allTech": "Toute la Tech"
+    "allTech": "Toute la Tech",
+    "savedToWishlist": "Ajouté aux favoris",
+    "reorderFailed": "Impossible d'ajouter les articles au panier"
   },
   "hero": {
     "headline1": "Deux mondes,",
@@ -883,5 +993,21 @@
     "tabTech": "Tech",
     "viewAll": "Voir tous les résultats",
     "trending": "Tendances"
+  },
+  "categories": {
+    "skincare": "Soins de la peau",
+    "makeup": "Maquillage",
+    "hair-care": "Soins capillaires",
+    "body-care": "Soins du corps",
+    "perfume": "Parfum",
+    "beauty-tools": "Outils de beauté",
+    "headphones": "Casques audio",
+    "cameras": "Appareils photo",
+    "tablets": "Tablettes",
+    "gaming": "Gaming",
+    "wearables": "Appareils connectés",
+    "smart-home": "Maison connectée",
+    "audio": "Audio",
+    "accessories": "Accessoires"
   }
 }
