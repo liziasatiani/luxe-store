@@ -61,11 +61,21 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
 
   const _p = serializeDecimal(product);
-  const p = _p as typeof _p & { howToUse?: string | null; ingredients?: string | null; inTheBox?: string | null };
+  const p = _p as typeof _p & {
+    howToUse?: string | null; ingredients?: string | null; inTheBox?: string | null;
+    description_ka?: string | null; description_fr?: string | null; description_es?: string | null;
+    howToUse_ka?: string | null; howToUse_fr?: string | null; howToUse_es?: string | null;
+    inTheBox_ka?: string | null; inTheBox_fr?: string | null; inTheBox_es?: string | null;
+  };
   const discount = p.comparePrice ? formatDiscount(Number(p.comparePrice), Number(p.price)) : 0;
 
+  const locale = await getLocale();
   const tProduct = await getTranslations("product");
   const tCommon = await getTranslations("common");
+
+  const localizedDescription = (locale === "ka" ? p.description_ka : locale === "fr" ? p.description_fr : locale === "es" ? p.description_es : null) ?? p.shortDescription ?? p.description;
+  const localizedHowToUse = (locale === "ka" ? p.howToUse_ka : locale === "fr" ? p.howToUse_fr : locale === "es" ? p.howToUse_es : null) ?? p.howToUse;
+  const localizedInTheBox = (locale === "ka" ? p.inTheBox_ka : locale === "fr" ? p.inTheBox_fr : locale === "es" ? p.inTheBox_es : null) ?? p.inTheBox;
 
   const breadcrumbs = [
     { name: tCommon("home"), url: "/" },
@@ -139,24 +149,24 @@ export default async function ProductPage({ params }: Props) {
           <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "32px 0" }} />
 
           {/* Description */}
-          {(p.shortDescription || p.description) && (
+          {localizedDescription && (
             <div style={{ marginBottom: 32 }}>
               <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("aboutProduct")}</p>
               <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>
-                {p.shortDescription ?? p.description}
+                {localizedDescription}
               </p>
             </div>
           )}
 
           {/* How to Use — beauty */}
-          {p.howToUse && (
+          {localizedHowToUse && (
             <div style={{ marginBottom: 32 }}>
               <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("howToUse")}</p>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{p.howToUse}</p>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{localizedHowToUse}</p>
             </div>
           )}
 
-          {/* Ingredients — beauty */}
+          {/* Ingredients — beauty (INCI names are universal, always shown in English) */}
           {p.ingredients && (
             <div style={{ marginBottom: 32 }}>
               <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("ingredients")}</p>
@@ -165,10 +175,10 @@ export default async function ProductPage({ params }: Props) {
           )}
 
           {/* What's in the Box — tech */}
-          {p.inTheBox && (
+          {localizedInTheBox && (
             <div style={{ marginBottom: 32 }}>
               <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("inTheBox")}</p>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{p.inTheBox}</p>
+              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{localizedInTheBox}</p>
             </div>
           )}
 

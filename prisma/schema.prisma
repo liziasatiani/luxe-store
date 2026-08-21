@@ -241,6 +241,15 @@ model Product {
   howToUse         String? @db.Text
   ingredients      String? @db.Text
   inTheBox         String? @db.Text
+  description_ka   String? @db.Text
+  description_fr   String? @db.Text
+  description_es   String? @db.Text
+  howToUse_ka      String? @db.Text
+  howToUse_fr      String? @db.Text
+  howToUse_es      String? @db.Text
+  inTheBox_ka      String? @db.Text
+  inTheBox_fr      String? @db.Text
+  inTheBox_es      String? @db.Text
 
   // Pricing
   price        Decimal @db.Decimal(10, 2)
