@@ -10,7 +10,7 @@ import { useCartStore, useWishlistStore } from "@/store";
 import { getProductImageUrl, cn } from "@/lib/utils";
 import type { ProductCard } from "@/types";
 import { useCurrency } from "@/hooks/useCurrency";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import toast from "react-hot-toast";
 
 interface QuickViewProps {
@@ -20,6 +20,9 @@ interface QuickViewProps {
 
 type QuickViewProduct = ProductCard & {
   description?: string | null;
+  description_ka?: string | null;
+  description_fr?: string | null;
+  description_es?: string | null;
   variants?: Array<{ id: string; name: string; value: string; price?: number | null; stock: number }>;
 }
 
@@ -30,6 +33,7 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
   const { format } = useCurrency();
   const t = useTranslations("product");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
 
@@ -128,11 +132,14 @@ export function QuickView({ slug, onClose }: QuickViewProps) {
                       </span>
                     )}
                   </div>
-                  {product.description && (
-                    <p className="text-sm text-surface-500 leading-relaxed whitespace-pre-line">
-                      {product.description}
-                    </p>
-                  )}
+                  {(() => {
+                    const localizedDescription = (locale === "ka" ? product.description_ka : locale === "fr" ? product.description_fr : locale === "es" ? product.description_es : null) ?? product.description;
+                    return localizedDescription ? (
+                      <p className="text-sm text-surface-500 leading-relaxed whitespace-pre-line">
+                        {localizedDescription}
+                      </p>
+                    ) : null;
+                  })()}
                   <div>
                     <p className="text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">{t("qty")}</p>
                     <div className="flex items-center gap-1 w-fit rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
