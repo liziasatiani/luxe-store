@@ -1,36 +1,71 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-// Set NEXT_PUBLIC_BG_MUSIC_URL in Vercel env to swap to your own track
-const MUSIC_URL =
-  process.env.NEXT_PUBLIC_BG_MUSIC_URL ||
-  "https://upload.wikimedia.org/wikipedia/commons/e/e5/Gymnop%C3%A9die_No._1_BI_21_%28Satie%29.ogg";
+// Set NEXT_PUBLIC_BG_MUSIC_URL in Vercel env to use your own track
+const MUSIC_URL = process.env.NEXT_PUBLIC_BG_MUSIC_URL || "";
+
+type StopFn = () => void;
+
+function startAmbientTone(volume: number): StopFn {
+  const ctx = new AudioContext();
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 1.5);
+  gain.connect(ctx.destination);
+
+  const freqs = [110, 165, 220, 277.5];
+  const oscs = freqs.map((f) => {
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = f;
+    osc.connect(gain);
+    osc.start();
+    return osc;
+  });
+
+  return () => {
+    gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
+    setTimeout(() => {
+      oscs.forEach((o) => o.stop());
+      ctx.close();
+    }, 900);
+  };
+}
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const stopToneRef = useRef<StopFn | null>(null);
   const [playing, setPlaying] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const audio = new Audio(MUSIC_URL);
-    audio.loop = true;
-    audio.volume = 0.35;
-    audio.addEventListener("error", () => setError(true));
-    audioRef.current = audio;
-    return () => { audio.pause(); audio.src = ""; };
+    if (MUSIC_URL) {
+      const audio = new Audio(MUSIC_URL);
+      audio.loop = true;
+      audio.volume = 0.35;
+      audioRef.current = audio;
+      return () => { audio.pause(); audio.src = ""; };
+    }
   }, []);
 
   const toggle = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    setError(false);
     if (playing) {
-      audio.pause();
+      if (MUSIC_URL) {
+        audioRef.current?.pause();
+      } else if (stopToneRef.current) {
+        stopToneRef.current();
+        stopToneRef.current = null;
+      }
       setPlaying(false);
     } else {
-      audio.play().then(() => setPlaying(true)).catch(() => setError(true));
+      if (MUSIC_URL && audioRef.current) {
+        audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+      } else {
+        stopToneRef.current = startAmbientTone(0.06);
+        setPlaying(true);
+      }
     }
   };
 
@@ -65,15 +100,11 @@ export function MusicPlayer() {
           xmlns="http://www.w3.org/2000/svg"
           className={`vinyl-disc${playing ? " spinning" : ""}`}
         >
-          {/* Outer disc */}
           <circle cx="18" cy="18" r="17" fill="currentColor" className="text-black dark:text-white" opacity="0.85" />
-          {/* Grooves */}
           <circle cx="18" cy="18" r="14" fill="none" stroke="white" strokeWidth="0.35" opacity="0.15" />
           <circle cx="18" cy="18" r="11.5" fill="none" stroke="white" strokeWidth="0.35" opacity="0.15" />
           <circle cx="18" cy="18" r="9" fill="none" stroke="white" strokeWidth="0.35" opacity="0.15" />
-          {/* Center label */}
           <circle cx="18" cy="18" r="6" fill="#C9A84C" opacity="0.9" />
-          {/* Spindle hole */}
           <circle cx="18" cy="18" r="1.4" fill="currentColor" className="text-black dark:text-white" opacity="0.7" />
         </svg>
       </button>
