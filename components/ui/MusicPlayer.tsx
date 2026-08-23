@@ -7,15 +7,22 @@ const PLAYLIST: string[] = (process.env.NEXT_PUBLIC_BG_MUSIC_URL || "")
   .map((s) => s.trim())
   .filter(Boolean);
 
+// Three built-in ambient tones used when no playlist URL is set
+const AMBIENT_TONES: { label: string; freqs: number[] }[] = [
+  { label: "A minor",  freqs: [110, 165, 220, 277.5] },
+  { label: "C major",  freqs: [130.8, 196, 261.6, 329.6] },
+  { label: "G major",  freqs: [98, 147, 196, 246.9] },
+];
+
 type StopFn = () => void;
 
-function startAmbientTone(volume: number): StopFn {
+function startAmbientTone(freqs: number[], volume: number): StopFn {
   const ctx = new AudioContext();
   const gain = ctx.createGain();
   gain.gain.setValueAtTime(0, ctx.currentTime);
   gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 1.5);
   gain.connect(ctx.destination);
-  const oscs = [110, 165, 220, 277.5].map((f) => {
+  const oscs = freqs.map((f) => {
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = f;
@@ -38,6 +45,7 @@ export function MusicPlayer() {
   const [mounted, setMounted] = useState(false);
 
   const hasPlaylist = PLAYLIST.length > 0;
+  const trackCount = hasPlaylist ? PLAYLIST.length : AMBIENT_TONES.length;
 
   const loadTrack = (i: number, autoplay: boolean) => {
     const audio = audioRef.current;
@@ -76,17 +84,23 @@ export function MusicPlayer() {
       if (hasPlaylist && audioRef.current) {
         audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
       } else {
-        stopToneRef.current = startAmbientTone(0.06);
+        stopToneRef.current = startAmbientTone(AMBIENT_TONES[index].freqs, 0.06);
         setPlaying(true);
       }
     }
   };
 
   const next = () => {
-    if (!hasPlaylist) return;
-    const n = (index + 1) % PLAYLIST.length;
+    const n = (index + 1) % trackCount;
     setIndex(n);
-    loadTrack(n, playing);
+    if (hasPlaylist) {
+      loadTrack(n, playing);
+    } else {
+      if (playing) {
+        stopToneRef.current?.();
+        stopToneRef.current = startAmbientTone(AMBIENT_TONES[n].freqs, 0.06);
+      }
+    }
   };
 
   if (!mounted) return null;
@@ -107,18 +121,16 @@ export function MusicPlayer() {
         }
       `}</style>
       <div className="fixed bottom-20 right-4 z-40 md:bottom-6 flex flex-col items-center gap-1">
-        {hasPlaylist && PLAYLIST.length > 1 && (
-          <button
-            onClick={next}
-            aria-label="Next track"
-            title={`Next track (${index + 1} / ${PLAYLIST.length})`}
-            className="opacity-40 hover:opacity-90 transition-opacity text-black dark:text-white"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M3 3.5v9l7-4.5-7-4.5zM12 3h1.5v10H12V3z"/>
-            </svg>
-          </button>
-        )}
+        <button
+          onClick={next}
+          aria-label="Next track"
+          title={`Next track (${index + 1} / ${trackCount})`}
+          className="opacity-40 hover:opacity-90 transition-opacity text-black dark:text-white"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M3 3.5v9l7-4.5-7-4.5zM12 3h1.5v10H12V3z"/>
+          </svg>
+        </button>
         <button
           onClick={toggle}
           aria-label={playing ? "Pause music" : "Play music"}
