@@ -1,11 +1,10 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SlidersHorizontal, X, ChevronDown } from "lucide-react";
+import { SlidersHorizontal, X, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ProductCard, ProductCardSkeleton } from "./ProductCard";
-import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
@@ -58,10 +57,13 @@ export function ProductGrid({
   });
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [brands, setBrands] = useState<{ name: string; slug: string }[]>([]);
 
-  const fetchProducts = useCallback(async (f: ProductFilters, p = 1, append = false) => {
+  const PAGE_SIZE = 24;
+
+  const fetchProducts = useCallback(async (f: ProductFilters, p = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -77,14 +79,14 @@ export function ProductGrid({
       if (f.isFeatured) params.set("featured", "true");
       if (f.sort) params.set("sort", f.sort);
       params.set("page", String(p));
-      params.set("limit", "24");
+      params.set("limit", String(PAGE_SIZE));
 
       const res = await fetch(`/api/products?${params}`);
       const data = await res.json();
-      setTotal(data.data?.total ?? 0);
-      setProducts((prev) =>
-        append ? [...prev, ...(data.data?.products ?? [])] : (data.data?.products ?? [])
-      );
+      const t = data.data?.total ?? 0;
+      setTotal(t);
+      setTotalPages(Math.ceil(t / PAGE_SIZE));
+      setProducts(data.data?.products ?? []);
     } finally {
       setLoading(false);
     }
@@ -121,13 +123,12 @@ export function ProductGrid({
     handleFilterChange("brandSlugs", next);
   };
 
-  const loadMore = () => {
-    const next = page + 1;
-    setPage(next);
-    fetchProducts(filters, next, true);
+  const goToPage = (p: number) => {
+    if (p < 1 || p > totalPages) return;
+    setPage(p);
+    fetchProducts(filters, p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  const hasMore = products.length < total;
 
   const gridCols = {
     2: "grid-cols-2",
@@ -251,12 +252,8 @@ export function ProductGrid({
             <div className={cn("grid gap-5", gridCols[columns])}>
               {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
             </div>
-            {hasMore && (
-              <div className="mt-12 text-center">
-                <Button onClick={loadMore} loading={loading} variant="outline" size="lg">
-                  {t("loadMore")}
-                </Button>
-              </div>
+            {totalPages > 1 && (
+              <Pagination page={page} totalPages={totalPages} onPage={goToPage} />
             )}
           </>
         )}
@@ -352,6 +349,60 @@ function FilterSidebar({
           <span className="text-sm text-black/70 dark:text-white/70">{t("onSale")}</span>
         </label>
       </FilterSection>
+    </div>
+  );
+}
+
+function Pagination({ page, totalPages, onPage }: { page: number; totalPages: number; onPage: (p: number) => void }) {
+  const pages: (number | "…")[] = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (page > 3) pages.push("…");
+    for (let i = Math.max(2, page - 1); i <= Math.min(totalPages - 1, page + 1); i++) pages.push(i);
+    if (page < totalPages - 2) pages.push("…");
+    pages.push(totalPages);
+  }
+
+  return (
+    <div className="mt-12 flex items-center justify-center gap-1">
+      <button
+        onClick={() => onPage(page - 1)}
+        disabled={page === 1}
+        className="w-9 h-9 flex items-center justify-center border border-black/15 dark:border-white/15 text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        aria-label="Previous page"
+      >
+        <ChevronLeft size={14} />
+      </button>
+
+      {pages.map((p, i) =>
+        p === "…" ? (
+          <span key={`ellipsis-${i}`} className="w-9 h-9 flex items-center justify-center text-[11px] text-black/30 dark:text-white/30">…</span>
+        ) : (
+          <button
+            key={p}
+            onClick={() => onPage(p)}
+            className={cn(
+              "w-9 h-9 flex items-center justify-center text-[12px] tracking-[0.06em] transition-colors border",
+              p === page
+                ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-medium"
+                : "border-black/15 dark:border-white/15 text-black/60 dark:text-white/60 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white"
+            )}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      <button
+        onClick={() => onPage(page + 1)}
+        disabled={page === totalPages}
+        className="w-9 h-9 flex items-center justify-center border border-black/15 dark:border-white/15 text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        aria-label="Next page"
+      >
+        <ChevronRight size={14} />
+      </button>
     </div>
   );
 }
