@@ -4,18 +4,20 @@ import { useState, useEffect, useRef } from "react";
 // Set NEXT_PUBLIC_BG_MUSIC_URL in Vercel env to swap to your own track
 const MUSIC_URL =
   process.env.NEXT_PUBLIC_BG_MUSIC_URL ||
-  "https://www.bensound.com/bensound-music/bensound-summer.mp3";
+  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const audio = new Audio(MUSIC_URL);
     audio.loop = true;
     audio.volume = 0.35;
+    audio.addEventListener("error", () => setError(true));
     audioRef.current = audio;
     return () => { audio.pause(); audio.src = ""; };
   }, []);
@@ -23,11 +25,12 @@ export function MusicPlayer() {
   const toggle = () => {
     const audio = audioRef.current;
     if (!audio) return;
+    setError(false);
     if (playing) {
       audio.pause();
       setPlaying(false);
     } else {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
+      audio.play().then(() => setPlaying(true)).catch(() => setError(true));
     }
   };
 
