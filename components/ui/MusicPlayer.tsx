@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 // Set NEXT_PUBLIC_BG_MUSIC_URL in Vercel env to swap to your own track
 const MUSIC_URL =
   process.env.NEXT_PUBLIC_BG_MUSIC_URL ||
-  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+  "https://upload.wikimedia.org/wikipedia/commons/e/e5/Gymnop%C3%A9die_No._1_BI_21_%28Satie%29.ogg";
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);

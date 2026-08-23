@@ -37,7 +37,7 @@ const nextConfig = {
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://lh3.googleusercontent.com",
             "connect-src 'self' https://*.supabase.co https://api.resend.com https://accounts.google.com https://js.stripe.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com",
-            "media-src 'self' https://www.soundhelix.com https://*.supabase.co",
+            "media-src 'self' https://www.soundhelix.com https://*.supabase.co https://upload.wikimedia.org",
             "frame-src https://js.stripe.com https://accounts.google.com",
             "object-src 'none'",
             "base-uri 'self'",
