@@ -93,7 +93,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
     if (!newBrandName.trim()) return;
     setSavingBrand(true);
     try {
-      const res = await fetch("/api/brands", {
+      const res = await fetch("/api/admin/brands", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newBrandName.trim() }),
@@ -398,7 +398,12 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
                     <Image src={img.url} alt="Product image preview" fill className="object-cover" sizes="(max-width: 640px) 50vw, 33vw" unoptimized={img.url.startsWith("blob:")} />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                       <button
-                        onClick={() => setImages((imgs) => imgs.map((im, j) => j === i ? { ...im, isPrimary: true } : { ...im, isPrimary: false }))}
+                        onClick={() => setImages((imgs) => {
+                          const updated = imgs.map((im, j) => ({ ...im, isPrimary: j === i }));
+                          const primary = updated.find(im => im.isPrimary);
+                          const rest = updated.filter(im => !im.isPrimary);
+                          return primary ? [primary, ...rest] : updated;
+                        })}
                         className="text-[10px] px-2 py-1 bg-white/90 text-black rounded font-medium"
                       >
                         {img.isPrimary ? "✓ Primary" : "Set Primary"}
