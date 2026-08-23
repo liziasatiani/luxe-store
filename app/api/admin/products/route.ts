@@ -129,7 +129,7 @@ export async function PUT(req: NextRequest) {
         brandId: data.brandId || null,
         images: {
           deleteMany: {},
-          create: images.map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ url: img.url, altText: img.altText, isPrimary: img.isPrimary ?? i === 0, sortOrder: i })),
+          create: [...images].sort((a: { isPrimary?: boolean }, b: { isPrimary?: boolean }) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0)).map((img: { url: string; altText?: string; isPrimary?: boolean }, i: number) => ({ url: img.url, altText: img.altText, isPrimary: img.isPrimary ?? i === 0, sortOrder: i })),
         },
         specifications: {
           deleteMany: {},
