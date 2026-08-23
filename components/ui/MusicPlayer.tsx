@@ -1,17 +1,15 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-// Comma-separated list of audio URLs, or a single URL
 const PLAYLIST: string[] = (process.env.NEXT_PUBLIC_BG_MUSIC_URL || "")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
 
-// Three built-in ambient tones used when no playlist URL is set
-const AMBIENT_TONES: { label: string; freqs: number[] }[] = [
-  { label: "A minor",  freqs: [110, 165, 220, 277.5] },
-  { label: "C major",  freqs: [130.8, 196, 261.6, 329.6] },
-  { label: "G major",  freqs: [98, 147, 196, 246.9] },
+const AMBIENT_TONES: { freqs: number[] }[] = [
+  { freqs: [110, 165, 220, 277.5] },
+  { freqs: [130.8, 196, 261.6, 329.6] },
+  { freqs: [98, 147, 196, 246.9] },
 ];
 
 type StopFn = () => void;
@@ -95,11 +93,9 @@ export function MusicPlayer() {
     setIndex(n);
     if (hasPlaylist) {
       loadTrack(n, playing);
-    } else {
-      if (playing) {
-        stopToneRef.current?.();
-        stopToneRef.current = startAmbientTone(AMBIENT_TONES[n].freqs, 0.06);
-      }
+    } else if (playing) {
+      stopToneRef.current?.();
+      stopToneRef.current = startAmbientTone(AMBIENT_TONES[n].freqs, 0.06);
     }
   };
 
@@ -119,18 +115,67 @@ export function MusicPlayer() {
         .vinyl-disc.spinning {
           animation-play-state: running;
         }
+        .player-wrap:hover .player-controls,
+        .player-wrap:focus-within .player-controls {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+        .player-controls {
+          opacity: 0;
+          transform: translateY(6px);
+          pointer-events: none;
+          transition: opacity 0.25s ease, transform 0.25s ease;
+        }
       `}</style>
-      <div className="fixed bottom-20 right-4 z-40 md:bottom-6 flex flex-col items-center gap-1">
-        <button
-          onClick={next}
-          aria-label="Next track"
-          title={`Next track (${index + 1} / ${trackCount})`}
-          className="opacity-40 hover:opacity-90 transition-opacity text-black dark:text-white"
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M3 3.5v9l7-4.5-7-4.5zM12 3h1.5v10H12V3z"/>
-          </svg>
-        </button>
+
+      <div className="player-wrap fixed bottom-20 right-4 z-40 md:bottom-6 flex flex-col items-center gap-2">
+
+        {/* Controls revealed on hover */}
+        <div className="player-controls flex flex-col items-center gap-2">
+
+          {/* Track dots */}
+          <div className="flex gap-1.5">
+            {Array.from({ length: trackCount }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  if (i === index) return;
+                  setIndex(i);
+                  if (hasPlaylist) loadTrack(i, playing);
+                  else if (playing) {
+                    stopToneRef.current?.();
+                    stopToneRef.current = startAmbientTone(AMBIENT_TONES[i].freqs, 0.06);
+                  }
+                }}
+                aria-label={`Track ${i + 1}`}
+                className="transition-all duration-200"
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    i === index
+                      ? "w-4 h-1.5 bg-[#C9A84C]"
+                      : "w-1.5 h-1.5 bg-black/30 dark:bg-white/30 hover:bg-black/60 dark:hover:bg-white/60"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+
+          {/* Skip button */}
+          <button
+            onClick={next}
+            aria-label="Next track"
+            className="group/skip w-7 h-7 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 transition-all duration-200"
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"
+              className="text-black/60 dark:text-white/60 group-hover/skip:text-[#C9A84C] transition-colors">
+              <path d="M0.5 1.5 L6 5 L0.5 8.5 V1.5Z M7.5 1.5 H9 V8.5 H7.5 V1.5Z"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Vinyl disc — always visible */}
         <button
           onClick={toggle}
           aria-label={playing ? "Pause music" : "Play music"}
