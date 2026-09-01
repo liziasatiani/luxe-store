@@ -5,49 +5,49 @@
 @layer base {
   :root {
     /* Night Market palette — K variables */
-    --bg: #070A14;
-    --s1: #0E1428;
-    --s2: #141C38;
-    --s3: #1E2545;
-    --gold: #D4A85C;
-    --gold-rgb: 212,168,92;
-    --gold2: rgba(212,168,92,0.18);
-    --gold3: rgba(212,168,92,0.07);
-    --blue: #4EC9C0;
-    --blue2: rgba(78,201,192,0.12);
-    --crimson: #FF5C7A;
-    --crimson2: rgba(255,92,122,0.12);
-    --chalk: #EEE9FF;
-    --chalk2: rgba(238,233,255,0.55);
-    --chalk3: rgba(238,233,255,0.14);
-    --border: rgba(238,233,255,0.08);
-    --borderg: rgba(212,168,92,0.18);
+    --bg: #07090F;
+    --s1: #0D1220;
+    --s2: #131929;
+    --s3: #1A2235;
+    --gold: #C9A44A;
+    --gold-rgb: 201,164,74;
+    --gold2: rgba(201,164,74,0.18);
+    --gold3: rgba(201,164,74,0.07);
+    --blue: #00E5FF;
+    --blue2: rgba(0,229,255,0.12);
+    --crimson: #FF3366;
+    --crimson2: rgba(255,51,102,0.12);
+    --chalk: #EFE9DA;
+    --chalk2: rgba(239,233,218,0.55);
+    --chalk3: rgba(239,233,218,0.15);
+    --border: rgba(239,233,218,0.08);
+    --borderg: rgba(201,164,74,0.18);
     --nav-h: 68px;
-    --serif: var(--font-spectral), Georgia, serif;
+    --serif: var(--font-playfair), Georgia, serif;
     --ka: var(--font-georgian), serif;
-    --sans: var(--font-mulish), system-ui, sans-serif;
+    --sans: var(--font-outfit), system-ui, sans-serif;
 
     /* Legacy prefixed aliases */
-    --nm-bg:    #070A14;
-    --nm-s1:    #0E1428;
-    --nm-s2:    #141C38;
-    --nm-gold:  #D4A85C;
-    --nm-chalk: #EEE9FF;
+    --nm-bg:    #07090F;
+    --nm-s1:    #0D1220;
+    --nm-s2:    #131929;
+    --nm-gold:  #C9A44A;
+    --nm-chalk: #EFE9DA;
     --nm-border: rgba(255,255,255,0.08);
     scroll-behavior: smooth;
   }
 
   :root:not(.dark) {
-    --bg: #F2EFE8;
-    --s1: #EAE5DB;
-    --s2: #E0D9CC;
-    --s3: #D6CCBB;
-    --chalk: #1A150A;
-    --chalk2: rgba(26,21,10,0.55);
-    --chalk3: rgba(26,21,10,0.14);
-    --border: rgba(26,21,10,0.09);
-    --borderg: rgba(212,168,92,0.25);
-    --gold3: rgba(212,168,92,0.06);
+    --bg: #F4F0E8;
+    --s1: #EDE7D8;
+    --s2: #E5DDCC;
+    --s3: #DDD4BF;
+    --chalk: #1A1208;
+    --chalk2: rgba(26,18,8,0.55);
+    --chalk3: rgba(26,18,8,0.15);
+    --border: rgba(26,18,8,0.09);
+    --borderg: rgba(201,164,74,0.25);
+    --gold3: rgba(201,164,74,0.06);
   }
 
   html {
@@ -653,281 +653,4 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   /* Nav */
   #nav { padding: 0 20px; }
   .sec-meta { margin-bottom: 36px; }
-}
-
-/* ══════════════════════════════════════════════════════════════
-   GLASSMORPHISM — 2026-08-25
-   Mist: all pages / Obsidian: [data-glass="obsidian"]
-   Orbs are fixed behind all content; backdrop-filter blurs them through the panels.
-   Revert: cp design-backup/globals.css app/globals.css
-   ══════════════════════════════════════════════════════════════ */
-
-/* ── Ambient orbs — sit behind glass panels ── */
-.glass-orbs {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.glass-orb-1,
-.glass-orb-2,
-.glass-orb-3,
-.glass-orb-4 {
-  position: absolute;
-  border-radius: 50%;
-}
-.glass-orb-1 {
-  width: 580px;
-  height: 580px;
-  top: -160px;
-  right: -60px;
-  background: radial-gradient(circle, rgba(212,168,92,0.58) 0%, transparent 70%);
-  filter: blur(100px);
-}
-.glass-orb-2 {
-  width: 480px;
-  height: 480px;
-  bottom: -120px;
-  left: -50px;
-  background: radial-gradient(circle, rgba(78,201,192,0.44) 0%, transparent 70%);
-  filter: blur(100px);
-  opacity: 0.85;
-}
-.glass-orb-3 {
-  width: 360px;
-  height: 360px;
-  top: 38%;
-  left: 35%;
-  background: radial-gradient(circle, rgba(255,92,122,0.36) 0%, transparent 70%);
-  filter: blur(90px);
-  opacity: 0.72;
-}
-.glass-orb-4 {
-  width: 280px;
-  height: 280px;
-  bottom: 12%;
-  right: 18%;
-  background: radial-gradient(circle, rgba(212,168,92,0.40) 0%, transparent 70%);
-  filter: blur(80px);
-  opacity: 0.5;
-}
-:root:not(.dark) .glass-orb-1 {
-  background: radial-gradient(circle, rgba(212,168,92,0.28) 0%, transparent 70%);
-}
-:root:not(.dark) .glass-orb-2 {
-  background: radial-gradient(circle, rgba(78,201,192,0.20) 0%, transparent 70%);
-}
-:root:not(.dark) .glass-orb-3 {
-  background: radial-gradient(circle, rgba(255,92,122,0.16) 0%, transparent 70%);
-}
-:root:not(.dark) .glass-orb-4 {
-  background: radial-gradient(circle, rgba(212,168,92,0.20) 0%, transparent 70%);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .glass-orb-1 { animation: orb-drift 11s ease-in-out infinite; }
-  .glass-orb-2 { animation: orb-drift 14s ease-in-out infinite; animation-delay: -5s; }
-  .glass-orb-3 { animation: orb-drift 17s ease-in-out infinite; animation-delay: -9s; }
-  .glass-orb-4 { animation: orb-drift 20s ease-in-out infinite; animation-delay: -3s; }
-}
-@keyframes orb-drift {
-  0%,100% { transform: translate(0,0) scale(1); }
-  33%      { transform: translate(22px,-28px) scale(1.06); }
-  66%      { transform: translate(-15px,20px) scale(0.94); }
-}
-
-/* ── Reusable Mist glass card ── */
-.glass-card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.20);
-}
-:root:not(.dark) .glass-card {
-  background: rgba(255,255,255,0.40);
-  border: 1px solid rgba(26,18,8,0.08);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-}
-
-/* The Edit grid — responsive */
-.edit-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-.edit-featured {
-  /* no span override on mobile */
-}
-@media (min-width: 768px) {
-  .edit-grid {
-    grid-template-columns: 1.4fr 1fr;
-  }
-  .edit-featured {
-    grid-row: span 2;
-  }
-}
-
-/* Elevate page content above fixed orbs */
-#main-content {
-  position: relative;
-  z-index: 1;
-}
-footer {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── MIST: product cards ── */
-.pcard {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.10);
-}
-.pcard:hover {
-  background: rgba(255,255,255,0.14);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.16);
-}
-:root:not(.dark) .pcard {
-  background: rgba(255,255,255,0.40);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(26,18,8,0.08);
-}
-:root:not(.dark) .pcard:hover {
-  background: rgba(255,255,255,0.62);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(26,18,8,0.10);
-}
-
-/* ── MIST: footer ── */
-footer {
-  background: rgba(13,18,32,0.72);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-}
-:root:not(.dark) footer {
-  background: rgba(255,255,255,0.46);
-}
-
-/* ── MIST: stats, newsletter, editorial text, page headers ── */
-.stats,
-.nl-section,
-.ed-txt,
-.page-hd,
-.k-page-hdr {
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-}
-:root:not(.dark) .stats,
-:root:not(.dark) .nl-section,
-:root:not(.dark) .ed-txt,
-:root:not(.dark) .page-hd,
-:root:not(.dark) .k-page-hdr {
-  background: rgba(255,255,255,0.46);
-}
-
-/* ══ OBSIDIAN — Tech & Beauty pages only ══ */
-
-[data-glass="obsidian"] .pcard {
-  background: rgba(10,14,28,0.78);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.52), inset 0 0 0 1px rgba(201,164,74,0.16);
-}
-[data-glass="obsidian"] .pcard:hover {
-  background: rgba(16,22,42,0.86);
-  box-shadow: 0 8px 48px rgba(0,0,0,0.62), inset 0 0 0 1px rgba(201,164,74,0.28);
-}
-:root:not(.dark) [data-glass="obsidian"] .pcard {
-  background: rgba(240,236,226,0.88);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(201,164,74,0.22);
-}
-:root:not(.dark) [data-glass="obsidian"] .pcard:hover {
-  background: rgba(248,244,238,0.95);
-  box-shadow: 0 8px 48px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(201,164,74,0.34);
-}
-
-[data-glass="obsidian"] .pgrid {
-  background: rgba(201,164,74,0.14);
-}
-:root:not(.dark) [data-glass="obsidian"] .pgrid {
-  background: rgba(201,164,74,0.18);
-}
-
-[data-glass="obsidian"] .k-page-hdr {
-  background: rgba(10,14,28,0.82);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border-bottom-color: rgba(201,164,74,0.26);
-  box-shadow: 0 2px 32px rgba(0,0,0,0.52);
-}
-:root:not(.dark) [data-glass="obsidian"] .k-page-hdr {
-  background: rgba(240,236,226,0.90);
-  box-shadow: 0 2px 32px rgba(0,0,0,0.08);
-}
-
-/* ── Product detail page ── */
-.dgallery {
-  background: linear-gradient(160deg, #040d1a, #06152a);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.20);
-}
-:root:not(.dark) .dgallery {
-  background: linear-gradient(160deg, #c8ddf0, #b5cfe8);
-  border: 1px solid rgba(26,18,8,0.08);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-}
-.dinfo {
-  background: transparent;
-}
-
-/* ── Rounded everything ── */
-.pcard {
-  border-radius: 14px;
-  overflow: hidden;
-  position: relative;
-}
-.pcard::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.32), transparent);
-  z-index: 2;
-  pointer-events: none;
-}
-.pcard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.28), 0 0 0 1px rgba(212,168,92,0.18) !important;
-  border-color: rgba(212,168,92,0.22);
-}
-.pbadge {
-  border-radius: 6px;
-}
-.btn-cart,
-.btn-wish,
-.hero-cta,
-.nl-btn,
-.nl-input,
-.signin-btn {
-  border-radius: 6px;
-}
-.stats {
-  border-radius: 16px;
-  overflow: hidden;
-}
-.nl-section {
-  border-radius: 16px;
-  overflow: hidden;
-}
-.ed-txt {
-  border-radius: 14px;
-  overflow: hidden;
-}
-.pgrid {
-  border-radius: 14px;
-  overflow: hidden;
 }

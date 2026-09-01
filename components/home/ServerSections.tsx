@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 import { ProductCard, ProductCardSkeleton } from "@/components/product/ProductCard";
+import { TheStandardClient } from "@/components/home/TheStandardClient";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import type { ProductCard as ProductCardType } from "@/types";
@@ -145,10 +146,7 @@ export async function TheStandardSection() {
   return (
     <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="wrap">
-        <SectionHeader eyebrow="What people keep reordering" title="The Standard" viewAllHref="/products" viewAllLabel="View All" />
-        <div className="pgrid">
-          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
-        </div>
+        <TheStandardClient products={products} />
       </div>
     </section>
   );
