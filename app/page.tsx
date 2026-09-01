@@ -42,7 +42,7 @@ export default async function HomePage() {
           <div className="max-w-[1400px] mx-auto px-[52px]"><ProductGridSkeleton /></div>
         </div>
       }>
-        <FeaturedProductsSection />
+        <NewArrivalsSection />
       </Suspense>
       <EditorialPanels />
       <Suspense fallback={
@@ -50,7 +50,7 @@ export default async function HomePage() {
           <div className="max-w-[1400px] mx-auto px-[52px]"><ProductGridSkeleton /></div>
         </div>
       }>
-        <NewArrivalsSection />
+        <FeaturedProductsSection />
       </Suspense>
       <BeautyEditorial />
       <NewsletterK />
