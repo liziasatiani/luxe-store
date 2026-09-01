@@ -61,13 +61,17 @@ function LoginForm() {
 
   return (
     <div style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px" }}>
-      <div style={{ width: "100%", maxWidth: 420 }}>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginBottom: 8 }}>{t("title")}</h1>
-          <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("subtitle")}</p>
+      <div style={{ width: "100%", maxWidth: 420, position: "relative", zIndex: 1 }}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <div style={{ fontFamily: "var(--serif)", fontSize: 18, fontWeight: 600, color: "var(--chalk)", marginBottom: 10, letterSpacing: "0.02em" }}>
+            Everything <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Street</em>
+          </div>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: 24, fontWeight: 300, fontStyle: "italic", color: "var(--chalk)", marginBottom: 6 }}>{t("title")}</h1>
+          <p style={{ fontSize: 12, fontWeight: 300, color: "var(--chalk2)" }}>{t("subtitle")}</p>
         </div>
 
-        <div className="glass-card" style={{ padding: 36 }}>
+        <div style={{ position: "relative", background: "rgba(255,255,255,0.07)", backdropFilter: "blur(40px) saturate(180%)", WebkitBackdropFilter: "blur(40px) saturate(180%)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: 36, overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, var(--gold), transparent)", opacity: 0.45, pointerEvents: "none" }} />
           <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <KInput id="email" label={t("email")} type="email" autoComplete="email" placeholder="you@example.com" error={errors.email?.message} {...register("email")} />
             <KInput id="password" label={t("password")} type={showPw ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" error={errors.password?.message}
