@@ -751,6 +751,23 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   box-shadow: 0 2px 16px rgba(0,0,0,0.06);
 }
 
+/* The Edit grid — responsive */
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.edit-featured {
+  /* no span override on mobile */
+}
+@media (min-width: 768px) {
+  .edit-grid {
+    grid-template-columns: 1.4fr 1fr;
+  }
+  .edit-featured {
+    grid-row: span 2;
+  }
+}
+
 /* Elevate page content above fixed orbs */
 #main-content {
   position: relative;
