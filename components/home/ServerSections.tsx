@@ -27,7 +27,7 @@ function SectionHeader({ eyebrow, title, viewAllHref, viewAllLabel }: {
 }
 
 const PRODUCT_SELECT = {
-  id: true, name: true, slug: true, price: true, comparePrice: true,
+  id: true, name: true, slug: true, description: true, price: true, comparePrice: true,
   stockStatus: true, stock: true, ratingAvg: true, ratingCount: true,
   isFeatured: true, isBestSeller: true, isNewArrival: true, isOnSale: true, brandId: true,
   images: { where: { isPrimary: true }, take: 1, select: { url: true, isPrimary: true, altText: true } },

@@ -1,64 +1,79 @@
 import Link from "next/link";
+import Image from "next/image";
+import { prisma } from "@/lib/prisma";
+import { serializeDecimal } from "@/lib/utils";
 
-const HeadphoneIcon = () => (
-  <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="rgba(78,201,192,0.7)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
-    <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-  </svg>
-);
+const BEAUTY_CATS = ["skincare", "makeup", "hair-care", "body-care", "perfume", "beauty-tools", "beauty"];
+const TECH_CATS = ["headphones", "cameras", "tablets", "gaming", "wearables", "smart-home", "audio", "accessories"];
 
-const LeafIcon = () => (
-  <svg width="66" height="66" viewBox="0 0 24 24" fill="none" stroke="rgba(212,168,92,0.65)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
-    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-  </svg>
-);
+async function getEditProducts() {
+  const [beautyRows, techRows] = await Promise.all([
+    prisma.product.findMany({
+      where: {
+        isActive: true,
+        category: { slug: { in: BEAUTY_CATS } },
+        images: { some: { isPrimary: true } },
+      },
+      orderBy: [{ isFeatured: "desc" }, { salesCount: "desc" }, { ratingAvg: "desc" }],
+      take: 6,
+      select: {
+        id: true, name: true, slug: true, price: true, comparePrice: true,
+        description: true, isFeatured: true, isOnSale: true,
+        brand: { select: { name: true } },
+        category: { select: { slug: true } },
+        images: { where: { isPrimary: true }, take: 1, select: { url: true, altText: true } },
+      },
+    }),
+    prisma.product.findMany({
+      where: {
+        isActive: true,
+        category: { slug: { in: TECH_CATS } },
+        images: { some: { isPrimary: true } },
+      },
+      orderBy: [{ isFeatured: "desc" }, { salesCount: "desc" }, { ratingAvg: "desc" }],
+      take: 3,
+      select: {
+        id: true, name: true, slug: true, price: true, comparePrice: true,
+        description: true, isFeatured: true, isOnSale: true,
+        brand: { select: { name: true } },
+        category: { select: { slug: true } },
+        images: { where: { isPrimary: true }, take: 1, select: { url: true, altText: true } },
+      },
+    }),
+  ]);
 
-const EDIT_ITEMS = [
-  {
-    href: "/beauty",
-    gridRow: "span 2" as const,
-    imageStyle: {
-      flex: 1,
-      minHeight: 620,
-      background: "linear-gradient(155deg,#2d0d3d 0%,#4a1a60 45%,#1a1045 100%)",
-    },
-    imageOverlay: "radial-gradient(ellipse 70% 60% at 30% 30%,rgba(255,92,122,0.28),transparent)",
-    badge: { label: "−20% · Limited", bg: "var(--crimson)", color: "#fff" },
-    brandColor: "var(--gold)",
-    brand: "Charlotte Tilbury",
-    name: "Hollywood Flawless Filter",
-    description: "The glow-giving complexion booster worn by everyone from editors to red-carpet regulars. Buildable, blurring, extraordinary.",
-    price: "₾189",
-    originalPrice: "₾236",
-    icon: <span style={{ fontSize: 88, lineHeight: 1, position: "relative" as const, zIndex: 1, color: "rgba(255,255,255,0.7)" }}>✦</span>,
-  },
-  {
-    href: "/tech",
-    imageStyle: { height: 300, background: "linear-gradient(145deg,#0a2035 0%,#0f3555 50%,#082840 100%)" },
-    imageOverlay: "radial-gradient(ellipse 60% 50% at 70% 20%,rgba(78,201,192,0.30),transparent)",
-    badge: { label: "New Drop", bg: "var(--gold)", color: "#000" },
-    brandColor: "var(--blue)",
-    brand: "Sony",
-    name: "WH-1000XM5 Headphones",
-    price: "₾1,089",
-    icon: <span style={{ position: "relative" as const, zIndex: 1 }}><HeadphoneIcon /></span>,
-  },
-  {
-    href: "/beauty",
-    imageStyle: { height: 300, background: "linear-gradient(145deg,#2a1400 0%,#3d2000 50%,#1a1800 100%)" },
-    imageOverlay: "radial-gradient(ellipse 60% 50% at 30% 70%,rgba(212,168,92,0.28),transparent)",
-    brandColor: "var(--gold)",
-    brand: "La Mer",
-    name: "The Soft Cream",
-    price: "₾489",
-    icon: <span style={{ position: "relative" as const, zIndex: 1 }}><LeafIcon /></span>,
-  },
-];
+  const beauty = serializeDecimal(beautyRows) as unknown as typeof beautyRows;
+  const tech = serializeDecimal(techRows) as unknown as typeof techRows;
 
-export function TheEditSection() {
-  const [featured, ...rest] = EDIT_ITEMS;
+  const featured = beauty[0];
+  const second = tech[0] ?? beauty[1];
+  const third = beauty[1] ?? tech[1];
+
+  return [featured, second, third].filter(Boolean);
+}
+
+function formatPrice(p: number) {
+  return `₾${Number(p).toLocaleString("en", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+}
+
+function firstSentence(text: string | null) {
+  if (!text) return null;
+  return text.split(/[.!?]/)[0].trim();
+}
+
+export async function TheEditSection() {
+  let items: Awaited<ReturnType<typeof getEditProducts>>;
+  try {
+    items = await getEditProducts();
+  } catch {
+    return null;
+  }
+
+  if (items.length === 0) return null;
+
+  const [featured, ...rest] = items;
+  const isFeaturedBeauty = BEAUTY_CATS.some(s => featured.category?.slug?.includes(s));
+  const brandAccentFeatured = isFeaturedBeauty ? "var(--crimson)" : "var(--blue)";
 
   return (
     <section className="py-20">
@@ -93,172 +108,101 @@ export function TheEditSection() {
         <div className="edit-grid" style={{ gap: 2, background: "rgba(238,233,255,0.04)" }}>
           {/* Large featured card */}
           <Link
-            href={featured.href}
+            href={`/products/${featured.slug}`}
             className="glass-card edit-featured"
             style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
           >
-            <div
-              style={{
-                ...featured.imageStyle,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-              }}
-            >
-              <div style={{ position: "absolute", inset: 0, background: featured.imageOverlay }} />
-              {featured.icon}
-              {featured.badge && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    left: 16,
-                    fontFamily: "var(--font-mulish)",
-                    fontSize: 8,
-                    fontWeight: 500,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    background: featured.badge.bg,
-                    color: featured.badge.color,
-                    padding: "4px 10px",
-                    borderRadius: 2,
-                  }}
-                >
-                  {featured.badge.label}
+            <div style={{ flex: 1, minHeight: 620, position: "relative", overflow: "hidden" }}>
+              {featured.images[0]?.url ? (
+                <Image
+                  src={featured.images[0].url}
+                  alt={featured.images[0].altText ?? featured.name}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="(max-width:768px) 100vw, 55vw"
+                  priority
+                />
+              ) : (
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(155deg,#2d0d3d,#4a1a60,#1a1045)" }} />
+              )}
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(7,10,20,0.75) 0%, transparent 50%)" }} />
+              {featured.isOnSale && featured.comparePrice && (
+                <div style={{ position: "absolute", top: 16, left: 16, fontFamily: "var(--font-mulish)", fontSize: 8, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", background: "var(--crimson)", color: "#fff", padding: "4px 10px", borderRadius: 2 }}>
+                  Sale
                 </div>
               )}
             </div>
             <div style={{ padding: "24px 26px 28px" }}>
-              <div
-                style={{
-                  fontFamily: "var(--font-mulish)",
-                  fontSize: 8,
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  color: featured.brandColor,
-                  marginBottom: 6,
-                  opacity: 0.85,
-                }}
-              >
-                {featured.brand}
+              <div style={{ fontFamily: "var(--font-mulish)", fontSize: 8, letterSpacing: "0.22em", textTransform: "uppercase", color: brandAccentFeatured, marginBottom: 6, opacity: 0.85 }}>
+                {featured.brand?.name}
               </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-spectral)",
-                  fontSize: 22,
-                  fontWeight: 600,
-                  color: "var(--chalk)",
-                  lineHeight: 1.1,
-                  marginBottom: 8,
-                }}
-              >
+              <div style={{ fontFamily: "var(--font-spectral)", fontSize: 22, fontWeight: 600, color: "var(--chalk)", lineHeight: 1.1, marginBottom: 8 }}>
                 {featured.name}
               </div>
               {featured.description && (
-                <p
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 300,
-                    color: "var(--chalk2)",
-                    lineHeight: 1.7,
-                    marginBottom: 18,
-                    letterSpacing: "0.01em",
-                  }}
-                >
-                  {featured.description}
+                <p style={{ fontSize: 12, fontWeight: 300, color: "var(--chalk2)", lineHeight: 1.7, marginBottom: 18, letterSpacing: "0.01em" }}>
+                  {firstSentence(featured.description)}
                 </p>
               )}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div>
-                  <span style={{ fontSize: 20, fontWeight: 500, color: "var(--chalk)" }}>{featured.price}</span>
-                  {featured.originalPrice && (
+                  <span style={{ fontSize: 20, fontWeight: 500, color: "var(--chalk)" }}>{formatPrice(Number(featured.price))}</span>
+                  {featured.comparePrice && Number(featured.comparePrice) > Number(featured.price) && (
                     <span style={{ fontSize: 11, color: "var(--chalk2)", textDecoration: "line-through", marginLeft: 6 }}>
-                      {featured.originalPrice}
+                      {formatPrice(Number(featured.comparePrice))}
                     </span>
                   )}
                 </div>
-                <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 2 }}>
-                  Shop Now
-                </span>
+                <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 2 }}>Shop Now</span>
               </div>
             </div>
           </Link>
 
           {/* Smaller cards */}
-          {rest.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="glass-card"
-              style={{ overflow: "hidden" }}
-            >
-              <div
-                style={{
-                  ...item.imageStyle,
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+          {rest.map((item) => {
+            const isTechItem = TECH_CATS.some(s => item.category?.slug?.includes(s));
+            const brandAccent = isTechItem ? "var(--blue)" : "var(--gold)";
+            return (
+              <Link
+                key={item.id}
+                href={`/products/${item.slug}`}
+                className="glass-card"
+                style={{ overflow: "hidden" }}
               >
-                <div style={{ position: "absolute", inset: 0, background: item.imageOverlay }} />
-                {item.icon}
-                {item.badge && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 12,
-                      left: 12,
-                      fontFamily: "var(--font-mulish)",
-                      fontSize: 7,
-                      fontWeight: 500,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      background: item.badge.bg,
-                      color: item.badge.color,
-                      padding: "3px 8px",
-                      borderRadius: 2,
-                    }}
-                  >
-                    {item.badge.label}
+                <div style={{ height: 300, position: "relative", overflow: "hidden" }}>
+                  {item.images[0]?.url ? (
+                    <Image
+                      src={item.images[0].url}
+                      alt={item.images[0].altText ?? item.name}
+                      fill
+                      style={{ objectFit: "cover" }}
+                      sizes="(max-width:768px) 100vw, 35vw"
+                    />
+                  ) : (
+                    <div style={{ position: "absolute", inset: 0, background: isTechItem ? "linear-gradient(145deg,#0a2035,#0f3555,#082840)" : "linear-gradient(145deg,#2a1400,#3d2000,#1a1800)" }} />
+                  )}
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(7,10,20,0.65) 0%, transparent 55%)" }} />
+                  {item.isOnSale && (
+                    <div style={{ position: "absolute", top: 12, left: 12, fontFamily: "var(--font-mulish)", fontSize: 7, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", background: "var(--gold)", color: "#000", padding: "3px 8px", borderRadius: 2 }}>
+                      Sale
+                    </div>
+                  )}
+                </div>
+                <div style={{ padding: "18px 20px" }}>
+                  <div style={{ fontFamily: "var(--font-mulish)", fontSize: 8, letterSpacing: "0.22em", textTransform: "uppercase", color: brandAccent, marginBottom: 5, opacity: 0.85 }}>
+                    {item.brand?.name}
                   </div>
-                )}
-              </div>
-              <div style={{ padding: "18px 20px" }}>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mulish)",
-                    fontSize: 8,
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: item.brandColor,
-                    marginBottom: 5,
-                    opacity: 0.85,
-                  }}
-                >
-                  {item.brand}
+                  <div style={{ fontFamily: "var(--font-spectral)", fontSize: 17, fontWeight: 600, color: "var(--chalk)", marginBottom: 10 }}>
+                    {item.name}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{ fontSize: 16, fontWeight: 500, color: "var(--chalk)" }}>{formatPrice(Number(item.price))}</span>
+                    <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 2 }}>Shop Now</span>
+                  </div>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-spectral)",
-                    fontSize: 17,
-                    fontWeight: 600,
-                    color: "var(--chalk)",
-                    marginBottom: 10,
-                  }}
-                >
-                  {item.name}
-                </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 16, fontWeight: 500, color: "var(--chalk)" }}>{item.price}</span>
-                  <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 2 }}>
-                    Shop Now
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
