@@ -180,7 +180,10 @@
     "freeShippingUnlocked": "You've unlocked free shipping",
     "addMoreForFreeShip": "Add {amount} more for free shipping",
     "youMightAlsoLike": "You might also like",
-    "add": "Add"
+    "add": "Add",
+    "yourOrder": "Your Order",
+    "secure": "Secure",
+    "freeReturns": "Free returns"
   },
   "checkout": {
     "title": "Checkout",

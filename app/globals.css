@@ -23,9 +23,9 @@
     --border: rgba(239,233,218,0.08);
     --borderg: rgba(201,164,74,0.18);
     --nav-h: 68px;
-    --serif: var(--font-playfair), Georgia, serif;
+    --serif: var(--font-spectral), Georgia, serif;
     --ka: var(--font-georgian), serif;
-    --sans: var(--font-outfit), system-ui, sans-serif;
+    --sans: var(--font-mulish), system-ui, sans-serif;
 
     /* Legacy prefixed aliases */
     --nm-bg:    #07090F;
@@ -653,4 +653,272 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   /* Nav */
   #nav { padding: 0 20px; }
   .sec-meta { margin-bottom: 36px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GLASSMORPHISM — 2026-08-25
+   Mist: all pages / Obsidian: [data-glass="obsidian"]
+   Orbs are fixed behind all content; backdrop-filter blurs them through the panels.
+   Revert: cp design-backup/globals.css app/globals.css
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Ambient orbs — sit behind glass panels ── */
+.glass-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* Dark indigo base layer — makes orbs visible against near-black background */
+.glass-orbs::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 900px 700px at 80% -20%, rgba(20,30,70,0.90), transparent 65%),
+    radial-gradient(ellipse 700px 500px at -10% 85%, rgba(10,20,55,0.80), transparent 65%),
+    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(15,10,40,0.60), transparent 65%);
+  transition: background 0.6s;
+}
+:root:not(.dark) .glass-orbs::before {
+  background:
+    radial-gradient(ellipse 900px 700px at 80% -20%, rgba(255,240,200,0.55), transparent 65%),
+    radial-gradient(ellipse 700px 500px at -10% 85%, rgba(200,230,255,0.50), transparent 65%);
+}
+body:has([data-glass="obsidian"]) .glass-orbs::before {
+  background:
+    radial-gradient(ellipse 900px 700px at 75% -20%, rgba(30,40,100,0.95), transparent 65%),
+    radial-gradient(ellipse 700px 550px at -15% 80%, rgba(18,28,80,0.90), transparent 65%),
+    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(22,10,55,0.80), transparent 65%);
+}
+.glass-orb-1,
+.glass-orb-2,
+.glass-orb-3,
+.glass-orb-4 {
+  position: absolute;
+  border-radius: 50%;
+}
+.glass-orb-1 {
+  width: 720px;
+  height: 720px;
+  top: -200px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(201,164,74,0.50) 0%, transparent 70%);
+  filter: blur(90px);
+}
+.glass-orb-2 {
+  width: 620px;
+  height: 620px;
+  bottom: 0;
+  left: -100px;
+  background: radial-gradient(circle, rgba(0,229,255,0.38) 0%, transparent 70%);
+  filter: blur(90px);
+}
+.glass-orb-3 {
+  width: 480px;
+  height: 480px;
+  top: 35%;
+  left: 28%;
+  background: radial-gradient(circle, rgba(255,51,102,0.32) 0%, transparent 70%);
+  filter: blur(90px);
+}
+.glass-orb-4 {
+  width: 320px;
+  height: 320px;
+  bottom: 10%;
+  right: 20%;
+  background: radial-gradient(circle, rgba(201,164,74,0.50) 0%, transparent 70%);
+  filter: blur(90px);
+  opacity: 0.4;
+}
+:root:not(.dark) .glass-orb-1 {
+  background: radial-gradient(circle, rgba(201,164,74,0.36) 0%, transparent 70%);
+}
+:root:not(.dark) .glass-orb-2 {
+  background: radial-gradient(circle, rgba(0,180,220,0.28) 0%, transparent 70%);
+}
+:root:not(.dark) .glass-orb-3 {
+  background: radial-gradient(circle, rgba(220,60,90,0.24) 0%, transparent 70%);
+}
+:root:not(.dark) .glass-orb-4 {
+  background: radial-gradient(circle, rgba(201,164,74,0.36) 0%, transparent 70%);
+}
+
+/* Intensify orbs on Obsidian pages (tech/beauty) */
+body:has([data-glass="obsidian"]) .glass-orb-1 {
+  background: radial-gradient(circle, rgba(201,164,74,0.55) 0%, transparent 70%);
+}
+body:has([data-glass="obsidian"]) .glass-orb-2 {
+  background: radial-gradient(circle, rgba(0,229,255,0.38) 0%, transparent 70%);
+}
+body:has([data-glass="obsidian"]) .glass-orb-3 {
+  background: radial-gradient(circle, rgba(255,51,102,0.36) 0%, transparent 70%);
+}
+body:has([data-glass="obsidian"]) .glass-orb-4 {
+  background: radial-gradient(circle, rgba(201,164,74,0.55) 0%, transparent 70%);
+}
+
+/* ── Reusable Mist glass card ── */
+.glass-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.20);
+}
+:root:not(.dark) .glass-card {
+  background: rgba(255,255,255,0.40);
+  border: 1px solid rgba(26,18,8,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+/* Elevate page content above fixed orbs */
+#main-content {
+  position: relative;
+  z-index: 1;
+}
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── MIST: product cards ── */
+.pcard {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.10);
+}
+.pcard:hover {
+  background: rgba(255,255,255,0.14);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.16);
+}
+:root:not(.dark) .pcard {
+  background: rgba(255,255,255,0.40);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(26,18,8,0.08);
+}
+:root:not(.dark) .pcard:hover {
+  background: rgba(255,255,255,0.62);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(26,18,8,0.10);
+}
+
+/* ── MIST: footer ── */
+footer {
+  background: rgba(13,18,32,0.72);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+}
+:root:not(.dark) footer {
+  background: rgba(255,255,255,0.46);
+}
+
+/* ── MIST: stats, newsletter, editorial text, page headers ── */
+.stats,
+.nl-section,
+.ed-txt,
+.page-hd,
+.k-page-hdr {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+:root:not(.dark) .stats,
+:root:not(.dark) .nl-section,
+:root:not(.dark) .ed-txt,
+:root:not(.dark) .page-hd,
+:root:not(.dark) .k-page-hdr {
+  background: rgba(255,255,255,0.46);
+}
+
+/* ══ OBSIDIAN — Tech & Beauty pages only ══ */
+
+[data-glass="obsidian"] .pcard {
+  background: rgba(10,14,28,0.78);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.52), inset 0 0 0 1px rgba(201,164,74,0.16);
+}
+[data-glass="obsidian"] .pcard:hover {
+  background: rgba(16,22,42,0.86);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.62), inset 0 0 0 1px rgba(201,164,74,0.28);
+}
+:root:not(.dark) [data-glass="obsidian"] .pcard {
+  background: rgba(240,236,226,0.88);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(201,164,74,0.22);
+}
+:root:not(.dark) [data-glass="obsidian"] .pcard:hover {
+  background: rgba(248,244,238,0.95);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(201,164,74,0.34);
+}
+
+[data-glass="obsidian"] .pgrid {
+  background: rgba(201,164,74,0.14);
+}
+:root:not(.dark) [data-glass="obsidian"] .pgrid {
+  background: rgba(201,164,74,0.18);
+}
+
+[data-glass="obsidian"] .k-page-hdr {
+  background: rgba(10,14,28,0.82);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border-bottom-color: rgba(201,164,74,0.26);
+  box-shadow: 0 2px 32px rgba(0,0,0,0.52);
+}
+:root:not(.dark) [data-glass="obsidian"] .k-page-hdr {
+  background: rgba(240,236,226,0.90);
+  box-shadow: 0 2px 32px rgba(0,0,0,0.08);
+}
+
+/* ── Product detail page ── */
+.dgallery {
+  background: linear-gradient(160deg, #040d1a, #06152a);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.20);
+}
+:root:not(.dark) .dgallery {
+  background: linear-gradient(160deg, #c8ddf0, #b5cfe8);
+  border: 1px solid rgba(26,18,8,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+.dinfo {
+  background: transparent;
+}
+
+/* ── Rounded everything ── */
+.pcard {
+  border-radius: 14px;
+  overflow: hidden;
+}
+.pbadge {
+  border-radius: 6px;
+}
+.btn-cart,
+.btn-wish,
+.hero-cta,
+.nl-btn,
+.nl-input,
+.signin-btn {
+  border-radius: 6px;
+}
+.stats {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.nl-section {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.ed-txt {
+  border-radius: 14px;
+  overflow: hidden;
+}
+.pgrid {
+  border-radius: 14px;
+  overflow: hidden;
 }

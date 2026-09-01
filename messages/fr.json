@@ -180,7 +180,10 @@
     "freeShippingUnlocked": "Vous bénéficiez de la livraison gratuite",
     "addMoreForFreeShip": "Ajoutez {amount} pour la livraison gratuite",
     "youMightAlsoLike": "Vous pourriez aussi aimer",
-    "add": "Ajouter"
+    "add": "Ajouter",
+    "yourOrder": "Votre commande",
+    "secure": "Sécurisé",
+    "freeReturns": "Retours gratuits"
   },
   "checkout": {
     "title": "Passer commande",
