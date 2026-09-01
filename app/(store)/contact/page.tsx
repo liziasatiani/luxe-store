@@ -47,11 +47,13 @@ export default function ContactPage() {
         }
         .contact-info {
           padding: 88px 64px;
-          border-right: 1px solid var(--border);
+          border-right: 1px solid rgba(255,255,255,0.08);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          background: var(--s1);
+          background: rgba(255,255,255,0.04);
+          backdrop-filter: blur(10px) saturate(140%);
+          -webkit-backdrop-filter: blur(10px) saturate(140%);
         }
         .contact-form {
           padding: 88px 64px;

@@ -81,7 +81,7 @@ export default function TrackOrderPage() {
       <div style={{ paddingTop: 64, paddingBottom: 96 }}>
         <div className="wrap" style={{ maxWidth: 560 }}>
           {/* Search form */}
-          <div style={{ border: "1px solid var(--border)", padding: 28, marginBottom: 32, display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="glass-card" style={{ padding: 28, marginBottom: 32, display: "flex", flexDirection: "column", gap: 16 }}>
             <KInput
               label={t("orderNumber")}
               placeholder={t("orderNumberPlaceholder")}

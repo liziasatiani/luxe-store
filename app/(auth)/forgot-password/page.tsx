@@ -48,14 +48,14 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px", background: "var(--bg)" }}>
+    <div style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px" }}>
       <div style={{ width: "100%", maxWidth: 420 }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <h1 style={{ fontFamily: "var(--serif)", fontSize: 28, fontWeight: 700, color: "var(--chalk)", marginBottom: 8 }}>{t("title")}</h1>
           <p style={{ fontSize: 13, color: "var(--chalk2)" }}>{t("subtitle")}</p>
         </div>
 
-        <div style={{ border: "1px solid var(--border)", padding: 36 }}>
+        <div className="glass-card" style={{ padding: 36 }}>
           {sent ? (
             <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
               <div style={{ width: 52, height: 52, border: "1px solid var(--gold)", display: "flex", alignItems: "center", justifyContent: "center" }}>

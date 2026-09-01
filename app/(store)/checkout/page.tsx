@@ -462,7 +462,7 @@ export default function CheckoutPage() {
                   <button onClick={() => setStep(1)} style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--chalk3)", background: "none", border: "none", cursor: "pointer" }}>{t("editShipping")}</button>
                 </div>
 
-                <div style={{ padding: 16, border: "1px solid var(--borderg)", background: "var(--s1)" }}>
+                <div className="glass-card" style={{ padding: 16 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <Truck size={13} style={{ color: "var(--chalk3)" }} />
                     <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("shippingTo")}</p>
@@ -527,7 +527,7 @@ export default function CheckoutPage() {
 
           {/* Order summary sidebar */}
           <div>
-            <div style={{ position: "sticky", top: 96, border: "1px solid var(--border)", padding: 24, background: "var(--s1)", display: "flex", flexDirection: "column", gap: 16 }}>
+            <div className="glass-card" style={{ position: "sticky", top: 96, padding: 24, display: "flex", flexDirection: "column", gap: 16 }}>
               <p style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--chalk3)" }}>{t("orderSummary")}</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 208, overflowY: "auto" }}>
                 {items.map(item => (

@@ -347,3 +347,147 @@ These services are disclosed in legal pages. If any are added, removed, or chang
 [2026-08-10] LEGAL [app/(store)/returns/page.tsx] — Full legal overhaul: 14-day Georgian return right, beauty hygiene exception, 2-year electronics warranty, returns email corrected to .ge domain.
 [2026-08-10] LEGAL [app/(store)/shipping/page.tsx] — Full legal overhaul: fragrance/aerosol air restrictions, lithium battery IATA rules, duties disclaimer, voltage warning.
 [2026-08-10] LEGAL [app/(store)/cookie-policy/page.tsx] — Full legal overhaul: Stripe mandatory cookies disclosed, GA4 consent-gated, no advertising cookies stated explicitly.
+
+---
+
+## Design Snapshot
+
+Captured 2026-08-25 before glassmorphism changes. Describes the **original design** exactly as it existed at this point.
+
+### Source Files
+| File | Role |
+|------|------|
+| `app/globals.css` | All custom CSS: tokens, nav, hero, editorial, cards, footer, responsive |
+| `tailwind.config.ts` | Tailwind design tokens: colors, fonts, spacing, shadows, animations |
+
+### Color Tokens (CSS custom properties in `globals.css`)
+
+**Dark mode (`:root` default — applied when `<html>` has class `dark`):**
+```
+--bg:      #07090F       (deepest background)
+--s1:      #0D1220       (surface 1 — cards, footer, nav solid)
+--s2:      #131929       (surface 2 — dropdowns, hover states)
+--s3:      #1A2235       (surface 3 — subtle raised elements)
+--gold:    #C9A44A       (primary accent — borders, CTAs, highlights)
+--gold2:   rgba(201,164,74,0.18)
+--gold3:   rgba(201,164,74,0.07)
+--blue:    #00E5FF       (tech category accent)
+--blue2:   rgba(0,229,255,0.12)
+--crimson: #FF3366       (beauty category accent)
+--crimson2:rgba(255,51,102,0.12)
+--chalk:   #EFE9DA       (primary text)
+--chalk2:  rgba(239,233,218,0.55)  (secondary text)
+--chalk3:  rgba(239,233,218,0.15)  (muted text, labels)
+--border:  rgba(239,233,218,0.08)  (dividers)
+--borderg: rgba(201,164,74,0.18)   (gold-tinted borders on interactive elements)
+--nav-h:   68px
+```
+
+**Light mode (`:root:not(.dark)` — active when `dark` class is absent from `<html>`):**
+```
+--bg:      #F4F0E8
+--s1:      #EDE7D8
+--s2:      #E5DDCC
+--s3:      #DDD4BF
+--chalk:   #1A1208
+--chalk2:  rgba(26,18,8,0.55)
+--chalk3:  rgba(26,18,8,0.15)
+--border:  rgba(26,18,8,0.09)
+--borderg: rgba(201,164,74,0.25)
+--gold3:   rgba(201,164,74,0.06)
+(gold, blue, crimson unchanged from dark)
+```
+
+### Typography
+- **Serif display** (`--serif`, `font-display`, `font-serif`): Playfair Display — used for headings, product names, logo, editorial titles
+- **Sans-serif body** (`--sans`, `font-sans`): Outfit — used for UI, labels, buttons, body text
+- **Georgian** (`--ka`, `font-georgian`): Noto Serif Georgian — used for KA-locale hero text
+- All loaded via Next.js `next/font/google` with `display: swap`
+
+### Key Component Styles (all in `globals.css`)
+
+**Navigation (`#nav`):**
+- Fixed, height 68px, `grid-template-columns: 1fr auto 1fr`
+- Transparent by default; `.solid` state: `background: rgba(7,9,15,0.88)` + `backdrop-filter: blur(24px)`
+- Light mode solid: `background: rgba(244,240,232,0.92)`
+- Dropdown (`.nav-dropdown`): `background: rgba(7,9,15,0.96)` + `backdrop-filter: blur(24px)`
+
+**Product cards (`.pcard`):**
+- `background: var(--bg)` — solid, no blur
+- Hover: `background: var(--s1)`
+- Border radius: `border-radius: 1px` (effectively square)
+- Grid gap: `gap: 1px; background: var(--border)` (hairline separator between cards)
+
+**Buttons:**
+- `.btn-cart`: transparent bg, `border: 1px solid var(--borderg)`, gold text, `border-radius: 1px`. Hover: `background: var(--gold)`
+- `.btn-wish`: `border: 1px solid var(--border)`, `border-radius: 1px`
+- `.signin-btn`: `border-radius: 20px` (pill), gold border + text
+
+**Hero (`.hero`):**
+- `min-height: calc(100svh + var(--nav-h))`, `grid-template-columns: 1fr 1fr`
+- CTA (`.hero-cta`): `border-radius: 1px`, `backdrop-filter: blur(8px)` — already has glass
+- No ambient orbs or colored blobs
+
+**Footer (`footer`):**
+- `background: var(--s1)` — solid surface color
+
+**Sections:**
+- `.section`: `padding: 96px 0`
+- `.wrap`: `max-width: 1400px; padding: 0 52px`
+- Mobile: `padding: 0 20px`
+
+**Page headers (`.page-hd`, `.k-page-hdr`):**
+- `background: var(--bg)` — solid
+
+**Border radius convention:** Almost everything uses `border-radius: 1px` (near-square). Only `.signin-btn` and newsletter inputs use rounded variants (`20px`, `2px`).
+
+### Tailwind Color Scale (from `tailwind.config.ts`)
+```
+brand-500: #C9A44A   (= --gold)
+surface-950: #07090F (= --bg)
+surface-900: #0D1220 (= --s1)
+surface-800: #1A1720 (= --s2)
+surface-50:  #EFE9DA (= --chalk)
+accent-500:  #FF3366 (= --crimson)
+tech:        #00E5FF (= --blue)
+```
+
+### Shadows (`tailwind.config.ts`)
+```
+luxury:     0 4px 24px -2px rgba(0,0,0,0.08), 0 2px 8px -1px rgba(0,0,0,0.04)
+luxury-md:  0 8px 40px -4px rgba(0,0,0,0.12), 0 4px 16px -2px rgba(0,0,0,0.06)
+glow-gold:  0 0 24px rgba(182,130,53,0.35)
+```
+
+### What Already Has Glass
+These components already had `backdrop-filter` before the glassmorphism update:
+- `#nav.solid` — `blur(24px)` ✓
+- `.nav-dropdown` — `blur(24px)` ✓
+- `.hero-cta` — `blur(8px)` ✓
+- `.ann-bar` — `blur(20px)` ✓
+
+Everything else (product cards, footer, page headers, editorial panels, newsletter section, stats) used **solid** `var(--bg)` or `var(--s1)` backgrounds.
+
+---
+
+## How to Revert
+
+If glassmorphism changes need to be undone completely, restore exactly these two files:
+
+```bash
+# From the project root:
+cp design-backup/globals.css app/globals.css
+cp design-backup/tailwind.config.ts tailwind.config.ts
+```
+
+Then verify nothing is broken:
+```bash
+npx tsc --noEmit
+npm run build
+```
+
+**What the backup contains:** The complete pre-glassmorphism state of `app/globals.css` (657 lines) and `tailwind.config.ts` captured on 2026-08-25. No other files need restoring — glassmorphism changes are confined to these two files plus optional orb markup in `app/layout.tsx` (which was NOT modified and does not need reverting).
+
+**If orbs were added to `app/layout.tsx`:** Remove any `<div>` elements with class names like `orb`, `bg-orbs`, or similar ambient gradient divs that were added inside `<body>` before `<Navbar />`.
+
+**Backup location:** `design-backup/` in the project root — these files are not tracked by git and will not be deployed.
