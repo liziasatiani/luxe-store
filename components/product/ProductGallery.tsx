@@ -46,7 +46,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       }}>
         {/* Main image */}
         <div
-          style={{ flex: 1, background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 1, overflow: "hidden", cursor: "zoom-in", position: "relative" }}
+          style={{ flex: 1, background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden", cursor: "zoom-in", position: "relative" }}
           onClick={() => setLightboxOpen(true)}
         >
           <AnimatePresence mode="wait">
@@ -82,7 +82,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                   flex: 1,
                   background: "var(--s1)",
                   border: `1px solid ${i === activeIdx ? "var(--gold)" : "var(--border)"}`,
-                  borderRadius: 1,
+                  borderRadius: 8,
                   overflow: "hidden",
                   cursor: "pointer",
                   opacity: i === activeIdx ? 1 : 0.4,

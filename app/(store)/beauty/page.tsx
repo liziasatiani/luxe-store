@@ -28,7 +28,7 @@ export default async function BeautyPage() {
   ]);
 
   return (
-    <>
+    <div data-glass="obsidian">
       <div className="k-page-hdr">
         <div className="wrap">
           <p className="page-hd-eyebrow">{t("collection")}</p>
@@ -51,6 +51,6 @@ export default async function BeautyPage() {
         </div>
       </div>
       <TrustBar />
-    </>
+    </div>
   );
 }

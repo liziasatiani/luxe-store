@@ -87,7 +87,7 @@ export function AddToCartSection({ product }: Props) {
                   border: `1px solid ${selectedVariant?.id === v.id ? "var(--gold)" : "var(--borderg)"}`,
                   background: selectedVariant?.id === v.id ? "var(--gold)" : "transparent",
                   color: selectedVariant?.id === v.id ? "#000" : "var(--chalk2)",
-                  borderRadius: 1,
+                  borderRadius: 8,
                   cursor: v.stock === 0 ? "not-allowed" : "pointer",
                   opacity: v.stock === 0 ? 0.4 : 1,
                   transition: "all 0.15s",
@@ -102,7 +102,7 @@ export function AddToCartSection({ product }: Props) {
 
       {/* Quantity — K .dqty */}
       <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{t("quantity")}</p>
-      <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 1, width: "fit-content", marginBottom: 26 }}>
+      <div style={{ display: "flex", alignItems: "center", border: "1px solid var(--border)", borderRadius: 8, width: "fit-content", marginBottom: 26 }}>
         <button
           onClick={() => setQty(q => Math.max(1, q - 1))}
           aria-label={t("decreaseQty")}
@@ -129,7 +129,7 @@ export function AddToCartSection({ product }: Props) {
         <button
           onClick={handleAddToCart}
           disabled={outOfStock}
-          style={{ width: "100%", padding: 16, background: "var(--gold)", color: "#000", fontFamily: "var(--sans)", fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", borderRadius: 1, marginBottom: 11, transition: "opacity 0.2s", opacity: outOfStock ? 0.4 : 1, cursor: outOfStock ? "not-allowed" : "pointer" }}
+          style={{ width: "100%", padding: 16, background: "var(--gold)", color: "#000", fontFamily: "var(--sans)", fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", borderRadius: 8, marginBottom: 11, transition: "opacity 0.2s", opacity: outOfStock ? 0.4 : 1, cursor: outOfStock ? "not-allowed" : "pointer" }}
           onMouseEnter={e => { if (!outOfStock) (e.currentTarget as HTMLElement).style.opacity = "0.85"; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = outOfStock ? "0.4" : "1"; }}
         >
@@ -140,7 +140,7 @@ export function AddToCartSection({ product }: Props) {
         {/* Wishlist — K .dwish */}
         <button
           onClick={() => { toggle(product.id); toast.success(isWishlisted ? t("removed") : t("addToWishlist")); }}
-          style={{ width: "100%", padding: 15, border: "1px solid var(--borderg)", borderRadius: 1, fontFamily: "var(--sans)", fontSize: 12, fontWeight: 400, letterSpacing: "0.12em", textTransform: "uppercase", color: isWishlisted ? "var(--gold)" : "var(--chalk2)", background: isWishlisted ? "var(--gold3)" : "transparent", transition: "all 0.2s", cursor: "pointer" }}
+          style={{ width: "100%", padding: 15, border: "1px solid var(--borderg)", borderRadius: 8, fontFamily: "var(--sans)", fontSize: 12, fontWeight: 400, letterSpacing: "0.12em", textTransform: "uppercase", color: isWishlisted ? "var(--gold)" : "var(--chalk2)", background: isWishlisted ? "var(--gold3)" : "transparent", transition: "all 0.2s", cursor: "pointer" }}
           onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "var(--gold)"; el.style.color = "var(--gold)"; el.style.background = "var(--gold3)"; }}
           onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "var(--borderg)"; el.style.color = isWishlisted ? "var(--gold)" : "var(--chalk2)"; el.style.background = isWishlisted ? "var(--gold3)" : "transparent"; }}
         >
@@ -171,14 +171,14 @@ export function AddToCartSection({ product }: Props) {
           <button
             onClick={handleAddToCart}
             disabled={outOfStock}
-            style={{ height: 44, padding: "0 20px", background: "var(--gold)", color: "#000", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", borderRadius: 1, opacity: outOfStock ? 0.4 : 1 }}
+            style={{ height: 44, padding: "0 20px", background: "var(--gold)", color: "#000", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", borderRadius: 8, opacity: outOfStock ? 0.4 : 1 }}
           >
             {outOfStock ? t("outOfStock") : t("addToCart")}
           </button>
           <button
             onClick={handleBuyNow}
             disabled={outOfStock}
-            style={{ height: 44, padding: "0 20px", border: "1px solid var(--borderg)", color: "var(--chalk2)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", borderRadius: 1, opacity: outOfStock ? 0.4 : 1 }}
+            style={{ height: 44, padding: "0 20px", border: "1px solid var(--borderg)", color: "var(--chalk2)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", borderRadius: 8, opacity: outOfStock ? 0.4 : 1 }}
           >
             {t("buyNow")}
           </button>

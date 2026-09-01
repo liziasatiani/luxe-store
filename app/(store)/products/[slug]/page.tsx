@@ -68,6 +68,7 @@ export default async function ProductPage({ params }: Props) {
     inTheBox_ka?: string | null; inTheBox_fr?: string | null; inTheBox_es?: string | null;
   };
   const discount = p.comparePrice ? formatDiscount(Number(p.comparePrice), Number(p.price)) : 0;
+  const savedAmount = p.comparePrice ? (Number(p.comparePrice) - Number(p.price)) : 0;
 
   const locale = await getLocale();
   const tProduct = await getTranslations("product");
@@ -96,7 +97,7 @@ export default async function ProductPage({ params }: Props) {
         <ProductGallery images={p.images} productName={p.name} />
 
         {/* Right: .dinfo — scrollable info panel */}
-        <div style={{ padding: "60px 56px", overflowY: "auto", borderLeft: "1px solid var(--border)" }}>
+        <div className="dinfo" style={{ padding: "60px 56px", overflowY: "auto" }}>
 
           {/* .dcrumb */}
           <ProductBreadcrumb crumbs={breadcrumbs} />
@@ -126,20 +127,22 @@ export default async function ProductPage({ params }: Props) {
             <Price amount={Number(p.price)} />
           </div>
           {p.comparePrice && Number(p.comparePrice) > Number(p.price) && (
-            <div style={{ fontSize: 16, color: "var(--chalk2)", textDecoration: "line-through", marginBottom: 36 }}>
+            <div style={{ fontSize: 16, color: "var(--chalk2)", textDecoration: "line-through", marginBottom: 6 }}>
               <Price amount={Number(p.comparePrice)} />
+            </div>
+          )}
+          {discount > 0 && (
+            <div style={{ fontSize: 11, color: "#22c55e", fontWeight: 600, marginBottom: 26, display: "flex", alignItems: "center", gap: 4 }}>
+              You save <Price amount={savedAmount} /> · {discount}% off
             </div>
           )}
 
           {/* Badges */}
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
-            {p.isNewArrival && (
-              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 1 }}>New</span>
-            )}
-            {discount > 0 && (
-              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "#dc2626", color: "#fff", borderRadius: 1 }}>-{discount}%</span>
-            )}
-          </div>
+          {p.isNewArrival && (
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 6 }}>New</span>
+            </div>
+          )}
 
           <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "0 0 32px" }} />
 

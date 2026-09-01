@@ -28,7 +28,7 @@ export default async function TechPage() {
   ]);
 
   return (
-    <>
+    <div data-glass="obsidian">
       <div className="k-page-hdr">
         <div className="wrap">
           <p className="page-hd-eyebrow">{t("collection")}</p>
@@ -51,6 +51,6 @@ export default async function TechPage() {
         </div>
       </div>
       <TrustBar />
-    </>
+    </div>
   );
 }
