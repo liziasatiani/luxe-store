@@ -112,6 +112,9 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
           <div className="pbody">
             {product.brand && <div className="pbrand">{product.brand.name}</div>}
             <div className="pname line-clamp-2">{product.name}</div>
+            {product.description && (
+              <p className="ptagline line-clamp-1">{product.description.split(/[.!?]/)[0].trim()}</p>
+            )}
             <div className="prow">
               <span className="pprice">{format(price)}</span>
               {comparePrice && comparePrice > price && (

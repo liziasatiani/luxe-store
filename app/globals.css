@@ -367,7 +367,8 @@ textarea:focus-visible,
 .pbadge.bd { background: #dc2626; color: #fff; }
 .pbody { padding: 22px 26px 28px; }
 .pbrand { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--chalk2); margin-bottom: 7px; }
-.pname { font-family: var(--serif); font-size: 18px; font-weight: 400; line-height: 1.25; margin-bottom: 14px; color: var(--chalk); }
+.pname { font-family: var(--serif); font-size: 18px; font-weight: 400; line-height: 1.25; margin-bottom: 5px; color: var(--chalk); }
+.ptagline { font-size: 11px; font-weight: 300; font-style: italic; color: var(--chalk2); margin-bottom: 12px; line-height: 1.4; letter-spacing: 0.01em; }
 .prow { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
 .pprice { font-size: 19px; font-weight: 500; font-family: var(--sans); color: var(--chalk); }
 .pold { font-size: 13px; color: var(--chalk2); text-decoration: line-through; opacity: 0.6; }
