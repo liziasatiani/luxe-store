@@ -153,7 +153,7 @@ export async function TheEditSection() {
                     </span>
                   )}
                 </div>
-                <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>Shop Now</span>
+                <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>Add to Cart</span>
               </div>
             </div>
           </Link>
@@ -197,7 +197,7 @@ export async function TheEditSection() {
                   </div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span style={{ fontSize: 16, fontWeight: 500, color: "var(--chalk)" }}>{formatPrice(Number(item.price))}</span>
-                    <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>Shop Now</span>
+                    <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>Add to Cart</span>
                   </div>
                 </div>
               </Link>
