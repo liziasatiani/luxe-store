@@ -7,9 +7,9 @@ const EDIT_ITEMS = [
     imageStyle: {
       flex: 1,
       minHeight: 480,
-      background: "linear-gradient(155deg,#1c0828 0%,#2d1245 45%,#0d1535 100%)",
+      background: "linear-gradient(155deg,#2d0d3d 0%,#4a1a60 45%,#1a1045 100%)",
     },
-    imageOverlay: "radial-gradient(ellipse 70% 60% at 30% 30%,rgba(255,51,102,0.12),transparent)",
+    imageOverlay: "radial-gradient(ellipse 70% 60% at 30% 30%,rgba(255,92,122,0.28),transparent)",
     badge: { label: "−20% · Limited", bg: "var(--crimson)", color: "#fff" },
     brandColor: "var(--gold)",
     brand: "Charlotte Tilbury",
@@ -20,8 +20,8 @@ const EDIT_ITEMS = [
   },
   {
     href: "/tech",
-    imageStyle: { height: 220, background: "linear-gradient(145deg,#061825 0%,#0d2840 50%,#001520 100%)" },
-    imageOverlay: "radial-gradient(ellipse 60% 50% at 70% 20%,rgba(0,229,255,0.10),transparent)",
+    imageStyle: { height: 220, background: "linear-gradient(145deg,#0a2035 0%,#0f3555 50%,#082840 100%)" },
+    imageOverlay: "radial-gradient(ellipse 60% 50% at 70% 20%,rgba(78,201,192,0.30),transparent)",
     badge: { label: "New Drop", bg: "var(--gold)", color: "#000" },
     brandColor: "var(--blue)",
     brand: "Sony",
@@ -30,8 +30,8 @@ const EDIT_ITEMS = [
   },
   {
     href: "/beauty",
-    imageStyle: { height: 220, background: "linear-gradient(145deg,#1a0c00 0%,#2e1800 50%,#0a1800 100%)" },
-    imageOverlay: "radial-gradient(ellipse 60% 50% at 30% 70%,rgba(212,168,92,0.10),transparent)",
+    imageStyle: { height: 220, background: "linear-gradient(145deg,#2a1400 0%,#3d2000 50%,#1a1800 100%)" },
+    imageOverlay: "radial-gradient(ellipse 60% 50% at 30% 70%,rgba(212,168,92,0.28),transparent)",
     brandColor: "var(--gold)",
     brand: "La Mer",
     name: "The Soft Cream",
@@ -72,19 +72,12 @@ export function TheEditSection() {
           </Link>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.4fr 1fr",
-            gap: 2,
-            background: "rgba(238,233,255,0.04)",
-          }}
-        >
+        <div className="edit-grid" style={{ gap: 2, background: "rgba(238,233,255,0.04)" }}>
           {/* Large featured card */}
           <Link
             href={featured.href}
-            className="glass-card"
-            style={{ gridRow: featured.gridRow, display: "flex", flexDirection: "column", overflow: "hidden" }}
+            className="glass-card edit-featured"
+            style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
           >
             <div
               style={{
