@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Outfit, Noto_Serif_Georgian } from "next/font/google";
+import { Spectral, Mulish, Noto_Serif_Georgian } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
@@ -23,18 +23,18 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { jsonLdSafe } from "@/lib/utils";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const spectral = Spectral({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-playfair",
+  variable: "--font-spectral",
   display: "swap",
 });
 
-const outfit = Outfit({
+const mulish = Mulish({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
-  variable: "--font-outfit",
+  variable: "--font-mulish",
   display: "swap",
 });
 
@@ -73,7 +73,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${playfair.variable} ${outfit.variable} ${notoSerifGeorgian.variable}`}>
+    <html lang={locale} suppressHydrationWarning className={`${spectral.variable} ${mulish.variable} ${notoSerifGeorgian.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
@@ -90,6 +90,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-surface-900 focus:rounded-xl focus:shadow-luxury-md focus:outline-none">
                 Skip to content
               </a>
+              <div aria-hidden="true" className="glass-orbs">
+                <div className="glass-orb-1" /><div className="glass-orb-2" /><div className="glass-orb-3" /><div className="glass-orb-4" />
+              </div>
               <Navbar />
               <main id="main-content" className="min-h-screen">{children}</main>
               <Footer />

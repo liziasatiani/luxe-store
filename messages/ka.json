@@ -180,7 +180,10 @@
     "freeShippingUnlocked": "მიწოდება უფასოა",
     "addMoreForFreeShip": "დაამატეთ {amount} უფასო მიწოდებისთვის",
     "youMightAlsoLike": "შეიძლება მოგეწონოთ",
-    "add": "დამატება"
+    "add": "დამატება",
+    "yourOrder": "შენი შეკვეთა",
+    "secure": "უსაფრთხო",
+    "freeReturns": "უფასო დაბრუნება"
   },
   "checkout": {
     "title": "გადახდა",
