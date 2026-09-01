@@ -352,8 +352,8 @@ textarea:focus-visible,
 .pgrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 1px;
-  background: var(--border);
+  gap: 16px;
+  background: transparent;
 }
 .pcard { background: var(--bg); cursor: pointer; transition: background 0.25s; }
 .pcard:hover { background: var(--s1); }
@@ -925,10 +925,6 @@ footer {
   overflow: hidden;
 }
 .ed-txt {
-  border-radius: 14px;
-  overflow: hidden;
-}
-.pgrid {
   border-radius: 14px;
   overflow: hidden;
 }
