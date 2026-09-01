@@ -1,5 +1,20 @@
 import Link from "next/link";
 
+const HeadphoneIcon = () => (
+  <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="rgba(78,201,192,0.7)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
+    <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+  </svg>
+);
+
+const LeafIcon = () => (
+  <svg width="66" height="66" viewBox="0 0 24 24" fill="none" stroke="rgba(212,168,92,0.65)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+  </svg>
+);
+
 const EDIT_ITEMS = [
   {
     href: "/beauty",
@@ -17,6 +32,7 @@ const EDIT_ITEMS = [
     description: "The glow-giving complexion booster worn by everyone from editors to red-carpet regulars. Buildable, blurring, extraordinary.",
     price: "₾189",
     originalPrice: "₾236",
+    icon: <span style={{ fontSize: 88, lineHeight: 1, position: "relative" as const, zIndex: 1, color: "rgba(255,255,255,0.7)" }}>✦</span>,
   },
   {
     href: "/tech",
@@ -25,8 +41,9 @@ const EDIT_ITEMS = [
     badge: { label: "New Drop", bg: "var(--gold)", color: "#000" },
     brandColor: "var(--blue)",
     brand: "Sony",
-    name: "WH-1000XM5",
+    name: "WH-1000XM5 Headphones",
     price: "₾1,089",
+    icon: <span style={{ position: "relative" as const, zIndex: 1 }}><HeadphoneIcon /></span>,
   },
   {
     href: "/beauty",
@@ -36,6 +53,7 @@ const EDIT_ITEMS = [
     brand: "La Mer",
     name: "The Soft Cream",
     price: "₾489",
+    icon: <span style={{ position: "relative" as const, zIndex: 1 }}><LeafIcon /></span>,
   },
 ];
 
@@ -89,6 +107,7 @@ export function TheEditSection() {
               }}
             >
               <div style={{ position: "absolute", inset: 0, background: featured.imageOverlay }} />
+              {featured.icon}
               {featured.badge && (
                 <div
                   style={{
@@ -178,9 +197,13 @@ export function TheEditSection() {
                 style={{
                   ...item.imageStyle,
                   position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <div style={{ position: "absolute", inset: 0, background: item.imageOverlay }} />
+                {item.icon}
                 {item.badge && (
                   <div
                     style={{
