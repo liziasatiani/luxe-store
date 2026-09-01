@@ -65,7 +65,6 @@ export async function FeaturedProductsSection() {
   return (
     <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="wrap">
-        <SectionHeader eyebrow="Featured" title="Selected for You" viewAllHref="/featured" viewAllLabel="View All" />
         <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
         </div>
@@ -91,7 +90,7 @@ export async function NewArrivalsSection() {
   return (
     <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="wrap">
-        <SectionHeader eyebrow="New In" title="Latest Arrivals" viewAllHref="/new" viewAllLabel="View All" />
+        <SectionHeader eyebrow="New this week" title="Just Arrived" viewAllHref="/new" viewAllLabel="View All" />
         <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
