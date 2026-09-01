@@ -6,7 +6,7 @@ const EDIT_ITEMS = [
     gridRow: "span 2" as const,
     imageStyle: {
       flex: 1,
-      minHeight: 480,
+      minHeight: 620,
       background: "linear-gradient(155deg,#2d0d3d 0%,#4a1a60 45%,#1a1045 100%)",
     },
     imageOverlay: "radial-gradient(ellipse 70% 60% at 30% 30%,rgba(255,92,122,0.28),transparent)",
@@ -20,7 +20,7 @@ const EDIT_ITEMS = [
   },
   {
     href: "/tech",
-    imageStyle: { height: 220, background: "linear-gradient(145deg,#0a2035 0%,#0f3555 50%,#082840 100%)" },
+    imageStyle: { height: 300, background: "linear-gradient(145deg,#0a2035 0%,#0f3555 50%,#082840 100%)" },
     imageOverlay: "radial-gradient(ellipse 60% 50% at 70% 20%,rgba(78,201,192,0.30),transparent)",
     badge: { label: "New Drop", bg: "var(--gold)", color: "#000" },
     brandColor: "var(--blue)",
@@ -30,7 +30,7 @@ const EDIT_ITEMS = [
   },
   {
     href: "/beauty",
-    imageStyle: { height: 220, background: "linear-gradient(145deg,#2a1400 0%,#3d2000 50%,#1a1800 100%)" },
+    imageStyle: { height: 300, background: "linear-gradient(145deg,#2a1400 0%,#3d2000 50%,#1a1800 100%)" },
     imageOverlay: "radial-gradient(ellipse 60% 50% at 30% 70%,rgba(212,168,92,0.28),transparent)",
     brandColor: "var(--gold)",
     brand: "La Mer",
