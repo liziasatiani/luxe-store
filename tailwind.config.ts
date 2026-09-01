@@ -17,9 +17,9 @@ const config: Config = {
           200: "#f0d99c",
           300: "#e4c064",
           400: "#d4a843",
-          500: "#C9A44A",  // Night Market gold
-          600: "#a8802a",
-          700: "#866119",
+          500: "#D4A85C",  // Night Market gold
+          600: "#b08430",
+          700: "#8a6320",
           800: "#664a13",
           900: "#4a360e",
           950: "#2a1e07",
@@ -27,7 +27,7 @@ const config: Config = {
         // Neutrals — Night Market dark palette
         surface: {
           0:   "#ffffff",
-          50:  "#EFE9DA",  // chalk
+          50:  "#EEE9FF",  // chalk
           100: "#E8E1D0",
           200: "#D5CCBB",
           300: "#B8AD9E",
@@ -35,26 +35,26 @@ const config: Config = {
           500: "#5E5750",
           600: "#3D3830",
           700: "#2A2520",
-          800: "#1A1720",  // s2
-          900: "#0D1220",  // s1
-          950: "#07090F",  // bg deep
+          800: "#141C38",  // s2
+          900: "#0E1428",  // s1
+          950: "#070A14",  // bg deep
         },
-        // Accent — crimson for beauty category
+        // Accent — rose for beauty category
         accent: {
           50:  "#fff0f3",
           100: "#ffe0e6",
           200: "#ffc0cc",
           300: "#ff8fa3",
-          400: "#ff5272",
-          500: "#FF3366",
-          600: "#d01040",
-          700: "#ad0e33",
+          400: "#ff7090",
+          500: "#FF5C7A",
+          600: "#d03050",
+          700: "#ad1535",
           800: "#8f1030",
           900: "#77112d",
           950: "#42030e",
         },
         // Tech accent
-        tech: "#00E5FF",
+        tech: "#4EC9C0",
         // Success / Error / Warning
         success: "#16a34a",
         warning: "#ca8a04",

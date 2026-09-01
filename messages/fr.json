@@ -150,7 +150,9 @@
     "prevImage": "Précédent",
     "nextImage": "Suivant",
     "recentlyViewed": "Récemment consultés",
-    "notFound": "Produit introuvable"
+    "notFound": "Produit introuvable",
+    "free48h": "Livraison gratuite en 48h",
+    "returns30": "Retours sous 30 jours"
   },
   "cart": {
     "title": "Panier",

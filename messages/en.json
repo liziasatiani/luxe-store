@@ -150,7 +150,9 @@
     "prevImage": "Previous",
     "nextImage": "Next",
     "recentlyViewed": "Recently Viewed",
-    "notFound": "Product not found"
+    "notFound": "Product not found",
+    "free48h": "Free 48h delivery",
+    "returns30": "30-day returns"
   },
   "cart": {
     "title": "Shopping Cart",

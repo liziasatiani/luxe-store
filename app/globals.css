@@ -5,49 +5,49 @@
 @layer base {
   :root {
     /* Night Market palette — K variables */
-    --bg: #07090F;
-    --s1: #0D1220;
-    --s2: #131929;
-    --s3: #1A2235;
-    --gold: #C9A44A;
-    --gold-rgb: 201,164,74;
-    --gold2: rgba(201,164,74,0.18);
-    --gold3: rgba(201,164,74,0.07);
-    --blue: #00E5FF;
-    --blue2: rgba(0,229,255,0.12);
-    --crimson: #FF3366;
-    --crimson2: rgba(255,51,102,0.12);
-    --chalk: #EFE9DA;
-    --chalk2: rgba(239,233,218,0.55);
-    --chalk3: rgba(239,233,218,0.15);
-    --border: rgba(239,233,218,0.08);
-    --borderg: rgba(201,164,74,0.18);
+    --bg: #070A14;
+    --s1: #0E1428;
+    --s2: #141C38;
+    --s3: #1E2545;
+    --gold: #D4A85C;
+    --gold-rgb: 212,168,92;
+    --gold2: rgba(212,168,92,0.18);
+    --gold3: rgba(212,168,92,0.07);
+    --blue: #4EC9C0;
+    --blue2: rgba(78,201,192,0.12);
+    --crimson: #FF5C7A;
+    --crimson2: rgba(255,92,122,0.12);
+    --chalk: #EEE9FF;
+    --chalk2: rgba(238,233,255,0.55);
+    --chalk3: rgba(238,233,255,0.14);
+    --border: rgba(238,233,255,0.08);
+    --borderg: rgba(212,168,92,0.18);
     --nav-h: 68px;
     --serif: var(--font-spectral), Georgia, serif;
     --ka: var(--font-georgian), serif;
     --sans: var(--font-mulish), system-ui, sans-serif;
 
     /* Legacy prefixed aliases */
-    --nm-bg:    #07090F;
-    --nm-s1:    #0D1220;
-    --nm-s2:    #131929;
-    --nm-gold:  #C9A44A;
-    --nm-chalk: #EFE9DA;
+    --nm-bg:    #070A14;
+    --nm-s1:    #0E1428;
+    --nm-s2:    #141C38;
+    --nm-gold:  #D4A85C;
+    --nm-chalk: #EEE9FF;
     --nm-border: rgba(255,255,255,0.08);
     scroll-behavior: smooth;
   }
 
   :root:not(.dark) {
-    --bg: #F4F0E8;
-    --s1: #EDE7D8;
-    --s2: #E5DDCC;
-    --s3: #DDD4BF;
-    --chalk: #1A1208;
-    --chalk2: rgba(26,18,8,0.55);
-    --chalk3: rgba(26,18,8,0.15);
-    --border: rgba(26,18,8,0.09);
-    --borderg: rgba(201,164,74,0.25);
-    --gold3: rgba(201,164,74,0.06);
+    --bg: #F2EFE8;
+    --s1: #EAE5DB;
+    --s2: #E0D9CC;
+    --s3: #D6CCBB;
+    --chalk: #1A150A;
+    --chalk2: rgba(26,21,10,0.55);
+    --chalk3: rgba(26,21,10,0.14);
+    --border: rgba(26,21,10,0.09);
+    --borderg: rgba(212,168,92,0.25);
+    --gold3: rgba(212,168,92,0.06);
   }
 
   html {
@@ -670,28 +670,6 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   pointer-events: none;
   overflow: hidden;
 }
-/* Dark indigo base layer — makes orbs visible against near-black background */
-.glass-orbs::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 900px 700px at 80% -20%, rgba(20,30,70,0.90), transparent 65%),
-    radial-gradient(ellipse 700px 500px at -10% 85%, rgba(10,20,55,0.80), transparent 65%),
-    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(15,10,40,0.60), transparent 65%);
-  transition: background 0.6s;
-}
-:root:not(.dark) .glass-orbs::before {
-  background:
-    radial-gradient(ellipse 900px 700px at 80% -20%, rgba(255,240,200,0.55), transparent 65%),
-    radial-gradient(ellipse 700px 500px at -10% 85%, rgba(200,230,255,0.50), transparent 65%);
-}
-body:has([data-glass="obsidian"]) .glass-orbs::before {
-  background:
-    radial-gradient(ellipse 900px 700px at 75% -20%, rgba(30,40,100,0.95), transparent 65%),
-    radial-gradient(ellipse 700px 550px at -15% 80%, rgba(18,28,80,0.90), transparent 65%),
-    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(22,10,55,0.80), transparent 65%);
-}
 .glass-orb-1,
 .glass-orb-2,
 .glass-orb-3,
@@ -700,63 +678,62 @@ body:has([data-glass="obsidian"]) .glass-orbs::before {
   border-radius: 50%;
 }
 .glass-orb-1 {
-  width: 720px;
-  height: 720px;
-  top: -200px;
-  right: -80px;
-  background: radial-gradient(circle, rgba(201,164,74,0.50) 0%, transparent 70%);
-  filter: blur(90px);
+  width: 580px;
+  height: 580px;
+  top: -160px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(212,168,92,0.58) 0%, transparent 70%);
+  filter: blur(100px);
 }
 .glass-orb-2 {
-  width: 620px;
-  height: 620px;
-  bottom: 0;
-  left: -100px;
-  background: radial-gradient(circle, rgba(0,229,255,0.38) 0%, transparent 70%);
-  filter: blur(90px);
-}
-.glass-orb-3 {
   width: 480px;
   height: 480px;
-  top: 35%;
-  left: 28%;
-  background: radial-gradient(circle, rgba(255,51,102,0.32) 0%, transparent 70%);
+  bottom: -120px;
+  left: -50px;
+  background: radial-gradient(circle, rgba(78,201,192,0.44) 0%, transparent 70%);
+  filter: blur(100px);
+  opacity: 0.85;
+}
+.glass-orb-3 {
+  width: 360px;
+  height: 360px;
+  top: 38%;
+  left: 35%;
+  background: radial-gradient(circle, rgba(255,92,122,0.36) 0%, transparent 70%);
   filter: blur(90px);
+  opacity: 0.72;
 }
 .glass-orb-4 {
-  width: 320px;
-  height: 320px;
-  bottom: 10%;
-  right: 20%;
-  background: radial-gradient(circle, rgba(201,164,74,0.50) 0%, transparent 70%);
-  filter: blur(90px);
-  opacity: 0.4;
+  width: 280px;
+  height: 280px;
+  bottom: 12%;
+  right: 18%;
+  background: radial-gradient(circle, rgba(212,168,92,0.40) 0%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.5;
 }
 :root:not(.dark) .glass-orb-1 {
-  background: radial-gradient(circle, rgba(201,164,74,0.36) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212,168,92,0.28) 0%, transparent 70%);
 }
 :root:not(.dark) .glass-orb-2 {
-  background: radial-gradient(circle, rgba(0,180,220,0.28) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(78,201,192,0.20) 0%, transparent 70%);
 }
 :root:not(.dark) .glass-orb-3 {
-  background: radial-gradient(circle, rgba(220,60,90,0.24) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,92,122,0.16) 0%, transparent 70%);
 }
 :root:not(.dark) .glass-orb-4 {
-  background: radial-gradient(circle, rgba(201,164,74,0.36) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212,168,92,0.20) 0%, transparent 70%);
 }
-
-/* Intensify orbs on Obsidian pages (tech/beauty) */
-body:has([data-glass="obsidian"]) .glass-orb-1 {
-  background: radial-gradient(circle, rgba(201,164,74,0.55) 0%, transparent 70%);
+@media (prefers-reduced-motion: no-preference) {
+  .glass-orb-1 { animation: orb-drift 11s ease-in-out infinite; }
+  .glass-orb-2 { animation: orb-drift 14s ease-in-out infinite; animation-delay: -5s; }
+  .glass-orb-3 { animation: orb-drift 17s ease-in-out infinite; animation-delay: -9s; }
+  .glass-orb-4 { animation: orb-drift 20s ease-in-out infinite; animation-delay: -3s; }
 }
-body:has([data-glass="obsidian"]) .glass-orb-2 {
-  background: radial-gradient(circle, rgba(0,229,255,0.38) 0%, transparent 70%);
-}
-body:has([data-glass="obsidian"]) .glass-orb-3 {
-  background: radial-gradient(circle, rgba(255,51,102,0.36) 0%, transparent 70%);
-}
-body:has([data-glass="obsidian"]) .glass-orb-4 {
-  background: radial-gradient(circle, rgba(201,164,74,0.55) 0%, transparent 70%);
+@keyframes orb-drift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(22px,-28px) scale(1.06); }
+  66%      { transform: translate(-15px,20px) scale(0.94); }
 }
 
 /* ── Reusable Mist glass card ── */

@@ -150,7 +150,9 @@
     "prevImage": "Anterior",
     "nextImage": "Siguiente",
     "recentlyViewed": "Vistos recientemente",
-    "notFound": "Producto no encontrado"
+    "notFound": "Producto no encontrado",
+    "free48h": "Entrega gratis en 48h",
+    "returns30": "Devoluciones en 30 días"
   },
   "cart": {
     "title": "Carrito de compra",

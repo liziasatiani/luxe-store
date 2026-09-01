@@ -9,6 +9,7 @@ import { RelatedProducts, RelatedProductsSkeleton } from "@/components/product/R
 import { AddToCartSection } from "@/components/product/AddToCartSection";
 import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
+import { ProductDetailTabs } from "@/components/product/ProductDetailTabs";
 import { TrackView } from "@/components/product/TrackView";
 import { RatingStars } from "@/components/ui";
 import { Price } from "@/components/ui";
@@ -149,41 +150,30 @@ export default async function ProductPage({ params }: Props) {
           {/* Add to cart section */}
           <AddToCartSection product={p} />
 
+          {/* Trust strip */}
+          <div style={{ display: "flex", gap: 20, marginTop: 20, fontFamily: "var(--sans)", fontSize: 11, color: "var(--chalk3)", letterSpacing: "0.06em" }}>
+            <span>✓ {p.stockStatus === "OUT_OF_STOCK" ? tProduct("outOfStockLabel") : p.stockStatus === "LOW_STOCK" ? tProduct("lowStockLabel") : tProduct("inStock")}</span>
+            <span>✓ {tProduct("free48h")}</span>
+            <span>✓ {tProduct("returns30")}</span>
+          </div>
+
           <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "32px 0" }} />
 
-          {/* Description */}
-          {localizedDescription && (
-            <div style={{ marginBottom: 32 }}>
-              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("aboutProduct")}</p>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>
-                {localizedDescription}
-              </p>
-            </div>
-          )}
-
-          {/* How to Use — beauty */}
-          {localizedHowToUse && (
-            <div style={{ marginBottom: 32 }}>
-              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("howToUse")}</p>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{localizedHowToUse}</p>
-            </div>
-          )}
-
-          {/* Ingredients — beauty (INCI names are universal, always shown in English) */}
-          {p.ingredients && (
-            <div style={{ marginBottom: 32 }}>
-              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("ingredients")}</p>
-              <p style={{ fontSize: 13, color: "var(--chalk2)", lineHeight: 1.8, opacity: 0.85, whiteSpace: "pre-line" }}>{p.ingredients}</p>
-            </div>
-          )}
-
-          {/* What's in the Box — tech */}
-          {localizedInTheBox && (
-            <div style={{ marginBottom: 32 }}>
-              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--chalk2)", marginBottom: 12 }}>{tProduct("inTheBox")}</p>
-              <p style={{ fontSize: 14, color: "var(--chalk2)", lineHeight: 1.75, whiteSpace: "pre-line" }}>{localizedInTheBox}</p>
-            </div>
-          )}
+          {/* Tabbed content: Description / How to Use / Ingredients / In the Box / Reviews */}
+          <ProductDetailTabs
+            description={localizedDescription}
+            howToUse={localizedHowToUse}
+            ingredients={p.ingredients}
+            inTheBox={localizedInTheBox}
+            reviewCount={p.ratingCount}
+            labels={{
+              description: tProduct("aboutProduct"),
+              howToUse: tProduct("howToUse"),
+              ingredients: tProduct("ingredients"),
+              inTheBox: tProduct("inTheBox"),
+              reviews: tProduct("reviews"),
+            }}
+          />
 
           {/* Info strip — always shown */}
           <div style={{ marginBottom: 32 }}>
