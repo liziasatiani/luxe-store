@@ -115,6 +115,45 @@ export async function BestSellersSectionServer() {
   }
 }
 
+export async function TheStandardSection() {
+  let products: ProductCardType[] = [];
+  try {
+    const rows = await prisma.product.findMany({
+      where: { isActive: true, isBestSeller: true },
+      select: PRODUCT_SELECT,
+      orderBy: [{ salesCount: "desc" }, { ratingAvg: "desc" }],
+      take: 8,
+    });
+    if (rows.length < 4) {
+      const ids = rows.map(p => p.id);
+      const fallback = await prisma.product.findMany({
+        where: { isActive: true, ...(ids.length ? { id: { notIn: ids } } : {}) },
+        select: PRODUCT_SELECT,
+        orderBy: { salesCount: "desc" },
+        take: 8 - rows.length,
+      });
+      products = serializeDecimal([...rows, ...fallback]) as ProductCardType[];
+    } else {
+      products = serializeDecimal(rows) as ProductCardType[];
+    }
+  } catch {
+    return null;
+  }
+
+  if (products.length === 0) return null;
+
+  return (
+    <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div className="wrap">
+        <SectionHeader eyebrow="What people keep reordering" title="The Standard" viewAllHref="/products" viewAllLabel="View All" />
+        <div className="pgrid">
+          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
   return (
     <div className="pgrid">
