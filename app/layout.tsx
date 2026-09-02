@@ -85,7 +85,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="bg-surface-50 dark:bg-surface-950 text-surface-900 dark:text-white antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <SessionProvider>
-            <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false}>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
               <MotionProvider>
               <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-white focus:text-surface-900 focus:rounded-xl focus:shadow-luxury-md focus:outline-none">
                 Skip to content
