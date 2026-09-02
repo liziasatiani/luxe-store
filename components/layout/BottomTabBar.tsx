@@ -29,7 +29,8 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label={t("mainNav")}
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white dark:bg-black border-t border-black/8 dark:border-white/8 safe-area-inset-bottom"
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden safe-area-inset-bottom"
+      style={{ background: "var(--s1)", borderTop: "1px solid var(--border)" }}
     >
       <div className="flex items-stretch h-14">
         {TABS.map(({ label, key, href, icon: Icon }) => {
@@ -45,18 +46,18 @@ export function BottomTabBar() {
                   strokeWidth={isActive ? 2 : 1.5}
                   className={cn(
                     "transition-colors",
-                    isActive ? "text-black dark:text-white" : "text-black/55 dark:text-white/55"
+                    isActive ? "text-[var(--chalk)]" : "text-[var(--chalk2)]"
                   )}
                 />
                 {isCart && cartCount > 0 && (
-                  <span aria-live="polite" className="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] bg-black dark:bg-white text-white dark:text-black text-[8px] font-medium rounded-full flex items-center justify-center px-0.5">
+                  <span aria-live="polite" className="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] text-[8px] font-medium rounded-full flex items-center justify-center px-0.5" style={{ background: "var(--chalk)", color: "var(--bg)" }}>
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
               </span>
               <span className={cn(
                 "text-[9px] tracking-[0.06em] uppercase transition-colors",
-                isActive ? "text-black dark:text-white" : "text-black/55 dark:text-white/55"
+                isActive ? "text-[var(--chalk)]" : "text-[var(--chalk2)]"
               )}>
                 {label}
               </span>
