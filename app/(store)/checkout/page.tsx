@@ -76,7 +76,7 @@ export default function CheckoutPage() {
 
   const [guest, setGuest] = useState({
     firstName: "", lastName: "", email: "", phone: "",
-    line1: "", line2: "", city: "", state: "", postalCode: "", country: "US",
+    line1: "", line2: "", city: "", state: "", postalCode: "", country: "GE",
   });
   const [guestErrors, setGuestErrors] = useState<Record<string, string>>({});
   const placedRef = useRef(false);

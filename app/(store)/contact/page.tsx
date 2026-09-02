@@ -47,13 +47,16 @@ export default function ContactPage() {
         }
         .contact-info {
           padding: 88px 64px;
-          border-right: 1px solid rgba(255,255,255,0.08);
+          border-right: 1px solid var(--border);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           background: rgba(255,255,255,0.04);
           backdrop-filter: blur(10px) saturate(140%);
           -webkit-backdrop-filter: blur(10px) saturate(140%);
+        }
+        :root:not(.dark) .contact-info {
+          background: rgba(234,229,219,0.52);
         }
         .contact-form {
           padding: 88px 64px;

@@ -154,9 +154,9 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
 
 export function ProductCardSkeleton() {
   return (
-    <div className="animate-pulse" style={{ background: "var(--bg)" }}>
-      <div className="aspect-[3/4]" style={{ background: "var(--s1)" }} />
-      <div style={{ padding: "22px 26px 28px" }}>
+    <div className="pcard animate-pulse">
+      <div className="pimg" style={{ background: "var(--s2)" }} />
+      <div className="pbody">
         <div className="h-2.5 w-16 mb-2 rounded" style={{ background: "var(--border)" }} />
         <div className="h-5 w-full mb-1.5 rounded" style={{ background: "var(--border)" }} />
         <div className="h-5 w-2/3 mb-4 rounded" style={{ background: "var(--border)" }} />

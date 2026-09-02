@@ -651,6 +651,9 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   /* Product grid — 2 columns on mobile */
   .pgrid { grid-template-columns: repeat(2, 1fr); }
 
+  /* Cart layout — stack on mobile */
+  .cart-layout { grid-template-columns: 1fr !important; }
+
   /* Nav */
   #nav { padding: 0 20px; }
   .sec-meta { margin-bottom: 36px; }
@@ -714,16 +717,16 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   opacity: 0.5;
 }
 :root:not(.dark) .glass-orb-1 {
-  background: radial-gradient(circle, rgba(212,168,92,0.28) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212,168,92,0.42) 0%, transparent 70%);
 }
 :root:not(.dark) .glass-orb-2 {
-  background: radial-gradient(circle, rgba(78,201,192,0.20) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(78,201,192,0.30) 0%, transparent 70%);
 }
 :root:not(.dark) .glass-orb-3 {
-  background: radial-gradient(circle, rgba(255,92,122,0.16) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,92,122,0.24) 0%, transparent 70%);
 }
 :root:not(.dark) .glass-orb-4 {
-  background: radial-gradient(circle, rgba(212,168,92,0.20) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212,168,92,0.32) 0%, transparent 70%);
 }
 @media (prefers-reduced-motion: no-preference) {
   .glass-orb-1 { animation: orb-drift 11s ease-in-out infinite; }
@@ -747,9 +750,9 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   box-shadow: 0 2px 16px rgba(0,0,0,0.20);
 }
 :root:not(.dark) .glass-card {
-  background: rgba(255,255,255,0.40);
-  border: 1px solid rgba(26,18,8,0.08);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  background: rgba(255,252,244,0.68);
+  border: 1px solid rgba(212,168,92,0.18);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
 }
 
 /* The Edit grid — responsive */
@@ -791,12 +794,12 @@ footer {
   box-shadow: 0 4px 24px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(255,255,255,0.16);
 }
 :root:not(.dark) .pcard {
-  background: rgba(255,255,255,0.40);
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(26,18,8,0.08);
+  background: rgba(255,252,244,0.72);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07), inset 0 0 0 1px rgba(212,168,92,0.14);
 }
 :root:not(.dark) .pcard:hover {
-  background: rgba(255,255,255,0.62);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(26,18,8,0.10);
+  background: rgba(255,254,248,0.90);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10), inset 0 0 0 1px rgba(212,168,92,0.22);
 }
 
 /* ── MIST: footer ── */
@@ -806,7 +809,7 @@ footer {
   -webkit-backdrop-filter: blur(24px) saturate(160%);
 }
 :root:not(.dark) footer {
-  background: rgba(255,255,255,0.46);
+  background: rgba(234,229,219,0.84);
 }
 
 /* ── MIST: stats, newsletter, editorial text, page headers ── */
@@ -824,7 +827,7 @@ footer {
 :root:not(.dark) .ed-txt,
 :root:not(.dark) .page-hd,
 :root:not(.dark) .k-page-hdr {
-  background: rgba(255,255,255,0.46);
+  background: rgba(234,229,219,0.64);
 }
 
 /* ══ OBSIDIAN — Tech & Beauty pages only ══ */
