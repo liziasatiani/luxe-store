@@ -19,7 +19,7 @@ interface Address {
   isDefault: boolean;
 }
 
-const BLANK = { label: "Home", firstName: "", lastName: "", line1: "", line2: "", city: "", state: "", postalCode: "", country: "US", isDefault: false };
+const BLANK = { label: "Home", firstName: "", lastName: "", line1: "", line2: "", city: "", state: "", postalCode: "", country: "GE", isDefault: false };
 
 function KInput({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) {
   return (
