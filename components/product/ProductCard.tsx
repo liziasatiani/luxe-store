@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useCartStore, useWishlistStore } from "@/store";
 import { formatDiscount, getProductImageUrl, cn } from "@/lib/utils";
@@ -10,7 +9,6 @@ import { useCurrency } from "@/hooks/useCurrency";
 import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 import type { ProductCard as ProductCardType } from "@/types";
-import { QuickView } from "./QuickView";
 import { NotifyMe } from "./NotifyMe";
 
 const TECH_CATS = new Set(["headphones", "cameras", "tablets", "gaming", "wearables", "smart-home", "audio", "accessories"]);
@@ -31,9 +29,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
   const tn = useTranslations("nav");
   const { addItem } = useCartStore();
   const { toggle, has } = useWishlistStore();
-  const [quickViewSlug, setQuickViewSlug] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
   const isWishlisted = has(product.id);
   const imageUrl = getProductImageUrl(product.images);
   const { format } = useCurrency();
@@ -147,7 +142,6 @@ export function ProductCard({ product, index = 0, priority = false, variant = "d
         </Link>
       </motion.div>
 
-      {mounted && <QuickView slug={quickViewSlug} onClose={() => setQuickViewSlug(null)} />}
     </>
   );
 }
