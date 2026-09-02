@@ -16,6 +16,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { PWAInit } from "@/components/PWAInit";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { SplashScreen } from "@/components/ui/SplashScreen";
+import { BottomTabBar } from "@/components/layout/BottomTabBar";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { buildMetadata, buildOrganizationSchema } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
@@ -104,6 +105,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Toaster position="bottom-right" />
               <CookieConsent />
               <PWAInit />
+              <BottomTabBar />
               <ScrollToTop />
               <SplashScreen />
               <GoogleAnalytics />
