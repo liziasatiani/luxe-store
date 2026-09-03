@@ -927,7 +927,9 @@
     "nothingFoundDesc": "Some saved items may no longer be available.",
     "savedOnDevice": "Your wishlist is saved on this device.",
     "signInToSync": "Sign in to sync across devices.",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "startShopping": "Start Shopping",
+    "continueShopping": "Continue Shopping"
   },
   "filters": {
     "title": "Filters",

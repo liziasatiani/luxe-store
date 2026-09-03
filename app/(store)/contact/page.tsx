@@ -75,7 +75,7 @@ export default function ContactPage() {
         {/* Left: info */}
         <div className="contact-info">
           <div>
-            <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(44px,5.5vw,80px)", fontWeight: 700, lineHeight: 0.95, letterSpacing: "-0.025em", marginBottom: 56, color: "var(--chalk)" }}>
+            <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(28px,8vw,80px)", fontWeight: 700, lineHeight: 0.95, letterSpacing: "-0.025em", marginBottom: 56, color: "var(--chalk)" }}>
               {t("getInTouch")}
             </h1>
 
