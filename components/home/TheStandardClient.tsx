@@ -72,7 +72,7 @@ export function TheStandardClient({ products }: { products: ProductCardType[] })
             paddingBottom: 3,
           }}
         >
-          See all 2,400+ products →
+          See all products →
         </Link>
       </div>
     </>
