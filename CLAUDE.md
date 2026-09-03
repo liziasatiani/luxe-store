@@ -206,8 +206,9 @@ Read this section at the start of every session. Never suggest replacing or addi
 - 25 FK indexes added 2026-08-11 (see Changelog). Total indexes: 76.
 - All foreign key columns are now indexed.
 
-### Data Integrity (audited 2026-08-11)
-- 230 active products, 0 with bad prices, 0 duplicate slugs, 0 without valid category
+### Data Integrity (audited 2026-08-11; product count updated 2026-09-02)
+- **244 active products, 33 inactive** (last updated 2026-09-02 after duplicate/variant audit; see Changelog)
+- 0 duplicate slugs, 0 with bad prices, 0 without valid category
 - 2 orders total, 0 orphaned (all have userId or guestEmail), 0 without line items
 - 6 users, 2 active newsletter subscribers, 0 reviews, 0 abandoned carts
 - Sessions table empty (expected — no active logins during audit)
@@ -310,6 +311,10 @@ These services are disclosed in legal pages. If any are added, removed, or chang
 ---
 
 ## Changelog
+
+[2026-09-03] CODE [app/admin/products/page.tsx, app/api/admin/products/route.ts] — Admin product list split into Active/Inactive tabs. Active tab: edit + deactivate actions. Inactive tab: restore (↺) action only. Tab labels show live counts. Stock filter hidden on Inactive tab and cleared on tab switch. API GET now accepts ?active=true|false. New PATCH endpoint toggles isActive.
+[2026-09-02] DB [Supabase] — Product duplicate/variant audit. Deactivated 30 products: 15 BT-XXX batch duplicates (kept better-described versions), 13 orphan per-shade listings for already-merged products (NARS Powermatte Lipstick, Girlactik Luminous Face Powder, Kulfi Concealer, Fenty Beauty Suede Powder Blush, What's Up Beauty Wind Dances Pressed Powder), 2 old separate Eloise/Ouhoe listings. Created 2 new merged products: Eloise Sweet Cheeks Bronzing Palette (2 shades) and Ouhoe Lip Liner Stay-N (2 shades). Active count: 274→244. Inactive count: 3→33.
+[2026-09-02] FIX [app/globals.css, components/product/ProductBreadcrumb.tsx, app/(store)/contact/page.tsx, app/(store)/wishlist/page.tsx] — Mobile audit fixes at 375px: product detail .dinfo padding override (!important), ProductBreadcrumb flex-wrap, contact heading clamp(28px,8vw,80px), wishlist startShopping/continueShopping translated in all 4 languages.
 
 [2026-08-11] DB [Supabase] — Enabled RLS on contact_messages table (was the only table with RLS disabled — a security gap allowing anon reads/writes).
 [2026-08-11] DB [Supabase] — Created 25 missing FK indexes (accounts, addresses, cart_items×2, categories, coupon_usages×2, notifications, order_items×2, orders×3, product_images, product_specs, product_variants, products×2, recently_viewed×2, reviews×2, sessions, wishlist_items×2). Total indexes: 51→76.
