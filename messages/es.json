@@ -927,7 +927,9 @@
     "nothingFoundDesc": "Algunos artículos guardados pueden ya no estar disponibles.",
     "savedOnDevice": "Tu lista de deseos está guardada en este dispositivo.",
     "signInToSync": "Inicia sesión para sincronizar en todos tus dispositivos.",
-    "signIn": "Iniciar sesión"
+    "signIn": "Iniciar sesión",
+    "startShopping": "Empezar a comprar",
+    "continueShopping": "Continuar comprando"
   },
   "filters": {
     "title": "Filtros",

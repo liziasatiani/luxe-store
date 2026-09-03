@@ -927,7 +927,9 @@
     "nothingFoundDesc": "Certains articles sauvegardés peuvent ne plus être disponibles.",
     "savedOnDevice": "Votre liste de souhaits est enregistrée sur cet appareil.",
     "signInToSync": "Connectez-vous pour synchroniser sur tous vos appareils.",
-    "signIn": "Se connecter"
+    "signIn": "Se connecter",
+    "startShopping": "Commencer vos achats",
+    "continueShopping": "Continuer vos achats"
   },
   "filters": {
     "title": "Filtres",
