@@ -19,7 +19,6 @@ interface ProductCardProps {
   index?: number;
   priority?: boolean;
   variant?: "default" | "compact" | "horizontal";
-  darkBg?: boolean;
   className?: string;
 }
 
