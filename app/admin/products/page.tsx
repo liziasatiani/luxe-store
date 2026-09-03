@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, AlertTriangle, Filter } from "lucide-react";
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, AlertTriangle, Filter, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input, Badge, Spinner } from "@/components/ui";
 import { formatPrice } from "@/lib/utils";
@@ -20,6 +20,9 @@ interface Product {
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
+  const [activeCount, setActiveCount] = useState(0);
+  const [inactiveCount, setInactiveCount] = useState(0);
+  const [tab, setTab] = useState<"active" | "inactive">("active");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
@@ -30,14 +33,26 @@ export default function AdminProductsPage() {
   const [editProduct, setEditProduct] = useState<Record<string, unknown> | null>(null);
   const debouncedSearch = useDebounce(search, 400);
 
+  const fetchCounts = useCallback(async () => {
+    try {
+      const [a, i] = await Promise.all([
+        fetch("/api/admin/products?active=true&limit=1").then(r => r.json()),
+        fetch("/api/admin/products?active=false&limit=1").then(r => r.json()),
+      ]);
+      setActiveCount(a.data?.total ?? 0);
+      setInactiveCount(i.data?.total ?? 0);
+    } catch { /* counts are decorative, don't fail hard */ }
+  }, []);
+
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
         page: String(page), limit: String(limit),
+        active: tab === "active" ? "true" : "false",
         ...(debouncedSearch && { search: debouncedSearch }),
         ...(category && { category }),
-        ...(stockFilter && { stock: stockFilter }),
+        ...(tab === "active" && stockFilter && { stock: stockFilter }),
       });
       const res = await fetch(`/api/admin/products?${params}`);
       if (!res.ok) throw new Error("Failed to fetch products");
@@ -50,16 +65,24 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, debouncedSearch, category, stockFilter]);
+  }, [page, limit, tab, debouncedSearch, category, stockFilter]);
 
+  useEffect(() => { setPage(1); setStockFilter(""); }, [tab]);
   useEffect(() => { setPage(1); }, [debouncedSearch, category, stockFilter]);
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
+  useEffect(() => { fetchCounts(); }, [fetchCounts]);
 
-  const handleDelete = async (id: string) => {
+  const handleDeactivate = async (id: string) => {
     if (!confirm("Deactivate this product?")) return;
     const res = await fetch("/api/admin/products", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
-    if (res.ok) { toast.success("Product deactivated"); fetchProducts(); }
+    if (res.ok) { toast.success("Product deactivated"); fetchProducts(); fetchCounts(); }
     else toast.error("Failed to deactivate");
+  };
+
+  const handleRestore = async (id: string) => {
+    const res = await fetch("/api/admin/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, isActive: true }) });
+    if (res.ok) { toast.success("Product restored"); fetchProducts(); fetchCounts(); }
+    else toast.error("Failed to restore");
   };
 
   const STOCK_BADGE = { IN_STOCK: "success", LOW_STOCK: "warning", OUT_OF_STOCK: "error" } as const;
@@ -69,11 +92,24 @@ export default function AdminProductsPage() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl text-surface-900 dark:text-white">Products</h1>
-          <p className="text-surface-500 text-sm mt-1">{total} total products</p>
+          <p className="text-surface-500 text-sm mt-1">{activeCount} active · {inactiveCount} inactive</p>
         </div>
         <Button onClick={() => { setEditProduct(null); setFormOpen(true); }} variant="gold" leftIcon={<Plus size={16} />}>
           Add Product
         </Button>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 p-1 bg-surface-100 dark:bg-surface-800 rounded-xl w-fit">
+        {(["active", "inactive"] as const).map(t => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${tab === t ? "bg-white dark:bg-surface-900 text-surface-900 dark:text-white shadow-sm" : "text-surface-500 hover:text-surface-700 dark:hover:text-surface-300"}`}
+          >
+            {t === "active" ? `Active (${activeCount})` : `Inactive (${inactiveCount})`}
+          </button>
+        ))}
       </div>
 
       {/* Filters */}
@@ -98,16 +134,18 @@ export default function AdminProductsPage() {
             ))}
           </optgroup>
         </select>
-        <select
-          value={stockFilter}
-          onChange={e => setStockFilter(e.target.value)}
-          className="h-11 px-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm text-surface-700 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
-        >
-          <option value="">All stock</option>
-          <option value="IN_STOCK">In stock</option>
-          <option value="LOW_STOCK">Low stock</option>
-          <option value="OUT_OF_STOCK">Out of stock</option>
-        </select>
+        {tab === "active" && (
+          <select
+            value={stockFilter}
+            onChange={e => setStockFilter(e.target.value)}
+            className="h-11 px-3 pr-8 rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 text-sm text-surface-700 dark:text-surface-300 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+          >
+            <option value="">All stock</option>
+            <option value="IN_STOCK">In stock</option>
+            <option value="LOW_STOCK">Low stock</option>
+            <option value="OUT_OF_STOCK">Out of stock</option>
+          </select>
+        )}
         <select
           value={String(limit)}
           onChange={e => { setLimit(Number(e.target.value)); setPage(1); }}
@@ -122,7 +160,7 @@ export default function AdminProductsPage() {
             onClick={() => { setSearch(""); setCategory(""); setStockFilter(""); }}
             className="text-xs text-surface-400 hover:text-surface-700 dark:hover:text-white flex items-center gap-1 transition-colors"
           >
-            <Filter size={12} /> Clear filters
+            <Filter size={12} /> Clear
           </button>
         )}
       </div>
@@ -174,12 +212,20 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
-                        <button onClick={() => { setEditProduct(product as unknown as Record<string, unknown>); setFormOpen(true); }} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-500 hover:text-surface-900 dark:hover:text-white transition-colors">
-                          <Edit size={14} />
-                        </button>
-                        <button onClick={() => handleDelete(product.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-surface-500 hover:text-error transition-colors">
-                          <Trash2 size={14} />
-                        </button>
+                        {tab === "active" ? (
+                          <>
+                            <button onClick={() => { setEditProduct(product as unknown as Record<string, unknown>); setFormOpen(true); }} className="p-1.5 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-500 hover:text-surface-900 dark:hover:text-white transition-colors" title="Edit">
+                              <Edit size={14} />
+                            </button>
+                            <button onClick={() => handleDeactivate(product.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-surface-500 hover:text-error transition-colors" title="Deactivate">
+                              <Trash2 size={14} />
+                            </button>
+                          </>
+                        ) : (
+                          <button onClick={() => handleRestore(product.id)} className="p-1.5 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 text-surface-500 hover:text-green-600 dark:hover:text-green-400 transition-colors" title="Restore">
+                            <RotateCcw size={14} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

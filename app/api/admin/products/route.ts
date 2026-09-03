@@ -29,8 +29,11 @@ export async function GET(req: NextRequest) {
     const search = req.nextUrl.searchParams.get("search") ?? "";
     const category = req.nextUrl.searchParams.get("category") ?? "";
     const stock = req.nextUrl.searchParams.get("stock") ?? "";
+    const activeParam = req.nextUrl.searchParams.get("active");
 
     const where = {
+      ...(activeParam === "true" && { isActive: true }),
+      ...(activeParam === "false" && { isActive: false }),
       ...(search && { OR: [{ name: { contains: search, mode: "insensitive" as const } }, { sku: { contains: search, mode: "insensitive" as const } }] }),
       ...(category && { category: { slug: category } }),
       ...(stock && { stockStatus: stock as "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK" }),
@@ -155,6 +158,19 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ success: true, data: { product: serializeDecimal(product) } });
   } catch (err) {
     console.error("[admin/products PUT]", err);
+    return NextResponse.json({ success: false, error: "Failed to update product" }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    if (!await requireAdmin()) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+
+    const { id, isActive } = await req.json();
+    await prisma.product.update({ where: { id }, data: { isActive } });
+
+    return NextResponse.json({ success: true, message: isActive ? "Product restored" : "Product deactivated" });
+  } catch {
     return NextResponse.json({ success: false, error: "Failed to update product" }, { status: 500 });
   }
 }
