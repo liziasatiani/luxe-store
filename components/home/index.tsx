@@ -195,7 +195,7 @@ export function FlashSaleSection() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-white/8 border border-white/8">
           {products.map((p, i) => (
-            <ProductCard key={p.id} product={p} index={i} darkBg />
+            <ProductCard key={p.id} product={p} index={i} />
           ))}
         </div>
       </Container>
@@ -440,7 +440,7 @@ export function TheEditSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <ProductCard product={p} index={i} darkBg />
+              <ProductCard product={p} index={i} />
             </motion.div>
           ))}
         </div>
