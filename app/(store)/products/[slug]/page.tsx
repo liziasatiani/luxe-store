@@ -180,7 +180,7 @@ export default async function ProductPage({ params }: Props) {
             {[
               { label: tProduct("brand"),        value: p.brand?.name },
               { label: tProduct("category"),     value: p.category?.name ?? p.category.name },
-              { label: tProduct("availability"), value: p.stockStatus === "IN_STOCK" ? tProduct("inStock") : p.stockStatus === "LOW_STOCK" ? "Low Stock" : tProduct("outOfStockLabel"), gold: p.stockStatus !== "OUT_OF_STOCK" },
+              { label: tProduct("availability"), value: p.stockStatus === "IN_STOCK" ? tProduct("inStock") : p.stockStatus === "LOW_STOCK" ? tProduct("lowStockLabel") : tProduct("outOfStockLabel"), gold: p.stockStatus !== "OUT_OF_STOCK" },
               { label: tProduct("returnPolicy"), value: tProduct("returnPolicyValue") },
             ].filter(r => r.value).map((row, i) => (
               <div key={i} style={{ display: "flex", padding: "13px 0", borderBottom: "1px solid var(--border)", gap: 16 }}>
