@@ -50,12 +50,7 @@ export function Navbar() {
   ];
 
   const ANN_ITEMS = [
-    "Free 48h Delivery in Tbilisi",
-    "100% Authentic Products",
-    "30-Day Returns",
-    "Secure Checkout",
-    "New Arrivals Weekly",
-    "Exclusive Brand Drops",
+    t("ann1"), t("ann2"), t("ann3"), t("ann4"), t("ann5"), t("ann6"),
   ];
 
   return (
