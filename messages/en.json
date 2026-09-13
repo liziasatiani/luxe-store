@@ -455,7 +455,10 @@
       "shipping": "Free Shipping Over ₾200",
       "distributors": "Authorized Distributors Only",
       "support": "Customer Support 7 Days"
-    }
+    },
+    "support": "Support",
+    "careers": "Careers",
+    "cookiePolicy": "Cookie Policy"
   },
   "pages": {
     "newArrivals": {

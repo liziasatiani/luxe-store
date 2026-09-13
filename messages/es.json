@@ -455,7 +455,10 @@
       "shipping": "Envío gratis desde ₾200",
       "distributors": "Solo distribuidores autorizados",
       "support": "Atención al cliente 7 días"
-    }
+    },
+    "support": "Soporte",
+    "careers": "Empleos",
+    "cookiePolicy": "Política de cookies"
   },
   "pages": {
     "newArrivals": {
