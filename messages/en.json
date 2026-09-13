@@ -904,7 +904,8 @@
     "scrollToTop": "Scroll to top",
     "breadcrumb": "Breadcrumb",
     "tryAgain": "Try again",
-    "close": "Close"
+    "close": "Close",
+    "all": "All"
   },
   "hero": {
     "headline1": "Two worlds,",
