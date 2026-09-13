@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Home, LayoutGrid, Search, ShoppingBag, User } from "lucide-react";
 import { useCartStore, useUIStore } from "@/store";
@@ -10,10 +11,12 @@ import { useTranslations } from "next-intl";
 export function BottomTabBar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const { data: session } = useSession();
   const { items, isOpen: cartOpen, openCart } = useCartStore();
   const { mobileMenuOpen, openSearch } = useUIStore();
-  const cartCount = items.reduce((s, i) => s + i.quantity, 0);
+  const cartCount = mounted ? items.reduce((s, i) => s + i.quantity, 0) : 0;
 
   const TABS = [
     { label: t("home"),    key: "home",    href: "/",        icon: Home },
@@ -80,7 +83,7 @@ export function BottomTabBar() {
               </button>
             );
           }
-          const dest = key === "account" && !session ? "/login" : href!;
+          const dest = key === "account" && mounted && !session ? "/login" : href!;
           return (
             <Link key={key} href={dest} className={btnClass} aria-label={label}>
               {inner}
