@@ -9,10 +9,11 @@ export async function generateMetadata() {
 }
 
 export default async function SitemapPage() {
-  const [t, tn, tc] = await Promise.all([
+  const [t, tn, tc, tf] = await Promise.all([
     getTranslations("pages.sitemap"),
     getTranslations("nav"),
     getTranslations("home.categories"),
+    getTranslations("footer"),
   ]);
 
   const SECTIONS = [
@@ -57,18 +58,18 @@ export default async function SitemapPage() {
     {
       title: t("sectionHelp"),
       links: [
-        { label: "FAQ",     href: "/faq"      },
-        { label: "Contact", href: "/contact"  },
-        { label: "Shipping", href: "/shipping" },
-        { label: "Returns",  href: "/returns"  },
+        { label: tf("faq"),      href: "/faq"      },
+        { label: tf("contact"),  href: "/contact"  },
+        { label: tf("shipping"), href: "/shipping" },
+        { label: tf("returns"),  href: "/returns"  },
       ],
     },
     {
       title: t("sectionCompany"),
       links: [
-        { label: "About",   href: "/about"   },
-        { label: "Privacy", href: "/privacy" },
-        { label: "Terms",   href: "/terms"   },
+        { label: tf("about"),   href: "/about"   },
+        { label: tf("privacy"), href: "/privacy" },
+        { label: tf("terms"),   href: "/terms"   },
       ],
     },
   ];
