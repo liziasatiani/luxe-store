@@ -158,7 +158,9 @@
     "recentlyViewed": "Recently Viewed",
     "notFound": "Product not found",
     "free48h": "Free 48h delivery",
-    "returns30": "30-day returns"
+    "returns30": "30-day returns",
+    "youSave": "You save",
+    "percentOff": "% off"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -464,7 +466,9 @@
     "newArrivals": {
       "title": "New Arrivals",
       "subtitle": "Fresh drops added weekly.",
-      "badge": "Just In"
+      "badge": "Just In",
+      "eyebrow": "New this week",
+      "sectionTitle": "Just Arrived"
     },
     "bestSellers": {
       "title": "Best Sellers",

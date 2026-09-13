@@ -134,14 +134,14 @@ export default async function ProductPage({ params }: Props) {
           )}
           {discount > 0 && (
             <div style={{ fontSize: 11, color: "#22c55e", fontWeight: 600, marginBottom: 26, display: "flex", alignItems: "center", gap: 4 }}>
-              You save <Price amount={savedAmount} /> · {discount}% off
+              {tProduct("youSave")} <Price amount={savedAmount} /> · {discount}{tProduct("percentOff")}
             </div>
           )}
 
           {/* Badges */}
           {p.isNewArrival && (
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 6 }}>New</span>
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 6 }}>{tProduct("newArrival")}</span>
             </div>
           )}
 

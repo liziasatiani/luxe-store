@@ -158,7 +158,9 @@
     "recentlyViewed": "Vistos recientemente",
     "notFound": "Producto no encontrado",
     "free48h": "Entrega gratis en 48h",
-    "returns30": "Devoluciones en 30 días"
+    "returns30": "Devoluciones en 30 días",
+    "youSave": "Ahorras",
+    "percentOff": "% de descuento"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -464,7 +466,9 @@
     "newArrivals": {
       "title": "Novedades",
       "subtitle": "Nuevos artículos cada semana.",
-      "badge": "Recién llegados"
+      "badge": "Recién llegados",
+      "eyebrow": "Esta semana",
+      "sectionTitle": "Recién llegados"
     },
     "bestSellers": {
       "title": "Más vendidos",

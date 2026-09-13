@@ -158,7 +158,9 @@
     "recentlyViewed": "Récemment consultés",
     "notFound": "Produit introuvable",
     "free48h": "Livraison gratuite en 48h",
-    "returns30": "Retours sous 30 jours"
+    "returns30": "Retours sous 30 jours",
+    "youSave": "Vous économisez",
+    "percentOff": "% de réduction"
   },
   "cart": {
     "title": "Panier",
@@ -464,7 +466,9 @@
     "newArrivals": {
       "title": "Nouveautés",
       "subtitle": "De nouvelles arrivées chaque semaine.",
-      "badge": "Dernières arrivées"
+      "badge": "Dernières arrivées",
+      "eyebrow": "Cette semaine",
+      "sectionTitle": "Tout juste arrivés"
     },
     "bestSellers": {
       "title": "Meilleures ventes",

@@ -74,6 +74,10 @@ export async function FeaturedProductsSection() {
 }
 
 export async function NewArrivalsSection() {
+  const [tNA, tc] = await Promise.all([
+    getTranslations("pages.newArrivals"),
+    getTranslations("common"),
+  ]);
   let products: ProductCardType[] = [];
   try {
     const rows = await prisma.product.findMany({
@@ -90,7 +94,7 @@ export async function NewArrivalsSection() {
   return (
     <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
       <div className="wrap">
-        <SectionHeader eyebrow="New this week" title="Just Arrived" viewAllHref="/new" viewAllLabel="View All" />
+        <SectionHeader eyebrow={tNA("eyebrow")} title={tNA("sectionTitle")} viewAllHref="/new" viewAllLabel={tc("viewAll")} />
         <div className="pgrid">
           {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
