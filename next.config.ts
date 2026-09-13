@@ -47,7 +47,10 @@ const nextConfig: NextConfig = {
     }];
   },
   async redirects() {
-    return [{ source: "/home", destination: "/", permanent: true }];
+    return [
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/products", destination: "/beauty", permanent: false },
+    ];
   },
 };
 
