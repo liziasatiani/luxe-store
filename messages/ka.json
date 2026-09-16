@@ -193,7 +193,8 @@
     "add": "დამატება",
     "yourOrder": "შენი შეკვეთა",
     "secure": "უსაფრთხო",
-    "freeReturns": "უფასო დაბრუნება"
+    "freeReturns": "უფასო დაბრუნება",
+    "closeCart": "კალათის დახურვა"
   },
   "checkout": {
     "title": "გადახდა",
@@ -970,7 +971,9 @@
     "filters": "ფილტრები",
     "category": "კატეგორია",
     "minPrice": "მინ",
-    "maxPrice": "მაქს"
+    "maxPrice": "მაქს",
+    "prevPage": "წინა გვერდი",
+    "nextPage": "შემდეგი გვერდი"
   },
   "contact": {
     "title": "დაგვიკავშირდით",

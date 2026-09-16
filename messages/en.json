@@ -193,7 +193,8 @@
     "add": "Add",
     "yourOrder": "Your Order",
     "secure": "Secure",
-    "freeReturns": "Free returns"
+    "freeReturns": "Free returns",
+    "closeCart": "Close cart"
   },
   "checkout": {
     "title": "Checkout",
@@ -970,7 +971,9 @@
     "filters": "Filters",
     "category": "Category",
     "minPrice": "Min",
-    "maxPrice": "Max"
+    "maxPrice": "Max",
+    "prevPage": "Previous page",
+    "nextPage": "Next page"
   },
   "contact": {
     "title": "Get In Touch",

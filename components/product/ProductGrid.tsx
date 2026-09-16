@@ -354,6 +354,7 @@ function FilterSidebar({
 }
 
 function Pagination({ page, totalPages, onPage }: { page: number; totalPages: number; onPage: (p: number) => void }) {
+  const t = useTranslations("filters");
   const pages: (number | "…")[] = [];
   if (totalPages <= 7) {
     for (let i = 1; i <= totalPages; i++) pages.push(i);
@@ -371,7 +372,7 @@ function Pagination({ page, totalPages, onPage }: { page: number; totalPages: nu
         onClick={() => onPage(page - 1)}
         disabled={page === 1}
         className="w-9 h-9 flex items-center justify-center border border-black/15 dark:border-white/15 text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-        aria-label="Previous page"
+        aria-label={t("prevPage")}
       >
         <ChevronLeft size={14} />
       </button>
@@ -399,7 +400,7 @@ function Pagination({ page, totalPages, onPage }: { page: number; totalPages: nu
         onClick={() => onPage(page + 1)}
         disabled={page === totalPages}
         className="w-9 h-9 flex items-center justify-center border border-black/15 dark:border-white/15 text-black/50 dark:text-white/50 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-        aria-label="Next page"
+        aria-label={t("nextPage")}
       >
         <ChevronRight size={14} />
       </button>

@@ -193,7 +193,8 @@
     "add": "Ajouter",
     "yourOrder": "Votre commande",
     "secure": "Sécurisé",
-    "freeReturns": "Retours gratuits"
+    "freeReturns": "Retours gratuits",
+    "closeCart": "Fermer le panier"
   },
   "checkout": {
     "title": "Passer commande",
@@ -970,7 +971,9 @@
     "filters": "Filtres",
     "category": "Catégorie",
     "minPrice": "Min",
-    "maxPrice": "Max"
+    "maxPrice": "Max",
+    "prevPage": "Page précédente",
+    "nextPage": "Page suivante"
   },
   "contact": {
     "title": "Contactez-nous",
