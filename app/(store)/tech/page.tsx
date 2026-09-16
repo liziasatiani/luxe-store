@@ -7,8 +7,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const locale = await getLocale();
-  return buildMetadata({ title: "Tech", description: "Shop premium headphones, cameras, tablets, gaming gear, wearables and smart home devices.", locale });
+  const [locale, tNav] = await Promise.all([getLocale(), getTranslations("nav")]);
+  return buildMetadata({ title: tNav("tech"), description: "Shop premium headphones, cameras, tablets, gaming gear, wearables and smart home devices.", locale });
 }
 
 export default async function TechPage() {

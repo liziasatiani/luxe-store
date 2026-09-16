@@ -13,10 +13,13 @@ interface Props { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const cat = await prisma.category.findUnique({ where: { slug }, include: { parent: true } });
+  const [cat, locale, tCat] = await Promise.all([
+    prisma.category.findUnique({ where: { slug }, include: { parent: true } }),
+    getLocale(),
+    getTranslations("categories"),
+  ]);
   if (!cat) return {};
-  const locale = await getLocale();
-  return buildMetadata({ title: cat.name, description: cat.description ?? undefined, locale });
+  return buildMetadata({ title: (tCat.raw(slug) as string | undefined) ?? cat.name, description: cat.description ?? undefined, locale });
 }
 
 export default async function BeautySubcategoryPage({ params }: Props) {

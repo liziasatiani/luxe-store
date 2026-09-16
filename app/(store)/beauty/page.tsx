@@ -7,8 +7,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const locale = await getLocale();
-  return buildMetadata({ title: "Beauty", description: "Shop luxury skincare, makeup, hair care, perfume and beauty tools from the world's most coveted brands.", locale });
+  const [locale, tNav] = await Promise.all([getLocale(), getTranslations("nav")]);
+  return buildMetadata({ title: tNav("beauty"), description: "Shop luxury skincare, makeup, hair care, perfume and beauty tools from the world's most coveted brands.", locale });
 }
 
 export default async function BeautyPage() {
