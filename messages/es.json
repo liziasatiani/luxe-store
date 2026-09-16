@@ -846,6 +846,27 @@
       "body": "La página encontró un error inesperado. Prueba a actualizar la página o vuelve al inicio.",
       "tryAgain": "Intentar de nuevo",
       "goHome": "Ir al inicio"
+    },
+    "checkout": {
+      "title": "Finalizar compra"
+    },
+    "cart": {
+      "title": "Mi carrito"
+    },
+    "account": {
+      "title": "Mi cuenta"
+    },
+    "accountAddresses": {
+      "title": "Mis direcciones"
+    },
+    "accountOrders": {
+      "title": "Mis pedidos"
+    },
+    "accountOrderDetail": {
+      "title": "Detalles del pedido"
+    },
+    "checkoutSuccess": {
+      "title": "Pedido confirmado"
     }
   },
   "common": {

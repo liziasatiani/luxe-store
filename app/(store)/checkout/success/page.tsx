@@ -3,9 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Package, ArrowRight, CheckCircle, UserPlus } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-
-export const metadata: Metadata = { title: "Order Confirmed", robots: { index: false, follow: false } };
 import { prisma } from "@/lib/prisma";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pages.checkoutSuccess");
+  return { title: t("title"), robots: { index: false, follow: false } };
+}
 import { serializeDecimal, formatPrice, getProductImageUrl } from "@/lib/utils";
 import { auth } from "@/lib/auth";
 

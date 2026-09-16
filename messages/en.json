@@ -846,6 +846,27 @@
       "body": "The page hit an error we didn't expect. Try refreshing, or head back home.",
       "tryAgain": "Try again",
       "goHome": "Go Home"
+    },
+    "checkout": {
+      "title": "Checkout"
+    },
+    "cart": {
+      "title": "Shopping Cart"
+    },
+    "account": {
+      "title": "My Account"
+    },
+    "accountAddresses": {
+      "title": "My Addresses"
+    },
+    "accountOrders": {
+      "title": "My Orders"
+    },
+    "accountOrderDetail": {
+      "title": "Order Details"
+    },
+    "checkoutSuccess": {
+      "title": "Order Confirmed"
     }
   },
   "common": {

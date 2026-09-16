@@ -846,6 +846,27 @@
       "body": "La page a rencontré une erreur inattendue. Essayez de rafraîchir la page ou revenez à l'accueil.",
       "tryAgain": "Réessayer",
       "goHome": "Accueil"
+    },
+    "checkout": {
+      "title": "Paiement"
+    },
+    "cart": {
+      "title": "Mon panier"
+    },
+    "account": {
+      "title": "Mon compte"
+    },
+    "accountAddresses": {
+      "title": "Mes adresses"
+    },
+    "accountOrders": {
+      "title": "Mes commandes"
+    },
+    "accountOrderDetail": {
+      "title": "Détail de la commande"
+    },
+    "checkoutSuccess": {
+      "title": "Commande confirmée"
     }
   },
   "common": {

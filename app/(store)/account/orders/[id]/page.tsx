@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-
-export const metadata: Metadata = { title: "Order Details", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
@@ -9,6 +7,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Package, Truck, CheckCircle, Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pages.accountOrderDetail");
+  return { title: t("title"), robots: { index: false, follow: false } };
+}
 
 interface Props { params: Promise<{ id: string }> }
 
