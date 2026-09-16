@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function TechSubcategoryPage({ params }: Props) {
   const { slug } = await params;
 
-  const [category, techSubs, beautySubs, t, tNav, tCommon] = await Promise.all([
+  const [category, techSubs, beautySubs, t, tNav, tCommon, tCat] = await Promise.all([
     prisma.category.findUnique({
       where: { slug, isActive: true },
       include: { parent: true, _count: { select: { products: { where: { isActive: true } } } } },
@@ -40,6 +40,7 @@ export default async function TechSubcategoryPage({ params }: Props) {
     getTranslations("pages.tech"),
     getTranslations("nav"),
     getTranslations("common"),
+    getTranslations("categories"),
   ]);
 
   if (!category) notFound();
@@ -49,7 +50,7 @@ export default async function TechSubcategoryPage({ params }: Props) {
       <div className="k-page-hdr">
         <div className="wrap">
           <p className="page-hd-eyebrow">{tNav("tech")}</p>
-          <h1 className="page-hd-title">{category.name}</h1>
+          <h1 className="page-hd-title">{(tCat.raw(slug) as string | undefined) ?? category.name}</h1>
           <p className="page-hd-desc">{category._count.products} {tCommon("products")}</p>
         </div>
       </div>

@@ -575,7 +575,9 @@
       "namePlaceholder": "Ana Martínez",
       "emailPlaceholder": "tu@ejemplo.com",
       "subjectPlaceholder": "¿En qué podemos ayudarte?",
-      "messagePlaceholder": "Cuéntanos qué tienes en mente…"
+      "messagePlaceholder": "Cuéntanos qué tienes en mente…",
+      "monFriHours": "9:00 – 18:00 GET",
+      "saturdayHours": "10:00 – 16:00 GET"
     },
     "faq": {
       "title": "Preguntas frecuentes",

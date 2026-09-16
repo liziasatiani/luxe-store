@@ -2,8 +2,8 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const locale = await getLocale();
-  return buildMetadata({ title: "Terms & Conditions", description: "Terms and Conditions governing purchases and use of Everything Street.", locale });
+  const [locale, t] = await Promise.all([getLocale(), getTranslations("pages.terms")]);
+  return buildMetadata({ title: t("title"), description: "Terms and Conditions governing purchases and use of Everything Street.", locale });
 }
 
 export default async function TermsPage() {

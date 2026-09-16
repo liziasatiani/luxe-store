@@ -575,7 +575,9 @@
       "namePlaceholder": "Jane Dupont",
       "emailPlaceholder": "vous@exemple.com",
       "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
-      "messagePlaceholder": "Dites-nous ce qui vous préoccupe…"
+      "messagePlaceholder": "Dites-nous ce qui vous préoccupe…",
+      "monFriHours": "9h – 18h GET",
+      "saturdayHours": "10h – 16h GET"
     },
     "faq": {
       "title": "Questions fréquentes",

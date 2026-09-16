@@ -575,7 +575,9 @@
       "namePlaceholder": "ტამარ გიორგია",
       "emailPlaceholder": "you@example.com",
       "subjectPlaceholder": "რომელში გვეხმარებთ?",
-      "messagePlaceholder": "დაგვწერეთ ყველაფერი აზრების შესახებ"
+      "messagePlaceholder": "დაგვწერეთ ყველაფერი აზრების შესახებ",
+      "monFriHours": "9:00 – 18:00 GET",
+      "saturdayHours": "10:00 – 16:00 GET"
     },
     "faq": {
       "title": "ხშირად დასმული კითხვები",

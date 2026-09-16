@@ -575,7 +575,9 @@
       "namePlaceholder": "Jane Smith",
       "emailPlaceholder": "you@example.com",
       "subjectPlaceholder": "How can we help?",
-      "messagePlaceholder": "Tell us what’s on your mind…"
+      "messagePlaceholder": "Tell us what’s on your mind…",
+      "monFriHours": "9AM – 6PM GET",
+      "saturdayHours": "10AM – 4PM GET"
     },
     "faq": {
       "title": "Frequently Asked Questions",
