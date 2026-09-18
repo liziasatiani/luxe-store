@@ -125,7 +125,7 @@ export function CartDrawer() {
                 style={S.chalk2}
                 onMouseEnter={e => (e.currentTarget.style.color = "var(--chalk)")}
                 onMouseLeave={e => (e.currentTarget.style.color = "var(--chalk2)")}
-                aria-label="Close cart"
+                aria-label={t("closeCart")}
               >
                 <X size={18} />
               </button>

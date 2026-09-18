@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://everythingstreet.com";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://everythingstreet.ge";
 const PRICE_VALID_DAYS = 30;
 const SITE_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? "Everything Street";
 
@@ -23,8 +23,8 @@ interface SeoProps {
 
 export function buildMetadata({
   title,
-  description = "Shop luxury beauty, skincare, cosmetics and premium tech. Free shipping on orders over $75.",
-  image = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1200&q=80&auto=format",
+  description = "Shop luxury beauty, skincare, cosmetics and premium tech. Free shipping on orders over ₾200.",
+  image = "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&q=80&auto=format",
   url = BASE_URL,
   type = "website",
   noIndex = false,
@@ -113,7 +113,7 @@ export function buildProductSchema(product: {
     offers: {
       "@type": "Offer",
       price: product.price,
-      priceCurrency: "USD",
+      priceCurrency: "GEL",
       availability:
         product.stock > 0
           ? "https://schema.org/InStock"

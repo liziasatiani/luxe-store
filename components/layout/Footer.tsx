@@ -2,34 +2,36 @@
 import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
 import { usePathname } from "next/navigation";
-
-const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
-  Shop: [
-    { label: "Technology",   href: "/tech"   },
-    { label: "Beauty",       href: "/beauty" },
-    { label: "New Arrivals", href: "/new"    },
-    { label: "All Brands",   href: "/brands" },
-  ],
-  Company: [
-    { label: "About Us", href: "/about"   },
-    { label: "Contact",  href: "/contact" },
-    { label: "Careers",  href: "/careers" },
-  ],
-  Support: [
-    { label: "Shipping & Delivery", href: "/shipping"       },
-    { label: "Returns & Refunds",   href: "/returns"        },
-    { label: "Terms & Conditions",  href: "/terms"          },
-    { label: "Privacy Policy",      href: "/privacy"        },
-    { label: "Cookie Policy",       href: "/cookie-policy"  },
-  ],
-};
+import { useTranslations } from "next-intl";
 
 export function Footer() {
   const pathname = usePathname();
+  const t = useTranslations("footer");
   const instagram = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
   const facebook  = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 
   if (pathname.startsWith("/admin")) return null;
+
+  const FOOTER_LINKS: Record<string, { label: string; href: string }[]> = {
+    [t("shop")]: [
+      { label: t("tech"),        href: "/tech"   },
+      { label: t("beauty"),      href: "/beauty" },
+      { label: t("newArrivals"), href: "/new"    },
+      { label: t("brands"),      href: "/brands" },
+    ],
+    [t("company")]: [
+      { label: t("about"),   href: "/about"   },
+      { label: t("contact"), href: "/contact" },
+      { label: t("careers"), href: "/careers" },
+    ],
+    [t("support")]: [
+      { label: t("shipping"),     href: "/shipping"     },
+      { label: t("returns"),      href: "/returns"      },
+      { label: t("terms"),        href: "/terms"        },
+      { label: t("privacy"),      href: "/privacy"      },
+      { label: t("cookiePolicy"), href: "/cookie-policy"},
+    ],
+  };
 
   return (
     <footer>

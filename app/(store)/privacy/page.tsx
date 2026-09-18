@@ -2,8 +2,8 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const locale = await getLocale();
-  return buildMetadata({ title: "Privacy Policy", description: "How Everything Street collects, uses, and protects your personal data.", locale });
+  const [locale, t] = await Promise.all([getLocale(), getTranslations("pages.privacy")]);
+  return buildMetadata({ title: t("title"), description: "How Everything Street collects, uses, and protects your personal data.", locale });
 }
 
 export default async function PrivacyPage() {

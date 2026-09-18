@@ -77,8 +77,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={locale} suppressHydrationWarning className={`${spectral.variable} ${mulish.variable} ${notoSerifGeorgian.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(buildOrganizationSchema()) }} />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link rel="preload" as="image" href="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1920&q=80&auto=format" fetchPriority="high" />
         <link rel="preconnect" href="https://fjdatrmbijswdhbtiigm.supabase.co" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fjdatrmbijswdhbtiigm.supabase.co" />

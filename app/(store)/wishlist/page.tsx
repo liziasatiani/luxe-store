@@ -11,6 +11,7 @@ import type { ProductCard } from "@/types";
 function WishlistRow({ product, onRemove }: { product: ProductCard; onRemove: () => void }) {
   const t = useTranslations("wishlist");
   const tProduct = useTranslations("product");
+  const tCommon = useTranslations("common");
   const { addItem, openCart } = useCartStore();
   const [added, setAdded] = useState(false);
 
@@ -148,11 +149,11 @@ function WishlistRow({ product, onRemove }: { product: ProductCard; onRemove: ()
             cursor: isUnavailable ? "not-allowed" : "pointer",
           }}
         >
-          {added ? "✓ Added" : tProduct("addToCart")}
+          {added ? `✓ ${tCommon("addedToCart")}` : tProduct("addToCart")}
         </button>
         <button
           onClick={onRemove}
-          aria-label="Remove from wishlist"
+          aria-label={tProduct("removeFromWishlist")}
           style={{
             width: 32,
             height: 32,

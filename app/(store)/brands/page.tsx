@@ -5,8 +5,8 @@ import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 
 export async function generateMetadata() {
-  const locale = await getLocale();
-  return buildMetadata({ title: "Brands", description: "Explore all luxury beauty and premium tech brands at Everything Street.", locale });
+  const [locale, t] = await Promise.all([getLocale(), getTranslations("pages.brands")]);
+  return buildMetadata({ title: t("title"), description: "Explore all luxury beauty and premium tech brands at Everything Street.", locale });
 }
 
 export default async function BrandsPage() {

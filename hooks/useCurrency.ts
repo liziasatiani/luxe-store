@@ -27,7 +27,7 @@ export function useCurrency() {
     if (isNaN(num)) {
       if (currency === "GEL") return "₾0.00";
       if (currency === "EUR") return "€0.00";
-      return "$0.00";
+      return "₾0.00";
     }
     if (currency === "GEL") return formatGEL(num, rates.USD_GEL);
     if (currency === "EUR") return "€" + (num * rates.USD_EUR).toFixed(2);

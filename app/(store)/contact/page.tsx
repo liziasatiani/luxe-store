@@ -106,8 +106,8 @@ export default function ContactPage() {
             <div style={{ marginBottom: 32 }}>
               <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 7 }}>{t("businessHours")}</div>
               <div style={{ fontSize: 15, color: "var(--chalk2)", lineHeight: 1.6 }}>
-                {t("monFri")}: 9AM – 6PM GET<br />
-                {t("saturday")}: 10AM – 4PM GET<br />
+                {t("monFri")}: {t("monFriHours")}<br />
+                {t("saturday")}: {t("saturdayHours")}<br />
                 {t("sunday")}: {t("closed")}
               </div>
             </div>

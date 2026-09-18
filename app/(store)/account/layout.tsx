@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-
-export const metadata: Metadata = { title: "My Account", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { User, Package, MapPin, Heart, LogOut } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pages.account");
+  return { title: t("title"), robots: { index: false, follow: false } };
+}
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();

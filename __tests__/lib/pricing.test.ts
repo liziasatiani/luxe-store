@@ -83,7 +83,7 @@ describe("discountFor — FREE_SHIPPING", () => {
 describe("calcOrderTotals", () => {
   it("computes totals correctly with no coupon", () => {
     const totals = calcOrderTotals(100, null, 0);
-    // shipping is free above $75
+    // shipping is free above ₾200
     expect(totals.subtotal).toBe(100);
     expect(totals.discountAmount).toBe(0);
     expect(totals.shippingAmount).toBe(0);

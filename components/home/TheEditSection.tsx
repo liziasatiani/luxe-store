@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal } from "@/lib/utils";
 
@@ -62,6 +63,10 @@ function firstSentence(text: string | null) {
 }
 
 export async function TheEditSection() {
+  const [tp, tc] = await Promise.all([
+    getTranslations("product"),
+    getTranslations("common"),
+  ]);
   let items: Awaited<ReturnType<typeof getEditProducts>>;
   try {
     items = await getEditProducts();
@@ -128,7 +133,7 @@ export async function TheEditSection() {
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(7,10,20,0.75) 0%, transparent 50%)" }} />
               {featured.isOnSale && featured.comparePrice && (
                 <div style={{ position: "absolute", top: 16, left: 16, fontFamily: "var(--font-mulish)", fontSize: 8, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", background: "var(--crimson)", color: "#fff", padding: "4px 10px", borderRadius: 2 }}>
-                  Sale
+                  {tc("sale")}
                 </div>
               )}
             </div>
@@ -153,7 +158,7 @@ export async function TheEditSection() {
                     </span>
                   )}
                 </div>
-                <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>Add to Cart</span>
+                <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>{tp("addToCart")}</span>
               </div>
             </div>
           </Link>
@@ -184,7 +189,7 @@ export async function TheEditSection() {
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(7,10,20,0.65) 0%, transparent 55%)" }} />
                   {item.isOnSale && (
                     <div style={{ position: "absolute", top: 12, left: 12, fontFamily: "var(--font-mulish)", fontSize: 7, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", background: "var(--gold)", color: "#000", padding: "3px 8px", borderRadius: 2 }}>
-                      Sale
+                      {tc("sale")}
                     </div>
                   )}
                 </div>
@@ -197,7 +202,7 @@ export async function TheEditSection() {
                   </div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <span style={{ fontSize: 16, fontWeight: 500, color: "var(--chalk)" }}>{formatPrice(Number(item.price))}</span>
-                    <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>Add to Cart</span>
+                    <span className="btn-cart" style={{ fontSize: 9, padding: "7px 16px", borderRadius: 4, fontWeight: 600, letterSpacing: "0.12em" }}>{tp("addToCart")}</span>
                   </div>
                 </div>
               </Link>

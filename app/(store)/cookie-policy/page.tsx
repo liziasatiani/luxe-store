@@ -2,8 +2,8 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const locale = await getLocale();
-  return buildMetadata({ title: "Cookie Policy", description: "How Everything Street uses cookies and how you can manage them.", locale });
+  const [locale, t] = await Promise.all([getLocale(), getTranslations("pages.cookiePolicy")]);
+  return buildMetadata({ title: t("title"), description: "How Everything Street uses cookies and how you can manage them.", locale });
 }
 
 export default async function CookiePolicyPage() {

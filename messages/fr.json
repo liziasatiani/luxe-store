@@ -31,7 +31,13 @@
     "toggleTheme": "Changer le thème",
     "openSearch": "Ouvrir la recherche",
     "openAccountMenu": "Ouvrir le menu du compte",
-    "mainNav": "Navigation principale"
+    "mainNav": "Navigation principale",
+    "ann1": "Livraison gratuite 48h à Tbilissi",
+    "ann2": "Produits 100% Authentiques",
+    "ann3": "Retours sous 14 Jours",
+    "ann4": "Paiement Sécurisé",
+    "ann5": "Nouveautés Chaque Semaine",
+    "ann6": "Drops de Marques Exclusives"
   },
   "home": {
     "hero": {
@@ -118,7 +124,7 @@
     "viewFullDetails": "Voir les détails complets",
     "qty": "Qté",
     "removed": "Supprimé",
-    "trustReturns": "Retours gratuits sous 30 jours",
+    "trustReturns": "Retours gratuits sous 14 jours",
     "trustAuthentic": "100% authentique — garanti",
     "trustShipping": "Livraison gratuite dès ₾200",
     "quantity": "Quantité",
@@ -152,7 +158,9 @@
     "recentlyViewed": "Récemment consultés",
     "notFound": "Produit introuvable",
     "free48h": "Livraison gratuite en 48h",
-    "returns30": "Retours sous 30 jours"
+    "returns30": "Retours sous 14 jours",
+    "youSave": "Vous économisez",
+    "percentOff": "% de réduction"
   },
   "cart": {
     "title": "Panier",
@@ -175,7 +183,7 @@
     "secureCheckout": "Paiement sécurisé",
     "viewFullCart": "Voir le panier complet",
     "trustSecure": "Paiement sécurisé",
-    "trustReturns": "Retours 30 jours",
+    "trustReturns": "Retours 14 jours",
     "trustAuthentic": "100% authentique",
     "shoppingCart": "Panier",
     "couponCode": "Code promo",
@@ -185,7 +193,8 @@
     "add": "Ajouter",
     "yourOrder": "Votre commande",
     "secure": "Sécurisé",
-    "freeReturns": "Retours gratuits"
+    "freeReturns": "Retours gratuits",
+    "closeCart": "Fermer le panier"
   },
   "checkout": {
     "title": "Passer commande",
@@ -266,7 +275,8 @@
     "viewAll": "Voir tout",
     "saveHistory": "Sauvegardez votre historique",
     "saveHistoryDesc": "Créez un compte gratuit pour suivre cette commande, recommander en un clic et accéder en avant-première aux nouveautés.",
-    "createAccount": "Créer un compte"
+    "createAccount": "Créer un compte",
+    "orderLabel": "Commande"
   },
   "account": {
     "title": "Mon compte",
@@ -443,19 +453,24 @@
     "sitemap": "Plan du site",
     "tagline": "Technologie réfléchie. Beauté réfléchie. Sélectionné, testé et livré ensemble.",
     "pressbar": {
-      "returns": "Retours gratuits sous 30 jours",
+      "returns": "Retours gratuits sous 14 jours",
       "authentic": "100% Authentique",
       "checkout": "Paiement sécurisé",
       "shipping": "Livraison gratuite dès ₾200",
       "distributors": "Distributeurs agréés uniquement",
       "support": "Support client 7 jours sur 7"
-    }
+    },
+    "support": "Assistance",
+    "careers": "Carrières",
+    "cookiePolicy": "Politique des cookies"
   },
   "pages": {
     "newArrivals": {
       "title": "Nouveautés",
       "subtitle": "De nouvelles arrivées chaque semaine.",
-      "badge": "Dernières arrivées"
+      "badge": "Dernières arrivées",
+      "eyebrow": "Cette semaine",
+      "sectionTitle": "Tout juste arrivés"
     },
     "bestSellers": {
       "title": "Meilleures ventes",
@@ -499,7 +514,7 @@
       "missionDesc": "Nous nous approvisionnons directement auprès de distributeurs agréés. Pas de circuits parallèles. Pas d'ambiguïté.",
       "promiseLabel": "Promesse",
       "promiseTitle": "Un service que vous ressentez.",
-      "promiseDesc": "Le luxe est aussi l'expérience. Paiement sécurisé, suivi transparent, retours 30 jours, équipe réactive.",
+      "promiseDesc": "Le luxe est aussi l'expérience. Paiement sécurisé, suivi transparent, retours 14 jours, équipe réactive.",
       "statsProducts": "Produits sélectionnés",
       "statsBrands": "Marques de luxe",
       "whatWeStandFor": "Nos valeurs",
@@ -561,7 +576,9 @@
       "namePlaceholder": "Jane Dupont",
       "emailPlaceholder": "vous@exemple.com",
       "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
-      "messagePlaceholder": "Dites-nous ce qui vous préoccupe…"
+      "messagePlaceholder": "Dites-nous ce qui vous préoccupe…",
+      "monFriHours": "9h – 18h GET",
+      "saturdayHours": "10h – 16h GET"
     },
     "faq": {
       "title": "Questions fréquentes",
@@ -613,7 +630,7 @@
           "items": [
             {
               "q": "Quelle est votre politique de retour ?",
-              "a": "Nous proposons des retours sans tracas sous 30 jours sur tous les produits. Les articles doivent être non utilisés, dans leur emballage d'origine, avec toutes les étiquettes. Les produits de beauté doivent être non ouverts et scellés."
+              "a": "Nous proposons des retours sans tracas sous 14 jours sur tous les produits. Les articles doivent être non utilisés, dans leur emballage d'origine, avec toutes les étiquettes. Les produits de beauté doivent être non ouverts et scellés."
             },
             {
               "q": "Combien de temps prend un remboursement ?",
@@ -630,7 +647,7 @@
           "items": [
             {
               "q": "Quels moyens de paiement acceptez-vous ?",
-              "a": "Nous acceptons toutes les principales cartes de crédit et de débit (Visa, Mastercard, American Express) et le paiement à la livraison dans certaines régions."
+              "a": "Nous acceptons toutes les principales cartes de crédit et de débit (Visa, Mastercard, American Express) traités en toute sécurité via Stripe."
             },
             {
               "q": "Mes informations de paiement sont-elles sécurisées ?",
@@ -830,6 +847,27 @@
       "body": "La page a rencontré une erreur inattendue. Essayez de rafraîchir la page ou revenez à l'accueil.",
       "tryAgain": "Réessayer",
       "goHome": "Accueil"
+    },
+    "checkout": {
+      "title": "Paiement"
+    },
+    "cart": {
+      "title": "Mon panier"
+    },
+    "account": {
+      "title": "Mon compte"
+    },
+    "accountAddresses": {
+      "title": "Mes adresses"
+    },
+    "accountOrders": {
+      "title": "Mes commandes"
+    },
+    "accountOrderDetail": {
+      "title": "Détail de la commande"
+    },
+    "checkoutSuccess": {
+      "title": "Commande confirmée"
     }
   },
   "common": {
@@ -895,7 +933,8 @@
     "scrollToTop": "Haut de page",
     "breadcrumb": "Fil d'Ariane",
     "tryAgain": "Réessayer",
-    "close": "Fermer"
+    "close": "Fermer",
+    "all": "Tout"
   },
   "hero": {
     "headline1": "Deux mondes,",
@@ -956,7 +995,9 @@
     "filters": "Filtres",
     "category": "Catégorie",
     "minPrice": "Min",
-    "maxPrice": "Max"
+    "maxPrice": "Max",
+    "prevPage": "Page précédente",
+    "nextPage": "Page suivante"
   },
   "contact": {
     "title": "Contactez-nous",
@@ -993,6 +1034,7 @@
     }
   },
   "trackOrder": {
+    "eyebrow": "Statut de la commande",
     "title": "Suivre votre commande",
     "subtitle": "Entrez votre numéro de commande et votre e-mail pour suivre votre livraison.",
     "orderNumber": "Numéro de commande",

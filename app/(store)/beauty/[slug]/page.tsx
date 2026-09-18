@@ -13,16 +13,19 @@ interface Props { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const cat = await prisma.category.findUnique({ where: { slug }, include: { parent: true } });
+  const [cat, locale, tCat] = await Promise.all([
+    prisma.category.findUnique({ where: { slug }, include: { parent: true } }),
+    getLocale(),
+    getTranslations("categories"),
+  ]);
   if (!cat) return {};
-  const locale = await getLocale();
-  return buildMetadata({ title: cat.name, description: cat.description ?? undefined, locale });
+  return buildMetadata({ title: (tCat.raw(slug) as string | undefined) ?? cat.name, description: cat.description ?? undefined, locale });
 }
 
 export default async function BeautySubcategoryPage({ params }: Props) {
   const { slug } = await params;
 
-  const [category, beautySubs, techSubs, t, tNav, tCommon] = await Promise.all([
+  const [category, beautySubs, techSubs, t, tNav, tCommon, tCat] = await Promise.all([
     prisma.category.findUnique({
       where: { slug, isActive: true },
       include: { parent: true, _count: { select: { products: { where: { isActive: true } } } } },
@@ -40,6 +43,7 @@ export default async function BeautySubcategoryPage({ params }: Props) {
     getTranslations("pages.beauty"),
     getTranslations("nav"),
     getTranslations("common"),
+    getTranslations("categories"),
   ]);
 
   if (!category) notFound();
@@ -49,7 +53,7 @@ export default async function BeautySubcategoryPage({ params }: Props) {
       <div className="k-page-hdr">
         <div className="wrap">
           <p className="page-hd-eyebrow">{tNav("beauty")}</p>
-          <h1 className="page-hd-title">{category.name}</h1>
+          <h1 className="page-hd-title">{(tCat.raw(slug) as string | undefined) ?? category.name}</h1>
           <p className="page-hd-desc">{category._count.products} {tCommon("products")}</p>
         </div>
       </div>

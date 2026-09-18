@@ -72,8 +72,12 @@ export default async function ProductPage({ params }: Props) {
   const savedAmount = p.comparePrice ? (Number(p.comparePrice) - Number(p.price)) : 0;
 
   const locale = await getLocale();
-  const tProduct = await getTranslations("product");
-  const tCommon = await getTranslations("common");
+  const [tProduct, tCommon, tCat, tNav] = await Promise.all([
+    getTranslations("product"),
+    getTranslations("common"),
+    getTranslations("categories"),
+    getTranslations("nav"),
+  ]);
 
   const localizedDescription = (locale === "ka" ? p.description_ka : locale === "fr" ? p.description_fr : locale === "es" ? p.description_es : null) ?? p.shortDescription ?? p.description;
   const localizedHowToUse = (locale === "ka" ? p.howToUse_ka : locale === "fr" ? p.howToUse_fr : locale === "es" ? p.howToUse_es : null) ?? p.howToUse;
@@ -81,8 +85,8 @@ export default async function ProductPage({ params }: Props) {
 
   const breadcrumbs = [
     { name: tCommon("home"), url: "/" },
-    ...(p.category.parent ? [{ name: p.category.parent.name, url: `/${p.category.parent.slug}` }] : []),
-    { name: p.category.name, url: `/${p.category.slug}` },
+    ...(p.category.parent ? [{ name: (tNav.raw(p.category.parent.slug) as string | undefined) ?? p.category.parent.name, url: `/${p.category.parent.slug}` }] : []),
+    { name: (tCat.raw(p.category.slug) as string | undefined) ?? p.category.name, url: `/${p.category.slug}` },
     { name: p.name, url: `/products/${p.slug}` },
   ];
 
@@ -134,14 +138,14 @@ export default async function ProductPage({ params }: Props) {
           )}
           {discount > 0 && (
             <div style={{ fontSize: 11, color: "#22c55e", fontWeight: 600, marginBottom: 26, display: "flex", alignItems: "center", gap: 4 }}>
-              You save <Price amount={savedAmount} /> · {discount}% off
+              {tProduct("youSave")} <Price amount={savedAmount} /> · {discount}{tProduct("percentOff")}
             </div>
           )}
 
           {/* Badges */}
           {p.isNewArrival && (
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 6 }}>New</span>
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", padding: "5px 12px", background: "var(--gold)", color: "#000", borderRadius: 6 }}>{tProduct("newArrival")}</span>
             </div>
           )}
 
@@ -179,8 +183,8 @@ export default async function ProductPage({ params }: Props) {
           <div style={{ marginBottom: 32 }}>
             {[
               { label: tProduct("brand"),        value: p.brand?.name },
-              { label: tProduct("category"),     value: p.category?.name ?? p.category.name },
-              { label: tProduct("availability"), value: p.stockStatus === "IN_STOCK" ? tProduct("inStock") : p.stockStatus === "LOW_STOCK" ? "Low Stock" : tProduct("outOfStockLabel"), gold: p.stockStatus !== "OUT_OF_STOCK" },
+              { label: tProduct("category"),     value: (tCat.raw(p.category.slug) as string | undefined) ?? p.category.name },
+              { label: tProduct("availability"), value: p.stockStatus === "IN_STOCK" ? tProduct("inStock") : p.stockStatus === "LOW_STOCK" ? tProduct("lowStockLabel") : tProduct("outOfStockLabel"), gold: p.stockStatus !== "OUT_OF_STOCK" },
               { label: tProduct("returnPolicy"), value: tProduct("returnPolicyValue") },
             ].filter(r => r.value).map((row, i) => (
               <div key={i} style={{ display: "flex", padding: "13px 0", borderBottom: "1px solid var(--border)", gap: 16 }}>

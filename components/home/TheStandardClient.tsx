@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ProductCard } from "@/components/product/ProductCard";
 import type { ProductCard as ProductCardType } from "@/types";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const TABS = ["All", "Beauty", "Tech"] as const;
 type Tab = (typeof TABS)[number];
@@ -12,6 +13,9 @@ const TECH_SLUGS = ["headphones", "cameras", "tablets", "gaming", "wearables", "
 
 export function TheStandardClient({ products }: { products: ProductCardType[] }) {
   const [active, setActive] = useState<Tab>("All");
+  const tc = useTranslations("common");
+  const tn = useTranslations("nav");
+  const tabLabel: Record<Tab, string> = { All: tc("all"), Beauty: tn("beauty"), Tech: tn("tech") };
 
   const filtered = active === "All"
     ? products
@@ -49,7 +53,7 @@ export function TheStandardClient({ products }: { products: ProductCardType[] })
                   transition: "background 0.2s, color 0.2s",
                 }}
               >
-                {tab}
+                {tabLabel[tab]}
               </button>
             ))}
           </div>
@@ -72,7 +76,7 @@ export function TheStandardClient({ products }: { products: ProductCardType[] })
             paddingBottom: 3,
           }}
         >
-          See all products →
+          {tc("allProducts")} →
         </Link>
       </div>
     </>

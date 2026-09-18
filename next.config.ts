@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
           key: "Content-Security-Policy",
           value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://js.stripe.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com https://js.stripe.com https://www.googletagmanager.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https://images.unsplash.com https://*.supabase.co https://lh3.googleusercontent.com",
@@ -47,7 +47,10 @@ const nextConfig: NextConfig = {
     }];
   },
   async redirects() {
-    return [{ source: "/home", destination: "/", permanent: true }];
+    return [
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/products", destination: "/beauty", permanent: false },
+    ];
   },
 };
 

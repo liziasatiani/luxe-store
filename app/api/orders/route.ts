@@ -292,7 +292,6 @@ export async function POST(req: NextRequest) {
       return newOrder;
     });
 
-    // TODO: clean this up when we refactor orders
     const recipient = isGuest
       ? (() => {
           const gi = (input as Extract<typeof input, { guest: true }>).guestInfo;

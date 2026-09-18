@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-
-export const metadata: Metadata = { title: "My Orders", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
@@ -9,6 +7,11 @@ import Link from "next/link";
 import { Package, ChevronRight } from "lucide-react";
 import { ReorderButton } from "@/components/account/ReorderButton";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pages.accountOrders");
+  return { title: t("title"), robots: { index: false, follow: false } };
+}
 
 const STATUS_COLOR: Record<string, string> = {
   PENDING:    "#b8962e",

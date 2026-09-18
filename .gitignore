@@ -45,3 +45,6 @@ public/uploads/
 CLAUDE.md
 AUDIT_REPORT.md
 .env*
+
+# private scripts
+scripts/

@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-
-export const metadata: Metadata = { title: "Order Details", robots: { index: false, follow: false } };
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { serializeDecimal, formatPrice, formatDate } from "@/lib/utils";
@@ -9,6 +7,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Package, Truck, CheckCircle, Clock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pages.accountOrderDetail");
+  return { title: t("title"), robots: { index: false, follow: false } };
+}
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -45,6 +48,11 @@ export default async function OrderDetailPage({ params }: Props) {
   const t = await getTranslations("account");
   const o = serializeDecimal(order);
 
+  const tStatus = (s: string) => {
+    const key = s.toLowerCase() as "pending" | "processing" | "confirmed" | "shipped" | "delivered" | "cancelled" | "refunded";
+    try { return t(`status.${key}`); } catch { return s; }
+  };
+
   const STEPS = [
     { key: "PENDING",   icon: Clock,       label: t("status.pending")   },
     { key: "CONFIRMED", icon: CheckCircle, label: t("status.confirmed") },
@@ -63,7 +71,7 @@ export default async function OrderDetailPage({ params }: Props) {
           <p style={{ fontSize: 12, color: "var(--chalk3)", marginTop: 4 }}>{t("orderDetail.placed", { date: formatDate(o.createdAt) })}</p>
         </div>
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: statusColor, padding: "4px 10px", border: `1px solid ${statusColor}`, flexShrink: 0, marginTop: 4 }}>
-          {o.status}
+          {tStatus(o.status)}
         </span>
       </div>
 

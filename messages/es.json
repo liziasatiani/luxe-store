@@ -31,7 +31,13 @@
     "toggleTheme": "Cambiar tema",
     "openSearch": "Abrir búsqueda",
     "openAccountMenu": "Abrir menú de cuenta",
-    "mainNav": "Navegación principal"
+    "mainNav": "Navegación principal",
+    "ann1": "Envío Gratis 48h en Tbilisi",
+    "ann2": "Productos 100% Auténticos",
+    "ann3": "Devoluciones en 14 Días",
+    "ann4": "Pago Seguro",
+    "ann5": "Novedades Cada Semana",
+    "ann6": "Drops de Marcas Exclusivas"
   },
   "home": {
     "hero": {
@@ -95,8 +101,8 @@
       "success": "¡Ya eres parte de Everything Street!",
       "invalidEmail": "Por favor introduce un correo electrónico válido",
       "error": "Algo salió mal. Inténtalo de nuevo.",
-      "emailRequired": "Por favor, introduzca su dirección de correo electrónico",
-      "emailInvalid": "Por favor, introduzca una dirección de correo electrónico válida"
+      "emailRequired": "Por favor, introduce tu dirección de correo electrónico",
+      "emailInvalid": "Por favor, introduce una dirección de correo electrónico válida"
     }
   },
   "product": {
@@ -118,7 +124,7 @@
     "viewFullDetails": "Ver detalles completos",
     "qty": "Cant.",
     "removed": "Eliminado",
-    "trustReturns": "Devoluciones gratuitas 30 días",
+    "trustReturns": "Devoluciones gratuitas 14 días",
     "trustAuthentic": "100% auténtico — garantizado",
     "trustShipping": "Envío gratis en pedidos superiores a ₾200",
     "quantity": "Cantidad",
@@ -152,7 +158,9 @@
     "recentlyViewed": "Vistos recientemente",
     "notFound": "Producto no encontrado",
     "free48h": "Entrega gratis en 48h",
-    "returns30": "Devoluciones en 30 días"
+    "returns30": "Devoluciones en 14 días",
+    "youSave": "Ahorras",
+    "percentOff": "% de descuento"
   },
   "cart": {
     "title": "Carrito de compra",
@@ -175,7 +183,7 @@
     "secureCheckout": "Pago seguro",
     "viewFullCart": "Ver carrito completo",
     "trustSecure": "Pago seguro",
-    "trustReturns": "Devoluciones 30 días",
+    "trustReturns": "Devoluciones 14 días",
     "trustAuthentic": "100% auténtico",
     "shoppingCart": "Carrito",
     "couponCode": "Código de cupón",
@@ -185,7 +193,8 @@
     "add": "Añadir",
     "yourOrder": "Tu pedido",
     "secure": "Seguro",
-    "freeReturns": "Devoluciones gratis"
+    "freeReturns": "Devoluciones gratis",
+    "closeCart": "Cerrar carrito"
   },
   "checkout": {
     "title": "Finalizar pedido",
@@ -228,8 +237,8 @@
     "shipping": "Envío",
     "free": "GRATIS",
     "errors": {
-      "required": "Por favor complete todos los campos obligatorios",
-      "selectAddress": "Por favor seleccione una dirección de envío",
+      "required": "Por favor completa todos los campos obligatorios",
+      "selectAddress": "Por favor selecciona una dirección de envío",
       "fieldRequired": "Requerido",
       "invalidEmail": "Correo electrónico no válido",
       "failedOrder": "Error al realizar el pedido"
@@ -262,11 +271,12 @@
     "trackOrder": "Rastrear pedido",
     "continueShopping": "Seguir comprando",
     "total": "Total",
-    "completeCollection": "Complete su colección",
+    "completeCollection": "Completa tu colección",
     "viewAll": "Ver todo",
-    "saveHistory": "Guarde su historial de pedidos",
-    "saveHistoryDesc": "Cree una cuenta gratuita para rastrear este pedido, volver a pedirlo con un clic y tener acceso anticipado a las novedades.",
-    "createAccount": "Crear cuenta"
+    "saveHistory": "Guarda tu historial de pedidos",
+    "saveHistoryDesc": "Crea una cuenta gratuita para rastrear este pedido, volver a pedirlo con un clic y tener acceso anticipado a las novedades.",
+    "createAccount": "Crear cuenta",
+    "orderLabel": "Pedido"
   },
   "account": {
     "title": "Mi cuenta",
@@ -280,7 +290,7 @@
       "saveChanges": "Guardar cambios",
       "updated": "¡Perfil actualizado!",
       "error": "No se pudieron guardar los cambios",
-      "connectionError": "No se pudieron guardar los cambios — verifique su conexión",
+      "connectionError": "No se pudieron guardar los cambios — verifica tu conexión",
       "dangerZone": "Zona de peligro",
       "dangerZoneDesc": "Una vez que elimines tu cuenta, todos tus datos serán eliminados permanentemente.",
       "deleteAccount": "Eliminar mi cuenta",
@@ -294,7 +304,7 @@
     "orders": "Pedidos",
     "addresses": {
       "title": "Direcciones",
-      "subtitle": "Administre sus direcciones de envío",
+      "subtitle": "Administra tus direcciones de envío",
       "add": "Agregar dirección",
       "newAddress": "Nueva dirección",
       "label": "Etiqueta",
@@ -333,7 +343,7 @@
       "ordersTotal": "{count} pedidos en total",
       "orderHistory": "Historial de pedidos",
       "noOrdersTitle": "Aún sin pedidos",
-      "noOrdersDesc": "Sus pedidos completados aparecerán aquí.",
+      "noOrdersDesc": "Tus pedidos completados aparecerán aquí.",
       "browseProducts": "Ver productos"
     },
     "orderDetail": {
@@ -386,7 +396,7 @@
       "hasAccount": "¿Ya tienes cuenta?",
       "signIn": "Iniciar sesión",
       "success": "¡Cuenta creada! Por favor inicia sesión.",
-      "failed": "Error al registrarse. Por favor, inténtelo de nuevo."
+      "failed": "Error al registrarse. Por favor, inténtalo de nuevo."
     },
     "forgotPassword": {
       "title": "¿Olvidaste tu contraseña?",
@@ -396,10 +406,10 @@
       "back": "Volver al inicio de sesión",
       "sent": "¡Enlace enviado!",
       "sentDesc": "Revisa tu email para el enlace de restablecimiento.",
-      "sentDesc2": "Revise su bandeja de entrada para encontrar el enlace de restablecimiento.",
+      "sentDesc2": "Revisa tu bandeja de entrada para encontrar el enlace de restablecimiento.",
       "errors": {
-        "email": "Por favor, ingrese una dirección de correo válida.",
-        "failed": "No se pudo enviar el enlace — verifique su conexión e inténtelo de nuevo."
+        "email": "Por favor, introduce una dirección de correo válida.",
+        "failed": "No se pudo enviar el enlace — verifica tu conexión e inténtalo de nuevo."
       },
       "emailPlaceholder": "tu@ejemplo.com"
     },
@@ -443,19 +453,24 @@
     "sitemap": "Mapa del sitio",
     "tagline": "Tecnología considerada. Belleza considerada. Curado, probado y entregado juntos.",
     "pressbar": {
-      "returns": "Devoluciones gratuitas en 30 días",
+      "returns": "Devoluciones gratuitas en 14 días",
       "authentic": "100% Auténtico",
       "checkout": "Pago seguro",
       "shipping": "Envío gratis desde ₾200",
       "distributors": "Solo distribuidores autorizados",
       "support": "Atención al cliente 7 días"
-    }
+    },
+    "support": "Soporte",
+    "careers": "Empleos",
+    "cookiePolicy": "Política de cookies"
   },
   "pages": {
     "newArrivals": {
       "title": "Novedades",
       "subtitle": "Nuevos artículos cada semana.",
-      "badge": "Recién llegados"
+      "badge": "Recién llegados",
+      "eyebrow": "Esta semana",
+      "sectionTitle": "Recién llegados"
     },
     "bestSellers": {
       "title": "Más vendidos",
@@ -499,7 +514,7 @@
       "missionDesc": "Nos abastecemos directamente de distribuidores autorizados. Sin cadenas grises. Sin ambigüedad.",
       "promiseLabel": "Promesa",
       "promiseTitle": "Servicio que se siente.",
-      "promiseDesc": "El lujo es también la experiencia. Pago seguro, seguimiento transparente, devoluciones de 30 días, equipo rápido.",
+      "promiseDesc": "El lujo es también la experiencia. Pago seguro, seguimiento transparente, devoluciones de 14 días, equipo rápido.",
       "statsProducts": "Productos seleccionados",
       "statsBrands": "Marcas de lujo",
       "whatWeStandFor": "Lo que defendemos",
@@ -561,7 +576,9 @@
       "namePlaceholder": "Ana Martínez",
       "emailPlaceholder": "tu@ejemplo.com",
       "subjectPlaceholder": "¿En qué podemos ayudarte?",
-      "messagePlaceholder": "Cuéntanos qué tienes en mente…"
+      "messagePlaceholder": "Cuéntanos qué tienes en mente…",
+      "monFriHours": "9:00 – 18:00 GET",
+      "saturdayHours": "10:00 – 16:00 GET"
     },
     "faq": {
       "title": "Preguntas frecuentes",
@@ -613,7 +630,7 @@
           "items": [
             {
               "q": "¿Cuál es su política de devolución?",
-              "a": "Ofrecemos devoluciones sin complicaciones en 30 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados."
+              "a": "Ofrecemos devoluciones sin complicaciones en 14 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados."
             },
             {
               "q": "¿Cuánto tarda el reembolso?",
@@ -630,7 +647,7 @@
           "items": [
             {
               "q": "¿Qué métodos de pago aceptan?",
-              "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) y pago contra reembolso en determinadas regiones."
+              "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) procesadas de forma segura a través de Stripe."
             },
             {
               "q": "¿Es segura mi información de pago?",
@@ -830,6 +847,27 @@
       "body": "La página encontró un error inesperado. Prueba a actualizar la página o vuelve al inicio.",
       "tryAgain": "Intentar de nuevo",
       "goHome": "Ir al inicio"
+    },
+    "checkout": {
+      "title": "Finalizar compra"
+    },
+    "cart": {
+      "title": "Mi carrito"
+    },
+    "account": {
+      "title": "Mi cuenta"
+    },
+    "accountAddresses": {
+      "title": "Mis direcciones"
+    },
+    "accountOrders": {
+      "title": "Mis pedidos"
+    },
+    "accountOrderDetail": {
+      "title": "Detalles del pedido"
+    },
+    "checkoutSuccess": {
+      "title": "Pedido confirmado"
     }
   },
   "common": {
@@ -895,7 +933,8 @@
     "scrollToTop": "Volver arriba",
     "breadcrumb": "Ruta de navegación",
     "tryAgain": "Intentar de nuevo",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "all": "Todo"
   },
   "hero": {
     "headline1": "Dos mundos,",
@@ -956,7 +995,9 @@
     "filters": "Filtros",
     "category": "Categoría",
     "minPrice": "Mín",
-    "maxPrice": "Máx"
+    "maxPrice": "Máx",
+    "prevPage": "Página anterior",
+    "nextPage": "Página siguiente"
   },
   "contact": {
     "title": "Contáctenos",
@@ -973,7 +1014,7 @@
     "sunday": "Domingo",
     "closed": "Cerrado",
     "writeTo": "Escríbanos",
-    "yourName": "Su nombre *",
+    "yourName": "Tu nombre *",
     "yourEmail": "Correo electrónico *",
     "subject": "Asunto",
     "message": "Mensaje *",
@@ -986,15 +1027,16 @@
     "sendAnother": "Enviar otro mensaje",
     "success": "¡Mensaje enviado! Le responderemos en un plazo de 24 horas.",
     "errors": {
-      "name": "Por favor, ingrese su nombre",
-      "email": "Por favor, ingrese una dirección de correo válida",
+      "name": "Por favor, introduce tu nombre",
+      "email": "Por favor, introduce una dirección de correo válida",
       "message": "El mensaje debe tener al menos 10 caracteres",
       "failed": "No se pudo enviar el mensaje. Inténtelo de nuevo."
     }
   },
   "trackOrder": {
-    "title": "Rastrear su pedido",
-    "subtitle": "Ingrese su número de pedido y correo electrónico para rastrear su envío.",
+    "eyebrow": "Estado del pedido",
+    "title": "Rastrear tu pedido",
+    "subtitle": "Introduce tu número de pedido y correo electrónico para rastrear tu envío.",
     "orderNumber": "Número de pedido",
     "orderNumberPlaceholder": "ej. LXS-ABC123",
     "emailLabel": "Correo electrónico",
@@ -1012,23 +1054,23 @@
       "delivered": "Entregado"
     },
     "errors": {
-      "orderNumber": "Por favor, ingrese su número de pedido",
-      "email": "Por favor, ingrese una dirección de correo válida",
-      "notFound": "Pedido no encontrado. Verifique sus datos."
+      "orderNumber": "Por favor, introduce tu número de pedido",
+      "email": "Por favor, introduce una dirección de correo electrónico válida",
+      "notFound": "Pedido no encontrado. Comprueba tus datos."
     }
   },
   "reviews": {
     "title": "Reseñas de clientes ({count})",
-    "noReviews": "Aún no hay reseñas. ¡Sea el primero!",
+    "noReviews": "Aún no hay reseñas. ¡Sé el primero!",
     "writeReview": "Escribir una reseña",
     "cancel": "Cancelar",
     "sortNewest": "Más recientes",
     "sortHighest": "Mejor valoradas",
     "sortLowest": "Peor valoradas",
-    "yourReview": "Su reseña",
+    "yourReview": "Tu reseña",
     "rating": "Calificación",
     "titleField": "Título (opcional)",
-    "titlePlaceholder": "Resuma su experiencia",
+    "titlePlaceholder": "Resume tu experiencia",
     "reviewField": "Reseña *",
     "reviewPlaceholder": "Cuénteles a otros sobre este producto…",
     "submit": "Enviar reseña",
@@ -1041,17 +1083,17 @@
     }
   },
   "exitIntent": {
-    "beforeYouGo": "Antes de irse",
-    "title": "Obtenga un {pct} % de descuento en su primer pedido",
-    "subtitle": "Únase a nuestra lista para acceder en exclusiva a novedades y ventas privadas.",
-    "placeholder": "Su dirección de correo electrónico",
-    "claim": "Obtener {pct} % de descuento",
+    "beforeYouGo": "Antes de irte",
+    "title": "Consigue un {pct}% de descuento en tu primer pedido",
+    "subtitle": "Únete a nuestra lista para acceder en exclusiva a novedades y ventas privadas.",
+    "placeholder": "Tu dirección de correo electrónico",
+    "claim": "Conseguir {pct}% de descuento",
     "subscribing": "Suscribiendo…",
-    "error": "No se pudo suscribir — inténtelo de nuevo.",
-    "yourCode": "Su código",
-    "onList": "Ya está en la lista.",
-    "useAtCheckout": "Úselo al pagar",
-    "singleUse": "{pct} % de descuento en su primer pedido. De un solo uso.",
+    "error": "No pudimos suscribirte — inténtalo de nuevo.",
+    "yourCode": "Tu código",
+    "onList": "Ya estás en la lista.",
+    "useAtCheckout": "Úsalo al pagar",
+    "singleUse": "{pct}% de descuento en tu primer pedido. De un solo uso.",
     "close": "Cerrar"
   },
   "search": {
