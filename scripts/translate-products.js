@@ -19,8 +19,9 @@ if (!API_KEY) {
 
 const prisma = new PrismaClient();
 const LANGS = { ka: "Georgian", fr: "French", es: "Spanish" };
+const AI_MODEL = process.env.AI_MODEL || "haiku-4-5-20251001";
 
-async function translateWithClaude(text, targetLang, targetName) {
+async function translateText(text, targetLang, targetName) {
   if (!text?.trim()) return null;
 
   const r = await fetch("https://api.anthropic.com/v1/messages", {
@@ -31,7 +32,7 @@ async function translateWithClaude(text, targetLang, targetName) {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: AI_MODEL,
       max_tokens: 1024,
       messages: [
         {
@@ -88,17 +89,17 @@ async function main() {
 
     for (const [lang, name] of Object.entries(LANGS)) {
       if (p.description && !p[`description_${lang}`]) {
-        const t = await translateWithClaude(p.description, lang, name);
+        const t = await translateText(p.description, lang, name);
         if (t) patch[`description_${lang}`] = t;
         await sleep(100);
       }
       if (p.howToUse && !p[`howToUse_${lang}`]) {
-        const t = await translateWithClaude(p.howToUse, lang, name);
+        const t = await translateText(p.howToUse, lang, name);
         if (t) patch[`howToUse_${lang}`] = t;
         await sleep(100);
       }
       if (p.inTheBox && !p[`inTheBox_${lang}`]) {
-        const t = await translateWithClaude(p.inTheBox, lang, name);
+        const t = await translateText(p.inTheBox, lang, name);
         if (t) patch[`inTheBox_${lang}`] = t;
         await sleep(100);
       }
