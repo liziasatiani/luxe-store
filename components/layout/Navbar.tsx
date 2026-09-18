@@ -102,7 +102,7 @@ export function Navbar() {
             <button onClick={openSearch} aria-label={t("openSearch")} className="nav-icon">
               <Search size={16} />
             </button>
-            <Link href="/wishlist" aria-label="Wishlist" className="nav-icon">
+            <Link href="/wishlist" aria-label={t("wishlist")} className="nav-icon">
               <Heart size={16} />
               {mounted && wishlistIds.length > 0 && (
                 <span style={{ position: "absolute", top: 3, right: 3, width: 5, height: 5, borderRadius: "50%", background: "var(--gold)" }} />

@@ -344,9 +344,9 @@ export function NewsletterSection() {
 
   const subscribeNewsletter = async () => {
     setEmailError("");
-    if (!email) { setEmailError("Please enter your email address"); return; }
+    if (!email) { setEmailError(t("emailRequired")); return; }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) { setEmailError("Please enter a valid email address"); return; }
+    if (!emailRegex.test(email)) { setEmailError(t("emailInvalid")); return; }
     setStatus("loading");
     try {
       const res = await fetch("/api/newsletter", {
