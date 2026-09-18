@@ -41,7 +41,6 @@ enum PaymentStatus {
 
 enum PaymentMethod {
   STRIPE
-  CASH_ON_DELIVERY
   BANK_TRANSFER
 }
 

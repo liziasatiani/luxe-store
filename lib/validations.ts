@@ -68,7 +68,7 @@ export const addressSchema = z.object({
 export const checkoutSchema = z.object({
   addressId: z.string().optional(),
   newAddress: addressSchema.optional(),
-  paymentMethod: z.enum(["STRIPE", "CASH_ON_DELIVERY", "BANK_TRANSFER"]),
+  paymentMethod: z.enum(["STRIPE", "BANK_TRANSFER"]),
   couponCode: z.string().optional(),
   notes: z.string().optional(),
 });
@@ -186,8 +186,8 @@ export const guestInfoSchema = z.object({
 
 const orderBaseSchema = z.object({
   paymentMethod: z
-    .enum(["STRIPE", "CASH_ON_DELIVERY", "BANK_TRANSFER"])
-    .default("CASH_ON_DELIVERY"),
+    .enum(["STRIPE", "BANK_TRANSFER"])
+    .default("STRIPE"),
   couponCode: z.string().trim().max(64).nullish(),
   notes: z.string().trim().max(2000).nullish(),
   cartItems: cartLinesSchema,
