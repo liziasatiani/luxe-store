@@ -237,8 +237,8 @@
     "shipping": "Envío",
     "free": "GRATIS",
     "errors": {
-      "required": "Por favor complete todos los campos obligatorios",
-      "selectAddress": "Por favor seleccione una dirección de envío",
+      "required": "Por favor completa todos los campos obligatorios",
+      "selectAddress": "Por favor selecciona una dirección de envío",
       "fieldRequired": "Requerido",
       "invalidEmail": "Correo electrónico no válido",
       "failedOrder": "Error al realizar el pedido"
@@ -271,10 +271,10 @@
     "trackOrder": "Rastrear pedido",
     "continueShopping": "Seguir comprando",
     "total": "Total",
-    "completeCollection": "Complete su colección",
+    "completeCollection": "Completa tu colección",
     "viewAll": "Ver todo",
-    "saveHistory": "Guarde su historial de pedidos",
-    "saveHistoryDesc": "Cree una cuenta gratuita para rastrear este pedido, volver a pedirlo con un clic y tener acceso anticipado a las novedades.",
+    "saveHistory": "Guarda tu historial de pedidos",
+    "saveHistoryDesc": "Crea una cuenta gratuita para rastrear este pedido, volver a pedirlo con un clic y tener acceso anticipado a las novedades.",
     "createAccount": "Crear cuenta"
   },
   "account": {
@@ -289,7 +289,7 @@
       "saveChanges": "Guardar cambios",
       "updated": "¡Perfil actualizado!",
       "error": "No se pudieron guardar los cambios",
-      "connectionError": "No se pudieron guardar los cambios — verifique su conexión",
+      "connectionError": "No se pudieron guardar los cambios — verifica tu conexión",
       "dangerZone": "Zona de peligro",
       "dangerZoneDesc": "Una vez que elimines tu cuenta, todos tus datos serán eliminados permanentemente.",
       "deleteAccount": "Eliminar mi cuenta",
@@ -342,7 +342,7 @@
       "ordersTotal": "{count} pedidos en total",
       "orderHistory": "Historial de pedidos",
       "noOrdersTitle": "Aún sin pedidos",
-      "noOrdersDesc": "Sus pedidos completados aparecerán aquí.",
+      "noOrdersDesc": "Tus pedidos completados aparecerán aquí.",
       "browseProducts": "Ver productos"
     },
     "orderDetail": {
@@ -395,7 +395,7 @@
       "hasAccount": "¿Ya tienes cuenta?",
       "signIn": "Iniciar sesión",
       "success": "¡Cuenta creada! Por favor inicia sesión.",
-      "failed": "Error al registrarse. Por favor, inténtelo de nuevo."
+      "failed": "Error al registrarse. Por favor, inténtalo de nuevo."
     },
     "forgotPassword": {
       "title": "¿Olvidaste tu contraseña?",
@@ -405,10 +405,10 @@
       "back": "Volver al inicio de sesión",
       "sent": "¡Enlace enviado!",
       "sentDesc": "Revisa tu email para el enlace de restablecimiento.",
-      "sentDesc2": "Revise su bandeja de entrada para encontrar el enlace de restablecimiento.",
+      "sentDesc2": "Revisa tu bandeja de entrada para encontrar el enlace de restablecimiento.",
       "errors": {
-        "email": "Por favor, ingrese una dirección de correo válida.",
-        "failed": "No se pudo enviar el enlace — verifique su conexión e inténtelo de nuevo."
+        "email": "Por favor, introduce una dirección de correo válida.",
+        "failed": "No se pudo enviar el enlace — verifica tu conexión e inténtalo de nuevo."
       },
       "emailPlaceholder": "tu@ejemplo.com"
     },
@@ -1013,7 +1013,7 @@
     "sunday": "Domingo",
     "closed": "Cerrado",
     "writeTo": "Escríbanos",
-    "yourName": "Su nombre *",
+    "yourName": "Tu nombre *",
     "yourEmail": "Correo electrónico *",
     "subject": "Asunto",
     "message": "Mensaje *",
@@ -1026,8 +1026,8 @@
     "sendAnother": "Enviar otro mensaje",
     "success": "¡Mensaje enviado! Le responderemos en un plazo de 24 horas.",
     "errors": {
-      "name": "Por favor, ingrese su nombre",
-      "email": "Por favor, ingrese una dirección de correo válida",
+      "name": "Por favor, introduce tu nombre",
+      "email": "Por favor, introduce una dirección de correo válida",
       "message": "El mensaje debe tener al menos 10 caracteres",
       "failed": "No se pudo enviar el mensaje. Inténtelo de nuevo."
     }
@@ -1069,7 +1069,7 @@
     "yourReview": "Tu reseña",
     "rating": "Calificación",
     "titleField": "Título (opcional)",
-    "titlePlaceholder": "Resuma su experiencia",
+    "titlePlaceholder": "Resume tu experiencia",
     "reviewField": "Reseña *",
     "reviewPlaceholder": "Cuénteles a otros sobre este producto…",
     "submit": "Enviar reseña",
