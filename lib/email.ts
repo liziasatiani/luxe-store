@@ -237,7 +237,6 @@ interface AbandonedCartEmailData {
 }
 
 function buildAbandonedCartEmail({ name, items }: AbandonedCartEmailData): string {
-  // TODO: add back when we have reviews API — show rating stars per item
   const itemRows = items
     .slice(0, 5)
     .map(

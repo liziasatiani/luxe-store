@@ -185,7 +185,7 @@ Optional: brand, category, subcategory, description, compare_price, stock, sku, 
 
 | Code       | Type       | Value | Min Order |
 |------------|------------|-------|-----------|
-| WELCOME15  | Percentage | 15%   | $50       |
-| LUXE20     | Percentage | 20%   | $150      |
-| FREESHIP   | Free Ship  | —     | $75       |
-| BEAUTY50   | Fixed      | $50   | $200      |
+| WELCOME15  | Percentage | 15%   | ₾130      |
+| LUXE20     | Percentage | 20%   | ₾400      |
+| FREESHIP   | Free Ship  | —     | ₾200      |
+| BEAUTY50   | Fixed      | ₾135  | ₾530      |
