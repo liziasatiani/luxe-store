@@ -659,6 +659,9 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   #nav { padding: 0 20px; }
   .sec-meta { margin-bottom: 36px; }
   .sec-row { flex-wrap: wrap; gap: 16px; }
+
+  /* Tighter tracking on cart button so long translated labels (FR/ES) fit in 2-col cards */
+  .btn-cart { letter-spacing: 0.04em; }
 }
 
 /* ══════════════════════════════════════════════════════════════
