@@ -85,6 +85,7 @@ Never add Co-Authored-By or any AI attribution to any commit.
 - Every commit message must be short, specific, and human
 - Vary commit times naturally between 9am and 11pm
 - Never use bare vague messages like "update", "fix", "wip", "changes" — always be specific (e.g. "fix: search modal z-index above navbar")
+- Never mention the word "claude" or "Claude" anywhere — not in commit messages, code comments, file names, PR descriptions, or any other place visible in the codebase or on GitHub. The only exception is this file.
 
 ## Project Rules
 - Never work on main directly
