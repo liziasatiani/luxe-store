@@ -25,9 +25,10 @@ export default async function SuccessPage({ searchParams }: Props) {
 
   if (orderId) {
     const userId = session?.user?.id;
-    const found = userId
-      ? await prisma.order.findFirst({ where: { id: orderId, userId }, include: { items: true } })
-      : null;
+    const found = await prisma.order.findFirst({
+      where: userId ? { id: orderId, userId } : { id: orderId, userId: null },
+      include: { items: true },
+    });
     if (found) order = serializeDecimal(found) as SerializedOrder;
   }
 
@@ -49,7 +50,7 @@ export default async function SuccessPage({ searchParams }: Props) {
         <h1 style={{ fontFamily: "var(--serif)", fontSize: 36, fontWeight: 700, color: "var(--chalk)", marginBottom: 16 }}>{t("title")}</h1>
         {order && (
           <p style={{ fontSize: 13, color: "var(--chalk2)", marginBottom: 6 }}>
-            Order <span style={{ fontFamily: "monospace", fontWeight: 700, color: "var(--chalk)" }}>#{order.orderNumber}</span>
+            {t("orderLabel")} <span style={{ fontFamily: "monospace", fontWeight: 700, color: "var(--chalk)" }}>#{order.orderNumber}</span>
           </p>
         )}
         <p style={{ fontSize: 13, color: "var(--chalk3)", marginBottom: 40 }}>{t("subtitle")}</p>
@@ -73,9 +74,17 @@ export default async function SuccessPage({ searchParams }: Props) {
         )}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {order && (
+          {order && session && (
             <Link
               href={`/account/orders/${order.id}`}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, height: 48, border: "1px solid var(--borderg)", color: "var(--chalk)", textDecoration: "none", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", transition: "border-color 0.2s" }}
+            >
+              <Package size={15} /> {t("trackOrder")}
+            </Link>
+          )}
+          {order && !session && (
+            <Link
+              href="/track-order"
               style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, height: 48, border: "1px solid var(--borderg)", color: "var(--chalk)", textDecoration: "none", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", transition: "border-color 0.2s" }}
             >
               <Package size={15} /> {t("trackOrder")}

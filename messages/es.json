@@ -34,7 +34,7 @@
     "mainNav": "Navegación principal",
     "ann1": "Envío Gratis 48h en Tbilisi",
     "ann2": "Productos 100% Auténticos",
-    "ann3": "Devoluciones en 30 Días",
+    "ann3": "Devoluciones en 14 Días",
     "ann4": "Pago Seguro",
     "ann5": "Novedades Cada Semana",
     "ann6": "Drops de Marcas Exclusivas"
@@ -124,7 +124,7 @@
     "viewFullDetails": "Ver detalles completos",
     "qty": "Cant.",
     "removed": "Eliminado",
-    "trustReturns": "Devoluciones gratuitas 30 días",
+    "trustReturns": "Devoluciones gratuitas 14 días",
     "trustAuthentic": "100% auténtico — garantizado",
     "trustShipping": "Envío gratis en pedidos superiores a ₾200",
     "quantity": "Cantidad",
@@ -158,7 +158,7 @@
     "recentlyViewed": "Vistos recientemente",
     "notFound": "Producto no encontrado",
     "free48h": "Entrega gratis en 48h",
-    "returns30": "Devoluciones en 30 días",
+    "returns30": "Devoluciones en 14 días",
     "youSave": "Ahorras",
     "percentOff": "% de descuento"
   },
@@ -183,7 +183,7 @@
     "secureCheckout": "Pago seguro",
     "viewFullCart": "Ver carrito completo",
     "trustSecure": "Pago seguro",
-    "trustReturns": "Devoluciones 30 días",
+    "trustReturns": "Devoluciones 14 días",
     "trustAuthentic": "100% auténtico",
     "shoppingCart": "Carrito",
     "couponCode": "Código de cupón",
@@ -275,7 +275,8 @@
     "viewAll": "Ver todo",
     "saveHistory": "Guarda tu historial de pedidos",
     "saveHistoryDesc": "Crea una cuenta gratuita para rastrear este pedido, volver a pedirlo con un clic y tener acceso anticipado a las novedades.",
-    "createAccount": "Crear cuenta"
+    "createAccount": "Crear cuenta",
+    "orderLabel": "Pedido"
   },
   "account": {
     "title": "Mi cuenta",
@@ -452,7 +453,7 @@
     "sitemap": "Mapa del sitio",
     "tagline": "Tecnología considerada. Belleza considerada. Curado, probado y entregado juntos.",
     "pressbar": {
-      "returns": "Devoluciones gratuitas en 30 días",
+      "returns": "Devoluciones gratuitas en 14 días",
       "authentic": "100% Auténtico",
       "checkout": "Pago seguro",
       "shipping": "Envío gratis desde ₾200",
@@ -513,7 +514,7 @@
       "missionDesc": "Nos abastecemos directamente de distribuidores autorizados. Sin cadenas grises. Sin ambigüedad.",
       "promiseLabel": "Promesa",
       "promiseTitle": "Servicio que se siente.",
-      "promiseDesc": "El lujo es también la experiencia. Pago seguro, seguimiento transparente, devoluciones de 30 días, equipo rápido.",
+      "promiseDesc": "El lujo es también la experiencia. Pago seguro, seguimiento transparente, devoluciones de 14 días, equipo rápido.",
       "statsProducts": "Productos seleccionados",
       "statsBrands": "Marcas de lujo",
       "whatWeStandFor": "Lo que defendemos",
@@ -629,7 +630,7 @@
           "items": [
             {
               "q": "¿Cuál es su política de devolución?",
-              "a": "Ofrecemos devoluciones sin complicaciones en 30 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados."
+              "a": "Ofrecemos devoluciones sin complicaciones en 14 días en todos los productos. Los artículos deben estar sin usar, en su embalaje original y con todas las etiquetas. Los productos de belleza deben estar sin abrir y sellados."
             },
             {
               "q": "¿Cuánto tarda el reembolso?",
@@ -646,7 +647,7 @@
           "items": [
             {
               "q": "¿Qué métodos de pago aceptan?",
-              "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) y pago contra reembolso en determinadas regiones."
+              "a": "Aceptamos todas las principales tarjetas de crédito y débito (Visa, Mastercard, American Express) procesadas de forma segura a través de Stripe."
             },
             {
               "q": "¿Es segura mi información de pago?",

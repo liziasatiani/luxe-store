@@ -34,7 +34,7 @@
     "mainNav": "Navigation principale",
     "ann1": "Livraison gratuite 48h à Tbilissi",
     "ann2": "Produits 100% Authentiques",
-    "ann3": "Retours sous 30 Jours",
+    "ann3": "Retours sous 14 Jours",
     "ann4": "Paiement Sécurisé",
     "ann5": "Nouveautés Chaque Semaine",
     "ann6": "Drops de Marques Exclusives"
@@ -124,7 +124,7 @@
     "viewFullDetails": "Voir les détails complets",
     "qty": "Qté",
     "removed": "Supprimé",
-    "trustReturns": "Retours gratuits sous 30 jours",
+    "trustReturns": "Retours gratuits sous 14 jours",
     "trustAuthentic": "100% authentique — garanti",
     "trustShipping": "Livraison gratuite dès ₾200",
     "quantity": "Quantité",
@@ -158,7 +158,7 @@
     "recentlyViewed": "Récemment consultés",
     "notFound": "Produit introuvable",
     "free48h": "Livraison gratuite en 48h",
-    "returns30": "Retours sous 30 jours",
+    "returns30": "Retours sous 14 jours",
     "youSave": "Vous économisez",
     "percentOff": "% de réduction"
   },
@@ -183,7 +183,7 @@
     "secureCheckout": "Paiement sécurisé",
     "viewFullCart": "Voir le panier complet",
     "trustSecure": "Paiement sécurisé",
-    "trustReturns": "Retours 30 jours",
+    "trustReturns": "Retours 14 jours",
     "trustAuthentic": "100% authentique",
     "shoppingCart": "Panier",
     "couponCode": "Code promo",
@@ -275,7 +275,8 @@
     "viewAll": "Voir tout",
     "saveHistory": "Sauvegardez votre historique",
     "saveHistoryDesc": "Créez un compte gratuit pour suivre cette commande, recommander en un clic et accéder en avant-première aux nouveautés.",
-    "createAccount": "Créer un compte"
+    "createAccount": "Créer un compte",
+    "orderLabel": "Commande"
   },
   "account": {
     "title": "Mon compte",
@@ -452,7 +453,7 @@
     "sitemap": "Plan du site",
     "tagline": "Technologie réfléchie. Beauté réfléchie. Sélectionné, testé et livré ensemble.",
     "pressbar": {
-      "returns": "Retours gratuits sous 30 jours",
+      "returns": "Retours gratuits sous 14 jours",
       "authentic": "100% Authentique",
       "checkout": "Paiement sécurisé",
       "shipping": "Livraison gratuite dès ₾200",
@@ -513,7 +514,7 @@
       "missionDesc": "Nous nous approvisionnons directement auprès de distributeurs agréés. Pas de circuits parallèles. Pas d'ambiguïté.",
       "promiseLabel": "Promesse",
       "promiseTitle": "Un service que vous ressentez.",
-      "promiseDesc": "Le luxe est aussi l'expérience. Paiement sécurisé, suivi transparent, retours 30 jours, équipe réactive.",
+      "promiseDesc": "Le luxe est aussi l'expérience. Paiement sécurisé, suivi transparent, retours 14 jours, équipe réactive.",
       "statsProducts": "Produits sélectionnés",
       "statsBrands": "Marques de luxe",
       "whatWeStandFor": "Nos valeurs",
@@ -629,7 +630,7 @@
           "items": [
             {
               "q": "Quelle est votre politique de retour ?",
-              "a": "Nous proposons des retours sans tracas sous 30 jours sur tous les produits. Les articles doivent être non utilisés, dans leur emballage d'origine, avec toutes les étiquettes. Les produits de beauté doivent être non ouverts et scellés."
+              "a": "Nous proposons des retours sans tracas sous 14 jours sur tous les produits. Les articles doivent être non utilisés, dans leur emballage d'origine, avec toutes les étiquettes. Les produits de beauté doivent être non ouverts et scellés."
             },
             {
               "q": "Combien de temps prend un remboursement ?",
@@ -646,7 +647,7 @@
           "items": [
             {
               "q": "Quels moyens de paiement acceptez-vous ?",
-              "a": "Nous acceptons toutes les principales cartes de crédit et de débit (Visa, Mastercard, American Express) et le paiement à la livraison dans certaines régions."
+              "a": "Nous acceptons toutes les principales cartes de crédit et de débit (Visa, Mastercard, American Express) traités en toute sécurité via Stripe."
             },
             {
               "q": "Mes informations de paiement sont-elles sécurisées ?",

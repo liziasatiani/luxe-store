@@ -34,7 +34,7 @@
     "mainNav": "Main navigation",
     "ann1": "Free 48h Delivery in Tbilisi",
     "ann2": "100% Authentic Products",
-    "ann3": "30-Day Returns",
+    "ann3": "14-Day Returns",
     "ann4": "Secure Checkout",
     "ann5": "New Arrivals Weekly",
     "ann6": "Exclusive Brand Drops"
@@ -124,7 +124,7 @@
     "viewFullDetails": "View full details",
     "qty": "Qty",
     "removed": "Removed",
-    "trustReturns": "30-day free returns",
+    "trustReturns": "14-day free returns",
     "trustAuthentic": "100% authentic — guaranteed",
     "trustShipping": "Free shipping on orders over ₾200",
     "quantity": "Quantity",
@@ -158,7 +158,7 @@
     "recentlyViewed": "Recently Viewed",
     "notFound": "Product not found",
     "free48h": "Free 48h delivery",
-    "returns30": "30-day returns",
+    "returns30": "14-day returns",
     "youSave": "You save",
     "percentOff": "% off"
   },
@@ -183,7 +183,7 @@
     "secureCheckout": "Secure checkout",
     "viewFullCart": "View full cart",
     "trustSecure": "Secure checkout",
-    "trustReturns": "30-day returns",
+    "trustReturns": "14-day returns",
     "trustAuthentic": "100% authentic",
     "shoppingCart": "Shopping cart",
     "couponCode": "Coupon code",
@@ -275,7 +275,8 @@
     "viewAll": "View All",
     "saveHistory": "Save your order history",
     "saveHistoryDesc": "Create a free account to track this order, reorder with one click, and get early access to new arrivals.",
-    "createAccount": "Create Account"
+    "createAccount": "Create Account",
+    "orderLabel": "Order"
   },
   "account": {
     "title": "My Account",
@@ -452,7 +453,7 @@
     "sitemap": "Sitemap",
     "tagline": "Considered technology. Considered beauty. Curated, tested, and delivered together.",
     "pressbar": {
-      "returns": "Free 30-Day Returns",
+      "returns": "Free 14-Day Returns",
       "authentic": "100% Authentic",
       "checkout": "Secure Checkout",
       "shipping": "Free Shipping Over ₾200",
@@ -513,7 +514,7 @@
       "missionDesc": "We source directly from authorized distributors for every brand we carry. No grey-market supply chains. No ambiguity about provenance.",
       "promiseLabel": "Promise",
       "promiseTitle": "Service you can feel.",
-      "promiseDesc": "Luxury is not just the product — it's the experience around it. Secure checkout, transparent tracking, 30-day returns, and a customer team that responds in hours, not days.",
+      "promiseDesc": "Luxury is not just the product — it's the experience around it. Secure checkout, transparent tracking, 14-day returns, and a customer team that responds in hours, not days.",
       "statsProducts": "Curated Products",
       "statsBrands": "Luxury Brands",
       "whatWeStandFor": "What We Stand For",
@@ -629,7 +630,7 @@
           "items": [
             {
               "q": "What is your return policy?",
-              "a": "We offer 30-day hassle-free returns on all products. Items must be unused, in original packaging, with all tags attached. Beauty products must be unopened and sealed."
+              "a": "We offer 14-day hassle-free returns on all products. Items must be unused, in original packaging, with all tags attached. Beauty products must be unopened and sealed."
             },
             {
               "q": "How long does a refund take?",
@@ -646,7 +647,7 @@
           "items": [
             {
               "q": "What payment methods do you accept?",
-              "a": "We accept all major credit and debit cards (Visa, Mastercard, American Express), and Cash on Delivery in select regions."
+              "a": "We accept all major credit and debit cards (Visa, Mastercard, American Express), processed securely through Stripe."
             },
             {
               "q": "Is my payment information secure?",

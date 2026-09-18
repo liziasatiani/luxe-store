@@ -48,6 +48,11 @@ export default async function OrderDetailPage({ params }: Props) {
   const t = await getTranslations("account");
   const o = serializeDecimal(order);
 
+  const tStatus = (s: string) => {
+    const key = s.toLowerCase() as "pending" | "processing" | "confirmed" | "shipped" | "delivered" | "cancelled" | "refunded";
+    try { return t(`status.${key}`); } catch { return s; }
+  };
+
   const STEPS = [
     { key: "PENDING",   icon: Clock,       label: t("status.pending")   },
     { key: "CONFIRMED", icon: CheckCircle, label: t("status.confirmed") },
@@ -66,7 +71,7 @@ export default async function OrderDetailPage({ params }: Props) {
           <p style={{ fontSize: 12, color: "var(--chalk3)", marginTop: 4 }}>{t("orderDetail.placed", { date: formatDate(o.createdAt) })}</p>
         </div>
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: statusColor, padding: "4px 10px", border: `1px solid ${statusColor}`, flexShrink: 0, marginTop: 4 }}>
-          {o.status}
+          {tStatus(o.status)}
         </span>
       </div>
 
