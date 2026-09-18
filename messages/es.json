@@ -101,8 +101,8 @@
       "success": "¡Ya eres parte de Everything Street!",
       "invalidEmail": "Por favor introduce un correo electrónico válido",
       "error": "Algo salió mal. Inténtalo de nuevo.",
-      "emailRequired": "Por favor, introduzca su dirección de correo electrónico",
-      "emailInvalid": "Por favor, introduzca una dirección de correo electrónico válida"
+      "emailRequired": "Por favor, introduce tu dirección de correo electrónico",
+      "emailInvalid": "Por favor, introduce una dirección de correo electrónico válida"
     }
   },
   "product": {
@@ -303,7 +303,7 @@
     "orders": "Pedidos",
     "addresses": {
       "title": "Direcciones",
-      "subtitle": "Administre sus direcciones de envío",
+      "subtitle": "Administra tus direcciones de envío",
       "add": "Agregar dirección",
       "newAddress": "Nueva dirección",
       "label": "Etiqueta",
@@ -1033,8 +1033,9 @@
     }
   },
   "trackOrder": {
-    "title": "Rastrear su pedido",
-    "subtitle": "Ingrese su número de pedido y correo electrónico para rastrear su envío.",
+    "eyebrow": "Estado del pedido",
+    "title": "Rastrear tu pedido",
+    "subtitle": "Introduce tu número de pedido y correo electrónico para rastrear tu envío.",
     "orderNumber": "Número de pedido",
     "orderNumberPlaceholder": "ej. LXS-ABC123",
     "emailLabel": "Correo electrónico",
@@ -1052,20 +1053,20 @@
       "delivered": "Entregado"
     },
     "errors": {
-      "orderNumber": "Por favor, ingrese su número de pedido",
-      "email": "Por favor, ingrese una dirección de correo válida",
-      "notFound": "Pedido no encontrado. Verifique sus datos."
+      "orderNumber": "Por favor, introduce tu número de pedido",
+      "email": "Por favor, introduce una dirección de correo electrónico válida",
+      "notFound": "Pedido no encontrado. Comprueba tus datos."
     }
   },
   "reviews": {
     "title": "Reseñas de clientes ({count})",
-    "noReviews": "Aún no hay reseñas. ¡Sea el primero!",
+    "noReviews": "Aún no hay reseñas. ¡Sé el primero!",
     "writeReview": "Escribir una reseña",
     "cancel": "Cancelar",
     "sortNewest": "Más recientes",
     "sortHighest": "Mejor valoradas",
     "sortLowest": "Peor valoradas",
-    "yourReview": "Su reseña",
+    "yourReview": "Tu reseña",
     "rating": "Calificación",
     "titleField": "Título (opcional)",
     "titlePlaceholder": "Resuma su experiencia",
@@ -1081,17 +1082,17 @@
     }
   },
   "exitIntent": {
-    "beforeYouGo": "Antes de irse",
-    "title": "Obtenga un {pct} % de descuento en su primer pedido",
-    "subtitle": "Únase a nuestra lista para acceder en exclusiva a novedades y ventas privadas.",
-    "placeholder": "Su dirección de correo electrónico",
-    "claim": "Obtener {pct} % de descuento",
+    "beforeYouGo": "Antes de irte",
+    "title": "Consigue un {pct}% de descuento en tu primer pedido",
+    "subtitle": "Únete a nuestra lista para acceder en exclusiva a novedades y ventas privadas.",
+    "placeholder": "Tu dirección de correo electrónico",
+    "claim": "Conseguir {pct}% de descuento",
     "subscribing": "Suscribiendo…",
-    "error": "No se pudo suscribir — inténtelo de nuevo.",
-    "yourCode": "Su código",
-    "onList": "Ya está en la lista.",
-    "useAtCheckout": "Úselo al pagar",
-    "singleUse": "{pct} % de descuento en su primer pedido. De un solo uso.",
+    "error": "No pudimos suscribirte — inténtalo de nuevo.",
+    "yourCode": "Tu código",
+    "onList": "Ya estás en la lista.",
+    "useAtCheckout": "Úsalo al pagar",
+    "singleUse": "{pct}% de descuento en tu primer pedido. De un solo uso.",
     "close": "Cerrar"
   },
   "search": {

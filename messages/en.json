@@ -1033,6 +1033,7 @@
     }
   },
   "trackOrder": {
+    "eyebrow": "Order Status",
     "title": "Track Your Order",
     "subtitle": "Enter your order number and email to track your delivery.",
     "orderNumber": "Order Number",

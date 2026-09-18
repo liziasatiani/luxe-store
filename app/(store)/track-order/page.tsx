@@ -73,7 +73,7 @@ export default function TrackOrderPage() {
     <>
       <div className="k-page-hdr">
         <div className="wrap">
-          <p className="page-hd-eyebrow">Order Status</p>
+          <p className="page-hd-eyebrow">{t("eyebrow")}</p>
           <h1 className="page-hd-title">{t("title")}</h1>
           <p style={{ fontSize: 14, color: "var(--chalk3)", marginTop: 12 }}>{t("subtitle")}</p>
         </div>

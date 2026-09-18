@@ -1033,6 +1033,7 @@
     }
   },
   "trackOrder": {
+    "eyebrow": "Statut de la commande",
     "title": "Suivre votre commande",
     "subtitle": "Entrez votre numéro de commande et votre e-mail pour suivre votre livraison.",
     "orderNumber": "Numéro de commande",
