@@ -24,7 +24,7 @@ export default async function BestSellersPage() {
       <div style={{ paddingTop: 48, paddingBottom: 96 }}>
         <div className="wrap">
           <Suspense fallback={<div style={{ display: "flex", justifyContent: "center", padding: "80px 0" }}><Spinner size={32} /></div>}>
-            <ProductGrid filters={{ isBestSeller: true, sort: "best-selling" }} />
+            <ProductGrid filters={{ sort: "best-selling" }} />
           </Suspense>
         </div>
       </div>

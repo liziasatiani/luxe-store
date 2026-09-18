@@ -1,14 +1,14 @@
 const BRANDS = [
-  { name: "Charlotte Tilbury", size: 20, weight: 600 },
-  { name: "La Mer", size: 20, weight: 600 },
-  { name: "Sony", size: 20, weight: 600 },
-  { name: "Apple", size: 17, weight: 400 },
-  { name: "Chanel", size: 17, weight: 400 },
-  { name: "Fenty Beauty", size: 17, weight: 400 },
-  { name: "Samsung", size: 17, weight: 400 },
-  { name: "Dior", size: 17, weight: 400 },
-  { name: "Dyson", size: 17, weight: 400 },
-  { name: "GHD", size: 17, weight: 400 },
+  { name: "Origins", size: 20, weight: 600 },
+  { name: "Drunk Elephant", size: 20, weight: 600 },
+  { name: "Statik", size: 20, weight: 600 },
+  { name: "First Aid Beauty", size: 17, weight: 400 },
+  { name: "Sulwhasoo", size: 17, weight: 400 },
+  { name: "Byroe", size: 17, weight: 400 },
+  { name: "Glow Recipe", size: 17, weight: 400 },
+  { name: "Elemis", size: 17, weight: 400 },
+  { name: "Logitech", size: 17, weight: 400 },
+  { name: "111Skin", size: 17, weight: 400 },
 ];
 
 export function TheHousesSection() {

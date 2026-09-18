@@ -217,7 +217,6 @@
     "postalCode": "Code postal *",
     "country": "Pays",
     "payment": "Paiement",
-    "cashOnDelivery": "Paiement à la livraison",
     "placeOrder": "Passer la commande",
     "orderNotes": "Notes de commande (facultatif)",
     "shippingAddress": "Adresse de livraison",
@@ -244,9 +243,6 @@
       "failedOrder": "Échec de la commande"
     },
     "cardPayment": "Carte · Apple Pay · Google Pay",
-    "payWhenReceived": "Payer à la livraison",
-    "codUnavailable": "Disponible uniquement sous ₾{max}",
-    "codUnavailableMsg": "Le paiement à la livraison est disponible uniquement pour les commandes inférieures à ₾{max}. Veuillez payer par carte.",
     "addressSaved": "Adresse enregistrée",
     "addressFailed": "Impossible d'enregistrer l'adresse",
     "pay": "Payer",

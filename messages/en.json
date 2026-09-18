@@ -217,7 +217,6 @@
     "postalCode": "Postal Code *",
     "country": "Country",
     "payment": "Payment",
-    "cashOnDelivery": "Cash on Delivery",
     "placeOrder": "Place Order",
     "orderNotes": "Order notes (optional)",
     "shippingAddress": "Shipping Address",
@@ -244,9 +243,6 @@
       "failedOrder": "Failed to place order"
     },
     "cardPayment": "Card · Apple Pay · Google Pay",
-    "payWhenReceived": "Pay when received",
-    "codUnavailable": "Only available under ₾{max}",
-    "codUnavailableMsg": "Cash on delivery is only available for orders under ₾{max}. Please pay by card.",
     "addressSaved": "Address saved",
     "addressFailed": "Failed to save address",
     "pay": "Pay",
@@ -474,7 +470,7 @@
     },
     "bestSellers": {
       "title": "Best Sellers",
-      "subtitle": "Our most popular products loved by thousands.",
+      "subtitle": "Our most popular products.",
       "badge": "Most Loved"
     },
     "featured": {
