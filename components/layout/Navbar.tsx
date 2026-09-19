@@ -90,7 +90,23 @@ export function Navbar() {
           </div>
 
           <Link href="/" onClick={closeMobileMenu} className="nav-logo">
-            Everything <em>Street</em>
+            {mounted ? (
+              <img
+                src={theme === "dark" ? "/logo-nameplate-dark.svg" : "/logo-nameplate-light.svg"}
+                alt="Everything Street"
+                height={44}
+                width={160}
+                style={{ height: "44px", width: "auto" }}
+              />
+            ) : (
+              <img
+                src="/logo-nameplate-dark.svg"
+                alt="Everything Street"
+                height={44}
+                width={160}
+                style={{ height: "44px", width: "auto" }}
+              />
+            )}
           </Link>
 
           <div className="nav-right">
