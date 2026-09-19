@@ -4,8 +4,8 @@
   "description": "Luxury beauty and premium tech — curated for you.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#070A14",
+  "theme_color": "#070A14",
   "orientation": "portrait-primary",
   "icons": [
     {
