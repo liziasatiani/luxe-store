@@ -61,9 +61,9 @@ const config: Config = {
         error:   "#dc2626",
       },
       fontFamily: {
-        display:  ["var(--font-playfair)", "Georgia", "serif"],
-        serif:    ["var(--font-playfair)", "Georgia", "serif"],
-        sans:     ["var(--font-outfit)", "system-ui", "sans-serif"],
+        display:  ["var(--font-spectral)", "Georgia", "serif"],
+        serif:    ["var(--font-spectral)", "Georgia", "serif"],
+        sans:     ["var(--font-mulish)", "system-ui", "sans-serif"],
         georgian: ["var(--font-georgian)", "serif"],
         mono:     ["monospace"],
       },

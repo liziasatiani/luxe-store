@@ -1,0 +1,6 @@
+<svg width="380" height="110" viewBox="0 0 380 110" xmlns="http://www.w3.org/2000/svg">
+  <title>Everything Street — bracketed nameplate, alternate (light)</title>
+  <line x1="40" y1="55" x2="100" y2="55" stroke="#8A6320" stroke-width="1"/>
+  <text x="190" y="63" text-anchor="middle" font-family="Mulish, sans-serif" font-weight="600" font-size="19" letter-spacing="5" fill="#1A150A">EVERYTHING STREET</text>
+  <line x1="280" y1="55" x2="340" y2="55" stroke="#8A6320" stroke-width="1"/>
+</svg>

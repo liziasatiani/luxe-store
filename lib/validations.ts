@@ -65,14 +65,6 @@ export const addressSchema = z.object({
   isDefault: z.boolean().default(false),
 });
 
-export const checkoutSchema = z.object({
-  addressId: z.string().optional(),
-  newAddress: addressSchema.optional(),
-  paymentMethod: z.enum(["STRIPE", "BANK_TRANSFER"]),
-  couponCode: z.string().optional(),
-  notes: z.string().optional(),
-});
-
 export const productSchema = z.object({
   name: z.string().min(1, "Product name is required").max(300),
   sku: z.string().min(1, "SKU is required").max(100),
@@ -207,12 +199,4 @@ export const createOrderSchema = z.discriminatedUnion("guest", [
 
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
-export type AddressInput = z.infer<typeof addressSchema>;
-export type CheckoutInput = z.infer<typeof checkoutSchema>;
-export type ProductInput = z.infer<typeof productSchema>;
-export type ReviewInput = z.infer<typeof reviewSchema>;
-export type CouponInput = z.infer<typeof couponSchema>;
-export type ContactInput = z.infer<typeof contactSchema>;
-export type ProfileInput = z.infer<typeof profileSchema>;
 export type CartLineInput = z.infer<typeof cartLineSchema>;
-export type CreateOrderInput = z.infer<typeof createOrderSchema>;

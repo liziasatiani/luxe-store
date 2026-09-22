@@ -225,17 +225,11 @@ textarea:focus-visible,
 .nav-right { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
 @media (min-width: 768px) { .nav-right { gap: 16px; } }
 .nav-logo {
-  font-family: var(--serif);
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--chalk);
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.nav-logo em { color: var(--gold); font-style: italic; }
 .nav-sep { width: 1px; height: 14px; background: var(--borderg); opacity: 0.5; display: inline-block; flex-shrink: 0; }
 .nav-icon {
   width: 32px;
