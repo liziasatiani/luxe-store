@@ -11,16 +11,6 @@ export function useDebounce<T>(value: T, delay = 300): T {
   return debounced;
 }
 
-export function useScrolled(threshold = 80): boolean {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > threshold);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, [threshold]);
-  return scrolled;
-}
-
 export function useClickOutside<T extends HTMLElement>(callback: () => void) {
   const ref = useRef<T>(null);
   useEffect(() => {

@@ -69,12 +69,6 @@ export function formatNumber(n: number): string {
   return n.toString();
 }
 
-export function getStockLabel(stock: number, lowAt = 5) {
-  if (stock === 0) return { label: "Out of Stock", color: "text-red-500" };
-  if (stock <= lowAt) return { label: `Only ${stock} left`, color: "text-yellow-500" };
-  return { label: "In Stock", color: "text-green-600" };
-}
-
 export function generateOrderNumber(): string {
   const timestamp = Date.now().toString(36).toUpperCase();
   const random = Math.random().toString(36).substring(2, 6).toUpperCase();

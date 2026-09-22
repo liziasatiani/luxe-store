@@ -35,44 +35,6 @@ const PRODUCT_SELECT = {
   category: { select: { name: true, slug: true } },
 } as const;
 
-export async function FeaturedProductsSection() {
-  let products: ProductCardType[] = [];
-  try {
-    const featured = await prisma.product.findMany({
-      where: { isActive: true, isFeatured: true },
-      select: PRODUCT_SELECT,
-      orderBy: [{ salesCount: "desc" }, { createdAt: "desc" }],
-      take: 8,
-    });
-    if (featured.length < 4) {
-      const ids = featured.map(p => p.id);
-      const fallback = await prisma.product.findMany({
-        where: { isActive: true, ...(ids.length ? { id: { notIn: ids } } : {}) },
-        select: PRODUCT_SELECT,
-        orderBy: [{ salesCount: "desc" }, { ratingAvg: "desc" }],
-        take: 8 - featured.length,
-      });
-      products = serializeDecimal([...featured, ...fallback]) as ProductCardType[];
-    } else {
-      products = serializeDecimal(featured) as ProductCardType[];
-    }
-  } catch {
-    return null;
-  }
-
-  if (products.length === 0) return null;
-
-  return (
-    <section className="section" style={{ borderBottom: "1px solid var(--border)" }}>
-      <div className="wrap">
-        <div className="pgrid">
-          {products.map((p, i) => <ProductCard key={p.id} product={p} index={i} priority={i < 4} />)}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export async function NewArrivalsSection() {
   const [tNA, tc] = await Promise.all([
     getTranslations("pages.newArrivals"),
@@ -101,22 +63,6 @@ export async function NewArrivalsSection() {
       </div>
     </section>
   );
-}
-
-export async function BestSellersSectionServer() {
-  const t = await getTranslations("pages.bestSellers");
-  try {
-    const rows = await prisma.product.findMany({
-      where: { isActive: true, isBestSeller: true },
-      select: PRODUCT_SELECT,
-      orderBy: [{ ratingAvg: "desc" }, { salesCount: "desc" }],
-      take: 8,
-    });
-    const initialProducts = serializeDecimal(rows) as ProductCardType[];
-    return { title: t("title"), initialProducts };
-  } catch {
-    return { title: t("title"), initialProducts: [] };
-  }
 }
 
 export async function TheStandardSection() {

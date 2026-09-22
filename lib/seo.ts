@@ -68,7 +68,7 @@ export function buildOrganizationSchema() {
         "@id": `${BASE_URL}/#organization`,
         name: SITE_NAME,
         url: BASE_URL,
-        logo: { "@type": "ImageObject", url: `${BASE_URL}/favicon.svg` },
+        logo: { "@type": "ImageObject", url: `${BASE_URL}/icon-512.png` },
         sameAs: [],
       },
       {
