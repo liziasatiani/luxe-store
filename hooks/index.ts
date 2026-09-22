@@ -49,27 +49,3 @@ export function useSearch() {
   return { query, setQuery, results, loading };
 }
 
-const MS_PER_HOUR = 3_600_000;
-const MS_PER_MINUTE = 60_000;
-const MS_PER_SECOND = 1_000;
-
-export function useCountdown(target: Date) {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const targetTime = target.getTime();
-
-  useEffect(() => {
-    const tick = () => {
-      const diff = Math.max(0, targetTime - Date.now());
-      setHours(Math.floor(diff / MS_PER_HOUR));
-      setMinutes(Math.floor((diff % MS_PER_HOUR) / MS_PER_MINUTE));
-      setSeconds(Math.floor((diff % MS_PER_MINUTE) / MS_PER_SECOND));
-    };
-    tick();
-    const id = setInterval(tick, MS_PER_SECOND);
-    return () => clearInterval(id);
-  }, [targetTime]);
-
-  return { h: hours, m: minutes, s: seconds };
-}

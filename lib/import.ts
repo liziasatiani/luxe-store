@@ -242,25 +242,6 @@ export function generateCSVTemplate(): string {
   return `${headers.join(",")}\n${example.join(",")}`;
 }
 
-export function generateExcelTemplate(): ArrayBuffer {
-  const ws = XLSX.utils.aoa_to_sheet([
-    [
-      "name","brand","category","subcategory","description","price",
-      "compare_price","cost_price","stock","sku","barcode","tags",
-      "weight","length","width","height","featured","sale","new_arrival","images",
-    ],
-    [
-      "Luxury Face Cream","La Mer","Beauty","Skincare",
-      "A rich moisturising cream",120,180,60,50,"SKC-0001","1234567890",
-      "skincare,luxury",50,"","","",false,false,true,
-      "https://example.com/img1.jpg",
-    ],
-  ]);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Products");
-  return XLSX.write(wb, { type: "array", bookType: "xlsx" });
-}
-
 export function generateJSONTemplate(): string {
   return JSON.stringify(
     {
