@@ -300,6 +300,16 @@ These services are disclosed in legal pages. If any are added, removed, or chang
 
 ## Outstanding Items
 
+- **[2026-09-22] Design audit punch list (see `Claude outputs/Everything-Street-Design-Audit-2026-09-22.docx` for full report):**
+  - Nav bug: hamburger icon visually overlaps the "EVERYTHING STREET" wordmark at tablet widths (~768–820px) and on true mobile (375px); the hero headline also crowds the fixed header on load. Reproducible on live site.
+  - Two different logo/wordmark treatments render on the same page: the bracketed nav wordmark vs. a plain mixed-case gold-"Street" footer wordmark. Needs one consistent treatment sitewide.
+  - Dark mode: footer nav column headers ("SHOP" / "COMPANY" / "SUPPORT") render at very low contrast (muddy dark-gold-on-black) — real accessibility/legibility issue, not just a taste call.
+  - Delivery-banner copy mismatch: announcement bar says "FREE 48H DELIVERY IN TBILISI" (refers to delivery speed) but checkout charged ₾25.96 shipping in testing — reads as misleading to customers expecting free shipping. Needs a copy fix.
+  - "The Standard" (bestseller rail) showed 2 of 4 products as OUT OF STOCK during testing — showing unavailable items in the rail meant to build the most purchase confidence is counter-productive; consider filtering OOS out of that rail.
+  - Catalog/business decision (not code): several SKUs in curated/bestseller placements are off-brand for a luxury positioning — e.g. a "Replaceable Sanding Paper 60-Pack" under brand "GENERIC" and a "SuperScissor Electric Scissors" under brand "Super Brand Tools" appeared inside "The Standard" next to Origins/Drunk Elephant. Recommend a curation pass on what's eligible for bestseller/curated rails.
+  - Product photography: a meaningful share of tech SKUs use raw manufacturer spec-sheet/infographic images (dimension callouts, feature diagrams baked into the image) as primary product photos rather than clean studio photography. Flagged as the top imagery issue.
+  - Reviews: every product shows "0 reviews" prominently — recommend either seeding real post-purchase review requests or hiding the review count until it's non-zero.
+
 - **Attorney review needed:** All 5 legal pages are live but have not been reviewed by a Georgian lawyer. Recommend review before the store handles significant transaction volume.
 - **Electronics warranty wording:** The 2-year guarantee section in Returns page is based on general Georgian consumer law understanding. Exact statutory language should be verified by attorney.
 - **WhatsApp number:** Placeholder `+1234567890` in footer and contact page — needs real number configured via `NEXT_PUBLIC_WHATSAPP_NUMBER` env var.
@@ -315,6 +325,7 @@ These services are disclosed in legal pages. If any are added, removed, or chang
 
 ## Changelog
 
+[2026-09-22] DESIGN AUDIT — Full creative-director-style audit of the live site by design session (screenshots + real interaction via browser, desktop/mobile, light/dark, EN/KA). Overall score 50/100 — strong hero/editorial/typography/multilingual work undercut by catalog quality (off-brand SKUs in curated rails), product photography (supplier spec-sheet images used as primary photos), and a handful of concrete bugs (nav/logo collision, dual wordmark treatments, dark-mode footer contrast, delivery-banner copy mismatch, OOS items in bestseller rail). Full report with evidence: `Claude outputs/Everything-Street-Design-Audit-2026-09-22.docx`. See Outstanding Items for the punch list.
 [2026-09-18] i18n [ES audit Phase 8] FIX [components/layout/Navbar.tsx, components/home/index.tsx, app/(store)/wishlist/page.tsx] — Fixed 3 hardcoded English strings missed in Phase 8 audit: Navbar wishlist Link aria-label="Wishlist" → t("wishlist"); WishlistPage remove button aria-label and "✓ Added" state → tProduct("removeFromWishlist") / tCommon("addedToCart"); NewsletterSection error messages → t("emailRequired")/t("emailInvalid").
 [2026-09-18] i18n [ES audit Phase 5] FIX [messages/es.json, app/(store)/track-order/page.tsx, messages/en|fr|ka.json] — Fixed formal/informal (usted→tú) inconsistency across 12 ES translation keys: trackOrder (title, subtitle, 3 errors), exitIntent (8 keys rewritten to informal), reviews.noReviews (¡Sea→¡Sé), home.newsletter.emailRequired/emailInvalid, account.addresses.subtitle, reviews.yourReview. Added trackOrder.eyebrow key to all 4 languages; replaced hardcoded "Order Status" eyebrow text in track-order page component.
 [2026-09-18] i18n [ES audit Phase 4] FIX [components/product/ProductGrid.tsx] — Switched 4-column product grid from lg (1024px) to xl (1280px) breakpoint. At 1024px with sidebar (256px), 4 cols = 141.5px cards where "AÑADIR AL CARRITO" (128.7px text + padding) overflows the 115.5px visible area. At xl with 3 cols at 1024px, cards ≈ 220px → button fits with room to spare.

@@ -18,7 +18,7 @@ export default auth((req) => {
     if (!session?.user) {
       return NextResponse.redirect(loginUrl(pathname));
     }
-    const role = (session.user as { role?: string }).role;
+    const role = session.user.role;
     if (role !== "ADMIN" && role !== "SUPER_ADMIN") {
       return NextResponse.redirect(new URL("/", req.url));
     }

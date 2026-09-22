@@ -16,8 +16,7 @@ export async function GET(
       where: {
         id,
         // Admins can see all orders; users only their own
-        ...((session.user as { role?: string }).role !== "ADMIN" &&
-          (session.user as { role?: string }).role !== "SUPER_ADMIN"
+        ...(session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN"
           ? { userId: session.user.id }
           : {}),
       },

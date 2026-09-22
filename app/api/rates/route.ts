@@ -96,8 +96,7 @@ export async function GET(req: NextRequest) {
 // Admin-only: manual rate override
 export async function POST(req: NextRequest) {
   const session = await auth();
-  const user = session?.user as { role?: string } | undefined;
-  if (user?.role !== "ADMIN" && user?.role !== "SUPER_ADMIN") {
+  if (session?.user?.role !== "ADMIN" && session?.user?.role !== "SUPER_ADMIN") {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
