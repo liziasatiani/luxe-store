@@ -14,6 +14,7 @@ import { auth } from "@/lib/auth";
 
 interface OrderItem { id: string; productName: string; quantity: number; totalPrice: number }
 interface SerializedOrder { id: string; orderNumber: string; total: number; items: OrderItem[] }
+interface UpsellProduct { id: string; name: string; slug: string; price: number; comparePrice: number | null; images: { url: string; isPrimary?: boolean | null }[]; brand: { name: string } | null }
 interface Props { searchParams: Promise<{ orderId?: string }> }
 
 export default async function SuccessPage({ searchParams }: Props) {
@@ -37,7 +38,7 @@ export default async function SuccessPage({ searchParams }: Props) {
     select: { id: true, name: true, slug: true, price: true, comparePrice: true, images: { select: { url: true, isPrimary: true } }, brand: { select: { name: true } } },
     orderBy: { ratingAvg: "desc" },
     take: 4,
-  }).then(rows => rows.map(r => serializeDecimal(r)));
+  }).then(rows => rows.map(r => serializeDecimal(r) as UpsellProduct));
 
   return (
     <div style={{ paddingTop: 80, paddingBottom: 96 }}>
@@ -132,15 +133,15 @@ export default async function SuccessPage({ searchParams }: Props) {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="sm-grid-4">
               <style>{`@media(min-width:640px){.sm-grid-4{grid-template-columns:repeat(4,1fr);}}`}</style>
               {upsellProducts.map((p) => {
-                const img = getProductImageUrl((p as { images?: { url: string; isPrimary?: boolean }[] }).images ?? []);
-                const price = formatPrice(Number((p as { price: number }).price));
+                const img = getProductImageUrl(p.images.map(i => ({ url: i.url, isPrimary: i.isPrimary ?? undefined })));
+                const price = formatPrice(p.price);
                 return (
-                  <Link key={(p as { id: string }).id} href={`/products/${(p as { slug: string }).slug}`} style={{ display: "block", textDecoration: "none" }}>
+                  <Link key={p.id} href={`/products/${p.slug}`} style={{ display: "block", textDecoration: "none" }}>
                     <div style={{ position: "relative", aspectRatio: "1", background: "var(--s2)", overflow: "hidden", marginBottom: 12 }}>
-                      {img && <Image src={img} alt={(p as { name: string }).name} fill className="object-cover" sizes="200px" />}
+                      {img && <Image src={img} alt={p.name} fill className="object-cover" sizes="200px" />}
                     </div>
-                    <p style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk3)", marginBottom: 4 }}>{(p as { brand?: { name: string } }).brand?.name}</p>
-                    <p style={{ fontSize: 12, color: "var(--chalk)", lineHeight: 1.4, marginBottom: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{(p as { name: string }).name}</p>
+                    <p style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--chalk3)", marginBottom: 4 }}>{p.brand?.name}</p>
+                    <p style={{ fontSize: 12, color: "var(--chalk)", lineHeight: 1.4, marginBottom: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{p.name}</p>
                     <p style={{ fontSize: 12, fontWeight: 600, color: "var(--chalk)" }}>{price}</p>
                   </Link>
                 );

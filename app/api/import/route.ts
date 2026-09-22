@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/adminAuth";
-import { parseCSV, parseExcel, parseJSON, importProducts, generateCSVTemplate, generateJSONTemplate } from "@/lib/import";
+import { parseCSV, parseJSON, importProducts, generateCSVTemplate, generateJSONTemplate } from "@/lib/import";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     }
 
     const ext = file.name.split(".").pop()?.toLowerCase();
-    if (!["csv", "xlsx", "xls", "json"].includes(ext ?? "")) {
-      return NextResponse.json({ success: false, error: "Unsupported file type. Use CSV, Excel, or JSON." }, { status: 400 });
+    if (!["csv", "json"].includes(ext ?? "")) {
+      return NextResponse.json({ success: false, error: "Unsupported file type. Use CSV or JSON." }, { status: 400 });
     }
 
     const job = await prisma.importJob.create({
@@ -29,19 +29,13 @@ export async function POST(req: NextRequest) {
         fileName: file.name,
         fileType: ext ?? "csv",
         status: "PROCESSING",
-        createdBy: (session.user as { id?: string })?.id ?? null,
+        createdBy: session.user?.id ?? null,
       },
     });
 
-    let rows;
-    const buffer = await file.arrayBuffer();
-    if (ext === "csv") {
-      rows = parseCSV(await file.text());
-    } else if (ext === "json") {
-      rows = parseJSON(await file.text());
-    } else {
-      rows = parseExcel(buffer);
-    }
+    const rows = ext === "json"
+      ? parseJSON(await file.text())
+      : parseCSV(await file.text());
 
     await prisma.importJob.update({ where: { id: job.id }, data: { totalRows: rows.length } });
 

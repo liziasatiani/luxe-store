@@ -1,5 +1,4 @@
 import Papa from "papaparse";
-import * as XLSX from "xlsx";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
 import type { StockStatus } from "@prisma/client";
@@ -40,24 +39,6 @@ export function parseCSV(text: string): ImportRow[] {
     transformHeader: (h) => h.trim().toLowerCase().replace(/\s+/g, "_"),
   });
   return result.data.map(normalizeRow);
-}
-
-export function parseExcel(buffer: ArrayBuffer): ImportRow[] {
-  const wb = XLSX.read(buffer, { type: "array" });
-  const sheet = wb.Sheets[wb.SheetNames[0]];
-  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, {
-    defval: "",
-  });
-  return rows.map((r) =>
-    normalizeRow(
-      Object.fromEntries(
-        Object.entries(r).map(([k, v]) => [
-          k.toLowerCase().replace(/\s+/g, "_"),
-          String(v),
-        ])
-      )
-    )
-  );
 }
 
 export function parseJSON(text: string): ImportRow[] {

@@ -2,11 +2,11 @@
 import { useEffect } from "react";
 import { useCurrencyStore } from "@/store";
 import { formatPrice, formatGEL } from "@/lib/utils";
+import type { ExchangeRates } from "@/store";
 
 let ratesFetchPromise: Promise<void> | null = null;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function fetchRatesOnce(setRates: (r: any) => void) {
+function fetchRatesOnce(setRates: (r: ExchangeRates) => void) {
   if (ratesFetchPromise) return ratesFetchPromise;
   ratesFetchPromise = fetch("/api/rates")
     .then((r) => r.json())

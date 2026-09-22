@@ -199,7 +199,7 @@ export const useUIStore = create<UIStore>((set) => ({
 
 type Currency = "USD" | "GEL" | "EUR";
 
-interface ExchangeRates {
+export interface ExchangeRates {
   USD_GEL: number;
   EUR_GEL: number;
   USD_EUR: number;

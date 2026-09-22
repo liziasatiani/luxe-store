@@ -22,9 +22,6 @@ export async function GET(req: NextRequest) {
     const emailClean = normalizeEmail(email);
     const orderNumberClean = orderNumber.trim().toUpperCase();
 
-    // Orders are always attached to a user: `Order` has no guest columns, so the
-    // previous `guestEmail` branch referenced a column that does not exist and
-    // made every lookup throw. The `as any` cast is what hid it from the compiler.
     const order = await prisma.order.findFirst({
       where: {
         orderNumber: orderNumberClean,

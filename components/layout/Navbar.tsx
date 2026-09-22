@@ -42,9 +42,7 @@ export function Navbar() {
 
   const count = mounted ? itemCount() : 0;
   const user = session?.user;
-  // temp fix, revisit before launch — session typing doesn't extend properly with NextAuth v5
-  const isAdmin = (user as { role?: string } | undefined)?.role === "ADMIN" ||
-    (user as { role?: string } | undefined)?.role === "SUPER_ADMIN";
+  const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
   const NAV_LINKS = [
     { label: t("brands"), href: "/brands" },
   ];

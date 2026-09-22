@@ -44,7 +44,13 @@ public/uploads/
 # local project docs
 CLAUDE.md
 AUDIT_REPORT.md
+INSTRUCTIONS.md
 .env*
+
+# design artefacts (not part of deployable codebase)
+designs/
+design-backup/
+assets/
 
 # private scripts
 scripts/

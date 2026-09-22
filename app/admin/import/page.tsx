@@ -34,7 +34,7 @@ export default function AdminImportPage() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "text/csv": [".csv"], "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"], "application/json": [".json"] },
+    accept: { "text/csv": [".csv"], "application/json": [".json"] },
     multiple: false,
     disabled: uploading,
   });
@@ -47,7 +47,7 @@ export default function AdminImportPage() {
     <div className="space-y-8 max-w-3xl">
       <div>
         <h1 className="font-display text-3xl text-surface-900 dark:text-white">Import Products</h1>
-        <p className="text-surface-500 text-sm mt-1">Upload CSV, Excel (.xlsx), or JSON files to bulk-import products.</p>
+        <p className="text-surface-500 text-sm mt-1">Upload CSV or JSON files to bulk-import products.</p>
       </div>
 
       {/* Download templates */}
@@ -63,7 +63,7 @@ export default function AdminImportPage() {
             </Button>
           ))}
         </div>
-        <p className="text-xs text-surface-400 mt-3">Templates include all supported fields. For Excel, use the same column headers as the CSV template.</p>
+        <p className="text-xs text-surface-400 mt-3">Templates include all supported fields with an example row.</p>
       </div>
 
       {/* Dropzone */}
@@ -88,7 +88,7 @@ export default function AdminImportPage() {
               {isDragActive ? "Drop your file here" : "Drag & drop your file here"}
             </p>
             <p className="text-surface-400 text-sm mb-4">or click to browse</p>
-            <p className="text-xs text-surface-300 dark:text-surface-600">Supports: CSV, Excel (.xlsx), JSON</p>
+            <p className="text-xs text-surface-300 dark:text-surface-600">Supports: CSV, JSON</p>
           </>
         )}
       </div>
