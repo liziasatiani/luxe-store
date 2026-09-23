@@ -120,12 +120,16 @@ export default async function ProductPage({ params }: Props) {
           </h1>
 
           {/* Rating */}
-          <div style={{ marginBottom: 5 }}>
-            <RatingStars rating={Number(p.ratingAvg)} count={p.ratingCount} size={13} />
-          </div>
-          <a href="#reviews" style={{ fontSize: 12, color: "var(--chalk2)", display: "block", marginBottom: 32, transition: "color 0.2s" }}>
-            {p.ratingCount} {tProduct("reviews")}
-          </a>
+          {p.ratingCount > 0 && (
+            <>
+              <div style={{ marginBottom: 5 }}>
+                <RatingStars rating={Number(p.ratingAvg)} count={p.ratingCount} size={13} />
+              </div>
+              <a href="#reviews" style={{ fontSize: 12, color: "var(--chalk2)", display: "block", marginBottom: 32, transition: "color 0.2s" }}>
+                {p.ratingCount} {tProduct("reviews")}
+              </a>
+            </>
+          )}
 
           {/* .dprice */}
           <div style={{ fontFamily: "var(--sans)", fontSize: 38, fontWeight: 500, marginBottom: 7, color: "var(--chalk)" }}>
