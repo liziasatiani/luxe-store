@@ -77,7 +77,13 @@ export async function TheStandardSection() {
     if (rows.length < 4) {
       const ids = rows.map(p => p.id);
       const fallback = await prisma.product.findMany({
-        where: { isActive: true, ...(ids.length ? { id: { notIn: ids } } : {}) },
+        where: {
+          isActive: true,
+          stockStatus: { not: "OUT_OF_STOCK" },
+          NOT: { AND: [{ ratingCount: { equals: 0 } }, { salesCount: { equals: 0 } }] },
+          brand: { name: { not: "Generic" } },
+          ...(ids.length ? { id: { notIn: ids } } : {}),
+        },
         select: PRODUCT_SELECT,
         orderBy: { salesCount: "desc" },
         take: 8 - rows.length,
