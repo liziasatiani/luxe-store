@@ -619,8 +619,8 @@ footer { background: var(--s1); border-top: 1px solid var(--border); padding: 64
   .epanel { min-height: 360px; padding: 40px 28px; }
 
   /* Hero */
-  .hero { grid-template-columns: 1fr; min-height: auto; }
-  .hero-half { min-height: 55svh; padding: 44px 28px; }
+  .hero { grid-template-columns: 1fr; min-height: auto; margin-top: 0; }
+  .hero-half { min-height: 55svh; padding: 88px 28px 44px; }
   .hero-divider { display: none; }
 
   /* Editorial */
