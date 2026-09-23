@@ -1,12 +1,17 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
 export function Footer() {
   const pathname = usePathname();
   const t = useTranslations("footer");
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const instagram = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
   const facebook  = process.env.NEXT_PUBLIC_FACEBOOK_URL;
 
@@ -40,7 +45,13 @@ export function Footer() {
           {/* Brand column */}
           <div>
             <Link href="/" style={{ textDecoration: "none" }}>
-              <div className="flogo">Everything <em>Street</em></div>
+              <img
+                src={mounted && theme !== "dark" ? "/logo-nameplate-light.svg" : "/logo-nameplate-dark.svg"}
+                alt="Everything Street"
+                height={32}
+                width={110}
+                style={{ height: "32px", width: "auto", marginBottom: "14px", display: "block" }}
+              />
             </Link>
             <p className="fdescr">Georgia&apos;s curated destination for technology and beauty. Only the authentic.</p>
             <div className="f-socials">
