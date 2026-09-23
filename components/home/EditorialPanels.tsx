@@ -19,7 +19,7 @@ export function EditorialPanels() {
         <div className="ep-content">
           <div className="ep-cat">Technology</div>
           <h3 className="ep-title">Precision.<br />Performance.<br />Power.</h3>
-          <p className="ep-sub">From Sony&apos;s finest audio to Apple&apos;s most refined devices — technology that earns its place.</p>
+          <p className="ep-sub">From Sony&apos;s finest audio to Logitech&apos;s most refined gear — technology that earns its place.</p>
           <span className="ep-link">Shop Technology</span>
         </div>
       </Link>
@@ -39,7 +39,7 @@ export function EditorialPanels() {
         <div className="ep-content">
           <div className="ep-cat">Beauty</div>
           <h3 className="ep-title">Ritual.<br />Refinement.<br />Results.</h3>
-          <p className="ep-sub">La Mer, Chanel, Charlotte Tilbury — beauty that treats itself as seriously as you do.</p>
+          <p className="ep-sub">Fenty Beauty, NARS, Rare Beauty — beauty that treats itself as seriously as you do.</p>
           <span className="ep-link">Shop Beauty</span>
         </div>
       </Link>
